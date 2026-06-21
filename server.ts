@@ -6,7 +6,8 @@ import { createServer as createViteServer } from 'vite';
 import { requireAuth, requireRole, AuthRequest } from './src/middleware/auth.ts';
 import { createRateLimiter, blockedIps } from './src/middleware/rateLimiter.ts';
 import { errorHandler } from './src/middleware/errorHandler.ts';
-import { adminAuth } from './src/lib/firebase-admin.ts';
+import { signToken } from './src/lib/jwt.js';
+import bcrypt from 'bcryptjs';
 import { db } from './src/db/index.ts';
 import { tracks, users, playlists, playlist_tracks, licenses, contracts, payments, audit_logs, vod_content, usage_logs } from './src/db/schema.ts';
 import { 
@@ -635,9 +636,9 @@ app.use((req, res, next) => {
 
   app.post('/api/users', requireAuth, requireRole('admin'), async (req: AuthRequest, res) => {
     try {
-      const { email, role, firebaseUid, pin, appName, primaryColor } = req.body;
+      const { email, role, pin, appName, primaryColor } = req.body;
       const [newUser] = (await db.insert(users).values({
-        email, role, uid: firebaseUid, pin, appName, primaryColor
+        email, role, uid: `user_${Date.now()}`, pin, appName, primaryColor
       }).returning()) as unknown as any[];
       await logAuditEvent(req.user?.uid || 'admin', 'outlet_create', 'users', `Provisioned new business outlet client: ${email} with role ${role}`, req.ip);
       res.status(201).json(newUser);
@@ -1551,49 +1552,26 @@ function getStripe(): Stripe {
     for (const acc of defaultAccounts) {
       console.log(`[SEED] Checking if user exists: ${acc.email}`);
       try {
-        let firebaseUser;
-        try {
-          firebaseUser = await adminAuth.getUserByEmail(acc.email);
-          console.log(`[SEED] Firebase user found: ${firebaseUser.uid}`);
-        } catch (err: any) {
-          if (err.code === 'auth/user-not-found') {
-            console.log(`[SEED] Firebase user not found. Creating...`);
-            firebaseUser = await adminAuth.createUser({
-              email: acc.email,
-              password: acc.password,
-              displayName: acc.name,
-            });
-            console.log(`[SEED] Created firebase user: ${firebaseUser.uid}`);
-          } else {
-            throw err;
-          }
-        }
-
-        // Now, ensure they are in the Postgres database and marked properly
-        const existingDbUsers = await db.select().from(users).where(eq(users.uid, firebaseUser.uid));
+        const existingDbUsers = await db.select().from(users).where(eq(users.email, acc.email));
+        
         if (existingDbUsers.length === 0) {
-          // Also check if they exist by email but have a different UID
-          const usersByEmail = await db.select().from(users).where(eq(users.email, acc.email));
-          if (usersByEmail.length > 0) {
-            console.log(`[SEED] User exists by email in DB but different UID. Updating UID and role...`);
-            await db.update(users).set({
-              uid: firebaseUser.uid,
-              role: acc.role,
-            }).where(eq(users.email, acc.email));
-          } else {
-            console.log(`[SEED] Database entry not found. Creating in DB...`);
-            await db.insert(users).values({
-              uid: firebaseUser.uid,
-              email: acc.email,
-              name: acc.name,
-              role: acc.role,
-            });
-          }
+          console.log(`[SEED] Database entry not found. Creating in DB...`);
+          const hashedPassword = await bcrypt.hash(acc.password, 10);
+          const uid = `user_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+          
+          await db.insert(users).values({
+            uid,
+            email: acc.email,
+            name: acc.name,
+            role: acc.role,
+            pin: hashedPassword,
+          });
+          console.log(`[SEED] Created user in DB: ${acc.email}`);
         } else {
           const dbUser = existingDbUsers[0];
           if (dbUser.role !== acc.role) {
             console.log(`[SEED] Updating user role to '${acc.role}' in DB...`);
-            await db.update(users).set({ role: acc.role }).where(eq(users.uid, firebaseUser.uid));
+            await db.update(users).set({ role: acc.role }).where(eq(users.email, acc.email));
           } else {
             console.log(`[SEED] Database entry is fully correct and up-to-date for ${acc.email}.`);
           }

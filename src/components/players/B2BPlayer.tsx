@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Track } from '@/types.ts';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
-import { auth } from '@/lib/firebase.ts';
 import Navigation from '@/components/common/Navigation.tsx';
 import { jsPDF } from 'jspdf';
 import { useTranslation } from 'react-i18next';

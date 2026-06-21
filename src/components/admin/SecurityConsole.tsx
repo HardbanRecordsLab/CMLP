@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Lock, EyeOff, UserCheck, RefreshCw, AlertTriangle, Download, Trash2, Key, CheckCircle, Ban, ArrowRight, UserX, FileText } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
-import { auth } from '@/lib/firebase.ts';
 
 export default function SecurityConsole() {
   const { fetchWithAuth, loading: apiLoading } = useApi();
@@ -10,21 +9,22 @@ export default function SecurityConsole() {
   const [errorStr, setErrorStr] = useState('');
   const [successStr, setSuccessStr] = useState('');
 
+  // Get user from localStorage
+  const getUser = () => {
+    const storedUser = localStorage.getItem('auth_user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  };
+
   // MFA states
   const [mfaEnabled, setMfaEnabled] = useState(false);
   const [mfaSecretData, setMfaSecretData] = useState<{ secret: string; issuer: string; account: string; sampleToken?: string } | null>(null);
   const [mfaConfirmCode, setMfaConfirmCode] = useState('');
   const [mfaSettingUp, setMfaSettingUp] = useState(false);
 
-  // Blocklist states
   const [blockedIps, setBlockedIps] = useState<string[]>([]);
   const [newIpToBlock, setNewIpToBlock] = useState('');
-
-  // GDPR sandbox states
   const [gdprExportData, setGdprExportData] = useState<any | null>(null);
   const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
-
-  // OWASP states
   const [owaspResults, setOwaspResults] = useState<any | null>(null);
   const [owaspRunning, setOwaspRunning] = useState(false);
 
@@ -41,7 +41,8 @@ export default function SecurityConsole() {
 
   const checkMfaStatus = async () => {
     try {
-      const email = auth.currentUser?.email;
+      const user = getUser();
+      const email = user?.email;
       if (!email) return;
       const res = await fetch(getApiUrl(`/api/auth/mfa/status?email=${encodeURIComponent(email)}`));
       const data = await res.json();
@@ -57,7 +58,6 @@ export default function SecurityConsole() {
       const data = await res.json();
       setBlockedIps(data.blockedIps || []);
     } catch (e: any) {
-      // Non-admins will receive 403 Forbidden which is expected
       console.log('Unable to load blocklist (might be non-admin session)');
     }
   };
@@ -168,19 +168,22 @@ export default function SecurityConsole() {
       const res = await fetchWithAuth(getApiUrl('/api/gdpr/delete'), { method: 'POST' });
       const data = await res.json();
       alert(data.message || 'Twoje dane zostały usunięte. Sesja zostanie zamknięta.');
-      auth.signOut();
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      window.location.reload();
     } catch (e: any) {
-      setErrorStr('Błąd krytyczny podczas usuwania profilu.');
+      setErrorStr('Błąd krytyczny podczac usuwania profilu.');
     }
   };
 
   const downloadGdprExport = () => {
     if (!gdprExportData) return;
+    const user = getUser();
     const blob = new Blob([JSON.stringify(gdprExportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `HRL-GDPR-Portability-Dump-${auth.currentUser?.uid}.json`;
+    link.download = `HRL-GDPR-Portability-Dump-${user?.uid || 'unknown'}.json`;
     link.click();
     URL.revokeObjectURL(url);
   };

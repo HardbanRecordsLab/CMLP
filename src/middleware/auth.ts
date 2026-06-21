@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { adminAuth } from '../lib/firebase-admin.js';
-import { DecodedIdToken } from 'firebase-admin/auth';
-import { db } from '../db/index.ts';
-import { users } from '../db/schema.ts';
+import { getUserFromToken } from '../lib/jwt.js';
+import { db } from '../db/index.js';
+import { users } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 
 export interface AuthRequest extends Request {
-  user?: DecodedIdToken;
+  user?: { uid: string; email: string; role: string };
 }
 
 export const requireAuth = async (
@@ -21,11 +20,14 @@ export const requireAuth = async (
 
   const token = authHeader.split('Bearer ')[1];
   try {
-    const decodedToken = await adminAuth.verifyIdToken(token);
+    const decodedToken = await getUserFromToken(token);
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
     req.user = decodedToken;
     next();
   } catch (error) {
-    console.error('Error verifying Firebase ID token:', error);
+    console.error('Error verifying JWT token:', error);
     return res.status(401).json({ error: 'Unauthorized: Invalid token' });
   }
 };
@@ -36,18 +38,10 @@ export const requireRole = (role: string) => {
       return res.status(401).json({ error: 'Unauthorized: Missing user context' });
     }
     
-    try {
-      const userRecords = await db.select().from(users).where(eq(users.uid, req.user.uid));
-      const userRecord = userRecords[0];
-      
-      if (!userRecord || userRecord.role !== role) {
-        return res.status(403).json({ error: 'Forbidden: Insufficient role permissions' });
-      }
-      
-      next();
-    } catch (e) {
-      console.error('Error verifying user role in DB:', e);
-      return res.status(500).json({ error: 'Internal Server Error: DB Query' });
+    if (req.user.role !== role) {
+      return res.status(403).json({ error: 'Forbidden: Insufficient role permissions' });
     }
+    
+    next();
   }
 };
