@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmlp-app
+  labels:
+    app: cmlp-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cmlp-app
+  template:
+    metadata:
+      labels:
+        app: cmlp-app
+    spec:
+      containers:
+        - name: cmlp-app
+          image: hardban-records-lab/cmlp:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: cmlp-secrets
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15

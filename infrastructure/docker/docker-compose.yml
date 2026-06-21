@@ -1,0 +1,104 @@
+# =========================================================
+# Production Docker Compose for CMLP backend on VPS
+# =========================================================
+
+services:
+  cmlp-migrate:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile
+      target: migrate
+    container_name: cmlp_service_migrate
+    restart: "no"
+    command: node infrastructure/docker/migrate.cjs
+    env_file:
+      - ../environment/.env.production
+    environment:
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hrl_secure_net
+
+  cmlp-app:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile
+    container_name: cmlp_service_app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - ../environment/.env.production
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      cmlp-migrate:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - hrl_media_storage:/usr/src/app/media_files
+      - hrl_logs:/usr/src/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      - hrl_secure_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: cmlp_service_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-SecureRedisCachePassword2026}
+    expose:
+      - "6379"
+    volumes:
+      - hrl_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$${REDIS_PASSWORD:-SecureRedisCachePassword2026}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hrl_secure_net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: cmlp_service_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${SQL_DB_NAME:-hrl_db}
+      POSTGRES_USER: ${SQL_USER:-hrl_admin}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD:-SecureAdminPassword2026}
+    expose:
+      - "5432"
+    volumes:
+      - hrl_postgres_data:/var/lib/postgres/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${SQL_USER:-hrl_admin} -d $${SQL_DB_NAME:-hrl_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - hrl_secure_net
+
+volumes:
+  hrl_media_storage:
+    driver: local
+  hrl_redis_data:
+    driver: local
+  hrl_postgres_data:
+    driver: local
+  hrl_logs:
+    driver: local
+
+networks:
+  hrl_secure_net:
+    driver: bridge

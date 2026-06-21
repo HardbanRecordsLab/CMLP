@@ -1,0 +1,152 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.*.local.example
+!.env.test.example
+infrastructure/environment/.env
+infrastructure/environment/.env.*
+!infrastructure/environment/.env.example
+!infrastructure/environment/.env.vps.example
+!infrastructure/environment/.env.vercel.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Local app config
+config/*.local.*
+config/firebase-applet-config.local.json
+config/firebase-admin-*.json
+config/service-account*.json
+ecosystem.config.local.*
+
+# Build output
+dist/
+build/
+.next/
+.nuxt/
+.vite/
+.turbo/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+pm2-*.log
+combined.log
+error.log
+
+# Runtime data and uploads
+media_files/
+uploads/
+public/uploads/
+src/uploads/
+*.sqlite
+*.sqlite3
+*.db
+*.db-*
+*.bak
+*.backup
+*.dump
+backup*.sql
+*_backup*.sql
+database/backups/
+database/dumps/
+backups/
+
+# Archives and packaged artifacts
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+archives/
+infrastructure/archives/
+infrastructure/docker/*.tar
+infrastructure/docker/*.tar.gz
+
+# Vercel and deployment local state
+.vercel/
+vercel.json.local
+*.now
+
+# Docker local overrides
+docker-compose.override.yml
+*.local.yml
+
+# AI, agent, and local workflow state
+.ai-studio/
+.kilo/
+.kilocode/
+.opencode/
+.agents/local/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.cache/
+*.tmp
+*.temp
+
+# Test and coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+vitest-results/
+
+# TypeScript/JS generated and cache
+.eslintcache
+.jest-cache/
+.parcel-cache/
+rollup.config.cache*
+
+# Database migrations generated snapshots are kept if tracked.
+# Ignore only local generated migration artifacts if created outside the committed migration set.
+drizzle/meta/*.local.json
+
+# Secrets accidentally placed in common paths
+secrets/
+credentials/
+credentials.json
+serviceAccount.json
+firebase-adminsdk-*.json
