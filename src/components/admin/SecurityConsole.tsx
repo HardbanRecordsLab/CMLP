@@ -172,7 +172,7 @@ export default function SecurityConsole() {
       localStorage.removeItem('auth_user');
       window.location.reload();
     } catch (e: any) {
-      setErrorStr('Błąd krytyczny podczac usuwania profilu.');
+      setErrorStr('Błąd krytyczny podczas usuwania profilu.');
     }
   };
 
