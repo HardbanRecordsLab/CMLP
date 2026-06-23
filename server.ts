@@ -39,6 +39,7 @@ import { WaveformCacheService } from './src/lib/waveformCache.ts';
 import { LicensingPredictiveService } from './src/lib/licensingPredictive.ts';
 import { VaultSignatureService } from './src/lib/vaultSignature.ts';
 import createPaymentRoutes from './src/api/payments/routes.ts';
+import authRoutes from './src/api/auth/routes.ts';
 
 // Listen to unhandled exceptions globally in production environments
 process.on('uncaughtException', (error) => {
@@ -96,6 +97,7 @@ app.use('/api/payments/webhook/:gateway', rawBodyMiddleware);
 app.use(express.json());
 app.use(rateLimiter);
 app.use('/api/payments', createPaymentRoutes({ logAuditEvent }));
+app.use('/api/auth', authRoutes);
 
 // Custom sanitization middleware to mitigate OWASP dynamic XSS risks
 app.use((req: Request, res: Response, next: NextFunction) => {
