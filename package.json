@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config config/vite.config.ts",
-    "build:frontend": "vite --config config/vite.config.ts build",
+    "build:frontend": "vite --config config/vite.config.ts build --base /cmlp/",
     "build:server": "esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "build": "tsc -p config/tsconfig.json && npm run build:frontend && npm run build:server",
     "start": "node dist/server.cjs",

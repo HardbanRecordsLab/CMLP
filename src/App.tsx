@@ -8,11 +8,16 @@ import LanguageSelector from '@/components/common/LanguageSelector.tsx';
 import { useTranslation } from 'react-i18next';
 
 export default function App() {
-  const [route, setRoute] = useState(window.location.pathname);
+  const basePath = '/cmlp';
+  const getRoute = () => {
+    const path = window.location.pathname;
+    return path.startsWith(basePath) ? path.slice(basePath.length) || '/' : path;
+  };
+  const [route, setRoute] = useState(getRoute());
   const { t } = useTranslation();
 
   useEffect(() => {
-    const handlePopState = () => setRoute(window.location.pathname);
+    const handlePopState = () => setRoute(getRoute());
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
@@ -53,13 +58,13 @@ export default function App() {
         <p className="text-slate-500 text-[10px] font-mono uppercase tracking-widest mb-8">{t('common.subtitle')}</p>
         
         <div className="space-y-3">
-          <a href="/b2b" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
+          <a href="/cmlp/b2b" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
             {t('common.b2b_dashboard').toUpperCase()}
           </a>
-          <a href="/whitelabel" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
+          <a href="/cmlp/whitelabel" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
             {t('common.whitelabel_stream').toUpperCase()}
           </a>
-          <a href="/admin" className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold tracking-wide shadow-lg shadow-blue-500/20 transition">
+          <a href="/cmlp/admin" className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold tracking-wide shadow-lg shadow-blue-500/20 transition">
             {t('common.admin_console').toUpperCase()}
           </a>
         </div>
