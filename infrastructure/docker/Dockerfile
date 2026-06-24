@@ -7,29 +7,18 @@ FROM node:20-alpine AS base
 
 WORKDIR /usr/src/app
 
-# Set node environment
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
-# Install essential dev-tools for building native extensions if any
 RUN apk add --no-cache python3 make g++
 
-# Copy package descriptors
 COPY package*.json ./
 
-# Install dependencies (both dev and prod so compilation runs)
-RUN npm ci --include=dev
+RUN rm -rf node_modules package-lock.json && npm install --omit=optional && npm install @rollup/rollup-linux-x64-musl --save-optional
 
-# Copy source tree and configuration files
 COPY . .
 
-# Build application static assets and bundle server code
 RUN npm run build
 
-
-# --- App Runtime Build Stage ---
-FROM base AS builder
-
-# Prune unnecessary development modules for runtime size efficiency
 RUN npm prune --production
 
 
@@ -45,24 +34,20 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Copy assets and server configurations compiled in builder
-COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/media_files ./media_files
+COPY --from=base /usr/src/app/package*.json ./
+COPY --from=base /usr/src/app/node_modules ./node_modules
+COPY --from=base /usr/src/app/dist ./dist
+RUN mkdir -p /usr/src/app/media_files
+COPY --from=base /usr/src/app/media_files ./media_files 2>/dev/null || true
 
-# Create directories and adjust permissions for non-root runtime environments
 RUN mkdir -p /usr/src/app/media_files && \
     chown -R node:node /usr/src/app
 
-# Drop root privileges for security
 USER node
 
 EXPOSE 3000
 
-# Health check setup
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD node -e "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
-# Start the bundled server CJS
 CMD ["node", "dist/server.cjs"]

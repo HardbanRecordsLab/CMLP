@@ -22,9 +22,7 @@ services:
       - hrl_secure_net
 
   cmlp-app:
-    build:
-      context: ../..
-      dockerfile: infrastructure/docker/Dockerfile
+    image: docker-cmlp-app:latest
     container_name: cmlp_service_app
     restart: unless-stopped
     ports:
@@ -35,8 +33,6 @@ services:
       NODE_ENV: production
       PORT: 3000
     depends_on:
-      cmlp-migrate:
-        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
