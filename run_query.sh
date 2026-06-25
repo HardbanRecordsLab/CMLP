@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh -i "C:\Users\HRL\.ssh\id_ed25519" -o StrictHostKeyChecking=no root@84.247.162.167 "docker exec main-website-wordpress-1 sh -c 'echo \"SELECT ID, post_title, post_name, post_type, post_status FROM wp_posts WHERE post_type IN (\\\"page\\\",\\\"post\\\") AND post_status=\\\"publish\\\" ORDER BY post_type, ID;\" > /tmp/query.sql' && docker cp /tmp/query.sql main-website-wordpress-1:/tmp/query.sql 2>/dev/null; docker exec main-website-wordpress-1 mysql -h db -u wp_user -pstrong_password_here --skip-ssl wordpress -e \"source /tmp/query.sql;\""
