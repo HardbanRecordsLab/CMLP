@@ -33,6 +33,14 @@ router.post('/login', async (req, res) => {
       role: user.role
     });
     
+    res.cookie('hrl_cmlp_jwt', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      domain: '.hardbanrecordslab.online',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+    
     res.json({
       uid: user.uid,
       email: user.email,
@@ -72,6 +80,14 @@ router.post('/register', async (req, res) => {
       uid,
       email,
       role: 'user'
+    });
+    
+    res.cookie('hrl_cmlp_jwt', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      domain: '.hardbanrecordslab.online',
+      maxAge: 7 * 24 * 60 * 60 * 1000
     });
     
     res.status(201).json({
