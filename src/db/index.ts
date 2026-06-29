@@ -4,20 +4,38 @@ import * as schema from './schema.ts';
 
 const { Pool } = pg;
 
-export const createPool = () => {
-  return new Pool({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASSWORD,
-    database: process.env.SQL_DB_NAME,
-    connectionTimeoutMillis: 15000,
-  });
+let poolInstance: pg.Pool | null = null;
+let drizzleInstance: ReturnType<typeof drizzle> | null = null;
+
+export const getPool = () => {
+  if (!poolInstance) {
+    const password = process.env.SQL_PASSWORD || '';
+    const user = process.env.SQL_USER || '';
+    const host = process.env.SQL_HOST || 'localhost';
+    const dbName = process.env.SQL_DB_NAME || 'cmlp';
+    
+    poolInstance = new Pool({
+      host,
+      port: parseInt(process.env.SQL_PORT || '5432', 10),
+      user,
+      password,
+      database: dbName,
+      connectionTimeoutMillis: 15000,
+    });
+    poolInstance.on('error', (err) => {
+      console.error('Unexpected error on idle SQL pool client:', err);
+    });
+  }
+  return poolInstance;
 };
 
-const pool = createPool();
+export const createPool = getPool;
 
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle SQL pool client:', err);
+export const db = new Proxy({} as any, {
+  get(target, prop) {
+    if (!drizzleInstance) {
+      drizzleInstance = drizzle(getPool(), { schema });
+    }
+    return Reflect.get(drizzleInstance, prop);
+  }
 });
-
-export const db = drizzle(pool, { schema });
