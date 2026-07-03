@@ -314,11 +314,11 @@ get_header();
     <h2 class="section-title">Posłuchaj historii zamienionych w dźwięk</h2>
     <hr class="divider">
     <div class="song-tabs">
-      <button class="song-tab active" onclick="switchSong('wesele', this)">💍 Wesele</button>
-      <button class="song-tab" onclick="switchSong('urodziny', this)">🎂 Urodziny</button>
-      <button class="song-tab" onclick="switchSong('narodziny', this)">👶 Narodziny</button>
-      <button class="song-tab" onclick="switchSong('biznes', this)">🏢 Firmowy</button>
-      <button class="song-tab" onclick="switchSong('pozegnanie', this)">💫 Pożegnanie</button>
+      <button class="song-tab active" data-tab="wesele" onclick="switchSong('wesele', this)">💍 Wesele</button>
+      <button class="song-tab" data-tab="urodziny" onclick="switchSong('urodziny', this)">🎂 Urodziny</button>
+      <button class="song-tab" data-tab="narodziny" onclick="switchSong('narodziny', this)">👶 Narodziny</button>
+      <button class="song-tab" data-tab="biznes" onclick="switchSong('biznes', this)">🏢 Firmowy</button>
+      <button class="song-tab" data-tab="pozegnanie" onclick="switchSong('pozegnanie', this)">💫 Pożegnanie</button>
     </div>
 
     <div class="song-panel active" id="song-wesele">
@@ -654,42 +654,7 @@ jesteś dalej tu. I zawsze tak zostanie.</div>
         sticky.classList.remove('visible');
       }
     }
-  };
-
-  // Song tab switcher
-  window.switchSong = function(songId, btn) {
-    root.querySelectorAll('.song-panel').forEach(function(p) { p.classList.remove('active'); });
-    root.querySelectorAll('.song-tab').forEach(function(t) { t.classList.remove('active'); });
-    var panel = root.querySelector('#song-' + songId);
-    if (panel) panel.classList.add('active');
-    if (btn) btn.classList.add('active');
-  };
-
-  // FAQ accordion
-  window.toggleFaq = function(btn) {
-    var answer = btn.nextElementSibling;
-    var isOpen = answer && answer.classList.contains('open');
-    root.querySelectorAll('.faq-a').forEach(function(x) { x.classList.remove('open'); });
-    root.querySelectorAll('.faq-q').forEach(function(x) { x.classList.remove('open'); });
-    if (!isOpen && answer) {
-      answer.classList.add('open');
-      btn.classList.add('open');
-    }
-  };
-
-  // Radio label selector
-  window.selectRadio = function(element) {
-    var parent = element.parentElement;
-    parent.querySelectorAll('.form-radio-label').forEach(function(item) {
-      item.classList.remove('selected');
-      var radio = item.querySelector('input[type="radio"]');
-      if (radio) radio.checked = false;
-    });
-    element.classList.add('selected');
-    var activeRadio = element.querySelector('input[type="radio"]');
-    if (activeRadio) activeRadio.checked = true;
-  };
-})();
+  });
 </script>
 
 <?php get_footer(); ?>

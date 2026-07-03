@@ -305,3 +305,218 @@ export async function handleWordPressWebhook(payload: {
     logId: logObj?.id
   };
 }
+
+interface TrackInput {
+  id?: number;
+  title: string;
+  artist: string;
+  album?: string;
+  year?: number;
+  bpm?: number;
+  genre?: string;
+  durationMs?: number;
+  explicit?: boolean;
+  isrc?: string;
+  coverUrl?: string;
+  filename: string;
+  status?: string;
+}
+
+export async function syncTrackToWP(track: TrackInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
+  try {
+    const settings = await getWordPressSettings();
+    const wpBody = {
+      title: track.title,
+      content: `${track.title} by ${track.artist}${track.album ? ` — ${track.album}` : ''}`,
+      status: 'publish',
+      meta: {
+        cmlp_id: track.id,
+        artist: track.artist,
+        album: track.album || '',
+        year: track.year || null,
+        bpm: track.bpm || null,
+        genre: track.genre || '',
+        duration_ms: track.durationMs || null,
+        explicit: track.explicit || false,
+        isrc: track.isrc || '',
+        cover_url: track.coverUrl || '',
+        filename: track.filename,
+      },
+    };
+    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    await logSyncEvent({
+      wpId: wpResult.id, wpType: 'track', title: `Synced track: ${track.title}`,
+      status: 'synced', direction: 'local_to_wp',
+    });
+    return { success: true, wpId: wpResult.id };
+  } catch (e: any) {
+    await logSyncEvent({
+      wpId: null, wpType: 'track', title: `Failed track: ${track.title}`,
+      status: 'failed', direction: 'local_to_wp', errorMessage: e.message,
+    });
+    return { success: false, error: e.message };
+  }
+}
+
+interface PlaylistInput {
+  id?: number;
+  title: string;
+  description?: string;
+  isPublic?: boolean;
+  tags?: string[];
+  companyId?: number;
+}
+
+export async function syncPlaylistToWP(playlist: PlaylistInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
+  try {
+    const settings = await getWordPressSettings();
+    const wpBody = {
+      title: playlist.title,
+      content: playlist.description || '',
+      status: playlist.isPublic ? 'publish' : 'draft',
+      meta: {
+        cmlp_id: playlist.id,
+        description: playlist.description || '',
+        is_public: playlist.isPublic || false,
+        tags: playlist.tags ? JSON.stringify(playlist.tags) : '',
+        company_id: playlist.companyId || null,
+      },
+    };
+    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    await logSyncEvent({
+      wpId: wpResult.id, wpType: 'playlist', title: `Synced playlist: ${playlist.title}`,
+      status: 'synced', direction: 'local_to_wp',
+    });
+    return { success: true, wpId: wpResult.id };
+  } catch (e: any) {
+    await logSyncEvent({
+      wpId: null, wpType: 'playlist', title: `Failed playlist: ${playlist.title}`,
+      status: 'failed', direction: 'local_to_wp', errorMessage: e.message,
+    });
+    return { success: false, error: e.message };
+  }
+}
+
+interface LicenseInput {
+  id?: number;
+  companyName: string;
+  licenseType: string;
+  status: string;
+  certificateNumber: string;
+  issuedAt?: string;
+  expiresAt: string;
+  jurisdiction?: string;
+  territories?: string[];
+  maxLocations?: number;
+}
+
+export async function syncLicenseToWP(license: LicenseInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
+  try {
+    const settings = await getWordPressSettings();
+    const wpBody = {
+      title: `License: ${license.certificateNumber} — ${license.companyName}`,
+      content: `${license.licenseType} license for ${license.companyName} (${license.jurisdiction || 'EU'})`,
+      status: 'publish',
+      meta: {
+        cmlp_id: license.id,
+        company_name: license.companyName,
+        license_type: license.licenseType,
+        status: license.status,
+        certificate_number: license.certificateNumber,
+        issued_at: license.issuedAt || '',
+        expires_at: license.expiresAt,
+        jurisdiction: license.jurisdiction || 'EU',
+        territories: license.territories ? JSON.stringify(license.territories) : '',
+        max_locations: license.maxLocations || 1,
+      },
+    };
+    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    await logSyncEvent({
+      wpId: wpResult.id, wpType: 'license', title: `Synced license: ${license.certificateNumber}`,
+      status: 'synced', direction: 'local_to_wp',
+    });
+    return { success: true, wpId: wpResult.id };
+  } catch (e: any) {
+    await logSyncEvent({
+      wpId: null, wpType: 'license', title: `Failed license: ${license.certificateNumber}`,
+      status: 'failed', direction: 'local_to_wp', errorMessage: e.message,
+    });
+    return { success: false, error: e.message };
+  }
+}
+
+interface ComplianceDocInput {
+  id?: number;
+  title: string;
+  companyName?: string;
+  jurisdiction?: string;
+  status?: string;
+  signed?: boolean;
+  pdfUrl?: string;
+}
+
+export async function syncComplianceDocToWP(doc: ComplianceDocInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
+  try {
+    const settings = await getWordPressSettings();
+    const wpBody = {
+      title: `Compliance: ${doc.title}`,
+      content: `Compliance document for ${doc.companyName || 'N/A'} (${doc.jurisdiction || 'EU'})`,
+      status: 'publish',
+      meta: {
+        cmlp_id: doc.id,
+        company_name: doc.companyName || '',
+        jurisdiction: doc.jurisdiction || 'EU',
+        status: doc.status || 'draft',
+        signed: doc.signed || false,
+        pdf_url: doc.pdfUrl || '',
+      },
+    };
+    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    await logSyncEvent({
+      wpId: wpResult.id, wpType: 'compliance_doc', title: `Synced compliance doc: ${doc.title}`,
+      status: 'synced', direction: 'local_to_wp',
+    });
+    return { success: true, wpId: wpResult.id };
+  } catch (e: any) {
+    await logSyncEvent({
+      wpId: null, wpType: 'compliance_doc', title: `Failed compliance doc: ${doc.title}`,
+      status: 'failed', direction: 'local_to_wp', errorMessage: e.message,
+    });
+    return { success: false, error: e.message };
+  }
+}
+
+export async function pullFromWP(type: string): Promise<{ success: boolean; items: any[]; error?: string }> {
+  try {
+    const settings = await getWordPressSettings();
+    const posts = await callWordPressAPI(settings, `posts?per_page=20&meta_key=cmlp_type&meta_value=${type}`);
+    const items = Array.isArray(posts) ? posts : [];
+    for (const item of items) {
+      await logSyncEvent({
+        wpId: item.id, wpType: type, title: item.title?.rendered || 'Untitled',
+        status: 'synced', direction: 'wp_to_local',
+      });
+    }
+    return { success: true, items };
+  } catch (e: any) {
+    return { success: false, items: [], error: e.message };
+  }
+}
+
+export async function pullTelemetryFromWP(): Promise<{ success: boolean; telemetry: any[]; error?: string }> {
+  try {
+    const settings = await getWordPressSettings();
+    const posts = await callWordPressAPI(settings, 'posts?per_page=50&categories=telemetry');
+    const telemetry = Array.isArray(posts) ? posts.map(p => ({
+      wpId: p.id,
+      title: p.title?.rendered || '',
+      plays: p.meta?.plays || 0,
+      skips: p.meta?.skips || 0,
+      trackId: p.meta?.cmlp_track_id || null,
+      date: p.date || '',
+    })) : [];
+    return { success: true, telemetry };
+  } catch (e: any) {
+    return { success: false, telemetry: [], error: e.message };
+  }
+}

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { redisClient, blockIp as redisBlockIp, unblockIp } from '../lib/redis.ts';
 
 export const blockedIps = new Set<string>();
 
@@ -14,34 +15,48 @@ const MAX_REQUESTS_PER_WINDOW = 300;
 const MAX_AUTH_REQS_PER_WINDOW = 10;
 const WINDOW_MS = 60 * 1000;
 
-export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
-  const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-  const authLimitMap = new Map<string, { count: number; resetTime: number }>();
-  const tempBans = new Map<string, number>();
+const RATE_LIMIT_PREFIX = 'ratelimit:';
+const AUTH_RATE_PREFIX = 'authrate:';
+const TEMP_BAN_PREFIX = 'tempban:';
 
-  const getClientIp = (req: Request) =>
-    (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress || '127.0.0.1';
+const getClientIp = (req: Request) =>
+  (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress || '127.0.0.1';
 
-  setInterval(() => {
-    const now = Date.now();
-
-    for (const [ip, data] of rateLimitMap.entries()) {
-      if (data.resetTime < now) rateLimitMap.delete(ip);
+const checkAndIncrement = async (key: string, maxRequests: number, windowMs: number): Promise<boolean> => {
+  try {
+    const count = await redisClient.incr(key);
+    if (count === 1) {
+      await redisClient.pexpire(key, windowMs);
     }
+    return count > maxRequests;
+  } catch {
+    return false;
+  }
+};
 
-    for (const [ip, data] of authLimitMap.entries()) {
-      if (data.resetTime < now) authLimitMap.delete(ip);
-    }
-
-    for (const [ip, expiry] of tempBans.entries()) {
-      if (expiry < now) {
-        tempBans.delete(ip);
-        blockedIps.delete(ip);
-        console.log(`[Security System] Temporary ban expired for IP: ${ip}`);
+const syncBlockedIps = async () => {
+  try {
+    const keys = await redisClient.keys(`${TEMP_BAN_PREFIX}*`);
+    const currentBlocked = new Set<string>();
+    for (const key of keys) {
+      const ip = key.replace(TEMP_BAN_PREFIX, '');
+      const ttl = await redisClient.pttl(key);
+      if (ttl > 0) {
+        currentBlocked.add(ip);
       }
     }
-  }, 30 * 1000).unref();
+    blockedIps.clear();
+    for (const ip of currentBlocked) {
+      blockedIps.add(ip);
+    }
+  } catch {
+    // Redis unavailable — keep existing Set
+  }
+};
 
+setInterval(syncBlockedIps, 30 * 1000).unref();
+
+export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
   const blockIp = async (
     req: Request,
     res: Response,
@@ -53,7 +68,7 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
     durationMs: number
   ) => {
     blockedIps.add(ip);
-    tempBans.set(ip, Date.now() + durationMs);
+    await redisBlockIp(ip, durationMs);
     await logAuditEvent('system', action, 'security', `${details} IP: ${ip}`, ip);
 
     return res.status(statusCode).json({
@@ -67,11 +82,19 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
     const now = Date.now();
 
     if (blockedIps.has(clientIp)) {
-      const banExp = tempBans.get(clientIp);
-      if (banExp && banExp < now) {
-        tempBans.delete(clientIp);
-        blockedIps.delete(clientIp);
-      } else {
+      const expiryKey = `blocked_expiry:${clientIp}`;
+      try {
+        const expiry = await redisClient.get(expiryKey);
+        if (expiry && parseInt(expiry) < now) {
+          blockedIps.delete(clientIp);
+          await unblockIp(clientIp);
+        } else {
+          return res.status(403).json({
+            error: 'Forbidden',
+            message: 'Twoje IP zostało tymczasowo zablokowane z powodu wykrycia anomalii lub naruszenia zasad bezpieczeństwa (OWASP Validation Blocklist).'
+          });
+        }
+      } catch {
         return res.status(403).json({
           error: 'Forbidden',
           message: 'Twoje IP zostało tymczasowo zablokowane z powodu wykrycia anomalii lub naruszenia zasad bezpieczeństwa (OWASP Validation Blocklist).'
@@ -82,15 +105,8 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
     const isAuthRoute = req.path.includes('/api/outlet/login') || req.path.includes('/api/auth');
 
     if (isAuthRoute) {
-      let authData = authLimitMap.get(clientIp);
-      if (!authData || authData.resetTime < now) {
-        authData = { count: 0, resetTime: now + WINDOW_MS };
-      }
-
-      authData.count++;
-      authLimitMap.set(clientIp, authData);
-
-      if (authData.count > MAX_AUTH_REQS_PER_WINDOW) {
+      const exceeded = await checkAndIncrement(`${AUTH_RATE_PREFIX}${clientIp}`, MAX_AUTH_REQS_PER_WINDOW, WINDOW_MS);
+      if (exceeded) {
         return blockIp(
           req,
           res,
@@ -104,15 +120,8 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
       }
     }
 
-    let rateData = rateLimitMap.get(clientIp);
-    if (!rateData || rateData.resetTime < now) {
-      rateData = { count: 0, resetTime: now + WINDOW_MS };
-    }
-
-    rateData.count++;
-    rateLimitMap.set(clientIp, rateData);
-
-    if (rateData.count > MAX_REQUESTS_PER_WINDOW) {
+    const exceeded = await checkAndIncrement(`${RATE_LIMIT_PREFIX}${clientIp}`, MAX_REQUESTS_PER_WINDOW, WINDOW_MS);
+    if (exceeded) {
       return blockIp(
         req,
         res,

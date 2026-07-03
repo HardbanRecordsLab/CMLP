@@ -1,5 +1,5 @@
 import { db } from '../db/index.ts';
-import { licenses } from '../db/schema.ts';
+import { licenses, users, companies } from '../db/schema.ts';
 import { triggerEmailNotification, triggerWSNotificationBroadcast, logNotificationEvent } from './notifications.ts';
 import { eq, and, lte, gte } from 'drizzle-orm';
 
@@ -103,7 +103,19 @@ export class LicensingPredictiveService {
     days: number, 
     level: ExpiryInspectionResult['escalationLevel']
   ): Promise<void> {
-    const mailTo = 'familydreamshop.pl@gmail.com'; // Admin or client corresponding email
+    let mailTo: string;
+    const userRecord = await db.select().from(users).where(eq(users.uid, lic.authorUid)).limit(1);
+    if (userRecord.length > 0) {
+      mailTo = userRecord[0].email;
+    } else {
+      const companyRecord = await db.select().from(companies).where(eq(companies.id, lic.companyId)).limit(1);
+      if (companyRecord.length > 0 && companyRecord[0].ownerId) {
+        const ownerRecord = await db.select().from(users).where(eq(users.uid, companyRecord[0].ownerId)).limit(1);
+        mailTo = ownerRecord.length > 0 ? ownerRecord[0].email : 'noreply@hrl.pl';
+      } else {
+        mailTo = 'noreply@hrl.pl';
+      }
+    }
     const formattedDate = new Date(lic.expiresAt).toLocaleDateString('pl-PL');
     
     let subject = '';

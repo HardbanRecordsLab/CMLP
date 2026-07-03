@@ -31,6 +31,12 @@ CREATE TABLE IF NOT EXISTS users (
     logo_url TEXT,
     primary_color TEXT DEFAULT '#3b82f6',
     app_name TEXT DEFAULT 'Background Music Player',
+    secondary_color TEXT DEFAULT '#1e293b',
+    font_family TEXT DEFAULT 'Inter, system-ui, sans-serif',
+    player_skin TEXT DEFAULT 'dark',
+    welcome_message TEXT,
+    outlet_name TEXT,
+    custom_css TEXT,
     mfa_enabled BOOLEAN DEFAULT FALSE NOT NULL,
     mfa_secret TEXT,
     created_at TIMESTAMP DEFAULT NOW()
@@ -38,8 +44,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- Create index on users.email for fast lookups
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_users_status ON users(status);
-CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
 
 -- Tracks table (audio_files)
 CREATE TABLE IF NOT EXISTS tracks (
@@ -73,7 +77,9 @@ CREATE INDEX IF NOT EXISTS idx_tracks_artist ON tracks(artist);
 CREATE INDEX IF NOT EXISTS idx_tracks_genre ON tracks(genre);
 CREATE INDEX IF NOT EXISTS idx_tracks_isrc ON tracks(isrc);
 CREATE INDEX IF NOT EXISTS idx_tracks_created_at ON tracks(created_at DESC);
-CREATE UNIQUE INDEX IF NOT EXISTS idx_tracks_isrc_unique ON tracks(isrc) WHERE isrc IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_tracks_bpm ON tracks(bpm);
+CREATE INDEX IF NOT EXISTS idx_tracks_year ON tracks(year);
+CREATE INDEX IF NOT EXISTS idx_tracks_time_of_day ON tracks(time_of_day);
 
 -- Playlists table
 CREATE TABLE IF NOT EXISTS playlists (
@@ -83,12 +89,14 @@ CREATE TABLE IF NOT EXISTS playlists (
     author_uid TEXT NOT NULL,
     is_public BOOLEAN DEFAULT FALSE NOT NULL,
     tags JSONB,
+    company_id INTEGER REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_playlists_author_uid ON playlists(author_uid);
 CREATE INDEX IF NOT EXISTS idx_playlists_company_id ON playlists(company_id);
+CREATE INDEX IF NOT EXISTS idx_playlists_is_public_created_at ON playlists(is_public, created_at DESC);
 
 -- Playlist tracks mapping
 CREATE TABLE IF NOT EXISTS playlist_tracks (
@@ -102,6 +110,7 @@ CREATE TABLE IF NOT EXISTS playlist_tracks (
 -- Licenses table
 CREATE TABLE IF NOT EXISTS licenses (
     id SERIAL PRIMARY KEY,
+    company_id INTEGER REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
     company_name TEXT NOT NULL,
     license_type TEXT NOT NULL,
     status TEXT DEFAULT 'active' NOT NULL,
@@ -115,15 +124,17 @@ CREATE TABLE IF NOT EXISTS licenses (
     max_locations INTEGER DEFAULT 1,
     max_concurrent_streams INTEGER DEFAULT 10,
     renewal_date TIMESTAMP,
-    contract_id INTEGER,
+    contract_id INTEGER REFERENCES contracts(id) ON DELETE CASCADE,
     audit_trail JSONB,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_licenses_company_id ON licenses(company_id);
+CREATE INDEX IF NOT EXISTS idx_licenses_company_name ON licenses(company_name);
 CREATE INDEX IF NOT EXISTS idx_licenses_status ON licenses(status);
 CREATE INDEX IF NOT EXISTS idx_licenses_end_date ON licenses(expires_at);
+CREATE INDEX IF NOT EXISTS idx_licenses_issued_at ON licenses(issued_at);
 CREATE INDEX IF NOT EXISTS idx_licenses_author_uid ON licenses(author_uid);
 
 -- Contracts table
@@ -145,15 +156,14 @@ CREATE TABLE IF NOT EXISTS contracts (
 -- Payments table
 CREATE TABLE IF NOT EXISTS payments (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     amount INTEGER NOT NULL,
     currency TEXT DEFAULT 'PLN' NOT NULL,
     gateway TEXT NOT NULL,
     transaction_type TEXT NOT NULL,
     status TEXT DEFAULT 'pending' NOT NULL,
     gateway_transaction_id TEXT,
-    license_id INTEGER REFERENCES licenses(id),
-    metadata JSONB,
+    license_id INTEGER REFERENCES licenses(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -161,25 +171,21 @@ CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
 CREATE INDEX IF NOT EXISTS idx_payments_license_id ON payments(license_id);
 CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
 
--- Usage logs table (partitioned by month for performance)
+-- Usage logs table
 CREATE TABLE IF NOT EXISTS usage_logs (
     id SERIAL PRIMARY KEY,
-    license_id INTEGER REFERENCES licenses(id),
-    location_id INTEGER REFERENCES companies(id),
-    track_id INTEGER REFERENCES tracks(id),
-    play_count INTEGER DEFAULT 1,
-    timestamp DATE DEFAULT NOW(),
-    device_type TEXT,
-    user_agent TEXT,
+    license_id INTEGER REFERENCES licenses(id) ON DELETE CASCADE,
     company_name TEXT,
-    track_title TEXT,
+    track_id INTEGER REFERENCES tracks(id) ON DELETE SET NULL,
+    track_title TEXT NOT NULL,
     outlet_ip TEXT,
-    duration_played_second INTEGER
+    duration_played_second INTEGER,
+    played_at TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_usage_logs_license_id ON usage_logs(license_id);
 CREATE INDEX IF NOT EXISTS idx_usage_logs_track_id ON usage_logs(track_id);
-CREATE INDEX IF NOT EXISTS idx_usage_logs_timestamp ON usage_logs(timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_played_at ON usage_logs(played_at DESC);
 
 -- Audit logs table
 CREATE TABLE IF NOT EXISTS audit_logs (
@@ -190,31 +196,17 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     details TEXT NOT NULL,
     ip_address TEXT,
     user_agent TEXT,
-    timestamp TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id ON audit_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
-
--- Notifications table
-CREATE TABLE IF NOT EXISTS notifications (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    type TEXT NOT NULL,
-    template_id TEXT,
-    recipient TEXT NOT NULL,
-    status TEXT DEFAULT 'pending' NOT NULL,
-    retry_count INTEGER DEFAULT 0,
-    last_retry TIMESTAMP,
-    created_at TIMESTAMP DEFAULT NOW(),
-    sent_at TIMESTAMP
-);
 
 -- Locations table
 CREATE TABLE IF NOT EXISTS locations (
     id SERIAL PRIMARY KEY,
-    company_id INTEGER REFERENCES companies(id),
+    company_id INTEGER REFERENCES companies(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     address TEXT,
     city TEXT,
@@ -298,7 +290,7 @@ CREATE TABLE IF NOT EXISTS notification_logs (
 -- Invoices table
 CREATE TABLE IF NOT EXISTS invoices (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     amount INTEGER NOT NULL,
     status TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()

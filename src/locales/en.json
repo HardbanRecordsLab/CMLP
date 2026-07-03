@@ -130,6 +130,7 @@
     "stream_description": "You are listening to the official radio network of {{brandName}}. Curated premium sounds for our guests.",
     "now_playing": "Now Playing",
     "waiting_track": "Waiting for Track...",
-    "unknown_artist": "Unknown Artist"
+    "unknown_artist": "Unknown Artist",
+    "offline_error": "No internet connection. Please connect and try again."
   }
 }

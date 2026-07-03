@@ -130,6 +130,7 @@
     "stream_description": "Słuchasz oficjalnego radia sieci {{brandName}}. Wyselekcjonowane brzmienia premium dla naszych gości.",
     "now_playing": "Teraz odtwarzane",
     "waiting_track": "Oczekiwanie na utwór...",
-    "unknown_artist": "Nieznany artysta"
+    "unknown_artist": "Nieznany artysta",
+    "offline_error": "Brak połączenia z internetem. Połącz się i spróbuj ponownie."
   }
 }

@@ -25,7 +25,7 @@ get_header();
             <?php esc_html_e( 'W pełni autorska biblioteka audio z certyfikatami Direct Licensing. Bezstratna jakość dźwięku, dynamiczne playlisty B2B, certyfikaty z kodem QR. System X-Accel-Redirect chroni pliki przed nieautoryzowanym dostępem. White-Label Player z Twoim logo.', 'hrl-theme' ); ?>
         </p>
         <div class="hero-actions">
-            <a href="https://app.hrl-sync-hub.hardbanrecordslab.online" class="btn btn-primary" target="_blank" rel="noopener"><?php esc_html_e( 'Uruchom CMLP Sync Hub →', 'hrl-theme' ); ?></a>
+            <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary" target="_blank" rel="noopener"><?php esc_html_e( 'Uruchom CMLP Sync Hub →', 'hrl-theme' ); ?></a>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Kontakt B2B', 'hrl-theme' ); ?></a>
         </div>
     </div>

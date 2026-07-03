@@ -13,6 +13,7 @@ export default function WhiteLabelPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
   
   const [config, setConfig] = useState<any>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -21,10 +22,31 @@ export default function WhiteLabelPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
 
+  const CACHE_KEY_TRACKS = 'whitelabel_cached_tracks';
+  const CACHE_KEY_CONFIG = 'whitelabel_config';
+
+  const cacheTracks = (list: Track[]) => {
+    try { localStorage.setItem(CACHE_KEY_TRACKS, JSON.stringify(list)); } catch {}
+  };
+  const getCachedTracks = (): Track[] => {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY_TRACKS);
+      return cached ? JSON.parse(cached) : [];
+    } catch { return []; }
+  };
+  const getCachedConfig = (): any | null => {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY_CONFIG);
+      return cached ? JSON.parse(cached) : null;
+    } catch { return null; }
+  };
+
   const handleLogin = async () => {
     setLoading(true);
     setError('');
     try {
+      if (isOffline) throw new Error(t('whitelabel.offline_error'));
+
       const res = await fetch(getApiUrl('/api/outlet/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,15 +55,29 @@ export default function WhiteLabelPlayer() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to login');
       
+      localStorage.setItem('auth_token', data.accessToken);
+      localStorage.setItem(CACHE_KEY_CONFIG, JSON.stringify(data.config));
       setConfig(data.config);
       setIsAuthenticated(true);
       
       // Fetch public playlist for MVP
       const tracksRes = await fetch(getApiUrl('/api/tracks/public'));
       if (tracksRes.ok) {
-        setTracks(await tracksRes.json());
+        const fetched = await tracksRes.json();
+        setTracks(fetched);
+        cacheTracks(fetched);
       }
     } catch (err: any) {
+      if (!navigator.onLine) {
+        const cachedConfig = getCachedConfig();
+        const cachedTracksList = getCachedTracks();
+        if (cachedConfig && cachedTracksList.length > 0) {
+          setConfig(cachedConfig);
+          setTracks(cachedTracksList);
+          setIsAuthenticated(true);
+          return;
+        }
+      }
       setError(err.message);
     } finally {
       setLoading(false);
@@ -141,9 +177,64 @@ export default function WhiteLabelPlayer() {
     }
   }, [isPlaying]);
 
+  // Inject skin CSS definitions once on mount
+  useEffect(() => {
+    if (document.getElementById('player-skin-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'player-skin-styles';
+    style.textContent = `
+      .player-container { transition: background-color 0.3s, color 0.3s; }
+      .skin-dark { --player-bg: #020617; --player-bg-card: #0f172a; --player-text: #f8fafc; --player-text-muted: #94a3b8; --player-border: #1e293b; }
+      .skin-light { --player-bg: #ffffff; --player-bg-card: #f1f5f9; --player-text: #0f172a; --player-text-muted: #64748b; --player-border: #e2e8f0; }
+      .skin-glass { --player-bg: rgba(15,23,42,0.7); --player-bg-card: rgba(30,41,59,0.5); --player-text: #f8fafc; --player-text-muted: #94a3b8; --player-border: rgba(148,163,184,0.2); }
+      .skin-glass.player-container, .skin-glass .player-wrapper { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+      .skin-retro { --player-bg: #1a120b; --player-bg-card: #3c2a1f; --player-text: #eaddcf; --player-text-muted: #a68a72; --player-border: #5c4030; }
+      .skin-retro .min-h-screen { background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px); }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
+  // 4.2 — CSS Variables Injection
+  useEffect(() => {
+    if (!config) return;
+    const root = document.documentElement;
+    root.style.setProperty('--player-primary', config.primaryColor || '#3b82f6');
+    root.style.setProperty('--player-secondary', config.secondaryColor || '#1e293b');
+    root.style.setProperty('--player-font', config.fontFamily || 'Inter, system-ui, sans-serif');
+    root.style.setProperty('--player-skin', config.playerSkin || 'dark');
+    root.style.fontFamily = config.fontFamily || 'Inter, system-ui, sans-serif';
+  }, [config]);
+
+  // 4.8 — Offline detection
+  useEffect(() => {
+    const goOffline = () => setIsOffline(true);
+    const goOnline = () => setIsOffline(false);
+    window.addEventListener('offline', goOffline);
+    window.addEventListener('online', goOnline);
+    return () => {
+      window.removeEventListener('offline', goOffline);
+      window.removeEventListener('online', goOnline);
+    };
+  }, []);
+
+  // 4.8 — Restore cached session on page load if offline
+  useEffect(() => {
+    if (!navigator.onLine) {
+      const cachedConfig = getCachedConfig();
+      const cachedTracksList = getCachedTracks();
+      const token = localStorage.getItem('auth_token');
+      if (token && cachedConfig) {
+        setConfig(cachedConfig);
+        setTracks(cachedTracksList);
+        setIsAuthenticated(true);
+      }
+    }
+  }, []);
+
   if (!isAuthenticated) {
+    const loginSkinClass = `skin-${config?.playerSkin || 'dark'}`;
     return (
-      <div className="flex flex-col min-h-screen bg-slate-950 font-sans">
+      <div className={`flex flex-col min-h-screen bg-slate-950 font-sans ${loginSkinClass} player-container`}>
         <Navigation currentView="whitelabel" />
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <div className="bg-slate-900/50 p-8 rounded-xl border border-slate-800 max-w-sm w-full text-center">
@@ -182,9 +273,16 @@ export default function WhiteLabelPlayer() {
   const accentColor = config?.primaryColor || "#2563eb";
   const brandName = config?.appName || "White Label Radio";
 
+  const skinClass = `skin-${config?.playerSkin || 'dark'}`;
+
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950 font-sans text-slate-300">
+    <div className={`flex flex-col min-h-screen bg-slate-950 font-sans text-slate-300 ${skinClass} player-container`}>
       <Navigation currentView="whitelabel" />
+      {isOffline && (
+        <div className="bg-amber-500/20 text-amber-400 text-[10px] uppercase tracking-widest text-center py-2 border-b border-amber-500/30">
+          Offline Mode — playing from cache
+        </div>
+      )}
       <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-2xl mx-auto w-full">
         {/* Branding Canvas */}
         <div className="text-center mb-12">

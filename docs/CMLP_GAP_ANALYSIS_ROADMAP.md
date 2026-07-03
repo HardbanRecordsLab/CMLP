@@ -1,10 +1,12 @@
 # KOMPLEKSOWY RAPORT Z AUDYTU SYSTEMOWEGO (GAP ANALYSIS) ORAZ ROADMAPA ROZWOJU
 
+> **Uwaga:** Ten dokument stanowi archiwalny audyt z czerwca 2026. Dla aktualnego planu budowania zobacz [`CMLP_MASTER_BUILD_PLAN.md`](../CMLP_MASTER_BUILD_PLAN.md) oraz [`SPRINT_BACKLOG.md`](../SPRINT_BACKLOG.md).
+
 ## PROJEKT: Commercial Music Licensing Platform (CMLP) & Hardban Records Lab (HRL)
 
-**Data Audytu:** 14 Czerwca 2026
-**Zatwierdzony przez:** Senior Fullstack AI Builder & System Auditor
-**Docelowi Odbiorcy:** Zarząd, Dział IT, Architekci Systemowi, Inspektor Ochrony Danych (DPO)
+**Data Audytu:** 14 Czerwca 2026  
+**Status Audytu:** ARCHIWALNY — większość zaleceń została włączona do `CMLP_MASTER_BUILD_PLAN.md`  
+**Aktualny Plan:** [`docs/CMLP_MASTER_BUILD_PLAN.md`](../CMLP_MASTER_BUILD_PLAN.md)
 
 ---
 

@@ -5,7 +5,7 @@ interface User {
   uid: string;
   email: string;
   role: string;
-  token: string;
+  accessToken: string;
 }
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,7 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
   }, []);
 
   const handleLogin = (userData: User) => {
-    localStorage.setItem('auth_token', userData.token);
+    localStorage.setItem('auth_token', userData.accessToken);
     localStorage.setItem('auth_user', JSON.stringify(userData));
     setUser(userData);
   };

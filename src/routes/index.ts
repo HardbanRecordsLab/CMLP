@@ -1,0 +1,40 @@
+import { Router } from 'express';
+import healthRoutes from './health.routes.ts';
+import outletRoutes from './outlet.routes.ts';
+import authRoutes from './auth.routes.ts';
+import tracksRoutes from './tracks.routes.ts';
+import playlistsRoutes from './playlists.routes.ts';
+import licensesRoutes from './licenses.routes.ts';
+import paymentsRoutes from './payments.routes.ts';
+import streamingRoutes from './streaming.routes.ts';
+import wordpressRoutes from './wordpress.routes.ts';
+import adminRoutes from './admin.routes.ts';
+import securityRoutes from './security.routes.ts';
+import gdprRoutes from './gdpr.routes.ts';
+import reportsRoutes from './reports.routes.ts';
+import vodRoutes from './vod.routes.ts';
+import notificationsRoutes from './notifications.routes.ts';
+import strategicRoutes from './strategic.routes.ts';
+import webhooksRoutes from './webhooks.routes.ts';
+
+const router = Router();
+
+router.use('/health', healthRoutes);
+router.use('/outlet', outletRoutes);
+router.use('/auth', authRoutes);
+router.use('/tracks', tracksRoutes);
+router.use('/playlists', playlistsRoutes);
+router.use('/licenses', licensesRoutes);
+router.use('/payments', paymentsRoutes);
+router.use('/audio', streamingRoutes);
+router.use('/wordpress', wordpressRoutes);
+router.use('/admin', adminRoutes);
+router.use('/security', securityRoutes);
+router.use('/gdpr', gdprRoutes);
+router.use('/reports', reportsRoutes);
+router.use('/vod', vodRoutes);
+router.use('/notifications', notificationsRoutes);
+router.use('/strategic', strategicRoutes);
+router.use('/webhooks', webhooksRoutes);
+
+export default router;
