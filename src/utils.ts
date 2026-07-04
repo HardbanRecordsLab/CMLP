@@ -4,6 +4,9 @@ export function getApiUrl(path: string): string {
   }
   const baseUrl = import.meta.env.VITE_API_URL;
   if (!baseUrl) {
+    if (typeof window !== 'undefined') {
+      return `https://api.cmlp.hardbanrecordslab.online${path.startsWith('/') ? '' : '/'}${path}`;
+    }
     return path;
   }
   const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
