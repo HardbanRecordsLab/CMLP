@@ -348,8 +348,8 @@ FROM_NAME="CMLP Licensing Platform"
 SENTRY_DSN=https://***@o***.ingest.sentry.io/***
 
 # === VERCEL (Frontend) ===
-VITE_API_URL=https://cmlp.hrl.pl
-VITE_WS_URL=wss://cmlp.hrl.pl
+VITE_API_URL=https://api.cmlp.hardbanrecordslab.online
+VITE_WS_URL=wss://api.cmlp.hardbanrecordslab.online
 VITE_SENTRY_DSN=https://***@o***.ingest.sentry.io/***
 ```
 
@@ -375,7 +375,7 @@ openssl rsa -in private.pem -pubout -out public.pem
 
 | Moduł | Backend API | Frontend (Vercel) | Port | PM2 / Docker | Status |
 |-------|------------|-------------------|:----:|-------------|--------|
-| **CMLP API** | `cmlp.hrl.pl` | `app-cmlp.hardbanrecordslab.online` | 3000 | `cmlp-server` | ✅ ONLINE |
+| **CMLP API** | `api.cmlp.hardbanrecordslab.online` | `cmlp.hardbanrecordslab.online` | 3000 | `cmlp-server` | ✅ ONLINE |
 | **Access Manager** | `hrl-access.hardbanrecordslab.online` | — | 9107 | `access-manager` | ✅ ONLINE |
 | **Metadata Engine** | `metadata.hardbanrecordslab.online` | `app-metadata.hardbanrecordslab.online` | 8888 | Docker | ✅ ONLINE |
 | **WordPress** | `hardbanrecordslab.online` | `hardbanrecordslab.online` | 80/443 | Docker | ✅ ONLINE |
@@ -393,11 +393,11 @@ openssl rsa -in private.pem -pubout -out public.pem
 
 | Subdomain | Record Type | Target | TTL | Purpose |
 |-----------|-------------|--------|:---:|---------|
-| `cmlp.hrl.pl` | A | `84.247.162.167` | 300 | Backend API CMLP |
-| `app-cmlp.hardbanrecordslab.online` | CNAME | `cmlp.vercel.app` | 300 | Frontend CMLP |
+| `api.cmlp.hardbanrecordslab.online` | A | `84.247.162.167` | 300 | Backend API CMLP |
+| `cmlp.hardbanrecordslab.online` | CNAME | `cmlp.vercel.app` | 300 | Frontend CMLP |
 | `cdn.hrl.pl` | CNAME | `cmlp-dist.cloudflare.net` | 300 | CDN dla mediów |
 | `hardbanrecordslab.online` | A | `84.247.162.167` | 300 | WordPress |
-| `api.hrl.pl` | A | `84.247.162.167` | 300 | API Gateway |
+| `cmlp.hardbanrecordslab.online` | A | `84.247.162.167` | 300 | API Gateway |
 
 ### 3.3 Porty Wewnętrzne
 
@@ -1267,8 +1267,8 @@ is_public: false
 ```json
 {
   "licenseId": "uuid",
-  "successUrl": "https://app-cmlp.hardbanrecordslab.online/payment/success",
-  "cancelUrl": "https://app-cmlp.hardbanrecordslab.online/payment/cancelled"
+  "successUrl": "https://cmlp.hardbanrecordslab.online/payment/success",
+  "cancelUrl": "https://cmlp.hardbanrecordslab.online/payment/cancelled"
 }
 ```
 
@@ -1289,7 +1289,7 @@ is_public: false
   "data": {
     "token": "eyJhbGciOiJIUzI1NiIs...",
     "expiresIn": 3600,
-    "url": "https://cmlp.hrl.pl/api/audio/song.mp3?token=eyJhbGciOiJIUzI1NiIs..."
+    "url": "https://api.cmlp.hardbanrecordslab.online/api/audio/song.mp3?token=eyJhbGciOiJIUzI1NiIs..."
   }
 }
 ```
@@ -1903,7 +1903,7 @@ White-Label Player to w pełni konfigurowalny odtwarzacz audio, który można os
 **Osadzenie playera (iframe):**
 ```html
 <iframe 
-  src="https://app-cmlp.hardbanrecordslab.online/player?token=PLAYER_TOKEN" 
+   src="https://cmlp.hardbanrecordslab.online/player?token=PLAYER_TOKEN" 
   width="100%" 
   height="120" 
   frameborder="0"
@@ -2356,7 +2356,7 @@ Platforma CMLP jest deployowana w architekturze hybrydowej: frontend na Vercel (
 │  - React SPA (Vite build)                                   │
 │  - Auto-deploy z GitHub (main branch)                       │
 │  - Free tier: 100GB bandwidth, 100 deployments/day          │
-│  - Custom domain: app-cmlp.hardbanrecordslab.online         │
+│  - Custom domain: cmlp.hardbanrecordslab.online         │
 └─────────────────────────────────────────────────────────────┘
                               │
                               │ API calls (HTTPS)

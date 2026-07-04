@@ -117,20 +117,20 @@ docker compose -f infrastructure/docker/docker-compose.yml up -d --build
 docker compose -f infrastructure/docker/docker-compose.yml logs -f cmlp-app
 ```
 
-Use `infrastructure/nginx/api-only.conf` when the VPS is used only as `api.hrl.pl`. Bind DNS `api.hrl.pl` to the VPS IP and let Vercel host the frontend domain.
+Use `infrastructure/nginx/api-only.conf` when the VPS is used only as `api.cmlp.hardbanrecordslab.online`. Bind DNS `api.cmlp.hardbanrecordslab.online` to the VPS IP and let Vercel host the frontend domain.
 
 ### Frontend Vercel Commands
 
 ```bash
 vercel link
-vercel env add VITE_API_URL production https://api.hrl.pl
+vercel env add VITE_API_URL production https://api.cmlp.hardbanrecordslab.online
 vercel --prod
 ```
 
 Required Vercel environment variable:
 
 ```env
-VITE_API_URL=https://api.hrl.pl
+VITE_API_URL=https://api.cmlp.hardbanrecordslab.online
 ```
 
 `src/utils.ts` uses `VITE_API_URL` to build API and WebSocket URLs for the Vite frontend.

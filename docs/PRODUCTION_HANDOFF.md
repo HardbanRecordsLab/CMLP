@@ -11,16 +11,16 @@ Before launching, bind your DNS configurations to point to the secure reverse pr
 
 | Subdomain Address | Record Type | Host / Point To | TTL (Seconds) | Routing Class / Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| `cmlp.hrl.pl` | `A` | `198.51.100.80` (Primary VPS Public IP) | `300` | User Web Client interface & API core |
+| `api.cmlp.hardbanrecordslab.online` | `A` | `198.51.100.80` (Primary VPS Public IP) | `300` | User Web Client interface & API core |
 | `demo.hrl.pl` | `A` | `198.51.100.80` (Demo Sandbox host) | `3600` | Automated API mocks and demo pages |
-| `cmlp.hrl.pl` | `AAAA` | `2001:db8::80` (Primary IPv6 Target) | `300` | Modern IPv6 device ingress routing |
+| `api.cmlp.hardbanrecordslab.online` | `AAAA` | `2001:db8::80` (Primary IPv6 Target) | `300` | Modern IPv6 device ingress routing |
 | `cdn.hrl.pl` | `CNAME` | `cmlp-dist.cloudflare.net` | `300` | Cloudflare caching edge wrapper |
 
 ### Verification Command (CLI):
 ```bash
 # Verify DNS updates propagated successfully across DNS indices
-dig +short A cmlp.hrl.pl
-nslookup cmlp.hrl.pl 8.8.8.8
+dig +short A api.cmlp.hardbanrecordslab.online
+nslookup api.cmlp.hardbanrecordslab.online 8.8.8.8
 ```
 
 ---
@@ -35,7 +35,7 @@ Our Nginx setup uses Let's Encrypt certificates. To avoid expiring, automated re
 sudo apt update && sudo apt install -y certbot python3-certbot-nginx
 
 # Obtain certificates for our live endpoints using the Nginx hook desafortunadamente
-sudo certbot --nginx -d cmlp.hrl.pl -m admin@hrl.pl --agree-tos --no-eff-email
+sudo certbot --nginx -d api.cmlp.hardbanrecordslab.online -d cmlp.hardbanrecordslab.online -m admin@hrl.pl --agree-tos --no-eff-email
 ```
 
 ### Automatic Scheduled Renewals setup (systemd Timer):
@@ -124,7 +124,7 @@ Administrators manage system configurations via the integrated **System Admin St
 
 ### Security Code Checklist for Onboarding Admins:
 1. Generate secure credentials on system launch.
-2. Force immediate Multi-Factor Activation: On first entry, target user is redirected to `http://cmlp.hrl.pl/admin/mfa-setup` to configure TOTP secrets.
+2. Force immediate Multi-Factor Activation: On first entry, target user is redirected to `https://cmlp.hardbanrecordslab.online/admin/mfa-setup` to configure TOTP secrets.
 3. Restrict administrative logins strictly from internal enterprise IP subnets using Nginx block matrices.
 
 ---

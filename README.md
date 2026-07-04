@@ -235,7 +235,7 @@ npm run server:prod
 ### Vercel Frontend
 
 ```bash
-vercel env add VITE_API_URL production https://api.hrl.pl
+vercel env add VITE_API_URL production https://api.cmlp.hardbanrecordslab.online
 vercel --prod
 ```
 
