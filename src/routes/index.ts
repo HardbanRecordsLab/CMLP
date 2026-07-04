@@ -16,9 +16,11 @@ import vodRoutes from './vod.routes.ts';
 import notificationsRoutes from './notifications.routes.ts';
 import strategicRoutes from './strategic.routes.ts';
 import webhooksRoutes from './webhooks.routes.ts';
+import * as wordpressController from '../controllers/wordpress.controller.ts';
 
 const router = Router();
 
+router.get('/player/:clientId', wordpressController.getPlayer);
 router.use('/health', healthRoutes);
 router.use('/outlet', outletRoutes);
 router.use('/auth', authRoutes);

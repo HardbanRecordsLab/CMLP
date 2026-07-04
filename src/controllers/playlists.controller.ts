@@ -3,6 +3,7 @@ import { eq, and } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { playlists, playlist_tracks, tracks } from '../db/schema.ts';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { cachePlaylist, getCachedPlaylist, clearCache } from '../lib/redis.ts';
 
 export async function getAll(req: any, res: Response) {
   try {
@@ -13,9 +14,18 @@ export async function getAll(req: any, res: Response) {
   }
 }
 
+export async function getPublic(req: Request, res: Response) {
+  try {
+    const allPlaylists = await db.select().from(playlists).where(eq(playlists.isPublic, true));
+    res.json(allPlaylists);
+  } catch (e) {
+    res.status(500).json({ error: 'Database error' });
+  }
+}
+
 export async function create(req: any, res: Response) {
   try {
-    const { title, description, isPublic } = req.body;
+    const { title, description, isPublic, companyId } = req.body;
     const authorUid = req.user?.uid;
     if (!authorUid) { res.status(401).json({ error: 'Unauthorized' }); return; }
 
@@ -24,6 +34,7 @@ export async function create(req: any, res: Response) {
       description: description || '',
       isPublic: !!isPublic,
       authorUid,
+      companyId: companyId || 1,
     }).returning()) as unknown as any[];
 
     res.status(201).json(newPlaylist);
@@ -35,6 +46,13 @@ export async function create(req: any, res: Response) {
 export async function getById(req: any, res: Response) {
   try {
     const id = parseInt(req.params.id, 10);
+
+    const cached = await getCachedPlaylist(String(id));
+    if (cached) {
+      res.json(cached);
+      return;
+    }
+
     const [playlist] = await db.select().from(playlists).where(eq(playlists.id, id));
     if (!playlist) { res.status(404).json({ error: 'Playlist not found' }); return; }
 
@@ -47,7 +65,9 @@ export async function getById(req: any, res: Response) {
     .where(eq(playlist_tracks.playlistId, id))
       .orderBy(playlist_tracks.sequence);
 
-    res.json({ ...playlist, tracks: pTracks.map(pt => ({ ...pt.track, sequence: pt.sequence })) });
+    const result = { ...playlist, tracks: pTracks.map(pt => ({ ...pt.track, sequence: pt.sequence })) };
+    await cachePlaylist(String(id), result);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }
@@ -61,6 +81,7 @@ export async function update(req: any, res: Response) {
       title, description, isPublic,
     }).where(eq(playlists.id, id)).returning();
     if (!updated) { res.status(404).json({ error: 'Playlist not found' }); return; }
+    await clearCache(`playlist:${id}`);
     res.json(updated);
   } catch (e) {
     res.status(500).json({ error: 'Failed to update playlist' });
@@ -73,6 +94,7 @@ export async function remove(req: any, res: Response) {
     await db.delete(playlist_tracks).where(eq(playlist_tracks.playlistId, id));
     const [deleted] = (await db.delete(playlists).where(eq(playlists.id, id)).returning()) as unknown as any[];
     if (!deleted) { res.status(404).json({ error: 'Playlist not found' }); return; }
+    await clearCache(`playlist:${id}`);
     res.json({ message: 'Deleted successfully' });
   } catch (e) {
     res.status(500).json({ error: 'Failed to delete playlist' });

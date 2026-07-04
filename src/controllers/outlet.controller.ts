@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { eq, desc } from 'drizzle-orm';
+import bcrypt from 'bcryptjs';
+import { eq, desc, isNotNull } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { users, companies, locations, usage_logs } from '../db/schema.ts';
 import { signToken, signRefreshToken } from '../lib/jwt.ts';
@@ -11,12 +12,23 @@ export async function login(req: Request, res: Response) {
     const { pin } = req.body;
     if (!pin) { res.status(400).json({ error: 'PIN required' }); return; }
 
-    const matchedUsers = await db.select().from(users).where(eq(users.pin, pin));
-    if (matchedUsers.length === 0) {
-      res.status(401).json({ error: 'Invalid PIN' }); return;
+    const allUsers = await db.select().from(users).where(isNotNull(users.pin));
+    let user = null as typeof allUsers[0] | null;
+
+    for (const candidate of allUsers) {
+      if (!candidate.pin) continue;
+      const pinMatch =
+        candidate.pin === pin ||
+        (candidate.pin.startsWith('$2') && await bcrypt.compare(pin, candidate.pin));
+      if (pinMatch) {
+        user = candidate;
+        break;
+      }
     }
 
-    const user = matchedUsers[0];
+    if (!user) {
+      res.status(401).json({ error: 'Invalid PIN' }); return;
+    }
     await logAuditEvent({
       userId: String(user.id),
       action: 'user_login',

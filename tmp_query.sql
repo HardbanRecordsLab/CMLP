@@ -1,1 +1,1 @@
-SELECT ID, post_title, post_name, post_type, post_status FROM wp_posts WHERE post_type IN ('page','post') AND post_status='publish' ORDER BY post_type, ID;
+SELECT option_name, option_value FROM wp_options WHERE option_name LIKE 'whl_%' OR option_name LIKE '%sso%' OR option_name = 'siteurl' OR option_name = 'home';

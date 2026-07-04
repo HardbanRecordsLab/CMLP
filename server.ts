@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { createServer as createViteServer } from 'vite';
 import { createRateLimiter, blockedIps } from './src/middleware/rateLimiter.ts';
 import { errorHandler } from './src/middleware/errorHandler.ts';

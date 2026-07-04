@@ -1,10 +1,22 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { signToken, signRefreshToken, refreshAccessToken } from '../lib/jwt.ts';
 import { db } from '../db/index.ts';
 import { users } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { logAuditEvent } from '../services/logging.service.ts';
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+function authCookieOptions(maxAge: number) {
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'lax' as const,
+    ...(isProduction ? { domain: '.hardbanrecordslab.online' } : {}),
+    maxAge,
+  };
+}
 
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -38,21 +50,8 @@ export async function login(req: Request, res: Response) {
       role: user.role,
     });
 
-    res.cookie('hrl_cmlp_jwt', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      domain: '.hardbanrecordslab.online',
-      maxAge: 15 * 60 * 1000
-    });
-
-    res.cookie('hrl_cmlp_refresh', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      domain: '.hardbanrecordslab.online',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('hrl_cmlp_jwt', accessToken, authCookieOptions(15 * 60 * 1000));
+    res.cookie('hrl_cmlp_refresh', refreshToken, authCookieOptions(7 * 24 * 60 * 60 * 1000));
 
     res.json({
       uid: user.uid,
@@ -102,21 +101,8 @@ export async function register(req: Request, res: Response) {
       role: 'user'
     });
 
-    res.cookie('hrl_cmlp_jwt', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      domain: '.hardbanrecordslab.online',
-      maxAge: 15 * 60 * 1000
-    });
-
-    res.cookie('hrl_cmlp_refresh', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      domain: '.hardbanrecordslab.online',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('hrl_cmlp_jwt', accessToken, authCookieOptions(15 * 60 * 1000));
+    res.cookie('hrl_cmlp_refresh', refreshToken, authCookieOptions(7 * 24 * 60 * 60 * 1000));
 
     res.status(201).json({
       uid,
@@ -143,21 +129,8 @@ export async function refresh(req: Request, res: Response) {
     return res.status(401).json({ error: 'Invalid or expired refresh token' });
   }
 
-  res.cookie('hrl_cmlp_jwt', tokens.accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    domain: '.hardbanrecordslab.online',
-    maxAge: 15 * 60 * 1000
-  });
-
-  res.cookie('hrl_cmlp_refresh', tokens.refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    domain: '.hardbanrecordslab.online',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  });
+  res.cookie('hrl_cmlp_jwt', tokens.accessToken, authCookieOptions(15 * 60 * 1000));
+  res.cookie('hrl_cmlp_refresh', tokens.refreshToken, authCookieOptions(7 * 24 * 60 * 60 * 1000));
 
   res.json(tokens);
 }

@@ -5,6 +5,7 @@ import * as playlistsController from '../controllers/playlists.controller.ts';
 const router = Router();
 
 router.get('/', requireAuth, playlistsController.getAll);
+router.get('/public', playlistsController.getPublic);
 router.post('/', requireAuth, playlistsController.create);
 router.get('/:id', requireAuth, playlistsController.getById);
 router.put('/:id', requireAuth, playlistsController.update);

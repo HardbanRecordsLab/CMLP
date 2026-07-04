@@ -4,7 +4,10 @@ import { db } from '../db/index.ts';
 import { tracks, track_tags } from '../db/schema.ts';
 import * as mm from 'music-metadata';
 import fs from 'fs';
+import path from 'path';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { transcodeToHLS } from '../services/transcoding.service.ts';
+import { clearCache } from '../lib/redis.ts';
 
 export async function getAll(req: any, res: Response) {
   try {
@@ -51,7 +54,22 @@ export async function create(req: any, res: Response) {
       bpm,
       genre: genre.join(','),
       mood: Array.isArray(mood) ? mood.join(',') : mood,
+      format: path.extname(req.file.filename).replace('.', '') || 'unknown',
+      fileSize: req.file.size,
     }).returning()) as unknown as any[];
+
+    const hlsDir = path.join(process.cwd(), 'media_files', 'hls', String(newTrack.id));
+    try {
+      const transcoded = await transcodeToHLS(filePath, hlsDir, req.file.filename.replace(/\.[^.]+$/, ''));
+      await db.update(tracks).set({
+        storagePath: transcoded.mp3Path,
+        metadata: { hlsManifest: transcoded.m3u8Path, segments: transcoded.segmentPaths.length },
+      }).where(eq(tracks.id, newTrack.id));
+    } catch (transcodeErr) {
+      console.error('[Transcode] Failed for track', newTrack.id, transcodeErr);
+    }
+
+    await clearCache('track_meta:*');
 
     await logAuditEvent({
       userId: req.user?.uid || 'admin',

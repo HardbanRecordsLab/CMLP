@@ -255,6 +255,22 @@ CREATE TABLE IF NOT EXISTS wordpress_sync_logs (
     sync_time TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
+-- Track tags table (AI-generated tags)
+CREATE TABLE IF NOT EXISTS track_tags (
+    id SERIAL PRIMARY KEY,
+    track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE,
+    bpm INTEGER,
+    key TEXT,
+    energy INTEGER,
+    danceability INTEGER,
+    valence INTEGER,
+    mood JSONB,
+    vibe_description TEXT,
+    tags JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Notification settings
 CREATE TABLE IF NOT EXISTS notification_settings (
     id SERIAL PRIMARY KEY,

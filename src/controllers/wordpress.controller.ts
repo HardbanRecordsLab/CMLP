@@ -6,6 +6,9 @@ import {
   runBidirectionalSync,
   handleWordPressWebhook,
 } from '../lib/wordpress.ts';
+import { db } from '../db/index.ts';
+import { users } from '../db/schema.ts';
+import { eq } from 'drizzle-orm';
 
 export async function getSettings(req: Request, res: Response) {
   try {
@@ -61,5 +64,35 @@ export async function webhook(req: Request, res: Response) {
     res.json(status);
   } catch (e) {
     res.status(500).json({ error: 'Failed to process WordPress content webhook event' });
+  }
+}
+
+export async function getPlayer(req: Request, res: Response) {
+  try {
+    const { clientId } = req.params;
+    const skin = (req.query.skin as string) || 'dark';
+    const autoplay = req.query.autoplay === 'true';
+
+    const user = await db.select().from(users).where(eq(users.uid, clientId));
+    if (user.length === 0) {
+      res.status(404).json({ error: 'Client not found' });
+      return;
+    }
+
+    const branding = {
+      primaryColor: user[0].primaryColor || '#3b82f6',
+      secondaryColor: user[0].secondaryColor || '#1e293b',
+      logoUrl: user[0].logoUrl || '',
+      fontFamily: user[0].fontFamily || 'Inter, system-ui, sans-serif',
+      playerSkin: (user[0].playerSkin as string) || skin,
+      welcomeMessage: user[0].welcomeMessage || '',
+      outletName: user[0].outletName || user[0].name || 'Player',
+      customCSS: user[0].customCSS || '',
+    };
+
+    res.json({ clientId, branding, autoplay });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to load player configuration' });
   }
 }
