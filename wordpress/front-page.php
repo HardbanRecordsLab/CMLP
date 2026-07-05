@@ -21,8 +21,8 @@ get_header();
             <?php esc_html_e( 'Pierwsza w Polsce platforma B2B oferująca w pełni autorską, licencjonowaną muzykę tła dla gastronomii, retailu, wellness i korporacji — z całkowitym wyłączeniem opłat OZZ (ZAiKS, STOART, ZPAV, SAWP). Stream Premium Audio, Certyfikaty Wolności, White-Label Players.', 'hrl-theme' ); ?>
         </p>
         <div class="hero-actions">
-            <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Platforma CMLP', 'hrl-theme' ); ?></a>
-            <a href="<?php echo esc_url( home_url( '/academy/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'HRL Academy', 'hrl-theme' ); ?></a>
+<a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Platforma CMLP', 'hrl-theme' ); ?></a>
+             <a href="<?php echo esc_url( home_url( '/academy/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'HRL Academy', 'hrl-theme' ); ?></a>
         </div>
     </div>
 </section>
@@ -41,21 +41,21 @@ get_header();
                 <div class="product-card-icon">🎵</div>
                 <h3><?php esc_html_e( 'Streaming Premium Audio', 'hrl-theme' ); ?></h3>
                 <p><?php esc_html_e( 'Bezstratna jakość dźwięku, dynamiczne playlisty dopasowane do profilu Twojego lokalu. Kawiarnia, siłownia, butik — każdy ma własny odtwarzacz.', 'hrl-theme' ); ?></p>
-                <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Poznaj CMLP →', 'hrl-theme' ); ?></a>
+                <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-outline"><?php esc_html_e( 'Poznaj CMLP →', 'hrl-theme' ); ?></a>
             </div>
 
             <div class="product-card">
                 <div class="product-card-icon">🛡️</div>
                 <h3><?php esc_html_e( 'Certyfikat Wolności', 'hrl-theme' ); ?></h3>
                 <p><?php esc_html_e( 'Automatycznie generowany certyfikat z kodem QR potwierdzający legalne źródło muzyki. Koniec z mandatami i kontrolami OZZ.', 'hrl-theme' ); ?></p>
-                <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Sprawdź →', 'hrl-theme' ); ?></a>
+                <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-outline"><?php esc_html_e( 'Sprawdź →', 'hrl-theme' ); ?></a>
             </div>
 
             <div class="product-card">
                 <div class="product-card-icon">🏢</div>
                 <h3><?php esc_html_e( 'White-Label Player', 'hrl-theme' ); ?></h3>
                 <p><?php esc_html_e( 'Dedykowany odtwarzacz z Twoim logo i brandem. Własna subdomena, PIN dostępu, integracja przez API. Dla sieci franczyzowych.', 'hrl-theme' ); ?></p>
-                <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Więcej →', 'hrl-theme' ); ?></a>
+                <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-outline"><?php esc_html_e( 'Więcej →', 'hrl-theme' ); ?></a>
             </div>
         </div>
     </div>
