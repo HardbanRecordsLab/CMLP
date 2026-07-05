@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getApiUrl } from '../utils';
 
 interface User {
   uid: string;
@@ -23,7 +24,8 @@ export default function Login({ onLogin }: { onLogin: (user: User) => void }) {
     
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
-      const response = await fetch(endpoint, {
+      const apiUrl = getApiUrl(endpoint);
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

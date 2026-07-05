@@ -2,7 +2,7 @@
 /**
  * Template Name: CMLP Sync Hub
  * Statyczny lejek marketingowy dla Commercial Music Licensing Platform.
- * Wersja produkcyjna: przekierowuje do app.hrl-sync-hub.hardbanrecordslab.online
+ * Wersja produkcyjna: przekierowuje do cmlp.hardbanrecordslab.online
  *
  * @package HRL_Theme
  * @version 3.0.0
@@ -124,7 +124,7 @@ get_header();
             </div>
         </div>
         <div style="text-align:center;margin-top:32px;">
-            <a href="https://app.hrl-sync-hub.hardbanrecordslab.online" class="btn btn-primary" target="_blank" rel="noopener"><?php esc_html_e( 'Rozpocznij →', 'hrl-theme' ); ?></a>
+            <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary" target="_blank" rel="noopener"><?php esc_html_e( 'Rozpocznij →', 'hrl-theme' ); ?></a>
         </div>
     </div>
 </section>
