@@ -6,7 +6,7 @@ import * as mm from 'music-metadata';
 import fs from 'fs';
 import path from 'path';
 import { logAuditEvent } from '../services/logging.service.ts';
-import { transcodeToHLS } from '../services/transcoding.service.ts';
+import { enqueueTranscodeJob } from '../services/transcoding-queue.service.ts';
 import { clearCache } from '../lib/redis.ts';
 
 export async function getAll(req: any, res: Response) {
@@ -60,13 +60,16 @@ export async function create(req: any, res: Response) {
 
     const hlsDir = path.join(process.cwd(), 'media_files', 'hls', String(newTrack.id));
     try {
-      const transcoded = await transcodeToHLS(filePath, hlsDir, req.file.filename.replace(/\.[^.]+$/, ''));
+      await enqueueTranscodeJob({
+        trackId: newTrack.id,
+        inputPath: filePath,
+        filename: req.file.filename,
+      });
       await db.update(tracks).set({
-        storagePath: transcoded.mp3Path,
-        metadata: { hlsManifest: transcoded.m3u8Path, segments: transcoded.segmentPaths.length },
+        metadata: { transcodeStatus: 'queued', hlsDir },
       }).where(eq(tracks.id, newTrack.id));
     } catch (transcodeErr) {
-      console.error('[Transcode] Failed for track', newTrack.id, transcodeErr);
+      console.error('[Transcode] Failed to enqueue for track', newTrack.id, transcodeErr);
     }
 
     await clearCache('track_meta:*');
@@ -171,5 +174,25 @@ export async function generateTrackTags(req: any, res: Response) {
   } catch (e: any) {
     console.error(e);
     res.status(500).json({ error: 'Failed to generate track tags' });
+  }
+}
+
+export async function remove(req: any, res: Response) {
+  try {
+    const { id } = req.params;
+    const track = await db.select().from(tracks).where(eq(tracks.id, id)).limit(1);
+    if (!track.length) {
+      return res.status(404).json({ error: 'Track not found' });
+    }
+    const t = track[0];
+    if (t.filename) {
+      const filePath = path.join(process.cwd(), 'media_files', t.filename);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    }
+    await db.delete(tracks).where(eq(tracks.id, id));
+    await clearCache('tracks:*');
+    res.status(204).send();
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to delete track' });
   }
 }

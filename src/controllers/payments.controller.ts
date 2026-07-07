@@ -6,6 +6,7 @@ import { payments, licenses, users } from '../db/schema.ts';
 import { verifyStripeWebhook } from '../lib/stripe.ts';
 import Stripe from 'stripe';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
 
 export async function getAll(req: any, res: Response) {
   try {
@@ -135,6 +136,14 @@ export async function simulateSuccess(req: Request, res: Response) {
         pmproLevel: 2,
       }).where(eq(users.id, userRecord.id));
     }
+
+    emitWebhookEvent(payment.userId, 'payment.completed', {
+      id: payment.id,
+      amount: payment.amount,
+      currency: payment.currency,
+      gatewayTransactionId: txId,
+      licenseId: payment.licenseId,
+    }).catch((err) => console.error('[Webhook] payment.completed emit failed:', err));
 
     res.send(`
       <html>
@@ -271,6 +280,16 @@ export async function webhook(req: any, res: Response) {
           details: `Payment ${txId} status updated to ${status} via ${gateway} webhook`,
           ipAddress: req.ip,
         });
+
+        if (status === 'completed') {
+          emitWebhookEvent(existing.userId, 'payment.completed', {
+            id: existing.id,
+            amount: existing.amount,
+            currency: existing.currency,
+            gatewayTransactionId: txId,
+            licenseId: existing.licenseId,
+          }).catch((err) => console.error('[Webhook] payment.completed emit failed:', err));
+        }
       }
     }
 

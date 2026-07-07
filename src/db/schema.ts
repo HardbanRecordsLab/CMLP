@@ -273,3 +273,53 @@ export const track_tags = pgTable('track_tags', {
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
+
+export const custom_orders = pgTable('custom_orders', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id, { onDelete: 'set null' }),
+  title: text('title').notNull(),
+  description: text('description'),
+  budget: integer('budget'),
+  status: text('status').default('pending').notNull(),
+  deadline: timestamp('deadline'),
+  metadata: jsonb('metadata'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const api_keys = pgTable('api_keys', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  name: text('name').notNull(),
+  keyHash: text('key_hash').notNull(),
+  keyPrefix: text('key_prefix').notNull(),
+  scopes: jsonb('scopes'),
+  lastUsedAt: timestamp('last_used_at'),
+  expiresAt: timestamp('expires_at'),
+  isActive: boolean('is_active').default(true).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const webhooks = pgTable('webhooks', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  url: text('url').notNull(),
+  events: jsonb('events').notNull(),
+  secret: text('secret').notNull(),
+  isActive: boolean('is_active').default(true).notNull(),
+  failureCount: integer('failure_count').default(0).notNull(),
+  lastTriggeredAt: timestamp('last_triggered_at'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const webhook_deliveries = pgTable('webhook_deliveries', {
+  id: serial('id').primaryKey(),
+  webhookId: integer('webhook_id').references(() => webhooks.id, { onDelete: 'cascade' }).notNull(),
+  event: text('event').notNull(),
+  payload: jsonb('payload').notNull(),
+  status: text('status').default('pending').notNull(),
+  attempts: integer('attempts').default(0).notNull(),
+  nextRetryAt: timestamp('next_retry_at'),
+  responseCode: integer('response_code'),
+  createdAt: timestamp('created_at').defaultNow(),
+});

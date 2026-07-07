@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.ts';
-import { licenses, contracts } from '../db/schema.ts';
+import { licenses, contracts, users } from '../db/schema.ts';
 import crypto from 'crypto';
 import PDFDocument from 'pdfkit';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
 
 export async function getAll(req: any, res: Response) {
   try {
@@ -65,6 +66,15 @@ Signed dynamically on behalf of Hardban Records Lab.`;
       contractText,
       signed: false,
     });
+
+    const [authorUser] = await db.select().from(users).where(eq(users.uid, authorUid));
+    emitWebhookEvent(authorUser?.id ?? null, 'license.created', {
+      id: newLicense.id,
+      companyName,
+      licenseType,
+      certificateNumber,
+      expiresAt: expiresAt.toISOString(),
+    }).catch((err) => console.error('[Webhook] license.created emit failed:', err));
 
     res.status(201).json(newLicense);
   } catch (e: any) {

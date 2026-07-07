@@ -16,9 +16,15 @@ import vodRoutes from './vod.routes.ts';
 import notificationsRoutes from './notifications.routes.ts';
 import strategicRoutes from './strategic.routes.ts';
 import webhooksRoutes from './webhooks.routes.ts';
+import customOrdersRoutes from './custom-orders.routes.ts';
+import apiKeysRoutes from './api-keys.routes.ts';
+import webhookManagerRoutes from './webhook-manager.routes.ts';
+import { apiKeyAuth } from '../middleware/apiKeyAuth.ts';
 import * as wordpressController from '../controllers/wordpress.controller.ts';
 
 const router = Router();
+
+router.use(apiKeyAuth);
 
 router.get('/player/:clientId', wordpressController.getPlayer);
 router.use('/health', healthRoutes);
@@ -38,5 +44,8 @@ router.use('/vod', vodRoutes);
 router.use('/notifications', notificationsRoutes);
 router.use('/strategic', strategicRoutes);
 router.use('/webhooks', webhooksRoutes);
+router.use('/custom-orders', customOrdersRoutes);
+router.use('/api-keys', apiKeysRoutes);
+router.use('/webhook-manager', webhookManagerRoutes);
 
 export default router;

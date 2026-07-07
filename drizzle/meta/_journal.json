@@ -8,6 +8,13 @@
       "when": 1781882528775,
       "tag": "0000_wet_mauler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1783356855202,
+      "tag": "0001_cooing_the_fury",
+      "breakpoints": true
     }
   ]
 }

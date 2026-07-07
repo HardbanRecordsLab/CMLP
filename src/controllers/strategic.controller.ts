@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { WaveformCacheService } from '../lib/waveformCache.ts';
 import { LicensingPredictiveService } from '../lib/licensingPredictive.ts';
 import { VaultSignatureService } from '../lib/vaultSignature.ts';
+import { VaultUnavailableError } from '../lib/vault.ts';
 
 export async function getWaveform(req: Request, res: Response) {
   try {
@@ -54,6 +55,14 @@ export async function signCertificate(req: Request, res: Response) {
       engineUsed: signature.startsWith('vault:v1:') ? 'HashiCorp Vault Transit Engine' : 'HRL Local Cryptographic Fallback Engine (HMAC-SHA256)',
     });
   } catch (e: any) {
+    if (e instanceof VaultUnavailableError) {
+      res.status(503).json({
+        error: 'VaultUnavailableError',
+        message: e.message,
+        statusCode: 503,
+      });
+      return;
+    }
     res.status(500).json({ error: e.message || 'Failed to generate HashiCorp Vault cryptographic seal' });
   }
 }

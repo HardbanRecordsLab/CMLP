@@ -27,27 +27,23 @@ export async function streamFile(req: Request, res: Response) {
   const { filename } = req.params;
   const { hrl_token, uid } = req.query;
 
-  if (process.env.NODE_ENV !== "production" && hrl_token === "mock_hrl_token") {
-    // Bypass for dev
-  } else {
-    if (!hrl_token || typeof hrl_token !== 'string' || !uid) {
-      res.status(401).send("Unauthorized"); return;
-    }
-    const [expStr, signature] = hrl_token.split('.');
-    const expiresAt = parseInt(expStr, 10);
+  if (!hrl_token || typeof hrl_token !== 'string' || !uid) {
+    res.status(401).send("Unauthorized"); return;
+  }
+  const [expStr, signature] = hrl_token.split('.');
+  const expiresAt = parseInt(expStr, 10);
 
-    if (Date.now() > expiresAt) {
-      res.status(403).send("Token Expired"); return;
-    }
+  if (Date.now() > expiresAt) {
+    res.status(403).send("Token Expired"); return;
+  }
 
-    const dataToSign = `${filename}:${uid}:${expiresAt}`;
-    const hmac = crypto.createHmac('sha256', process.env.HMAC_SECRET || '');
-    hmac.update(dataToSign);
-    const expectedSignature = hmac.digest('hex');
+  const dataToSign = `${filename}:${uid}:${expiresAt}`;
+  const hmac = crypto.createHmac('sha256', process.env.HMAC_SECRET || '');
+  hmac.update(dataToSign);
+  const expectedSignature = hmac.digest('hex');
 
-    if (signature !== expectedSignature && hrl_token !== 'mock_hrl_token') {
-       res.status(403).send("Forbidden - Invalid Signature"); return;
-    }
+  if (signature !== expectedSignature) {
+     res.status(403).send("Forbidden - Invalid Signature"); return;
   }
 
   const filePath = path.join(process.cwd(), 'media_files', filename);

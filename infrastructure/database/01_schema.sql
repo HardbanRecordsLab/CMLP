@@ -324,3 +324,68 @@ ON CONFLICT (email) DO UPDATE SET role = EXCLUDED.role;
 INSERT INTO wordpress_settings (wp_url, app_username, app_password, bidirectional)
 VALUES ('https://demo.hrl.pl/wp-json', 'admin', '', true)
 ON CONFLICT DO NOTHING;
+
+-- Custom music orders
+CREATE TABLE IF NOT EXISTS custom_orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    title TEXT NOT NULL,
+    description TEXT,
+    budget INTEGER,
+    status TEXT DEFAULT 'pending' NOT NULL,
+    deadline TIMESTAMP,
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_custom_orders_user_id ON custom_orders(user_id);
+CREATE INDEX IF NOT EXISTS idx_custom_orders_status ON custom_orders(status);
+
+-- API keys (hashed, never store plain key)
+CREATE TABLE IF NOT EXISTS api_keys (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    name TEXT NOT NULL,
+    key_hash TEXT NOT NULL,
+    key_prefix TEXT NOT NULL,
+    scopes JSONB,
+    last_used_at TIMESTAMP,
+    expires_at TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
+CREATE INDEX IF NOT EXISTS idx_api_keys_key_prefix ON api_keys(key_prefix);
+
+-- Outbound webhooks manager
+CREATE TABLE IF NOT EXISTS webhooks (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    url TEXT NOT NULL,
+    events JSONB NOT NULL,
+    secret TEXT NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE NOT NULL,
+    failure_count INTEGER DEFAULT 0 NOT NULL,
+    last_triggered_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_webhooks_user_id ON webhooks(user_id);
+
+-- Webhook delivery retry tracking
+CREATE TABLE IF NOT EXISTS webhook_deliveries (
+    id SERIAL PRIMARY KEY,
+    webhook_id INTEGER REFERENCES webhooks(id) ON DELETE CASCADE NOT NULL,
+    event TEXT NOT NULL,
+    payload JSONB NOT NULL,
+    status TEXT DEFAULT 'pending' NOT NULL,
+    attempts INTEGER DEFAULT 0 NOT NULL,
+    next_retry_at TIMESTAMP,
+    response_code INTEGER,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_webhook_deliveries_webhook_id ON webhook_deliveries(webhook_id);
+CREATE INDEX IF NOT EXISTS idx_webhook_deliveries_status ON webhook_deliveries(status);
