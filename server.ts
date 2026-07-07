@@ -1,4 +1,4 @@
-import './instrument.ts';
+import './src/instrument.ts';
 import * as Sentry from '@sentry/node';
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
