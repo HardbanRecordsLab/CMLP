@@ -16,7 +16,7 @@ export default defineConfig(() => {
     build: {
       outDir: path.resolve(__dirname, '../dist'),
       emptyOutDir: true,
-      base: '/',
+      base: process.env.VITE_BASE_URL || '/',
     },
     test: {
       environment: 'node',

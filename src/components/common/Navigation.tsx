@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, ArrowLeft, ShieldAlert, Radio, User, Laptop, Menu, X, ExternalLink } from 'lucide-react';
+import { Home, ArrowLeft, ShieldAlert, Radio, User, Laptop, Menu, X, ExternalLink, Music } from 'lucide-react';
 import logoSrc from '@/assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from './LanguageSelector.tsx';
 import { useTranslation } from 'react-i18next';
@@ -85,6 +85,12 @@ export default function Navigation({ currentView }: NavigationProps) {
               {t('common.whitelabel_stream')}
             </a>
             <a 
+              href="/cmlp/tracks" 
+              className="px-3 py-1.5 rounded text-[10px] font-bold tracking-wide uppercase transition text-slate-400 hover:text-slate-200"
+            >
+              TRACKS
+            </a>
+            <a 
               href="/cmlp/admin" 
               className={`px-3 py-1.5 rounded text-[10px] font-bold tracking-wide uppercase transition ${currentView === 'admin' ? 'bg-slate-900 text-purple-400' : 'text-slate-400 hover:text-slate-200'}`}
             >
@@ -133,6 +139,13 @@ export default function Navigation({ currentView }: NavigationProps) {
               className={`flex items-center justify-between p-3 rounded-xl border text-xs transition ${currentView === 'whitelabel' ? 'bg-emerald-600/10 border-emerald-500/40 text-emerald-300' : 'bg-slate-900/30 border-slate-800 text-slate-400 hover:text-white'}`}
             >
               <span className="font-bold flex items-center gap-2"><Radio className="w-4 h-4" /> {t('common.whitelabel_stream')}</span>
+              <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+            </a>
+            <a 
+              href="/cmlp/tracks" 
+              className="flex items-center justify-between p-3 rounded-xl border text-xs bg-slate-900/30 border-slate-800 text-slate-400 hover:text-white transition"
+            >
+              <span className="font-bold flex items-center gap-2"><Music className="w-4 h-4" /> TRACK LIBRARY</span>
               <ExternalLink className="w-3.5 h-3.5 opacity-60" />
             </a>
             <a 

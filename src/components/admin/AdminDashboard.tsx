@@ -3,13 +3,12 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
-import { Track } from '@/types.ts';
 import InvoiceModal from '@/components/licensing/InvoiceModal.tsx';
-import UploadTrackModal from '@/components/content/UploadTrackModal.tsx';
 import AddOutletModal from '@/components/common/AddOutletModal.tsx';
 import CertificateModal from '@/components/licensing/CertificateModal.tsx';
 import PlaylistManager from '@/components/content/PlaylistManager.tsx';
 import LicensingManager from '@/components/licensing/LicensingManager.tsx';
+import TrackLibrary from '@/components/content/TrackLibrary.tsx';
 import PaymentPortal from '@/components/common/PaymentPortal.tsx';
 import WordPressSync from '@/components/content/WordPressSync.tsx';
 import NotificationsHub from '@/components/common/NotificationsHub.tsx';
@@ -37,21 +36,12 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeStreams, setActiveStreams] = useState(0);
   const [chartData, setChartData] = useState(mockChartData);
-  const [tracks, setTracks] = useState<Track[]>([]);
   const [stats, setStats] = useState<any>(null);
   const { fetchWithAuth, loading, error } = useApi();
   const [selectedInvoice, setSelectedInvoice] = useState<string | null>(null);
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
   const [outlets, setOutlets] = useState<any[]>([]);
-
-  const loadTracks = () => {
-    fetchWithAuth(getApiUrl('/api/tracks'))
-      .then(res => res.json())
-      .then(data => setTracks(data))
-      .catch(err => console.error('Failed to load tracks', err));
-  };
 
   const loadOutlets = () => {
     fetchWithAuth(getApiUrl('/api/users'))
@@ -71,9 +61,7 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    if (activeTab === 'media') {
-      loadTracks();
-    } else if (activeTab === 'outlets') {
+    if (activeTab === 'outlets') {
       loadOutlets();
     } else if (activeTab === 'overview') {
       loadStats();
@@ -276,61 +264,7 @@ export default function AdminDashboard() {
           )}
 
           {activeTab === 'media' && (
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-              <div className="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
-                <div>
-                  <h2 className="text-white font-medium">Media Library Architect</h2>
-                  <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider">Manage audio tracks and metadata</p>
-                </div>
-                <button onClick={() => setIsUploadModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded text-xs font-bold hover:bg-blue-700 transition">
-                  UPLOAD TRACK
-                </button>
-              </div>
-
-              {loading && tracks.length === 0 ? (
-                <div className="p-8 text-center text-slate-500 animate-pulse">Loading tracks...</div>
-              ) : error ? (
-                <div className="p-8 text-center text-red-400">Failed to load tracks.</div>
-              ) : (
-                <div className="overflow-hidden rounded border border-slate-800">
-                  <table className="w-full text-left text-sm">
-                    <thead className="bg-slate-950 text-slate-500 text-[10px] uppercase tracking-widest">
-                      <tr>
-                        <th className="px-6 py-3">Track Info</th>
-                        <th className="px-6 py-3">ISRC</th>
-                        <th className="px-6 py-3">BPM / Mood</th>
-                        <th className="px-6 py-3 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-800 bg-slate-900">
-                      {tracks.map(track => (
-                        <tr key={track.id} className="hover:bg-slate-800/50">
-                          <td className="px-6 py-4">
-                            <p className="font-medium text-white">{track.title}</p>
-                            <p className="text-xs text-slate-500">{track.artist}</p>
-                          </td>
-                          <td className="px-6 py-4 font-mono text-[11px] text-slate-400">{track.isrc}</td>
-                          <td className="px-6 py-4">
-                            <span className="px-2 py-1 bg-slate-800 text-slate-300 text-[10px] border border-slate-700 rounded mr-2">{track.bpm} BPM</span>
-                            {track.mood?.map(m => (
-                              <span key={m} className="px-2 py-1 bg-blue-900/40 text-blue-400 text-[10px] border border-blue-500/20 rounded mr-2">{m}</span>
-                            ))}
-                          </td>
-                          <td className="px-6 py-4 text-right">
-                            <button className="text-xs text-blue-500 hover:text-blue-400 font-semibold">EDIT</button>
-                          </td>
-                        </tr>
-                      ))}
-                      {tracks.length === 0 && (
-                        <tr>
-                          <td colSpan={4} className="px-6 py-8 text-center text-slate-500">No tracks found in library.</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
+            <TrackLibrary embedded />
           )}
 
           {activeTab === 'outlets' && (
@@ -458,7 +392,14 @@ export default function AdminDashboard() {
             <StrategicInitiatives />
           )}
 
-          {activeTab !== 'overview' && activeTab !== 'security' && activeTab !== 'media' && activeTab !== 'invoices' && activeTab !== 'outlets' && activeTab !== 'playlists' && activeTab !== 'vod' && activeTab !== 'licensing' && activeTab !== 'billing' && activeTab !== 'integrations' && activeTab !== 'notifications' && activeTab !== 'strategic' && (
+          {activeTab === 'settings' && (
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+              <h2 className="text-white font-medium mb-4">System Settings</h2>
+              <p className="text-sm text-slate-400">Settings panel — coming soon.</p>
+            </div>
+          )}
+
+          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'vod', 'licensing', 'billing', 'integrations', 'notifications', 'strategic', 'settings', 'reporting'].includes(activeTab) && (
             <div className="p-12 text-center text-slate-500 bg-slate-900/50 border border-slate-800 rounded-xl">
               <p>Module <b>{activeTab}</b> is rendering...</p>
             </div>
@@ -467,7 +408,6 @@ export default function AdminDashboard() {
       </main>
       
       <InvoiceModal isOpen={!!selectedInvoice} onClose={() => setSelectedInvoice(null)} invoiceId={selectedInvoice || ''} />
-      <UploadTrackModal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} onSuccess={() => loadTracks()} />
       <AddOutletModal isOpen={isOutletModalOpen} onClose={() => setIsOutletModalOpen(false)} onSuccess={() => loadOutlets()} />
       <CertificateModal 
         isOpen={isCertModalOpen} 

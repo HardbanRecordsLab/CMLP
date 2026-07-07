@@ -110,7 +110,9 @@ export default function WhiteLabelPlayer() {
 
     reportTelemetry(currentTrack);
 
-    const audioSource = getApiUrl(`/api/audio/${currentTrack.filename}?hrl_token=mock_hrl_token`);
+    const token = localStorage.getItem('auth_token');
+    const uid = localStorage.getItem('hrl_uid') || 'anonymous';
+    const audioSource = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${uid}&hrl_token=${token || 'dev_bypass'}`);
 
     // Clean up previous HLS instance
     if (hlsRef.current) {

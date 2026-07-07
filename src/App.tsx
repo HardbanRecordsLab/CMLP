@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import B2BPlayer from '@/components/players/B2BPlayer.tsx';
 import WhiteLabelPlayer from '@/components/players/WhiteLabelPlayer.tsx';
 import AdminDashboard from '@/components/admin/AdminDashboard.tsx';
+import TrackLibrary from '@/components/content/TrackLibrary.tsx';
 import AuthWrapper from '@/components/auth/AuthWrapper.tsx';
 import logoSrc from './assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from '@/components/common/LanguageSelector.tsx';
@@ -27,6 +28,9 @@ export default function App() {
   }
   if (route.startsWith('/whitelabel')) {
     return <WhiteLabelPlayer />;
+  }
+  if (route.startsWith('/tracks')) {
+    return <AuthWrapper><TrackLibrary /></AuthWrapper>;
   }
   if (route.startsWith('/b2b')) {
     return <AuthWrapper><B2BPlayer /></AuthWrapper>;
@@ -63,6 +67,9 @@ export default function App() {
           </a>
           <a href="/cmlp/whitelabel" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
             {t('common.whitelabel_stream').toUpperCase()}
+          </a>
+          <a href="/cmlp/tracks" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
+            TRACK LIBRARY
           </a>
           <a href="/cmlp/admin" className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold tracking-wide shadow-lg shadow-blue-500/20 transition">
             {t('common.admin_console').toUpperCase()}
