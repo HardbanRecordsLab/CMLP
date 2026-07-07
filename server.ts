@@ -1,3 +1,5 @@
+import './instrument.ts';
+import * as Sentry from '@sentry/node';
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
@@ -5,15 +7,16 @@ import fs from 'fs';
 import bcrypt from 'bcryptjs';
 import { createServer as createViteServer } from 'vite';
 import { createRateLimiter, blockedIps } from './src/middleware/rateLimiter.ts';
-import { errorHandler } from './src/middleware/errorHandler.ts';
+import { errorHandler, notFoundHandler } from './src/middleware/errorHandler.ts';
 import { sanitizeRequestPayload } from './src/utils/security.ts';
-import { monitor } from './src/utils/sentry.ts';
 import { logAuditEvent } from './src/services/logging.service.ts';
 import { db } from './src/db/index.ts';
 import { users } from './src/db/schema.ts';
 import { eq } from 'drizzle-orm';
 import apiRoutes from './src/routes/index.ts';
 import { activeNotificationSockets } from './src/lib/notifications.ts';
+import { startTranscodeWorker } from './src/services/transcoding-queue.service.ts';
+import { startWebhookRetryProcessor } from './src/services/webhook-delivery.service.ts';
 
 export const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -58,19 +61,24 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(errorHandler);
-
 process.on('uncaughtException', (error) => {
-  monitor.captureException(error);
+  console.error('[FATAL] Uncaught Exception:', error);
+  Sentry.captureException(error);
   setTimeout(() => process.exit(1), 1000);
 });
 
 process.on('unhandledRejection', (reason) => {
-  monitor.captureException(reason instanceof Error ? reason : new Error(String(reason)));
+  console.error('[FATAL] Unhandled Rejection:', reason);
+  Sentry.captureException(reason instanceof Error ? reason : new Error(String(reason)));
 });
 
 async function setupViteAndStart() {
   await seedSystemAccounts();
+
+  if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
+    startTranscodeWorker();
+    startWebhookRetryProcessor();
+  }
 
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
@@ -86,6 +94,9 @@ async function setupViteAndStart() {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
+
+  app.use(notFoundHandler);
+  app.use(errorHandler);
 
   const server = require('http').createServer(app);
 
