@@ -43,12 +43,24 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            # Install deps
-            npm ci --omit=dev --ignore-scripts 2>/dev/null || npm install
+            # Install all deps (including dev for Vite build)
+            npm ci --ignore-scripts 2>/dev/null || npm install
 
-            # Build server bundle
+            # Build server bundle FIRST (before vite clears dist/)
+            mkdir -p dist
             npx esbuild server.ts --bundle --platform=node --format=cjs \
               --packages=external --sourcemap --outfile=dist/server.cjs
+
+            # Build frontend SPA
+            VITE_BASE_URL=/cmlp/ VITE_API_URL=https://api.cmlp.hardbanrecordslab.online \
+              npx vite --config config/vite.config.ts build
+
+            # Rebuild server bundle (vite build with emptyOutDir:true clears dist/)
+            npx esbuild server.ts --bundle --platform=node --format=cjs \
+              --packages=external --sourcemap --outfile=dist/server.cjs
+
+            # Ensure logs dir exists
+            mkdir -p /opt/cmlp/logs
 
             # Run DB migrations if schema changed
             SQL_HOST=localhost SQL_PORT=5433 SQL_USER=${{ secrets.DB_USER }} \
