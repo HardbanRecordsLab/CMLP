@@ -47,7 +47,8 @@ export async function generateLicenseCertificate(options: CertificateOptions): P
   const outputPath = options.outputPath || path.join(process.cwd(), 'media_files', `certificate-${license.certificateNumber}.pdf`);
   ensureDir(outputPath);
 
-  const qrDataUrl = await QRCode.toDataURL(`https://verify.hrl.pl/certificate/${license.certificateNumber}`);
+  const verifyUrl = `https://cmlp.hardbanrecordslab.online/verify/${license.certificateNumber}`;
+  const qrDataUrl = await QRCode.toDataURL(verifyUrl);
 
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', layout: 'landscape' });
@@ -100,7 +101,8 @@ export async function generateInvoice(options: InvoiceOptions): Promise<string> 
   const outputPath = options.outputPath || path.join(process.cwd(), 'media_files', `${invoiceNumber}.pdf`);
   ensureDir(outputPath);
 
-  const qrDataUrl = await QRCode.toDataURL(`https://verify.hrl.pl/invoice/${invoiceNumber}`);
+  const verifyUrl = `https://cmlp.hardbanrecordslab.online/verify/invoice/${invoiceNumber}`;
+  const qrDataUrl = await QRCode.toDataURL(verifyUrl);
 
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4' });

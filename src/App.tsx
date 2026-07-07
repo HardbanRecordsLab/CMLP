@@ -4,6 +4,7 @@ import WhiteLabelPlayer from '@/components/players/WhiteLabelPlayer.tsx';
 import AdminDashboard from '@/components/admin/AdminDashboard.tsx';
 import TrackLibrary from '@/components/content/TrackLibrary.tsx';
 import AuthWrapper from '@/components/auth/AuthWrapper.tsx';
+import VerifyCertificate from '@/components/verify/VerifyCertificate.tsx';
 import logoSrc from './assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from '@/components/common/LanguageSelector.tsx';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +35,10 @@ export default function App() {
   }
   if (route.startsWith('/b2b')) {
     return <AuthWrapper><B2BPlayer /></AuthWrapper>;
+  }
+  if (route.startsWith('/verify/')) {
+    const certNumber = route.slice('/verify/'.length);
+    return <VerifyCertificate certNumber={certNumber} />;
   }
 
   return (
