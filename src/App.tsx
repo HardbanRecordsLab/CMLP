@@ -36,18 +36,16 @@ export default function App() {
     return <AuthWrapper><B2BPlayer /></AuthWrapper>;
   }
 
-  if (route === '/' || route === '') {
-    window.location.href = 'https://cmlp.hardbanrecordslab.online/';
-    return null;
-  }
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 font-sans text-slate-300 p-6 relative">
+      {/* Top Right Floating Language Switcher */}
       <div className="absolute top-6 right-6">
         <LanguageSelector />
       </div>
 
       <div className="max-w-md w-full bg-slate-900/40 border border-slate-800/80 p-8 rounded-2xl text-center shadow-2xl backdrop-blur-md">
+        
+        {/* Sleek Logo Display Container */}
         <div className="flex justify-center mb-5">
           <div className="relative p-1 bg-slate-950 rounded-2xl border border-slate-800/80 shadow-inner">
             <img 
@@ -62,10 +60,25 @@ export default function App() {
 
         <h1 className="text-2xl font-bold tracking-tight text-white mb-0.5 font-sans">CMLP</h1>
         <p className="text-slate-500 text-[10px] font-mono uppercase tracking-widest mb-8">{t('common.subtitle')}</p>
+        
+        <div className="space-y-3">
+          <a href="/cmlp/b2b" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
+            {t('common.b2b_dashboard').toUpperCase()}
+          </a>
+          <a href="/cmlp/whitelabel" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
+            {t('common.whitelabel_stream').toUpperCase()}
+          </a>
+          <a href="/cmlp/tracks" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
+            TRACK LIBRARY
+          </a>
+          <a href="/cmlp/admin" className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold tracking-wide shadow-lg shadow-blue-500/20 transition">
+            {t('common.admin_console').toUpperCase()}
+          </a>
+        </div>
 
-        <a href="https://cmlp.hardbanrecordslab.online/" className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold tracking-wide shadow-lg shadow-blue-500/20 transition text-center">
-          PRZEJDŹ DO APLIKACJI CMLP →
-        </a>
+        <div className="mt-8 pt-4 border-t border-slate-800/50 text-[10px] text-slate-500">
+          {t('common.footer')} &bull; 2026
+        </div>
       </div>
     </div>
   );
