@@ -1,5 +1,8 @@
 # Environment secrets
 .env
+
+# CMLP Bible with credentials (local only)
+docs/CMLP_WordPress_Bible_2026.md
 .env.*
 !.env.example
 !.env.*.example
