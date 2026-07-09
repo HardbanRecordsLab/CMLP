@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import crypto from 'crypto';
 import path from 'path';
 import { db } from '../db/index.ts';
-import { usage_logs } from '../db/schema.ts';
+import { usage_logs, licenses, companies } from '../db/schema.ts';
+import { eq, and, gte, sql } from 'drizzle-orm';
 
 export async function getToken(req: any, res: Response) {
   try {
@@ -23,11 +24,29 @@ export async function getToken(req: any, res: Response) {
   }
 }
 
+async function getActiveStreamCount(licenseId: number): Promise<number> {
+  const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
+  try {
+    const result = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(usage_logs)
+      .where(
+        and(
+          eq(usage_logs.licenseId, licenseId),
+          gte(usage_logs.playedAt, fiveMinAgo)
+        )
+      );
+    return Number(result[0]?.count || 0);
+  } catch {
+    return 0;
+  }
+}
+
 export async function streamFile(req: Request, res: Response) {
   const { filename } = req.params;
   const { hrl_token, uid } = req.query;
 
-  if (!hrl_token || typeof hrl_token !== 'string' || !uid) {
+  if (!hrl_token || typeof hrl_token !== 'string' || !uid || typeof uid !== 'string') {
     res.status(401).send("Unauthorized"); return;
   }
   const [expStr, signature] = hrl_token.split('.');
@@ -44,6 +63,35 @@ export async function streamFile(req: Request, res: Response) {
 
   if (signature !== expectedSignature) {
      res.status(403).send("Forbidden - Invalid Signature"); return;
+  }
+
+  const companyRows = await db
+    .select({ companyId: companies.id })
+    .from(companies)
+    .where(eq(companies.ownerId, uid))
+    .limit(1);
+
+  if (companyRows.length > 0) {
+    const companyId = companyRows[0].companyId;
+    const licenseRows = await db
+      .select({ id: licenses.id, maxConcurrentStreams: licenses.maxConcurrentStreams })
+      .from(licenses)
+      .where(
+        and(
+          eq(licenses.companyId, companyId),
+          eq(licenses.status, 'active'),
+          gte(licenses.expiresAt, new Date())
+        )
+      )
+      .limit(1);
+
+    if (licenseRows.length > 0) {
+      const maxStreams = licenseRows[0].maxConcurrentStreams ?? 10;
+      const currentStreams = await getActiveStreamCount(licenseRows[0].id);
+      if (currentStreams >= maxStreams) {
+        res.status(429).send("Too Many Streams — license limit reached"); return;
+      }
+    }
   }
 
   const filePath = path.join(process.cwd(), 'media_files', filename);

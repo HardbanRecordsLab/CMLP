@@ -3,7 +3,6 @@ import * as Sentry from '@sentry/node';
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
-import fs from 'fs';
 import bcrypt from 'bcryptjs';
 import { createServer as createViteServer } from 'vite';
 import { createRateLimiter, blockedIps } from './src/middleware/rateLimiter.ts';
@@ -17,10 +16,23 @@ import apiRoutes from './src/routes/index.ts';
 import { activeNotificationSockets } from './src/lib/notifications.ts';
 import { startTranscodeWorker } from './src/services/transcoding-queue.service.ts';
 import { startWebhookRetryProcessor } from './src/services/webhook-delivery.service.ts';
+import { verifyToken } from './src/lib/jwt.ts';
 
 export const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 let activeStreams = 0;
+
+function validateRequiredEnv(): void {
+  const required = [
+    { key: 'HMAC_SECRET', name: 'HMAC_SECRET' },
+    { key: 'JWT_SECRET', name: 'JWT_SECRET' },
+  ];
+  const missing = required.filter(r => !process.env[r.key]);
+  if (missing.length > 0) {
+    console.error(`[ENV] Missing required variables: ${missing.map(m => m.name).join(', ')}`);
+    console.error('[ENV] Application will start but some features may not work correctly.');
+  }
+}
 
 const rateLimiter = createRateLimiter(async (userId, action, resource, details, ipAddress) => {
   await logAuditEvent({ userId, action, resource, details, ipAddress });
@@ -73,6 +85,7 @@ process.on('unhandledRejection', (reason) => {
 });
 
 async function setupViteAndStart() {
+  validateRequiredEnv();
   await seedSystemAccounts();
 
   if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
@@ -111,11 +124,31 @@ async function setupViteAndStart() {
   }
 
   wss.on('connection', (ws: any, req: any) => {
-    console.log('[WS] Client connected');
+    const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const token = url.searchParams.get('token');
+    let authed: { uid: string; email: string; role: string } | null = null;
+
+    if (token) {
+      try {
+        authed = verifyToken(token);
+      } catch {
+        console.warn('[WS] Invalid token provided by client');
+      }
+    }
+
+    if (authed) {
+      console.log(`[WS] Authenticated client connected: ${authed.email} (${authed.role})`);
+    } else {
+      console.log('[WS] Anonymous client connected (limited access)');
+    }
+
+    ws.auth = authed;
     activeStreams++;
     broadcastActiveStreams();
 
-    activeNotificationSockets.add(ws);
+    if (authed) {
+      activeNotificationSockets.add(ws);
+    }
 
     let isAlive = true;
     ws.on('pong', () => { isAlive = true; });
@@ -130,11 +163,13 @@ async function setupViteAndStart() {
       try {
         const data = JSON.parse(message.toString());
         if (data.type === 'register') {
-          console.log(`[WS] Client Registered: ${data.clientName}`);
+          console.log(`[WS] Client Registered: ${data.clientName}${authed ? ` (uid: ${authed.uid})` : ''}`);
         } else if (data.type === 'playing') {
           console.log(`[WS] Client Playing: ${data.trackTitle}`);
         }
-      } catch (e) { }
+      } catch (e: any) {
+        console.warn('[WS] Failed to parse message:', e.message);
+      }
     });
 
     ws.on('close', () => {
@@ -142,7 +177,7 @@ async function setupViteAndStart() {
       activeNotificationSockets.delete(ws);
       activeStreams = Math.max(0, activeStreams - 1);
       broadcastActiveStreams();
-      console.log('[WS] Client disconnected');
+      console.log(`[WS] Client disconnected${authed ? ` (${authed.email})` : ''}`);
     });
   });
 
@@ -152,12 +187,20 @@ async function setupViteAndStart() {
 }
 
 async function seedSystemAccounts() {
-  const defaultAccounts = [
-    { email: 'hardbanrecordslab.pl@gmail.com', password: 'Kskomra1984!!', name: 'Hardban Records Lab Admin', role: 'admin' },
-    { email: 'familydreamshop.pl@gmail.com', password: 'Kskomra1984!!', name: 'Family Dream Shop Admin', role: 'admin' }
-  ];
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminName = process.env.ADMIN_NAME || 'System Admin';
 
-  for (const acc of defaultAccounts) {
+  const accounts: { email: string; password: string; name: string; role: string }[] = [];
+
+  if (adminEmail && adminPassword) {
+    accounts.push({ email: adminEmail, password: adminPassword, name: adminName, role: 'admin' });
+  } else {
+    console.warn('[SEED] ADMIN_EMAIL / ADMIN_PASSWORD not set. Skipping admin seed.');
+    return;
+  }
+
+  for (const acc of accounts) {
     console.log(`[SEED] Checking if user exists: ${acc.email}`);
     try {
       const existingDbUsers = await db.select().from(users).where(eq(users.email, acc.email));

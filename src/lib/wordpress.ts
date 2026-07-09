@@ -148,6 +148,32 @@ async function callWordPressAPI(
   }
 }
 
+async function findWPPostByCmlpId(
+  settings: WordPressSettings,
+  cmlpId: number | undefined,
+  postType: string
+): Promise<{ id: number; meta?: Record<string, any>; modified?: string } | null> {
+  if (!cmlpId) return null;
+  try {
+    const posts = await callWordPressAPI(
+      settings,
+      `${postType}?meta_key=cmlp_id&meta_value=${cmlpId}&per_page=1`
+    );
+    if (Array.isArray(posts) && posts.length > 0) {
+      return { id: posts[0].id, meta: posts[0].meta, modified: posts[0].modified };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function isLocalNewer(localUpdatedAt: string | undefined | null, wpModified: string | undefined): boolean {
+  if (!localUpdatedAt) return true;
+  if (!wpModified) return true;
+  return new Date(localUpdatedAt).getTime() > new Date(wpModified).getTime();
+}
+
 // Simulated sync items to provide high-fidelity sandbox experiences in Preview context
 const simulatedWPCmsPayloads = [
   { id: 101, type: 'post', title: 'New Music Clearance Release Q2 2026', metadata: { artist: 'Hardban Lab', explicit: 'false' } },
@@ -320,12 +346,21 @@ interface TrackInput {
   coverUrl?: string;
   filename: string;
   status?: string;
+  updatedAt?: string;
 }
 
 export async function syncTrackToWP(track: TrackInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
   try {
     const settings = await getWordPressSettings();
-    const wpBody = {
+    const existing = await findWPPostByCmlpId(settings, track.id, 'posts');
+    const method = existing ? 'PUT' : 'POST';
+    const endpoint = existing ? `posts/${existing.id}` : 'posts';
+
+    if (existing && !isLocalNewer(track.updatedAt, existing.modified)) {
+      return { success: true, wpId: existing.id };
+    }
+
+    const wpBody: any = {
       title: track.title,
       content: `${track.title} by ${track.artist}${track.album ? ` — ${track.album}` : ''}`,
       status: 'publish',
@@ -343,9 +378,9 @@ export async function syncTrackToWP(track: TrackInput): Promise<{ success: boole
         filename: track.filename,
       },
     };
-    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    const wpResult = await callWordPressAPI(settings, endpoint, method, wpBody);
     await logSyncEvent({
-      wpId: wpResult.id, wpType: 'track', title: `Synced track: ${track.title}`,
+      wpId: wpResult.id, wpType: 'track', title: `${method === 'PUT' ? 'Updated' : 'Synced'} track: ${track.title}`,
       status: 'synced', direction: 'local_to_wp',
     });
     return { success: true, wpId: wpResult.id };
@@ -365,12 +400,21 @@ interface PlaylistInput {
   isPublic?: boolean;
   tags?: string[];
   companyId?: number;
+  updatedAt?: string;
 }
 
 export async function syncPlaylistToWP(playlist: PlaylistInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
   try {
     const settings = await getWordPressSettings();
-    const wpBody = {
+    const existing = await findWPPostByCmlpId(settings, playlist.id, 'posts');
+    const method = existing ? 'PUT' : 'POST';
+    const endpoint = existing ? `posts/${existing.id}` : 'posts';
+
+    if (existing && !isLocalNewer(playlist.updatedAt, existing.modified)) {
+      return { success: true, wpId: existing.id };
+    }
+
+    const wpBody: any = {
       title: playlist.title,
       content: playlist.description || '',
       status: playlist.isPublic ? 'publish' : 'draft',
@@ -382,9 +426,9 @@ export async function syncPlaylistToWP(playlist: PlaylistInput): Promise<{ succe
         company_id: playlist.companyId || null,
       },
     };
-    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    const wpResult = await callWordPressAPI(settings, endpoint, method, wpBody);
     await logSyncEvent({
-      wpId: wpResult.id, wpType: 'playlist', title: `Synced playlist: ${playlist.title}`,
+      wpId: wpResult.id, wpType: 'playlist', title: `${method === 'PUT' ? 'Updated' : 'Synced'} playlist: ${playlist.title}`,
       status: 'synced', direction: 'local_to_wp',
     });
     return { success: true, wpId: wpResult.id };
@@ -408,12 +452,21 @@ interface LicenseInput {
   jurisdiction?: string;
   territories?: string[];
   maxLocations?: number;
+  updatedAt?: string;
 }
 
 export async function syncLicenseToWP(license: LicenseInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
   try {
     const settings = await getWordPressSettings();
-    const wpBody = {
+    const existing = await findWPPostByCmlpId(settings, license.id, 'posts');
+    const method = existing ? 'PUT' : 'POST';
+    const endpoint = existing ? `posts/${existing.id}` : 'posts';
+
+    if (existing && !isLocalNewer(license.updatedAt, existing.modified)) {
+      return { success: true, wpId: existing.id };
+    }
+
+    const wpBody: any = {
       title: `License: ${license.certificateNumber} — ${license.companyName}`,
       content: `${license.licenseType} license for ${license.companyName} (${license.jurisdiction || 'EU'})`,
       status: 'publish',
@@ -430,9 +483,9 @@ export async function syncLicenseToWP(license: LicenseInput): Promise<{ success:
         max_locations: license.maxLocations || 1,
       },
     };
-    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    const wpResult = await callWordPressAPI(settings, endpoint, method, wpBody);
     await logSyncEvent({
-      wpId: wpResult.id, wpType: 'license', title: `Synced license: ${license.certificateNumber}`,
+      wpId: wpResult.id, wpType: 'license', title: `${method === 'PUT' ? 'Updated' : 'Synced'} license: ${license.certificateNumber}`,
       status: 'synced', direction: 'local_to_wp',
     });
     return { success: true, wpId: wpResult.id };
@@ -453,12 +506,21 @@ interface ComplianceDocInput {
   status?: string;
   signed?: boolean;
   pdfUrl?: string;
+  updatedAt?: string;
 }
 
 export async function syncComplianceDocToWP(doc: ComplianceDocInput): Promise<{ success: boolean; wpId?: number; error?: string }> {
   try {
     const settings = await getWordPressSettings();
-    const wpBody = {
+    const existing = await findWPPostByCmlpId(settings, doc.id, 'posts');
+    const method = existing ? 'PUT' : 'POST';
+    const endpoint = existing ? `posts/${existing.id}` : 'posts';
+
+    if (existing && !isLocalNewer(doc.updatedAt, existing.modified)) {
+      return { success: true, wpId: existing.id };
+    }
+
+    const wpBody: any = {
       title: `Compliance: ${doc.title}`,
       content: `Compliance document for ${doc.companyName || 'N/A'} (${doc.jurisdiction || 'EU'})`,
       status: 'publish',
@@ -471,9 +533,9 @@ export async function syncComplianceDocToWP(doc: ComplianceDocInput): Promise<{ 
         pdf_url: doc.pdfUrl || '',
       },
     };
-    const wpResult = await callWordPressAPI(settings, 'posts', 'POST', wpBody);
+    const wpResult = await callWordPressAPI(settings, endpoint, method, wpBody);
     await logSyncEvent({
-      wpId: wpResult.id, wpType: 'compliance_doc', title: `Synced compliance doc: ${doc.title}`,
+      wpId: wpResult.id, wpType: 'compliance_doc', title: `${method === 'PUT' ? 'Updated' : 'Synced'} compliance doc: ${doc.title}`,
       status: 'synced', direction: 'local_to_wp',
     });
     return { success: true, wpId: wpResult.id };

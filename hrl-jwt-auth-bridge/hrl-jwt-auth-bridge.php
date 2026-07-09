@@ -15,6 +15,8 @@ class HRL_JWT_Auth_Bridge {
     private $secret;
     private $cookie_name = 'hrl_cmlp_jwt';
     private $cookie_expire = 7 * DAY_IN_SECONDS;
+    private $cookie_secure = true;
+    private $cookie_httponly = true;
 
     public static function get_instance() {
         if (is_null(self::$instance)) {
@@ -51,6 +53,7 @@ class HRL_JWT_Auth_Bridge {
         if ($user_id) {
             wp_set_current_user($user_id);
             wp_set_auth_cookie($user_id, true);
+            $this->set_jwt_cookie($token);
         }
     }
 
@@ -101,16 +104,30 @@ class HRL_JWT_Auth_Bridge {
         return $user->ID;
     }
 
+    private function set_jwt_cookie($token) {
+        $secure = $this->cookie_secure && is_ssl();
+        setcookie(
+            $this->cookie_name,
+            $token,
+            time() + $this->cookie_expire,
+            COOKIEPATH,
+            COOKIE_DOMAIN,
+            $secure,
+            $this->cookie_httponly
+        );
+    }
+
     public function clear_jwt_cookie() {
-        setcookie($this->cookie_name, '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN);
-        setcookie($this->cookie_name, '', time() - 3600, SITECOOKIEPATH, COOKIE_DOMAIN);
+        $secure = $this->cookie_secure && is_ssl();
+        setcookie($this->cookie_name, '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, $secure, $this->cookie_httponly);
+        setcookie($this->cookie_name, '', time() - 3600, SITECOOKIEPATH, COOKIE_DOMAIN, $secure, $this->cookie_httponly);
     }
 
     public function register_rest_routes() {
         register_rest_route('hrl/v1', '/auth/sync', [
             'methods' => 'POST',
             'callback' => [$this, 'sync_jwt_token'],
-            'permission_callback' => '__return_true'
+            'permission_callback' => [$this, 'can_sync_jwt']
         ]);
 
         register_rest_route('hrl/v1', '/auth/logout', [
@@ -124,6 +141,13 @@ class HRL_JWT_Auth_Bridge {
             'callback' => [$this, 'auth_status'],
             'permission_callback' => '__return_true'
         ]);
+    }
+
+    public function can_sync_jwt($request) {
+        $token = $request->get_header('hrl-cmlp-jwt') ?: $request->get_param('token');
+        if (empty($token)) return false;
+        $payload = $this->validate_jwt($token);
+        return $payload !== false;
     }
 
     public function sync_jwt_token($request) {
@@ -144,6 +168,7 @@ class HRL_JWT_Auth_Bridge {
 
         wp_set_current_user($user_id);
         wp_set_auth_cookie($user_id, true);
+        $this->set_jwt_cookie($token);
 
         return new WP_REST_Response([
             'success' => true,
