@@ -38,6 +38,7 @@ export const users = pgTable('users', {
   customCSS: text('custom_css'),
   mfaEnabled: boolean('mfa_enabled').default(false).notNull(),
   mfaSecret: text('mfa_secret'),
+  emailVerified: boolean('email_verified').default(false).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

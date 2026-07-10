@@ -13,5 +13,9 @@ router.post('/mfa/validate', authController.mfaValidate);
 router.post('/mfa/setup', requireAuth, authController.mfaSetup);
 router.post('/mfa/confirm', requireAuth, authController.mfaConfirm);
 router.post('/mfa/disable', requireAuth, authController.mfaDisable);
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
+router.post('/verify-email', authController.verifyEmail);
+router.post('/resend-verification', authController.resendVerificationEmail);
 
 export default router;

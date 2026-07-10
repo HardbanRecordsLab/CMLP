@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { signToken, signRefreshToken, refreshAccessToken } from '../lib/jwt.ts';
 import { db } from '../db/index.ts';
 import { users } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { triggerEmailNotification } from '../lib/notifications.ts';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -82,12 +84,25 @@ export async function register(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const uid = `user_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
 
+    const verificationToken = jwt.sign(
+      { email, purpose: 'email_verification' },
+      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      { expiresIn: '24h' }
+    );
+
     await db.insert(users).values({
       uid,
       email,
       pin: hashedPassword,
-      role: 'user'
+      role: 'user',
+      emailVerified: false
     });
+
+    triggerEmailNotification(email, 'email_verification', {
+      name: email.split('@')[0],
+      email,
+      verificationUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/verify-email?token=${verificationToken}`,
+    }).catch((e) => console.error('[Auth] Verification email failed:', e.message));
 
     const accessToken = signToken({
       uid,
@@ -258,6 +273,166 @@ export async function mfaConfirm(req: any, res: Response) {
     res.json({ success: true, message: 'Dwustopniowa autoryzacja (MFA) została pomyślnie włączona!' });
   } catch (e) {
     res.status(500).json({ error: 'Activation failure.' });
+  }
+}
+
+export async function forgotPassword(req: Request, res: Response) {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  try {
+    const userRecords = await db.select().from(users).where(eq(users.email, email));
+    if (userRecords.length === 0) {
+      return res.json({ message: 'If that email exists, a reset link has been sent.' });
+    }
+
+    const user = userRecords[0];
+    const resetToken = jwt.sign(
+      { email: user.email, uid: user.uid, purpose: 'password_reset' },
+      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      { expiresIn: '1h' }
+    );
+
+    await triggerEmailNotification(email, 'password_reset', {
+      name: user.name || email.split('@')[0],
+      email,
+      resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/reset-password?token=${resetToken}`,
+    });
+
+    await logAuditEvent({
+      userId: user.uid,
+      action: 'password_reset_requested',
+      resource: 'users',
+      details: `Password reset requested for ${email}`,
+      ipAddress: req.ip,
+    });
+
+    res.json({ message: 'If that email exists, a reset link has been sent.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export async function resetPassword(req: Request, res: Response) {
+  const { token, password } = req.body;
+  if (!token || !password) {
+    return res.status(400).json({ error: 'Token and new password are required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret-change-in-production') as any;
+    if (decoded.purpose !== 'password_reset') {
+      return res.status(400).json({ error: 'Invalid token purpose' });
+    }
+
+    const userRecords = await db.select().from(users).where(eq(users.email, decoded.email));
+    if (userRecords.length === 0) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db.update(users).set({ pin: hashedPassword }).where(eq(users.email, decoded.email));
+
+    await logAuditEvent({
+      userId: userRecords[0].uid,
+      action: 'password_reset_completed',
+      resource: 'users',
+      details: `Password reset completed for ${decoded.email}`,
+      ipAddress: req.ip,
+    });
+
+    res.json({ message: 'Password has been reset successfully.' });
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Reset token has expired. Please request a new one.' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(400).json({ error: 'Invalid reset token.' });
+    }
+    console.error('Reset password error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export async function verifyEmail(req: Request, res: Response) {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: 'Verification token is required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret-change-in-production') as any;
+    if (decoded.purpose !== 'email_verification') {
+      return res.status(400).json({ error: 'Invalid token purpose' });
+    }
+
+    const userRecords = await db.select().from(users).where(eq(users.email, decoded.email));
+    if (userRecords.length === 0) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    if (userRecords[0].emailVerified) {
+      return res.json({ message: 'Email is already verified.' });
+    }
+
+    await db.update(users).set({ emailVerified: true }).where(eq(users.email, decoded.email));
+
+    await logAuditEvent({
+      userId: userRecords[0].uid,
+      action: 'email_verified',
+      resource: 'users',
+      details: `Email verified for ${decoded.email}`,
+      ipAddress: req.ip,
+    });
+
+    res.json({ message: 'Email verified successfully.' });
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Verification token has expired. Please request a new one.' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(400).json({ error: 'Invalid verification token.' });
+    }
+    console.error('Email verification error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export async function resendVerificationEmail(req: Request, res: Response) {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  try {
+    const userRecords = await db.select().from(users).where(eq(users.email, email));
+    if (userRecords.length === 0) {
+      return res.json({ message: 'If that email exists, a verification link has been sent.' });
+    }
+
+    if (userRecords[0].emailVerified) {
+      return res.json({ message: 'Email is already verified.' });
+    }
+
+    const verificationToken = jwt.sign(
+      { email, purpose: 'email_verification' },
+      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      { expiresIn: '24h' }
+    );
+
+    await triggerEmailNotification(email, 'email_verification', {
+      name: userRecords[0].name || email.split('@')[0],
+      email,
+      verificationUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/verify-email?token=${verificationToken}`,
+    });
+
+    res.json({ message: 'If that email exists, a verification link has been sent.' });
+  } catch (error) {
+    console.error('Resend verification error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 

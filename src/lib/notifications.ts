@@ -206,7 +206,7 @@ export async function triggerWSNotificationBroadcast(data: {
 // Dispatches customizable email template through configured SMTP/SendGrid parameters
 export async function triggerEmailNotification(
   toEmail: string,
-  type: 'user_registration' | 'license_expiry' | 'payment_confirmation',
+  type: 'user_registration' | 'license_expiry' | 'payment_confirmation' | 'password_reset' | 'email_verification',
   variables: Record<string, string>
 ): Promise<{ success: boolean; logId?: number; error?: string }> {
   try {
@@ -225,6 +225,12 @@ export async function triggerEmailNotification(
     } else if (type === 'payment_confirmation') {
       rawSubject = settings.templatePaymentSubject;
       rawBody = settings.templatePaymentBody;
+    } else if (type === 'password_reset') {
+      rawSubject = 'Password Reset Request - Hardban Records Lab';
+      rawBody = 'Hello {{name}},\n\nYou requested a password reset. Click the link below to reset your password:\n\n{{resetUrl}}\n\nThis link expires in 1 hour.\n\nIf you did not request this, please ignore this email.\n\nBest regards,\nHardban Records Lab Team';
+    } else if (type === 'email_verification') {
+      rawSubject = 'Verify Your Email - Hardban Records Lab';
+      rawBody = 'Hello {{name}},\n\nThank you for registering. Please verify your email address by clicking the link below:\n\n{{verificationUrl}}\n\nThis link expires in 24 hours.\n\nBest regards,\nHardban Records Lab Team';
     } else {
       throw new Error(`Invalid email trigger type: ${type}`);
     }
