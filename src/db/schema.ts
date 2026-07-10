@@ -157,6 +157,7 @@ export const payments = pgTable('payments', {
   status: text('status').default('pending').notNull(),
   gatewayTransactionId: text('gateway_transaction_id'),
   licenseId: integer('license_id').references(() => licenses.id, { onDelete: 'cascade' }),
+  vatRate: integer('vat_rate').default(23),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

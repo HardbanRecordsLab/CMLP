@@ -23,6 +23,7 @@ async function handlePostPaymentActions(payment: typeof payments.$inferSelect, u
         licenseId: payment.licenseId,
         amount: payment.amount,
         currency: payment.currency || 'PLN',
+        vatRate: (payment as any).vatRate || 23,
       }).catch((e) => {
         console.error('[PostPayment] Invoice generation failed:', e.message);
         return null;
@@ -69,7 +70,7 @@ import { validateCouponCode } from './coupons.controller.ts';
 
 export async function createCheckoutSession(req: any, res: Response) {
   try {
-    let { amount, currency, gateway, transactionType, licenseId, couponCode } = req.body;
+    let { amount, currency, gateway, transactionType, licenseId, couponCode, vatRate } = req.body;
     const userUid = req.user?.uid;
     if (!userUid) { res.status(401).json({ error: 'Unauthorized' }); return; }
 
@@ -98,6 +99,7 @@ export async function createCheckoutSession(req: any, res: Response) {
       status: 'pending',
       gatewayTransactionId,
       licenseId,
+      vatRate: vatRate || 23,
     }).returning()) as unknown as any[];
 
     if (gateway === 'stripe' && process.env.NODE_ENV !== 'test' && !process.env.VITEST) {

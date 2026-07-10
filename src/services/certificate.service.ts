@@ -16,6 +16,7 @@ export interface InvoiceOptions {
   amount: number;
   currency: string;
   outputPath?: string;
+  vatRate?: number;
 }
 
 function ensureDir(filePath: string) {
@@ -129,8 +130,16 @@ export async function generateInvoice(options: InvoiceOptions): Promise<string> 
     doc.text(`Type: ${license.licenseType}`);
     doc.moveDown(1);
 
-    doc.text('Amount:', { underline: true });
-    doc.fontSize(16).text(`${options.amount} ${options.currency}`, { align: 'right' });
+    const vatRate = options.vatRate ?? 23;
+    const netAmount = Math.round(options.amount / (1 + vatRate / 100));
+    const vatAmount = options.amount - netAmount;
+
+    doc.text('Amount Breakdown:', { underline: true });
+    doc.fontSize(10);
+    doc.text(`Net: ${netAmount} ${options.currency}`);
+    doc.text(`VAT (${vatRate}%): ${vatAmount} ${options.currency}`);
+    doc.fontSize(14);
+    doc.text(`Total Gross: ${options.amount} ${options.currency}`, { align: 'right' });
 
     doc.moveDown(2);
     doc.image(qrDataUrl, doc.page.width - 120, doc.page.height - 140, { width: 100, height: 100 });
