@@ -1,4 +1,4 @@
-import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale } from 'lucide-react';
+import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale, Key } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
@@ -20,6 +20,7 @@ import StrategicInitiatives from '@/components/admin/StrategicInitiatives.tsx';
 import WebhookDashboard from '@/components/admin/WebhookDashboard.tsx';
 import AuditTrailPanel from '@/components/admin/AuditTrailPanel.tsx';
 import ComplianceOZZ from '@/components/admin/ComplianceOZZ.tsx';
+import AdminApiKeys from '@/components/admin/AdminApiKeys.tsx';
 import { Cpu, Video } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -137,6 +138,7 @@ export default function AdminDashboard() {
             { id: 'outlets', icon: Users, label: t('admin.outlet_registry') },
             { id: 'integrations', icon: Globe, label: t('admin.integrations') },
             { id: 'webhooks', icon: Webhook, label: 'Webhooks' },
+            { id: 'apiKeys', icon: Key, label: 'API Keys' },
             { id: 'notifications', icon: Bell, label: t('admin.notifications_alerts') },
             { id: 'security', icon: Shield, label: t('admin.security_lockdown') },
             { id: 'compliance', icon: Scale, label: 'Compliance OZZ' },
@@ -394,6 +396,10 @@ export default function AdminDashboard() {
             <WebhookDashboard />
           )}
 
+          {activeTab === 'apiKeys' && (
+            <AdminApiKeys />
+          )}
+
           {activeTab === 'notifications' && (
             <NotificationsHub />
           )}
@@ -417,7 +423,7 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'vod', 'licensing', 'billing', 'integrations', 'webhooks', 'notifications', 'strategic', 'compliance', 'audit', 'settings', 'reporting'].includes(activeTab) && (
+          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'vod', 'licensing', 'billing', 'integrations', 'webhooks', 'apiKeys', 'notifications', 'strategic', 'compliance', 'audit', 'settings', 'reporting'].includes(activeTab) && (
             <div className="p-12 text-center text-slate-500 bg-slate-900/50 border border-slate-800 rounded-xl">
               <p>Module <b>{activeTab}</b> is rendering...</p>
             </div>
