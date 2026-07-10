@@ -7,6 +7,43 @@ import { verifyStripeWebhook } from '../lib/stripe.ts';
 import Stripe from 'stripe';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
+import { generateLicenseCertificate, generateInvoice } from '../services/certificate.service.ts';
+import { triggerEmailNotification } from '../lib/notifications.ts';
+
+async function handlePostPaymentActions(payment: typeof payments.$inferSelect, userEmail?: string) {
+  if (!payment.licenseId) return;
+
+  try {
+    const [certPath, invPath] = await Promise.all([
+      generateLicenseCertificate({ licenseId: payment.licenseId }).catch((e) => {
+        console.error('[PostPayment] Certificate generation failed:', e.message);
+        return null;
+      }),
+      generateInvoice({
+        licenseId: payment.licenseId,
+        amount: payment.amount,
+        currency: payment.currency || 'PLN',
+      }).catch((e) => {
+        console.error('[PostPayment] Invoice generation failed:', e.message);
+        return null;
+      }),
+    ]);
+
+    if (userEmail) {
+      triggerEmailNotification(userEmail, 'payment_confirmation', {
+        amount: (payment.amount / 100).toFixed(2),
+        currency: payment.currency || 'PLN',
+        gateway: payment.gateway || 'stripe',
+        certificateNumber: '',
+        companyName: '',
+      }).catch((e) => console.error('[PostPayment] Email failed:', e.message));
+    }
+
+    console.log(`[PostPayment] License ${payment.licenseId}: cert=${certPath ? 'OK' : 'SKIP'}, invoice=${invPath ? 'OK' : 'SKIP'}, email=${userEmail ? 'SENT' : 'SKIP'}`);
+  } catch (e: any) {
+    console.error('[PostPayment] Error:', e.message);
+  }
+}
 
 export async function getAll(req: any, res: Response) {
   try {
@@ -136,6 +173,11 @@ export async function simulateSuccess(req: Request, res: Response) {
         pmproLevel: 2,
       }).where(eq(users.id, userRecord.id));
     }
+
+    handlePostPaymentActions(
+      { ...payment, status: 'completed' },
+      userRecord?.email
+    );
 
     emitWebhookEvent(payment.userId, 'payment.completed', {
       id: payment.id,
@@ -269,6 +311,7 @@ export async function webhook(req: any, res: Response) {
 
         if (existing.licenseId && status === 'completed') {
           await db.update(licenses).set({ status: 'active' }).where(eq(licenses.id, existing.licenseId));
+          handlePostPaymentActions({ ...existing, status: 'completed' });
         } else if (existing.licenseId && status === 'refunded') {
           await db.update(licenses).set({ status: 'cancelled' }).where(eq(licenses.id, existing.licenseId));
         }
