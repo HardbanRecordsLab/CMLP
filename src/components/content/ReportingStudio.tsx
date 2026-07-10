@@ -298,20 +298,24 @@ export default function ReportingStudio() {
 
         {/* Global actions: PDF Print and Spreadsheet triggers */}
         <div className="flex items-center gap-2 self-end md:self-auto mb-2">
-          <button 
-            onClick={handlePrintPDF}
+          <a
+            href={getApiUrl('/api/reports/export/pdf')}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 rounded text-[11px] font-bold cursor-pointer transition"
-            id="btn-print-pdf"
+            id="btn-pdf-download"
           >
-            <Printer className="w-3.5 h-3.5" /> PRINT REPORT
-          </button>
-          <button 
-            onClick={() => exportToCSV(rptTab === 'financials' ? 'payments' : rptTab === 'usage' ? 'genres' : 'raw_audit')}
+            <Printer className="w-3.5 h-3.5" /> PDF REPORT
+          </a>
+          <a
+            href={getApiUrl('/api/reports/export/csv')}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold cursor-pointer transition shadow-lg shadow-emerald-950/20"
             id="btn-export-csv"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5" /> EXPORT EXCEL/CSV
-          </button>
+            <FileSpreadsheet className="w-3.5 h-3.5" /> EXPORT CSV
+          </a>
         </div>
       </div>
 
