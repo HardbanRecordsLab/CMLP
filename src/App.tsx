@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import B2BDashboard from '@/components/b2b/B2BDashboard.tsx';
 import B2BPlayer from '@/components/players/B2BPlayer.tsx';
 import WhiteLabelPlayer from '@/components/players/WhiteLabelPlayer.tsx';
 import AdminDashboard from '@/components/admin/AdminDashboard.tsx';
@@ -33,8 +34,11 @@ export default function App() {
   if (route.startsWith('/tracks')) {
     return <AuthWrapper><TrackLibrary /></AuthWrapper>;
   }
-  if (route.startsWith('/b2b')) {
+  if (route.startsWith('/b2b/player')) {
     return <AuthWrapper><B2BPlayer /></AuthWrapper>;
+  }
+  if (route.startsWith('/b2b')) {
+    return <AuthWrapper><B2BDashboard /></AuthWrapper>;
   }
   if (route.startsWith('/verify/')) {
     const certNumber = route.slice('/verify/'.length);
