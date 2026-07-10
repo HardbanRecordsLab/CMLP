@@ -18,6 +18,14 @@ import { startTranscodeWorker } from './src/services/transcoding-queue.service.t
 import { startWebhookRetryProcessor } from './src/services/webhook-delivery.service.ts';
 import { runDunningProcess } from './src/services/dunning.service.ts';
 import { verifyToken } from './src/lib/jwt.ts';
+import { WebSocketServer, WebSocket as WSWebSocket } from 'ws';
+import type { IncomingMessage } from 'http';
+
+declare module 'ws' {
+  interface WebSocket {
+    auth: { uid: string; email: string; role: string } | null;
+  }
+}
 
 export const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -106,10 +114,13 @@ async function setupViteAndStart() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    const fs = await import('fs');
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+    }
   }
 
   app.use(notFoundHandler);
@@ -117,17 +128,17 @@ async function setupViteAndStart() {
 
   const server = require('http').createServer(app);
 
-  const wss = new (require('ws').WebSocketServer)({ server });
+  const wss = new WebSocketServer({ server });
 
   function broadcastActiveStreams() {
     wss.clients.forEach(client => {
-      if (client.readyState === require('ws').WebSocket.OPEN) {
+      if (client.readyState === WSWebSocket.OPEN) {
         client.send(JSON.stringify({ type: 'streamCount', count: activeStreams }));
       }
     });
   }
 
-  wss.on('connection', (ws: any, req: any) => {
+  wss.on('connection', (ws: WSWebSocket, req: IncomingMessage) => {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const token = url.searchParams.get('token');
     let authed: { uid: string; email: string; role: string } | null = null;
@@ -163,7 +174,7 @@ async function setupViteAndStart() {
       ws.ping();
     }, 30000);
 
-    ws.on('message', (message: any) => {
+    ws.on('message', (message: WSWebSocket.RawData) => {
       try {
         const data = JSON.parse(message.toString());
         if (data.type === 'register') {
