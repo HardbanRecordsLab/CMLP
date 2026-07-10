@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { requireAuth, requireRole } from '../middleware/auth.ts';
 import * as tracksController from '../controllers/tracks.controller.ts';
+import { cacheMiddleware } from '../lib/redis.ts';
 
 const router = Router();
 
@@ -32,8 +33,8 @@ const upload = multer({
   }
 });
 
-router.get('/', requireAuth, tracksController.getAll);
-router.get('/public', tracksController.getPublic);
+router.get('/', requireAuth, cacheMiddleware(30, (req) => `tracks:${(req as any).user?.uid || 'anon'}:${JSON.stringify(req.query)}`), tracksController.getAll);
+router.get('/public', cacheMiddleware(60, () => 'tracks:public'), tracksController.getPublic);
 router.post('/', requireAuth, requireRole('admin'), upload.single('audio_file'), tracksController.create);
 
 router.get('/:id/tags', requireAuth, tracksController.getTrackTags);
