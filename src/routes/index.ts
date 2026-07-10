@@ -20,6 +20,7 @@ import webhooksRoutes from './webhooks.routes.ts';
 import customOrdersRoutes from './custom-orders.routes.ts';
 import apiKeysRoutes from './api-keys.routes.ts';
 import webhookManagerRoutes from './webhook-manager.routes.ts';
+import dunningRoutes from './dunning.routes.ts';
 import { apiKeyAuth } from '../middleware/apiKeyAuth.ts';
 import * as wordpressController from '../controllers/wordpress.controller.ts';
 
@@ -49,5 +50,6 @@ router.use('/webhooks', webhooksRoutes);
 router.use('/custom-orders', customOrdersRoutes);
 router.use('/api-keys', apiKeysRoutes);
 router.use('/webhook-manager', webhookManagerRoutes);
+router.use('/dunning', dunningRoutes);
 
 export default router;

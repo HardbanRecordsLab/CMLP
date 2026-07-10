@@ -16,6 +16,7 @@ import apiRoutes from './src/routes/index.ts';
 import { activeNotificationSockets } from './src/lib/notifications.ts';
 import { startTranscodeWorker } from './src/services/transcoding-queue.service.ts';
 import { startWebhookRetryProcessor } from './src/services/webhook-delivery.service.ts';
+import { runDunningProcess } from './src/services/dunning.service.ts';
 import { verifyToken } from './src/lib/jwt.ts';
 
 export const app = express();
@@ -91,6 +92,9 @@ async function setupViteAndStart() {
   if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
     startTranscodeWorker();
     startWebhookRetryProcessor();
+    setInterval(() => {
+      runDunningProcess().catch(e => console.error('[Dunning CRON] Error:', e.message));
+    }, 60 * 60 * 1000).unref();
   }
 
   if (process.env.NODE_ENV !== 'production') {
