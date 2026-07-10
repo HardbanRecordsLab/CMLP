@@ -313,6 +313,19 @@ export const webhooks = pgTable('webhooks', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
+export const coupons = pgTable('coupons', {
+  id: serial('id').primaryKey(),
+  code: text('code').notNull().unique(),
+  discountPercent: integer('discount_percent'),
+  discountAmount: integer('discount_amount'),
+  maxUses: integer('max_uses').default(1),
+  usedCount: integer('used_count').default(0).notNull(),
+  minAmount: integer('min_amount').default(0),
+  expiresAt: timestamp('expires_at'),
+  isActive: boolean('is_active').default(true).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
 export const webhook_deliveries = pgTable('webhook_deliveries', {
   id: serial('id').primaryKey(),
   webhookId: integer('webhook_id').references(() => webhooks.id, { onDelete: 'cascade' }).notNull(),

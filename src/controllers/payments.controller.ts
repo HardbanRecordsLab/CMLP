@@ -65,11 +65,20 @@ export async function getAll(req: any, res: Response) {
   }
 }
 
+import { validateCouponCode } from './coupons.controller.ts';
+
 export async function createCheckoutSession(req: any, res: Response) {
   try {
-    const { amount, currency, gateway, transactionType, licenseId } = req.body;
+    let { amount, currency, gateway, transactionType, licenseId, couponCode } = req.body;
     const userUid = req.user?.uid;
     if (!userUid) { res.status(401).json({ error: 'Unauthorized' }); return; }
+
+    if (couponCode) {
+      const validation = await validateCouponCode(couponCode, parseInt(amount, 10));
+      if (validation.valid) {
+        amount = validation.finalAmount;
+      }
+    }
 
     const [userRecord] = await db.select().from(users).where(eq(users.uid, userUid));
     if (!userRecord) { res.status(404).json({ error: 'User not found' }); return; }
