@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import B2BDashboard from '@/components/b2b/B2BDashboard.tsx';
 import B2BPlayer from '@/components/players/B2BPlayer.tsx';
 import WhiteLabelPlayer from '@/components/players/WhiteLabelPlayer.tsx';
@@ -25,28 +26,52 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  if (route.startsWith('/admin')) {
-    return <AuthWrapper><AdminDashboard /></AuthWrapper>;
-  }
-  if (route.startsWith('/whitelabel')) {
-    return <WhiteLabelPlayer />;
-  }
-  if (route.startsWith('/tracks')) {
-    return <AuthWrapper><TrackLibrary /></AuthWrapper>;
-  }
-  if (route.startsWith('/b2b/player')) {
-    return <AuthWrapper><B2BPlayer /></AuthWrapper>;
-  }
-  if (route.startsWith('/b2b')) {
-    return <AuthWrapper><B2BDashboard /></AuthWrapper>;
-  }
-  if (route.startsWith('/verify/')) {
-    const certNumber = route.slice('/verify/'.length);
-    return <VerifyCertificate certNumber={certNumber} />;
+  const content = (() => {
+    if (route.startsWith('/admin')) {
+      return <AuthWrapper><AdminDashboard /></AuthWrapper>;
+    }
+    if (route.startsWith('/whitelabel')) {
+      return <WhiteLabelPlayer />;
+    }
+    if (route.startsWith('/tracks')) {
+      return <AuthWrapper><TrackLibrary /></AuthWrapper>;
+    }
+    if (route.startsWith('/b2b/player')) {
+      return <AuthWrapper><B2BPlayer /></AuthWrapper>;
+    }
+    if (route.startsWith('/b2b')) {
+      return <AuthWrapper><B2BDashboard /></AuthWrapper>;
+    }
+    if (route.startsWith('/verify/')) {
+      const certNumber = route.slice('/verify/'.length);
+      return <VerifyCertificate certNumber={certNumber} />;
+    }
+    return null;
+  })();
+
+  if (content) {
+    return (
+      <>
+        <Toaster position="top-right" toastOptions={{
+          duration: 4000,
+          style: { background: '#1e293b', color: '#e2e8f0', border: '1px solid #334155' },
+          success: { iconTheme: { primary: '#22c55e', secondary: '#1e293b' } },
+          error: { iconTheme: { primary: '#ef4444', secondary: '#1e293b' } },
+        }} />
+        {content}
+      </>
+    );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 font-sans text-slate-300 p-6 relative">
+    <>
+      <Toaster position="top-right" toastOptions={{
+        duration: 4000,
+        style: { background: '#1e293b', color: '#e2e8f0', border: '1px solid #334155' },
+        success: { iconTheme: { primary: '#22c55e', secondary: '#1e293b' } },
+        error: { iconTheme: { primary: '#ef4444', secondary: '#1e293b' } },
+      }} />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 font-sans text-slate-300 p-6 relative">
       {/* Top Right Floating Language Switcher */}
       <div className="absolute top-6 right-6">
         <LanguageSelector />
@@ -90,5 +115,6 @@ export default function App() {
         </div>
       </div>
     </div>
+    </>
   );
 }
