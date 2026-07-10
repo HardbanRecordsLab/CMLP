@@ -6,6 +6,7 @@ import WhiteLabelPlayer from '@/components/players/WhiteLabelPlayer.tsx';
 import AdminDashboard from '@/components/admin/AdminDashboard.tsx';
 import TrackLibrary from '@/components/content/TrackLibrary.tsx';
 import AuthWrapper from '@/components/auth/AuthWrapper.tsx';
+import ResetPassword from '@/components/auth/ResetPassword.tsx';
 import VerifyCertificate from '@/components/verify/VerifyCertificate.tsx';
 import logoSrc from './assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from '@/components/common/LanguageSelector.tsx';
@@ -41,6 +42,11 @@ export default function App() {
     }
     if (route.startsWith('/b2b')) {
       return <AuthWrapper><B2BDashboard /></AuthWrapper>;
+    }
+    if (route.startsWith('/reset-password')) {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token') || '';
+      return <ResetPassword token={token} onDone={() => window.location.href = '/cmlp'} />;
     }
     if (route.startsWith('/verify/')) {
       const certNumber = route.slice('/verify/'.length);

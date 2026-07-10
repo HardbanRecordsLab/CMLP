@@ -9,7 +9,7 @@ interface User {
   accessToken: string;
 }
 
-export default function Login({ onLogin }: { onLogin: (user: User) => void }) {
+export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => void; onForgot?: () => void }) {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -107,13 +107,24 @@ export default function Login({ onLogin }: { onLogin: (user: User) => void }) {
             {loading ? t('common.loading') : (isRegistering ? "CREATE ACCOUNT" : t('login.submit_btn'))}
           </button>
           
-          <button
-            type="button"
-            onClick={() => setIsRegistering(!isRegistering)}
-            className="w-full text-center text-[11px] text-slate-500 hover:text-slate-400 underline pt-2 block"
-          >
-            {isRegistering ? "Already have an account? Sign In" : "Need an account? Register"}
-          </button>
+          <div className="flex justify-between items-center pt-1">
+            <button
+              type="button"
+              onClick={() => setIsRegistering(!isRegistering)}
+              className="text-[11px] text-slate-500 hover:text-slate-400 underline"
+            >
+              {isRegistering ? "Already have an account? Sign In" : "Need an account? Register"}
+            </button>
+            {!isRegistering && onForgot && (
+              <button
+                type="button"
+                onClick={onForgot}
+                className="text-[11px] text-slate-500 hover:text-blue-400 underline"
+              >
+                Forgot password?
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </div>

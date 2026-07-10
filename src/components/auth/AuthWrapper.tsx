@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Login from '@/components/auth/Login.tsx';
+import ForgotPassword from '@/components/auth/ForgotPassword.tsx';
 
 interface User {
   uid: string;
@@ -10,6 +11,7 @@ interface User {
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [showForgot, setShowForgot] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('auth_token');
@@ -37,7 +39,10 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
   };
 
   if (!user) {
-    return <Login onLogin={handleLogin} />;
+    if (showForgot) {
+      return <ForgotPassword onBack={() => setShowForgot(false)} />;
+    }
+    return <Login onLogin={handleLogin} onForgot={() => setShowForgot(true)} />;
   }
 
   return <>{children}</>;
