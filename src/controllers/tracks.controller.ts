@@ -8,11 +8,17 @@ import path from 'path';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { enqueueTranscodeJob } from '../services/transcoding-queue.service.ts';
 import { clearCache } from '../lib/redis.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
+
+const TRACK_SEARCH_COLUMNS = ['title', 'artist', 'album', 'genre', 'isrc'];
+const TRACK_SORT_COLUMNS = ['id', 'title', 'artist', 'album', 'year', 'bpm', 'durationMs', 'createdAt', 'updatedAt'];
 
 export async function getAll(req: any, res: Response) {
   try {
-    const allTracks = await db.select().from(tracks);
-    res.json(allTracks);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, TRACK_SEARCH_COLUMNS);
+    const result = await paginateQuery(tracks, [searchCond], params, TRACK_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }
@@ -20,8 +26,10 @@ export async function getAll(req: any, res: Response) {
 
 export async function getPublic(req: Request, res: Response) {
   try {
-    const allTracks = await db.select().from(tracks);
-    res.json(allTracks);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, TRACK_SEARCH_COLUMNS);
+    const result = await paginateQuery(tracks, [searchCond], params, TRACK_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }

@@ -4,11 +4,17 @@ import { db } from '../db/index.ts';
 import { playlists, playlist_tracks, tracks } from '../db/schema.ts';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { cachePlaylist, getCachedPlaylist, clearCache } from '../lib/redis.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
+
+const PLAYLIST_SEARCH_COLUMNS = ['title', 'description'];
+const PLAYLIST_SORT_COLUMNS = ['id', 'title', 'createdAt', 'updatedAt'];
 
 export async function getAll(req: any, res: Response) {
   try {
-    const allPlaylists = await db.select().from(playlists);
-    res.json(allPlaylists);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, PLAYLIST_SEARCH_COLUMNS);
+    const result = await paginateQuery(playlists, [searchCond], params, PLAYLIST_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }
@@ -16,8 +22,10 @@ export async function getAll(req: any, res: Response) {
 
 export async function getPublic(req: Request, res: Response) {
   try {
-    const allPlaylists = await db.select().from(playlists).where(eq(playlists.isPublic, true));
-    res.json(allPlaylists);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, PLAYLIST_SEARCH_COLUMNS);
+    const result = await paginateQuery(playlists, [eq(playlists.isPublic, true), searchCond], params, PLAYLIST_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }
