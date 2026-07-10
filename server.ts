@@ -18,6 +18,7 @@ import { startTranscodeWorker } from './src/services/transcoding-queue.service.t
 import { startWebhookRetryProcessor } from './src/services/webhook-delivery.service.ts';
 import { runDunningProcess } from './src/services/dunning.service.ts';
 import { verifyToken } from './src/lib/jwt.ts';
+import compression from 'compression';
 import { WebSocketServer, WebSocket as WSWebSocket } from 'ws';
 import type { IncomingMessage } from 'http';
 
@@ -47,6 +48,7 @@ const rateLimiter = createRateLimiter(async (userId, action, resource, details, 
   await logAuditEvent({ userId, action, resource, details, ipAddress });
 });
 
+app.use(compression());
 app.use(express.json());
 app.use(rateLimiter);
 app.use('/api', apiRoutes);
