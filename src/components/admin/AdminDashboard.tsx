@@ -1,4 +1,4 @@
-import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook } from 'lucide-react';
+import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
@@ -19,6 +19,7 @@ import SecurityConsole from '@/components/admin/SecurityConsole.tsx';
 import StrategicInitiatives from '@/components/admin/StrategicInitiatives.tsx';
 import WebhookDashboard from '@/components/admin/WebhookDashboard.tsx';
 import AuditTrailPanel from '@/components/admin/AuditTrailPanel.tsx';
+import ComplianceOZZ from '@/components/admin/ComplianceOZZ.tsx';
 import { Cpu, Video } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -138,6 +139,7 @@ export default function AdminDashboard() {
             { id: 'webhooks', icon: Webhook, label: 'Webhooks' },
             { id: 'notifications', icon: Bell, label: t('admin.notifications_alerts') },
             { id: 'security', icon: Shield, label: t('admin.security_lockdown') },
+            { id: 'compliance', icon: Scale, label: 'Compliance OZZ' },
             { id: 'audit', icon: FileSearch, label: 'Audit Trail' },
             { id: 'settings', icon: Settings, label: t('admin.system_settings') },
             { id: 'strategic', icon: Cpu, label: t('admin.strategic_console') },
@@ -396,6 +398,10 @@ export default function AdminDashboard() {
             <NotificationsHub />
           )}
 
+          {activeTab === 'compliance' && (
+            <ComplianceOZZ />
+          )}
+
           {activeTab === 'audit' && (
             <AuditTrailPanel />
           )}
@@ -411,7 +417,7 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'vod', 'licensing', 'billing', 'integrations', 'webhooks', 'notifications', 'strategic', 'audit', 'settings', 'reporting'].includes(activeTab) && (
+          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'vod', 'licensing', 'billing', 'integrations', 'webhooks', 'notifications', 'strategic', 'compliance', 'audit', 'settings', 'reporting'].includes(activeTab) && (
             <div className="p-12 text-center text-slate-500 bg-slate-900/50 border border-slate-800 rounded-xl">
               <p>Module <b>{activeTab}</b> is rendering...</p>
             </div>
