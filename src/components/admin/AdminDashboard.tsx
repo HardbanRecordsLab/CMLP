@@ -1,4 +1,4 @@
-import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale, Key, Tag } from 'lucide-react';
+import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale, Key, Tag, Headphones } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
@@ -22,6 +22,7 @@ import AuditTrailPanel from '@/components/admin/AuditTrailPanel.tsx';
 import ComplianceOZZ from '@/components/admin/ComplianceOZZ.tsx';
 import AdminApiKeys from '@/components/admin/AdminApiKeys.tsx';
 import AdminCoupons from '@/components/admin/AdminCoupons.tsx';
+import AdminCustomOrders from '@/components/admin/AdminCustomOrders.tsx';
 import { Cpu, Video } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -132,6 +133,7 @@ export default function AdminDashboard() {
             { id: 'reporting', icon: TrendingUp, label: t('admin.reporting', 'Reporting & Analytics') },
             { id: 'media', icon: Music, label: t('admin.media_vault') },
             { id: 'playlists', icon: ListMusic, label: t('admin.playlist_editor') },
+            { id: 'customOrders', icon: Headphones, label: 'Custom Orders' },
             { id: 'vod', icon: Video, label: 'Video On Demand' },
             { id: 'licensing', icon: FileSignature, label: t('admin.licensing_officer') },
             { id: 'billing', icon: CreditCard, label: t('admin.client_payments', 'Client Payments') },
@@ -378,6 +380,10 @@ export default function AdminDashboard() {
             <PlaylistManager />
           )}
 
+          {activeTab === 'customOrders' && (
+            <AdminCustomOrders />
+          )}
+
           {activeTab === 'vod' && (
             <VODManager />
           )}
@@ -429,7 +435,7 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'vod', 'licensing', 'billing', 'coupons', 'integrations', 'webhooks', 'apiKeys', 'notifications', 'strategic', 'compliance', 'audit', 'settings', 'reporting'].includes(activeTab) && (
+          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'customOrders', 'vod', 'licensing', 'billing', 'coupons', 'integrations', 'webhooks', 'apiKeys', 'notifications', 'strategic', 'compliance', 'audit', 'settings', 'reporting'].includes(activeTab) && (
             <div className="p-12 text-center text-slate-500 bg-slate-900/50 border border-slate-800 rounded-xl">
               <p>Module <b>{activeTab}</b> is rendering...</p>
             </div>
