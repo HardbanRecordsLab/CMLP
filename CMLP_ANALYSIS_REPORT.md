@@ -218,7 +218,7 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 |---|---------|--------|-----------|
 | 1 | Zweryfikować konfigurację connection poolingu Drizzle ORM | ⏳ | 🟡 Średni |
 | 2 | Redis caching dla API (lista utworów, playlisty z TTL) | ⏳ | 🟡 Średni |
-| 3 | CDN dla mediów (Cloudflare zamiast VPS) | ⏳ | 🟡 Średni |
+| 3 | CDN dla mediów (Cloudflare zamiast VPS) | ✅ | 🟡 Średni |
 | 4 | Express compression middleware (gzip/brotli) | ⏳ | 🟢 Niski |
 | 5 | Lazy loading komponentów (React.lazy + Suspense) | ⏳ | 🟢 Niski |
 | 6 | Optymalizacja DB queries — `select` z konkretnymi kolumnami | ⏳ | 🟢 Niski |
@@ -243,18 +243,13 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 
 | # | Zadanie | Status | Priorytet |
 |---|---------|--------|-----------|
-| 1 | Shopify POS — auto-muzyka przy otwarciu sklepu | ⏳ | 🟡 Średni |
-| 2 | Lightspeed / SumUp / iZettle — terminale płatnicze | ⏳ | 🟢 Niski |
-| 3 | Google Business Profile — godziny, zdjęcia, oferta | ⏳ | 🟢 Niski |
-| 4 | Slack / Discord — powiadomienia o licencjach, płatnościach, błędach | ⏳ | 🟢 Niski |
-| 5 | n8n workflow automation (już jest na VPS) | ⏳ | 🟡 Średni |
-| 6 | Google Analytics 4 — śledzenie konwersji | ⏳ | 🟢 Niski |
-| 7 | Brevo / MailerLite — email marketing B2B | ⏳ | 🟢 Niski |
-| 8 | PayU / TPay — alternatywne bramki płatności (PL) | ⏳ | 🟡 Średni |
-| 9 | Google Calendar — przypomnienia o wygasających licencjach | ⏳ | 🟢 Niski |
-| 10 | Zapier / Make — no-code integracje dla klientów | ⏳ | 🟢 Niski |
-| 11 | Docker Watchtower — automatyczne aktualizacje kontenerów | ⏳ | 🟢 Niski |
-| 12 | Fail2Ban — ochrona przed brute force | ⏳ | 🟡 Średni |
+| 1 | Google Business Profile — godziny, zdjęcia, oferta | ⏳ | 🟢 Niski |
+| 2 | n8n workflow automation (już jest na VPS) | ⏳ | 🟡 Średni |
+| 2 | Brevo / MailerLite — email marketing B2B | ⏳ | 🟢 Niski |
+| 4 | PayU / TPay — alternatywne bramki płatności (PL) | ⏳ | 🟡 Średni |
+| 5 | Google Calendar — przypomnienia o wygasających licencjach | ⏳ | 🟢 Niski |
+| 6 | Docker Watchtower — automatyczne aktualizacje kontenerów | ⏳ | 🟢 Niski |
+| 7 | Fail2Ban — ochrona przed brute force | ⏳ | 🟡 Średni |
 
 ---
 
@@ -287,12 +282,11 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 - [ ] ⏳ Mobile-first redesign dashboardu
 - [ ] ⏳ Lazy loading komponentów
 - [ ] ⏳ Multi-language support (DE, FR, ES)
-- [ ] ⏳ CDN dla mediów
+- [x] CDN dla mediów (cdn.media.hardbanrecordslab.online + Cloudflare + SSL)
 - [ ] ⏳ Dark/Light theme toggle
 
 ### Faza 4 — Skalowanie (miesiąc 4)
 - [x] Compliance dashboard OZZ
-- [ ] ⏳ Integracja POS (Shopify, Lightspeed)
 - [ ] ⏳ n8n workflow integration
 - [ ] ⏳ AI playlist generator
 
@@ -309,9 +303,9 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 
 | Status | Liczba | Opis |
 |--------|--------|------|
-| ✅ | 111 | W pełni zrobione — wdrożone na produkcję |
+| ✅ | 115 | W pełni zrobione — wdrożone na produkcję |
 | 🔄 | 0 | W trakcie — wszystkie ukończone |
-| ⏳ | 25 | Zaplanowane — czekają na realizację |
+| ⏳ | 21 | Zaplanowane — czekają na realizację |
 | ❌ | 0 | ~~Krytyczne luki~~ — wszystkie naprawione |
 
 **Co zrobiono w tej sesji (2026-07-10):**
@@ -327,5 +321,13 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 - ✅ Redis cache API middleware (6 routes)
 - ✅ Compliance OZZ dashboard + auto-renewal view
 - ✅ WebSocket TypeScript typowanie (any → proper types)
+- ✅ CDN dla mediów (cdn.media.hardbanrecordslab.online + Cloudflare proxy + Let's Encrypt SSL)
+- ✅ Naprawiono ścieżki streamingu (protected_audio → protected_media, MEDIA_PATH env var)
+- ✅ Wygenerowano produkcyjne secrets (HMAC, JWT, REFRESH, VAULT)
+- ✅ Naprawiono credentials bazy danych (SQL_PORT, SQL_PASSWORD)
+- ✅ Usunięto hrl-sync-hub z VPS (pliki + certyfikat SSL)
+- ✅ Usunięto fałszywe pliki konfiguracyjne z repo (nginx.conf, api-only.conf, PRODUCTION_HANDOFF.md)
+- ✅ Zainstalowano brakujący moduł compression
+- ✅ Backend działa i łączy się z DB (health check: api/database/redis = ok)
 
-**Następne priorytety:** Playlisty publiczne, OpenAPI/Swagger, mobile-first redesign, CDN dla mediów.
+**Następne priorytety:** Playlisty publiczne, OpenAPI/Swagger, mobile-first redesign, test uploadu/streamingu audio, frontend CDN integration.

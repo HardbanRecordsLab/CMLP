@@ -15,29 +15,10 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         PORT: 3000,
-        // PostgreSQL (Docker: cmlp_service_db on port 5433)
         SQL_HOST: "localhost",
         SQL_PORT: "5433",
-        SQL_USER: "hbrl_admin",
-        SQL_PASSWORD: "HardbanRecordsLab2026",
-        SQL_DB_NAME: "hbrl_master",
-        // Redis (Docker: cmlp_service_redis on port 6379)
         REDIS_HOST: "127.0.0.1",
         REDIS_PORT: "6379",
-        REDIS_URL: "redis://127.0.0.1:6379/0",
-        // Security
-        HMAC_SECRET: "hrl_hmac_stream_signing_key_2026_change_me",
-        JWT_SECRET: "hrl_jwt_production_secret_2026_change_me",
-        REFRESH_SECRET: "hrl_refresh_production_secret_2026_change_me",
-        // Stripe (set via .env or VPS env vars)
-        STRIPE_SECRET_KEY: "",
-        STRIPE_WEBHOOK_SECRET: "",
-        // AI
-        GEMINI_API_KEY: "",
-        // WordPress
-        WP_URL: "https://hardbanrecordslab.online",
-        WP_APP_USERNAME: "cmlp-sync-bot",
-        WP_APP_PASSWORD: ""
       },
       max_memory_restart: "600M",
       restart_delay: 3000,

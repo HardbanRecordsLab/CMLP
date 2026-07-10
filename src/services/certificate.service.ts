@@ -45,7 +45,8 @@ export async function generateLicenseCertificate(options: CertificateOptions): P
 
   const [company] = await db.select().from(companies).where(eq(companies.id, license.companyId as number));
 
-  const outputPath = options.outputPath || path.join(process.cwd(), 'media_files', `certificate-${license.certificateNumber}.pdf`);
+  const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
+  const outputPath = options.outputPath || path.join(mediaBasePath, `certificate-${license.certificateNumber}.pdf`);
   ensureDir(outputPath);
 
   const verifyUrl = `https://cmlp.hardbanrecordslab.online/verify/${license.certificateNumber}`;
@@ -98,8 +99,9 @@ export async function generateInvoice(options: InvoiceOptions): Promise<string> 
 
   const [company] = await db.select().from(companies).where(eq(companies.id, license.companyId as number));
 
+  const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
   const invoiceNumber = `INV-${license.certificateNumber}-${Date.now()}`;
-  const outputPath = options.outputPath || path.join(process.cwd(), 'media_files', `${invoiceNumber}.pdf`);
+  const outputPath = options.outputPath || path.join(mediaBasePath, `${invoiceNumber}.pdf`);
   ensureDir(outputPath);
 
   const verifyUrl = `https://cmlp.hardbanrecordslab.online/verify/invoice/${invoiceNumber}`;

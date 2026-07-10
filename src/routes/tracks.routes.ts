@@ -10,7 +10,7 @@ const router = Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = path.join(process.cwd(), 'media_files');
+    const dir = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     cb(null, dir);
   },

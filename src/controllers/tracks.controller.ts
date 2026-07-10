@@ -66,7 +66,8 @@ export async function create(req: any, res: Response) {
       fileSize: req.file.size,
     }).returning()) as unknown as any[];
 
-    const hlsDir = path.join(process.cwd(), 'media_files', 'hls', String(newTrack.id));
+    const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
+    const hlsDir = path.join(mediaBasePath, 'hls', String(newTrack.id));
     try {
       await enqueueTranscodeJob({
         trackId: newTrack.id,
@@ -140,8 +141,9 @@ export async function generateTrackTags(req: any, res: Response) {
       res.status(404).json({ error: 'Track not found' });
       return;
     }
+    const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
     const filePath = track.storagePath || track.filename;
-    const fullPath = filePath.startsWith('/') || filePath.includes(':') ? filePath : `media_files/${filePath}`;
+    const fullPath = filePath.startsWith('/') || filePath.includes(':') ? filePath : path.join(mediaBasePath, filePath);
     let metadata;
     try {
       metadata = await mm.parseFile(fullPath, { duration: true });
@@ -194,7 +196,8 @@ export async function remove(req: any, res: Response) {
     }
     const t = track[0];
     if (t.filename) {
-      const filePath = path.join(process.cwd(), 'media_files', t.filename);
+      const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
+      const filePath = path.join(mediaBasePath, t.filename);
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     }
     await db.delete(tracks).where(eq(tracks.id, id));

@@ -68,7 +68,7 @@ One of the CMLP's most powerful assets is its fully-integrated Legal Templating 
 ### Troubleshooting Sync Failures
 1. **Status FAILED**: Ensure the WordPress host allows standard Loopback Connections (`wp-json`).
 2. **Authorization 401**: Re-verify that the user has created an **Application Password** (User &rarr; Profile &rarr; Application Passwords in WordPress) instead of utilizing their raw dashboard access password.
-3. **Sandbox Testing**: Utilize the default `https://demo.hrl.pl/wp-json` host inside the Integrations sub-panel to test offline simulated state transfers without external servers.
+3. **Sandbox Testing**: Use the local sandbox simulator in the Admin panel to test offline simulated state transfers without external servers.
 
 ## 8. Phase 8 & 9: Real-time Alerts, Notifications & Admin Studio
 - **Integrated Notification Queuing**: Implemented unified configurations mapping SendGrid templates and standard SMTP transports.

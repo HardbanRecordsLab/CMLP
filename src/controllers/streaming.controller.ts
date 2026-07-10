@@ -94,7 +94,8 @@ export async function streamFile(req: Request, res: Response) {
     }
   }
 
-  const filePath = path.join(process.cwd(), 'media_files', filename);
+  const mediaBasePath = process.env.MEDIA_PATH || '/var/www/uploads/secure_tracks';
+  const filePath = path.join(mediaBasePath, filename);
 
   if (process.env.NODE_ENV !== "production") {
     res.setHeader('Content-Type', 'audio/mpeg');
@@ -108,9 +109,12 @@ export async function streamFile(req: Request, res: Response) {
     let contentType = 'audio/mpeg';
     if (ext === '.wav') contentType = 'audio/wav';
     if (ext === '.flac') contentType = 'audio/flac';
+    if (ext === '.ogg') contentType = 'audio/ogg';
+    if (ext === '.aac') contentType = 'audio/aac';
+    if (ext === '.m4a') contentType = 'audio/mp4';
 
     res.setHeader('Content-Type', contentType);
-    res.setHeader('X-Accel-Redirect', `/protected_audio/${filename}`);
+    res.setHeader('X-Accel-Redirect', `/protected_media/${filename}`);
     res.end();
   }
 }

@@ -63,7 +63,6 @@ status.hardbanrecordslab.online. A     84.247.162.167
 vault.hardbanrecordslab.online.  A     84.247.162.167
 docs.hardbanrecordslab.online.   A     84.247.162.167
 ai-publish.hardbanrecordslab.online. A 84.247.162.167
-hrl-sync-hub.hardbanrecordslab.online. A 84.247.162.167
 course-hub.hardbanrecordslab.online. A 84.247.162.167
 hrl-access.hardbanrecordslab.online. A 84.247.162.167
 auto.hardbanrecordslab.online.   A     84.247.162.167
@@ -155,15 +154,8 @@ ai_publish_backend   → 127.0.0.1:9109  (AI Publish)
 | **Merchant ID** | (w .env) |
 | **Merchant Pos ID** | (w .env) |
 
-### 2.7 Firebase
 
-| Parametr | Wartość |
-|----------|---------|
-| **Project ID** | `hardbanrecordslab` |
-| **Client Email** | `firebase@hardbanrecordslab.online` |
-| **Config File** | `config/firebase-applet-config.json` |
-
-### 2.8 GitHub
+### 2.7 GitHub
 
 | Parametr | Wartość |
 |----------|---------|
@@ -171,42 +163,42 @@ ai_publish_backend   → 127.0.0.1:9109  (AI Publish)
 | **Branch** | `main` |
 | **CI/CD** | GitHub Actions |
 
-### 2.9 Vercel
+### 2.8 Vercel
 
 | Parametr | Wartość |
 |----------|---------|
 | **Frontend** | `cmlp.hardbanrecordslab.online` |
 | **API URL** | `https://api.cmlp.hardbanrecordslab.online` |
 
-### 2.10 Cloudflare
+### 2.9 Cloudflare
 
 | Parametr | Wartość |
 |----------|---------|
 | **CDN** | Dla statycznych assetów |
 | **DNS** | Zarządzanie domenami |
 
-### 2.11 Sentry
+### 2.10 Sentry
 
 | Parametr | Wartość |
 |----------|---------|
 | **DSN** | (w .env) |
 | **Integration** | `src/utils/sentry.ts` |
 
-### 2.12 UptimeRobot
+### 2.11 UptimeRobot
 
 | Parametr | Wartość |
 |----------|---------|
 | **URL** | `https://status.hardbanrecordslab.online` |
 | **Container** | `uptime-kuma` (port 3010) |
 
-### 2.13 Google Cloud / GenAI
+### 2.12 Google Cloud / GenAI
 
 | Parametr | Wartość |
 |----------|---------|
 | **API Key** | `GOOGLE_GENAI_API_KEY` (w .env) |
 | **Use** | AI tagging, matching, scheduling |
 
-### 2.14 HashiCorp Vault
+### 2.13 HashiCorp Vault
 
 | Parametr | Wartość |
 |----------|---------|

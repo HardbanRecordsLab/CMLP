@@ -29,7 +29,8 @@ function getConnection() {
 async function processTranscodeJob(job: Job<TranscodeJobData>): Promise<void> {
   const { trackId, inputPath, filename } = job.data;
   const baseName = filename.replace(/\.[^.]+$/, '');
-  const hlsDir = path.join(process.cwd(), 'media_files', 'hls', String(trackId));
+  const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
+  const hlsDir = path.join(mediaBasePath, 'hls', String(trackId));
 
   const result = await transcodeToHLS(inputPath, hlsDir, baseName);
 
