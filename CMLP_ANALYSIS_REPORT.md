@@ -1,8 +1,8 @@
 # CMLP — Commercial Music Licensing Platform — Todo List & Status
 
-> **Data:** 2026-07-10
-> **Wersja:** 0.1.0 (commit `d0beb66`)
-> **Łącznie zadań:** 158 | ✅ 111 | ⏳ 25 | 🔄 0 | ❌ 0
+> **Data:** 2026-07-11
+> **Wersja:** 0.2.0 (commit `4b5fe81`)
+> **Łącznie zadań:** 158 | ✅ 116 | ⏳ 25 | 🔄 0 | ❌ 0
 
 ---
 
@@ -26,7 +26,7 @@
 ## 2. Zrealizowane funkcje — ✅
 
 ### Backend (API)
-- ✅ Rejestracja i logowanie użytkowników (JWT, refresh tokens)
+- ✅ Rejestracja i logowanie użytkowników (JWT, refresh tokens) — **login 500 naprawiony**
 - ✅ Autoryzacja MFA/TOTP
 - ✅ API key management (tworzenie, hashowanie, scopes)
 - ✅ Rate limiting (Redis-backed, per-IP, per-endpoint)
@@ -129,6 +129,9 @@
 | 7 | Vite/nginx base path | `base: '/cmlp/'` |
 | 8 | Per-license stream auth | `maxConcurrentStreams` |
 | 9 | WordPress sync conflict | `findWPPostByCmlpId()` + `isLocalNewer()` |
+| 10 | Dual PostgreSQL port mismatch | SQL_PORT=5433 (native), ecosystem.env nadpisywał .env |
+| 11 | Login 500 Internal Server Error | Reset hasła admin, naprawiono auth pipeline |
+| 12 | Inconsistent import extensions | `.js` → `.ts` w jwt.ts, auth.ts dla esbuild CJS |
 
 ---
 
@@ -303,12 +306,12 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 
 | Status | Liczba | Opis |
 |--------|--------|------|
-| ✅ | 115 | W pełni zrobione — wdrożone na produkcję |
+| ✅ | 120 | W pełni zrobione — wdrożone na produkcję |
 | 🔄 | 0 | W trakcie — wszystkie ukończone |
 | ⏳ | 21 | Zaplanowane — czekają na realizację |
 | ❌ | 0 | ~~Krytyczne luki~~ — wszystkie naprawione |
 
-**Co zrobiono w tej sesji (2026-07-10):**
+**Co zrobiono w sesji 2026-07-10:**
 - ✅ Paginacja + full-text search (licencje/aktywacje)
 - ✅ Forgot/reset password + email verification endpoints
 - ✅ Webhook dashboard UI (Admin)
@@ -330,4 +333,21 @@ _— Wszystkie pozycje z tej sekcji zostały ukończone._
 - ✅ Zainstalowano brakujący moduł compression
 - ✅ Backend działa i łączy się z DB (health check: api/database/redis = ok)
 
-**Następne priorytety:** Playlisty publiczne, OpenAPI/Swagger, mobile-first redesign, test uploadu/streamingu audio, frontend CDN integration.
+**Co zrobiono w sesji 2026-07-11 (NAPRAWA LOGIN 500):**
+- ✅ **Zidentyfikowano root cause:** dual PostgreSQL instances (port 5432 Docker + 5433 native)
+- ✅ **Naprawiono SQL_PORT:** .env zmieniony z 5432 → 5433 (native postgres z pełnym schematem)
+- ✅ **Naprawiono db/index.ts:** default port 5433 → 5432 usunięty, teraz zawsze 5432 fallback
+- ✅ **Naprawiono ecosystem.config.cjs:** usunięto hardcoded SQL_PORT/credentials (nadpisywały .env)
+- ✅ **Naprawiono JWT_SECRET env config:** brak hardcoded defaults w jwt.ts
+- ✅ **Naprawiono import extensions:** `.js` → `.ts` w jwt.ts, auth.ts (esbuild compat)
+- ✅ **Dodano szczegółowe logowanie auth:** error stack trace, request context
+- ✅ **Dodano schema validation:** startup check columns users table, info DB connection
+- ✅ **Zresetowano hasło admin:** usunięto duplikowane rekordy, ustawiono znane hasło
+- ✅ **Naprawiono PostgreSQL auth:** ustawiono hasło dla `hbrl_admin` na native postgres (5433)
+- ✅ **Oznaczono migracje jako wykonane:** __drizzle_migrations table z realnymi SHA256 hashami
+- ✅ **Naprawiono health check endpoint:** zmiana na poprawne drizzle.result.rows
+- ✅ **Login endpoint:** 200 OK, JWT + refreshToken zwracany poprawnie
+- ✅ **Health check external:** https://api.cmlp.hardbanrecordslab.online → OK (api/db/redis)
+- ✅ **PM2 w trybie fork** (zamiast cluster z SQL_PORT env vars który nadpisywał .env)
+
+**Następne priorytety:** Playlisty publiczne, OpenAPI/Swagger, mobile-first redesign, test uploadu/streamingu audio, frontend rebuild, CDN token test.

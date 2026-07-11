@@ -68,7 +68,7 @@ hrl-access.hardbanrecordslab.online. A 84.247.162.167
 auto.hardbanrecordslab.online.   A     84.247.162.167
 ```
 
-### 1.3 Nginx Upstreamy (mikroserwisy)
+## 1.3 Nginx Upstreamy (mikroserwisy)
 
 ```
 sync_hub_backend     → 127.0.0.1:9108  (CMLP Sync Hub)
@@ -76,6 +76,32 @@ course_hub_backend   → 127.0.0.1:9104  (Academy)
 sso_access_manager   → 127.0.0.1:9107  (SSO/Auth)
 ai_publish_backend   → 127.0.0.1:9109  (AI Publish)
 ```
+
+### 1.3.1 Admin Credentials (zweryfikowane 2026-07-11)
+
+```
+Email: hardbanrecordslab.pl@gmail.com
+Password: HardbanAdmin2026!
+UID: user_1783099785060_kiy3j16o9
+Role: admin
+```
+
+### 1.3.2 API Endpoints (verified 2026-07-11)
+
+| Endpoint | Status | Notes |
+|----------|--------|-------|
+| `POST /api/auth/login` | ✅ 200 OK | Zwraca accessToken + refreshToken |
+| `GET /api/health` (localhost) | ✅ OK | `{"api":"ok","database":"ok","redis":"ok"}` |
+| `GET /api/health` (external) | ✅ OK | `https://api.cmlp.hardbanrecordslab.online` |
+| `GET /api/cdn/verify` | ✅ Configured | Token verification endpoint |
+
+### 1.3.3 Krytyczna infrastruktura DB
+
+**DUAL PostgreSQL instances**:
+- Port 5433 (native) → `hbrl_master` z pełnym schematem (23 tabel) → **APP USES THIS**
+- Port 5432 (docker) → `hrl_db` z częścią schematu (16 tabel, brak 7 migracji) → **Nie używane**
+
+Migracje Drizzle (0000-0004) zostały ręcznie oznaczone jako wykonane dla `hbrl_master` (native postgres) bo schemat już istniał. `__drizzle_migrations` table zawiera prawdziwe SHA256 hashe plików migracji.
 
 ### 1.4 Porty Docker
 
@@ -108,16 +134,23 @@ ai_publish_backend   → 127.0.0.1:9109  (AI Publish)
 | **SSH Key** | `~/.ssh/id_ed25519` |
 | **User** | `root` |
 
-### 2.2 PostgreSQL
+### 2.2 PostgreSQL (DUAL INSTANCE)
 
 | Parametr | Wartość |
 |----------|---------|
 | **Host** | `127.0.0.1` (localhost) |
-| **Port** | `5432` |
-| **User** | `hrl_admin` |
-| **Database** | `hrl_db` |
-| **Container** | `cmlp_service_db` |
+| **Port Native** | `5433` ← App uses this port |
+| **Port Docker** | `5432` (container: `cmlp_service_db`, nie używany przez app) |
+| **User** | `hbrl_admin` |
+| **Database** | `hbrl_master` (native port 5433) |
+| **Container** | `cmlp_service_db` (port 5432, legacy, app nie łączy się) |
 | **Image** | `postgres:16-alpine` |
+
+**Uwaga:** Istnieją DWA PostgreSQL na VPS:
+- **Port 5433 (Native)** — główna baza z danymi produkcyjnymi, używana przez CMLP app
+- **Port 5432 (Docker)** — legacy container, app NIE powinno się łączyć
+
+`.env` musi mieć `SQL_PORT=5433` (nie 5432!) oraz `SQL_USER=hbrl_admin`.
 
 ### 2.3 Redis
 
@@ -798,6 +831,7 @@ free -h
 
 | Wersja | Data | Zmiany |
 |--------|------|--------|
+| 1.1.0 | 2026-07-11 | Zweryfikowano admin login, dodano dual PostgreSQL docs, naprawiono DB port |
 | 1.0.0 | 2026-07-04 | Initial release — rzeczywisty stan VPS |
 
 ---
