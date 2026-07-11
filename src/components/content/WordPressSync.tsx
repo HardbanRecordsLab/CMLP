@@ -225,7 +225,7 @@ export default function WordPressSync() {
             <div>
               <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
                 <span>WP API Entry Root URL</span>
-                <HelpCircle className="w-3 h-3 text-slate-600" title="Must point to wp-json path of WordPress instance" />
+                <HelpCircle className="w-3 h-3 text-slate-600" />
               </label>
               <div className="relative">
                 <Globe className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
