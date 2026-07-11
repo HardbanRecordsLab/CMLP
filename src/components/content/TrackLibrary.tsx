@@ -26,7 +26,7 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
   const loadTracks = () => {
     fetchWithAuth(getApiUrl('/api/tracks'))
       .then(r => r.json())
-      .then(data => setTracks(data))
+      .then(data => setTracks(Array.isArray(data) ? data : []))
       .catch(() => {});
   };
 

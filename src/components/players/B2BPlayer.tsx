@@ -79,8 +79,8 @@ export default function B2BPlayer() {
     fetchWithAuth(getApiUrl('/api/playlists'))
       .then(res => res.json())
       .then(data => {
-        setPlaylists(data);
-        setLogs(prev => [...prev, `[LIBRARY] ${t('b2b.loaded_playlists', { count: data.length })}`]);
+        setPlaylists(Array.isArray(data) ? data : []);
+        setLogs(prev => [...prev, `[LIBRARY] ${t('b2b.loaded_playlists', { count: (Array.isArray(data) ? data : []).length })}`]);
       })
       .catch(err => setLogs(prev => [...prev, `[ERROR] Failed to fetch playlists: ${err.message}`]));
   }, [fetchWithAuth, t]);
@@ -99,9 +99,10 @@ export default function B2BPlayer() {
       fetchWithAuth(getApiUrl('/api/tracks'))
         .then(res => res.json())
         .then(data => {
-          setTracks(data);
-          if (data.length > 0) {
-             setLogs(prev => [...prev, `[LIBRARY] Loaded ${data.length} tracks.`]);
+          setTracks(Array.isArray(data) ? data : []);
+          const count = Array.isArray(data) ? data.length : 0;
+          if (count > 0) {
+             setLogs(prev => [...prev, `[LIBRARY] Loaded ${count} tracks.`]);
           }
         })
         .catch(err => setLogs(prev => [...prev, `[ERROR] Failed to fetch tracks: ${err.message}`]));
@@ -168,6 +169,21 @@ export default function B2BPlayer() {
   };
 
   const currentTrack = tracks[currentTrackIndex];
+
+  useEffect(() => {
+    if (!currentTrack || !audioRef.current) return;
+    let cancelled = false;
+    fetchWithAuth(getApiUrl(`/api/audio/token/${currentTrack.filename}`))
+      .then(res => res.json())
+      .then(data => {
+        if (cancelled) return;
+        if (data.token && audioRef.current) {
+          audioRef.current.src = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${data.uid}&hrl_token=${data.token}`);
+        }
+      })
+      .catch(err => setLogs(prev => [...prev, `[ERROR] Failed to get audio token: ${err.message}`]));
+    return () => { cancelled = true; };
+  }, [currentTrackIndex, tracks, fetchWithAuth, getApiUrl]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -404,7 +420,6 @@ export default function B2BPlayer() {
       {currentTrack && (
         <audio 
           ref={audioRef}
-          src={getApiUrl(`/api/audio/${currentTrack.filename}`)}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={handleAudioEnded}

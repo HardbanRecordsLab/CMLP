@@ -106,7 +106,7 @@ export async function streamFile(req: Request, res: Response) {
     }
   }
 
-  const mediaBasePath = process.env.MEDIA_PATH || '/var/www/uploads/secure_tracks';
+  const mediaBasePath = process.env.MEDIA_PATH || '/opt/cmlp/media_files';
   const filePath = path.join(mediaBasePath, safeFilename);
 
   if (process.env.NODE_ENV !== "production") {
