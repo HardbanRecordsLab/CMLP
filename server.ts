@@ -32,31 +32,6 @@ export const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 let activeStreams = 0;
 
-// CORS middleware
-const allowedOrigins = [
-  'https://cmlp.hardbanrecordslab.online',
-  'https://cmlp.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-];
-
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Max-Age', '86400');
-  }
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
-  
-  next();
-});
-
 function validateRequiredEnv(): void {
   const required = [
     { key: 'HMAC_SECRET', name: 'HMAC_SECRET' },
