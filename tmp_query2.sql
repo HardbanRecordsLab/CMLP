@@ -1,1 +1,0 @@
-SELECT option_name, option_value FROM wp_options WHERE option_name LIKE "whl_%" OR option_name = "active_plugins";
