@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { signToken, signRefreshToken, refreshAccessToken } from '../lib/jwt.ts';
+import { signToken, signRefreshToken, refreshAccessToken, JWT_SECRET } from '../lib/jwt.ts';
 import { db } from '../db/index.ts';
 import { users } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
@@ -96,7 +96,7 @@ export async function register(req: Request, res: Response) {
 
     const verificationToken = jwt.sign(
       { email, purpose: 'email_verification' },
-      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -301,7 +301,7 @@ export async function forgotPassword(req: Request, res: Response) {
     const user = userRecords[0];
     const resetToken = jwt.sign(
       { email: user.email, uid: user.uid, purpose: 'password_reset' },
-      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      JWT_SECRET,
       { expiresIn: '1h' }
     );
 
@@ -333,7 +333,7 @@ export async function resetPassword(req: Request, res: Response) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret-change-in-production') as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
     if (decoded.purpose !== 'password_reset') {
       return res.status(400).json({ error: 'Invalid token purpose' });
     }
@@ -374,7 +374,7 @@ export async function verifyEmail(req: Request, res: Response) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret-change-in-production') as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
     if (decoded.purpose !== 'email_verification') {
       return res.status(400).json({ error: 'Invalid token purpose' });
     }
@@ -429,7 +429,7 @@ export async function resendVerificationEmail(req: Request, res: Response) {
 
     const verificationToken = jwt.sign(
       { email, purpose: 'email_verification' },
-      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      JWT_SECRET,
       { expiresIn: '24h' }
     );
 

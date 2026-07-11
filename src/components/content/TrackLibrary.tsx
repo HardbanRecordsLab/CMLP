@@ -58,7 +58,8 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
     }
     const token = localStorage.getItem('auth_token');
     const uid = localStorage.getItem('hrl_uid') || 'anonymous';
-    const src = getApiUrl(`/api/audio/${track.filename}?uid=${uid}&hrl_token=${token || 'dev_bypass'}`);
+    const hrlParam = token ? `&hrl_token=${token}` : '';
+    const src = getApiUrl(`/api/audio/${track.filename}?uid=${uid}${hrlParam}`);
 
     if (!audioRef.current) audioRef.current = new Audio();
     audioRef.current.src = src;

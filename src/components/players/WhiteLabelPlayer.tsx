@@ -90,7 +90,7 @@ export default function WhiteLabelPlayer() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         },
         body: JSON.stringify({
           trackId: track.id,
@@ -112,7 +112,8 @@ export default function WhiteLabelPlayer() {
 
     const token = localStorage.getItem('auth_token');
     const uid = localStorage.getItem('hrl_uid') || 'anonymous';
-    const audioSource = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${uid}&hrl_token=${token || 'dev_bypass'}`);
+    const hrlParam = token ? `&hrl_token=${token}` : '';
+    const audioSource = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${uid}${hrlParam}`);
 
     // Clean up previous HLS instance
     if (hlsRef.current) {

@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
-import B2BDashboard from '@/components/b2b/B2BDashboard.tsx';
-import B2BPlayer from '@/components/players/B2BPlayer.tsx';
-import WhiteLabelPlayer from '@/components/players/WhiteLabelPlayer.tsx';
-import AdminDashboard from '@/components/admin/AdminDashboard.tsx';
-import TrackLibrary from '@/components/content/TrackLibrary.tsx';
-import AuthWrapper from '@/components/auth/AuthWrapper.tsx';
-import ResetPassword from '@/components/auth/ResetPassword.tsx';
-import VerifyCertificate from '@/components/verify/VerifyCertificate.tsx';
 import logoSrc from './assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from '@/components/common/LanguageSelector.tsx';
 import { useTranslation } from 'react-i18next';
+
+const B2BDashboard = React.lazy(() => import('@/components/b2b/B2BDashboard.tsx'));
+const B2BPlayer = React.lazy(() => import('@/components/players/B2BPlayer.tsx'));
+const WhiteLabelPlayer = React.lazy(() => import('@/components/players/WhiteLabelPlayer.tsx'));
+const AdminDashboard = React.lazy(() => import('@/components/admin/AdminDashboard.tsx'));
+const TrackLibrary = React.lazy(() => import('@/components/content/TrackLibrary.tsx'));
+const AuthWrapper = React.lazy(() => import('@/components/auth/AuthWrapper.tsx'));
+const ResetPassword = React.lazy(() => import('@/components/auth/ResetPassword.tsx'));
+const VerifyCertificate = React.lazy(() => import('@/components/verify/VerifyCertificate.tsx'));
 
 export default function App() {
   const basePath = '/cmlp';
@@ -64,7 +65,9 @@ export default function App() {
           success: { iconTheme: { primary: '#22c55e', secondary: '#1e293b' } },
           error: { iconTheme: { primary: '#ef4444', secondary: '#1e293b' } },
         }} />
-        {content}
+        <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+          {content}
+        </Suspense>
       </>
     );
   }

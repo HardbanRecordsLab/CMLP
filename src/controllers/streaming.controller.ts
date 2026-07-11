@@ -12,7 +12,10 @@ export async function getToken(req: any, res: Response) {
     const expiresAt = Date.now() + 60 * 60 * 1000;
 
     const dataToSign = `${filename}:${uid}:${expiresAt}`;
-    const hmac = crypto.createHmac('sha256', process.env.HMAC_SECRET || '');
+    const hmacSecret = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' 
+      ? (() => { throw new Error('[FATAL] HMAC_SECRET is required in production'); })() 
+      : 'dev-hmac-secret');
+    const hmac = crypto.createHmac('sha256', hmacSecret);
     hmac.update(dataToSign);
     const signature = hmac.digest('hex');
 
@@ -46,6 +49,12 @@ export async function streamFile(req: Request, res: Response) {
   const { filename } = req.params;
   const { hrl_token, uid } = req.query;
 
+  const safeFilename = path.basename(filename);
+  if (safeFilename.includes('..') || safeFilename !== filename) {
+    res.status(400).send('Invalid filename');
+    return;
+  }
+
   if (!hrl_token || typeof hrl_token !== 'string' || !uid || typeof uid !== 'string') {
     res.status(401).send("Unauthorized"); return;
   }
@@ -57,7 +66,10 @@ export async function streamFile(req: Request, res: Response) {
   }
 
   const dataToSign = `${filename}:${uid}:${expiresAt}`;
-  const hmac = crypto.createHmac('sha256', process.env.HMAC_SECRET || '');
+  const hmacSecret = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' 
+    ? (() => { throw new Error('[FATAL] HMAC_SECRET is required in production'); })() 
+    : 'dev-hmac-secret');
+  const hmac = crypto.createHmac('sha256', hmacSecret);
   hmac.update(dataToSign);
   const expectedSignature = hmac.digest('hex');
 
@@ -95,7 +107,7 @@ export async function streamFile(req: Request, res: Response) {
   }
 
   const mediaBasePath = process.env.MEDIA_PATH || '/var/www/uploads/secure_tracks';
-  const filePath = path.join(mediaBasePath, filename);
+  const filePath = path.join(mediaBasePath, safeFilename);
 
   if (process.env.NODE_ENV !== "production") {
     res.setHeader('Content-Type', 'audio/mpeg');
@@ -105,7 +117,7 @@ export async function streamFile(req: Request, res: Response) {
       }
     });
   } else {
-    const ext = path.extname(filename).toLowerCase();
+    const ext = path.extname(safeFilename).toLowerCase();
     let contentType = 'audio/mpeg';
     if (ext === '.wav') contentType = 'audio/wav';
     if (ext === '.flac') contentType = 'audio/flac';
@@ -114,7 +126,7 @@ export async function streamFile(req: Request, res: Response) {
     if (ext === '.m4a') contentType = 'audio/mp4';
 
     res.setHeader('Content-Type', contentType);
-    res.setHeader('X-Accel-Redirect', `/protected_media/${filename}`);
+    res.setHeader('X-Accel-Redirect', `/protected_media/${safeFilename}`);
     res.end();
   }
 }

@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { getWordPressSettings, logSyncEvent } from '../lib/wordpress.ts';
 
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'hrl-webhook-shared-secret-dev';
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || (process.env.NODE_ENV === 'production' 
+  ? (() => { throw new Error('[FATAL] WEBHOOK_SECRET is required in production'); })() 
+  : 'dev-webhook-secret');
 
 function verifySecret(req: Request, res: Response): boolean {
   const secret = req.headers['x-webhook-secret'];

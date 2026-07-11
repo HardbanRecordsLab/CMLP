@@ -121,6 +121,17 @@ export async function updateLocation(req: any, res: Response) {
     const id = parseInt(req.params.id, 10);
     const { playlistAssignment, schedule } = req.body;
 
+    const [location] = await db.select().from(locations).where(eq(locations.id, id));
+    if (!location) { res.status(404).json({ error: 'Location not found' }); return; }
+
+    if (req.user?.role !== 'admin') {
+      const userCompanies = await db.select().from(companies).where(eq(companies.ownerId, req.user.uid));
+      const hasAccess = userCompanies.some(c => c.id === location.companyId);
+      if (!hasAccess) {
+        return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+      }
+    }
+
     const updateData: Record<string, any> = {};
 
     if (playlistAssignment !== undefined) {
@@ -165,6 +176,17 @@ export async function bulkUpdateLocations(req: any, res: Response) {
     const { ids, playlistAssignment, schedule } = req.body;
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       res.status(400).json({ error: 'Array of location IDs required' }); return;
+    }
+
+    if (req.user?.role !== 'admin') {
+      const userCompanies = await db.select().from(companies).where(eq(companies.ownerId, req.user.uid));
+      const allLocations = await db.select().from(locations);
+      for (const locId of ids) {
+        const loc = allLocations.find(l => l.id === locId);
+        if (!loc || !userCompanies.some(c => c.id === loc.companyId)) {
+          return res.status(403).json({ error: 'Forbidden: insufficient permissions for one or more locations' });
+        }
+      }
     }
 
     if (schedule !== undefined) {

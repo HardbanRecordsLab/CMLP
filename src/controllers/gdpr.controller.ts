@@ -61,7 +61,7 @@ export async function deleteData(req: any, res: Response) {
       .set({
         name: 'GDPR Scrubbed Profile',
         email: `gdpr-redacted-${user.id}@hrl-compliance.pl`,
-        pin: '0000',
+        pin: null,
         mfaSecret: null,
         mfaEnabled: false,
       })

@@ -5,6 +5,10 @@ import { eq } from 'drizzle-orm';
 import { desc } from 'drizzle-orm';
 import nodemailer from 'nodemailer';
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 export interface NotificationSettings {
   id?: number;
   provider: string; // 'smtp' or 'sendgrid'
@@ -47,8 +51,8 @@ export async function getNotificationSettings(): Promise<NotificationSettings> {
         provider: 'smtp',
         smtpHost: 'smtp.mailtrap.io',
         smtpPort: 587,
-        smtpUser: 'licensing_notifications_user',
-        smtpPass: 'demo_smtp_pass_123',
+        smtpUser: '',
+        smtpPass: '',
         sendgridApiKey: '',
         fromEmail: 'noreply@hrl.pl',
         fromName: 'Hardban Records Lab',
@@ -273,7 +277,7 @@ export async function triggerEmailNotification(
         to: toEmail,
         subject: subject,
         text: body,
-        html: `<p>${body.replace(/\n/g, '<br />')}</p>`
+        html: `<p>${escapeHtml(body).replace(/\n/g, '<br />')}</p>`
       });
 
       const log = await logNotificationEvent({
@@ -306,7 +310,7 @@ export async function triggerEmailNotification(
           personalizations: [{ to: [{ email: toEmail }] }],
           from: { email: settings.fromEmail, name: settings.fromName },
           subject: subject,
-          content: [{ type: 'text/html', value: body.replace(/\n/g, '<br />') }]
+          content: [{ type: 'text/html', value: escapeHtml(body).replace(/\n/g, '<br />') }]
         }),
         signal: controller.signal
       });

@@ -14,7 +14,9 @@ export class VaultSignatureService {
 
   /** @deprecated Use signWithVault directly */
   public static localFallbackSign(payload: string): string {
-    const fallbackSecret = process.env.HMAC_SECRET || 'hrl-default-dev-signing-secret';
+    const fallbackSecret = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' 
+      ? (() => { throw new Error('[FATAL] HMAC_SECRET is required in production for vault fallback'); })() 
+      : 'dev-hmac-secret');
     const hmac = crypto.createHmac('sha256', fallbackSecret);
     hmac.update(payload);
     return `vault:fallback_v1:${hmac.digest('hex')}`;

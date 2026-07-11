@@ -37,9 +37,9 @@ interface SyncLog {
 
 export default function WordPressSync() {
   const [settings, setSettings] = useState<WordPressSettings>({
-    wpUrl: 'https://demo.hrl.pl/wp-json',
-    appUsername: 'licensing_admin',
-    appPassword: 'wp_app_password_demo',
+    wpUrl: '',
+    appUsername: '',
+    appPassword: '',
     bidirectional: true,
     lastSyncTime: null
   });

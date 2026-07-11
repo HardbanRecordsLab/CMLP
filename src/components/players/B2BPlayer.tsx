@@ -404,7 +404,7 @@ export default function B2BPlayer() {
       {currentTrack && (
         <audio 
           ref={audioRef}
-          src={currentTrack.fileUrl}
+          src={getApiUrl(`/api/audio/${currentTrack.filename}`)}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={handleAudioEnded}

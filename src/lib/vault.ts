@@ -13,7 +13,9 @@ const transitKeyName = () => process.env.VAULT_TRANSIT_KEY_NAME || 'my-key';
 const isProduction = () => process.env.NODE_ENV === 'production';
 
 function localFallbackSign(payload: string): string {
-  const fallbackSecret = process.env.HMAC_SECRET || 'hrl-default-dev-signing-secret';
+  const fallbackSecret = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' 
+    ? (() => { throw new Error('[FATAL] HMAC_SECRET is required in production for vault fallback'); })() 
+    : 'dev-hmac-secret');
   const hmac = crypto.createHmac('sha256', fallbackSecret);
   hmac.update(payload);
   return `vault:fallback_v1:${hmac.digest('hex')}`;

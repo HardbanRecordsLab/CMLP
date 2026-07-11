@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { db } from '../db/index.ts';
-import { tracks, licenses, payments, contracts, users } from '../db/schema.ts';
+import { tracks, licenses, payments, contracts, users, usage_logs } from '../db/schema.ts';
+import { sql } from 'drizzle-orm';
 
 export async function getUsage(req: any, res: Response) {
   try {
@@ -29,11 +30,14 @@ export async function getUsage(req: any, res: Response) {
       }
     });
 
+    const [playbackCount] = await db.select({ count: sql<number>`count(*)` }).from(usage_logs);
+    const totalPlaybacks = Number(playbackCount?.count || 0);
+
     const formattedGenres = Object.entries(genreCounts).map(([name, count]) => ({ name, count }));
     const formattedMoods = Object.entries(moodCounts).map(([name, count]) => ({ name, count }));
 
     res.json({
-      totalPlaybacks: allTracks.length > 0 ? allTracks.length * 15 + 45 : 198,
+      totalPlaybacks,
       genreDistribution: formattedGenres.length > 0 ? formattedGenres : [{ name: 'Jazz/Ambient', count: 5 }, { name: 'Lofi', count: 3 }],
       moodDistribution: formattedMoods.length > 0 ? formattedMoods : [{ name: 'Relaxing', count: 4 }, { name: 'Corporate Smooth', count: 4 }],
       peakHourTraffic: [

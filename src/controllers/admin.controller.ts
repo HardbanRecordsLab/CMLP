@@ -6,7 +6,26 @@ import { logAuditEvent } from '../services/logging.service.ts';
 
 export async function getUsers(req: any, res: Response) {
   try {
-    const allUsers = await db.select().from(users);
+    const allUsers = await db.select({
+      id: users.id,
+      uid: users.uid,
+      email: users.email,
+      name: users.name,
+      role: users.role,
+      pmproLevel: users.pmproLevel,
+      logoUrl: users.logoUrl,
+      primaryColor: users.primaryColor,
+      appName: users.appName,
+      secondaryColor: users.secondaryColor,
+      fontFamily: users.fontFamily,
+      playerSkin: users.playerSkin,
+      welcomeMessage: users.welcomeMessage,
+      outletName: users.outletName,
+      customCSS: users.customCSS,
+      mfaEnabled: users.mfaEnabled,
+      emailVerified: users.emailVerified,
+      createdAt: users.createdAt,
+    }).from(users);
     res.json(allUsers);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });

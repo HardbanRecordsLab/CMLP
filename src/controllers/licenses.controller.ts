@@ -9,8 +9,13 @@ import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
 
 export async function getAll(req: any, res: Response) {
   try {
-    const allLicenses = await db.select().from(licenses);
-    res.json(allLicenses);
+    if (req.user?.role !== 'admin') {
+      const allLicenses = await db.select().from(licenses).where(eq(licenses.authorUid, req.user.uid));
+      res.json(allLicenses);
+    } else {
+      const allLicenses = await db.select().from(licenses);
+      res.json(allLicenses);
+    }
   } catch (e) {
     res.status(500).json({ error: 'Database error fetching licenses' });
   }
@@ -86,6 +91,11 @@ Signed dynamically on behalf of Hardban Records Lab.`;
 export async function getContract(req: any, res: Response) {
   try {
     const licenseId = parseInt(req.params.id, 10);
+    const [license] = await db.select().from(licenses).where(eq(licenses.id, licenseId));
+    if (!license) { res.status(404).json({ error: 'License not found' }); return; }
+    if (req.user?.role !== 'admin' && license.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
     const [contract] = await db.select().from(contracts).where(eq(contracts.licenseId, licenseId));
     if (!contract) { res.status(404).json({ error: 'Contract not found' }); return; }
     res.json(contract);
@@ -100,6 +110,9 @@ export async function getPdf(req: any, res: Response) {
 
     const [license] = await db.select().from(licenses).where(eq(licenses.id, licenseId));
     if (!license) { res.status(404).json({ error: 'License not found' }); return; }
+    if (req.user?.role !== 'admin' && license.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
 
     const [contract] = await db.select().from(contracts).where(eq(contracts.licenseId, licenseId));
 
@@ -149,6 +162,11 @@ export async function getPdf(req: any, res: Response) {
 export async function sign(req: any, res: Response) {
   try {
     const licenseId = parseInt(req.params.id, 10);
+    const [license] = await db.select().from(licenses).where(eq(licenses.id, licenseId));
+    if (!license) { res.status(404).json({ error: 'License not found' }); return; }
+    if (req.user?.role !== 'admin' && license.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
     const [updated] = await db.update(contracts).set({
       signed: true,
       signedAt: new Date(),
@@ -169,6 +187,9 @@ export async function renew(req: any, res: Response) {
 
     const [existing] = await db.select().from(licenses).where(eq(licenses.id, id));
     if (!existing) { res.status(404).json({ error: 'License not found' }); return; }
+    if (req.user?.role !== 'admin' && existing.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
 
     const newExpiry = new Date(existing.expiresAt.getTime() + days * 24 * 60 * 60 * 1000);
     const [updated] = await db.update(licenses).set({
@@ -185,6 +206,11 @@ export async function renew(req: any, res: Response) {
 export async function cancel(req: any, res: Response) {
   try {
     const id = parseInt(req.params.id, 10);
+    const [existing] = await db.select().from(licenses).where(eq(licenses.id, id));
+    if (!existing) { res.status(404).json({ error: 'License not found' }); return; }
+    if (req.user?.role !== 'admin' && existing.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
     const [updated] = await db.update(licenses).set({
       status: 'cancelled',
     }).where(eq(licenses.id, id)).returning();

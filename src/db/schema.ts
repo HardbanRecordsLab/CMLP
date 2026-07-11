@@ -15,14 +15,14 @@ Foreign Key Rules:
 */
 
 import { pgTable as pgTableBase } from 'drizzle-orm/pg-core';
-import { serial, text, timestamp, boolean, jsonb, integer } from 'drizzle-orm/pg-core/columns';
+import { serial, text, timestamp, boolean, jsonb, integer, index } from 'drizzle-orm/pg-core';
 
 const pgTable = pgTableBase;
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   uid: text('uid').notNull().unique(),
-  email: text('email').notNull(),
+  email: text('email').notNull().unique(),
   name: text('name'),
   role: text('role').default('subscriber').notNull(),
   pmproLevel: integer('pmpro_level').default(1),
@@ -40,7 +40,9 @@ export const users = pgTable('users', {
   mfaSecret: text('mfa_secret'),
   emailVerified: boolean('email_verified').default(false).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
-});
+}, (table) => ({
+  emailIdx: index('users_email_idx').on(table.email),
+}));
 
 export const companies = pgTable('companies', {
   id: serial('id').primaryKey(),
@@ -80,7 +82,12 @@ export const tracks = pgTable('tracks', {
   status: text('status').default('active'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, (table) => ({
+  titleIdx: index('tracks_title_idx').on(table.title),
+  artistIdx: index('tracks_artist_idx').on(table.artist),
+  genreIdx: index('tracks_genre_idx').on(table.genre),
+  statusIdx: index('tracks_status_idx').on(table.status),
+}));
 
 export const playlists = pgTable('playlists', {
   id: serial('id').primaryKey(),
@@ -92,7 +99,10 @@ export const playlists = pgTable('playlists', {
   companyId: integer('company_id').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, (table) => ({
+  authorUidIdx: index('playlists_author_uid_idx').on(table.authorUid),
+  companyIdIdx: index('playlists_company_id_idx').on(table.companyId),
+}));
 
 export const playlist_tracks = pgTable('playlist_tracks', {
   id: serial('id').primaryKey(),
@@ -122,7 +132,11 @@ export const licenses = pgTable('licenses', {
   auditTrail: jsonb('audit_trail'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, (table) => ({
+  companyIdIdx: index('licenses_company_id_idx').on(table.companyId),
+  statusIdx: index('licenses_status_idx').on(table.status),
+  expiresAtIdx: index('licenses_expires_at_idx').on(table.expiresAt),
+}));
 
 export const contracts = pgTable('contracts', {
   id: serial('id').primaryKey(),
@@ -159,7 +173,11 @@ export const payments = pgTable('payments', {
   licenseId: integer('license_id').references(() => licenses.id, { onDelete: 'cascade' }),
   vatRate: integer('vat_rate').default(23),
   createdAt: timestamp('created_at').defaultNow(),
-});
+}, (table) => ({
+  userIdIdx: index('payments_user_id_idx').on(table.userId),
+  statusIdx: index('payments_status_idx').on(table.status),
+  licenseIdIdx: index('payments_license_id_idx').on(table.licenseId),
+}));
 
 export const wordpress_settings = pgTable('wordpress_settings', {
   id: serial('id').primaryKey(),
@@ -220,7 +238,10 @@ export const audit_logs = pgTable('audit_logs', {
   ipAddress: text('ip_address'),
   userAgent: text('user_agent'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-});
+}, (table) => ({
+  userIdIdx: index('audit_logs_user_id_idx').on(table.userId),
+  createdAtIdx: index('audit_logs_created_at_idx').on(table.createdAt),
+}));
 
 export const usage_logs = pgTable('usage_logs', {
   id: serial('id').primaryKey(),
@@ -231,7 +252,10 @@ export const usage_logs = pgTable('usage_logs', {
   outletIp: text('outlet_ip'),
   durationPlayedSecond: integer('duration_played_second'),
   playedAt: timestamp('played_at').defaultNow().notNull(),
-});
+}, (table) => ({
+  licenseIdIdx: index('usage_logs_license_id_idx').on(table.licenseId),
+  playedAtIdx: index('usage_logs_played_at_idx').on(table.playedAt),
+}));
 
 export const vod_content = pgTable('vod_content', {
   id: serial('id').primaryKey(),

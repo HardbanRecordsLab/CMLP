@@ -6,8 +6,13 @@ import { logAuditEvent } from '../services/logging.service.ts';
 
 export async function getAll(req: any, res: Response) {
   try {
-    const allVod = await db.select().from(vod_content);
-    res.json(allVod);
+    if (req.user?.role !== 'admin') {
+      const allVod = await db.select().from(vod_content).where(eq(vod_content.authorUid, req.user.uid));
+      res.json(allVod);
+    } else {
+      const allVod = await db.select().from(vod_content);
+      res.json(allVod);
+    }
   } catch (e) {
     res.status(500).json({ error: 'Failed to fetch VOD content' });
   }

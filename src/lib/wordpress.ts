@@ -31,9 +31,9 @@ export async function getWordPressSettings(): Promise<WordPressSettings> {
     if (settingsList.length === 0) {
       // Seed default settings
       const defaultSettings = {
-        wpUrl: 'https://demo.hrl.pl/wp-json',
-        appUsername: 'licensing_admin',
-        appPassword: 'wp_app_password_demo',
+        wpUrl: '',
+        appUsername: '',
+        appPassword: '',
         bidirectional: true,
         lastSyncTime: null,
       };
@@ -44,9 +44,9 @@ export async function getWordPressSettings(): Promise<WordPressSettings> {
   } catch (err) {
     console.error('[WordPress Settings Error]', err);
     return {
-      wpUrl: 'https://demo.hrl.pl/wp-json',
-      appUsername: 'licensing_admin',
-      appPassword: 'wp_app_password_demo',
+      wpUrl: '',
+      appUsername: '',
+      appPassword: '',
       bidirectional: true,
       lastSyncTime: null,
     };
@@ -113,12 +113,27 @@ export async function logSyncEvent(data: {
 }
 
 // WordPress Native API Caller
+function isPrivateUrl(url: string): boolean {
+  try {
+    const u = new URL(url);
+    if (u.protocol !== 'https:') return true;
+    const host = u.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host === '::1') return true;
+    if (/^10\./.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host) || /^192\.168\./.test(host)) return true;
+    if (/^169\.254\./.test(host)) return true;
+    return false;
+  } catch { return true; }
+}
+
 async function callWordPressAPI(
   settings: WordPressSettings,
   endpoint: string,
   method = 'GET',
   body?: any
 ): Promise<any> {
+  if (isPrivateUrl(settings.wpUrl)) {
+    throw new Error('Invalid WordPress URL: private or non-HTTPS addresses are not allowed');
+  }
   const url = `${settings.wpUrl.replace(/\/$/, '')}/wp/v2/${endpoint.replace(/^\//, '')}`;
   const authHeader = 'Basic ' + Buffer.from(`${settings.appUsername}:${settings.appPassword}`).toString('base64');
 

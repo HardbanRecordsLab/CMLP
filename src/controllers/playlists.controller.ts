@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { eq, and } from 'drizzle-orm';
 import { db } from '../db/index.ts';
-import { playlists, playlist_tracks, tracks } from '../db/schema.ts';
+import { playlists, playlist_tracks, tracks, licenses } from '../db/schema.ts';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { cachePlaylist, getCachedPlaylist, clearCache } from '../lib/redis.ts';
 import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
@@ -13,8 +13,13 @@ export async function getAll(req: any, res: Response) {
   try {
     const params = parsePagination(req.query);
     const searchCond = buildSearchCondition(params.search, PLAYLIST_SEARCH_COLUMNS);
-    const result = await paginateQuery(playlists, [searchCond], params, PLAYLIST_SORT_COLUMNS);
-    res.json(result);
+    if (req.user?.role !== 'admin') {
+      const result = await paginateQuery(playlists, [eq(playlists.authorUid, req.user.uid), searchCond], params, PLAYLIST_SORT_COLUMNS);
+      res.json(result);
+    } else {
+      const result = await paginateQuery(playlists, [searchCond], params, PLAYLIST_SORT_COLUMNS);
+      res.json(result);
+    }
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }
@@ -36,6 +41,14 @@ export async function create(req: any, res: Response) {
     const { title, description, isPublic, companyId } = req.body;
     const authorUid = req.user?.uid;
     if (!authorUid) { res.status(401).json({ error: 'Unauthorized' }); return; }
+
+    if (req.user?.role !== 'admin' && companyId) {
+      const userLicense = await db.select().from(licenses).where(eq(licenses.authorUid, authorUid));
+      const hasCompanyAccess = userLicense.some(l => l.companyId === companyId);
+      if (!hasCompanyAccess) {
+        return res.status(403).json({ error: 'Forbidden: insufficient permissions for this company' });
+      }
+    }
 
     const [newPlaylist] = (await db.insert(playlists).values({
       title: title || 'New Playlist',
@@ -85,6 +98,11 @@ export async function update(req: any, res: Response) {
   try {
     const id = parseInt(req.params.id, 10);
     const { title, description, isPublic } = req.body;
+    const [playlist] = await db.select().from(playlists).where(eq(playlists.id, id));
+    if (!playlist) { res.status(404).json({ error: 'Playlist not found' }); return; }
+    if (req.user?.role !== 'admin' && playlist.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
     const [updated] = await db.update(playlists).set({
       title, description, isPublic,
     }).where(eq(playlists.id, id)).returning();
@@ -99,6 +117,11 @@ export async function update(req: any, res: Response) {
 export async function remove(req: any, res: Response) {
   try {
     const id = parseInt(req.params.id, 10);
+    const [playlist] = await db.select().from(playlists).where(eq(playlists.id, id));
+    if (!playlist) { res.status(404).json({ error: 'Playlist not found' }); return; }
+    if (req.user?.role !== 'admin' && playlist.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
     await db.delete(playlist_tracks).where(eq(playlist_tracks.playlistId, id));
     const [deleted] = (await db.delete(playlists).where(eq(playlists.id, id)).returning()) as unknown as any[];
     if (!deleted) { res.status(404).json({ error: 'Playlist not found' }); return; }
@@ -113,6 +136,12 @@ export async function addTrack(req: any, res: Response) {
   try {
     const playlistId = parseInt(req.params.id, 10);
     const { trackId } = req.body;
+
+    const [playlist] = await db.select().from(playlists).where(eq(playlists.id, playlistId));
+    if (!playlist) { res.status(404).json({ error: 'Playlist not found' }); return; }
+    if (req.user?.role !== 'admin' && playlist.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
 
     const existing = await db.select().from(playlist_tracks).where(eq(playlist_tracks.playlistId, playlistId)).orderBy(playlist_tracks.sequence);
     const nextSequence = existing.length > 0 ? existing[existing.length - 1].sequence + 1 : 0;
@@ -133,6 +162,12 @@ export async function removeTrack(req: any, res: Response) {
   try {
     const playlistId = parseInt(req.params.id, 10);
     const trackId = parseInt(req.params.trackId, 10);
+
+    const [playlist] = await db.select().from(playlists).where(eq(playlists.id, playlistId));
+    if (!playlist) { res.status(404).json({ error: 'Playlist not found' }); return; }
+    if (req.user?.role !== 'admin' && playlist.authorUid !== req.user.uid) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
 
     await db.delete(playlist_tracks).where(
       and(eq(playlist_tracks.playlistId, playlistId), eq(playlist_tracks.trackId, trackId))

@@ -20,9 +20,9 @@ function getEscalationLevel(ageMs: number): typeof ESCHALATION_LEVELS[number] | 
   return null;
 }
 
-async function getUserEmail(userId: number | null): Promise<string> {
+async function getUserEmail(userId: number | null, tx: typeof db): Promise<string> {
   if (!userId) return 'finance@hrl.pl';
-  const [user] = await db.select({ email: users.email }).from(users).where(eq(users.id, userId));
+  const [user] = await tx.select({ email: users.email }).from(users).where(eq(users.id, userId));
   return user?.email || 'finance@hrl.pl';
 }
 
@@ -33,111 +33,113 @@ export async function runDunningProcess(): Promise<{
   locked: number;
   removed: number;
 }> {
-  const failedPayments = await db.select().from(payments).where(eq(payments.status, 'failed'));
+  return db.transaction(async (tx) => {
+    const failedPayments = await tx.select().from(payments).where(eq(payments.status, 'failed'));
 
-  const now = Date.now();
-  let reminded = 0;
-  let warned = 0;
-  let finalNoticed = 0;
-  let locked = 0;
-  let removed = 0;
+    const now = Date.now();
+    let reminded = 0;
+    let warned = 0;
+    let finalNoticed = 0;
+    let locked = 0;
+    let removed = 0;
 
-  for (const payment of failedPayments) {
-    const paymentTime = new Date(payment.createdAt).getTime();
-    const ageMs = now - paymentTime;
-    const level = getEscalationLevel(ageMs);
-    if (!level) continue;
+    for (const payment of failedPayments) {
+      const paymentTime = new Date(payment.createdAt).getTime();
+      const ageMs = now - paymentTime;
+      const level = getEscalationLevel(ageMs);
+      if (!level) continue;
 
-    const userEmail = await getUserEmail(payment.userId);
+      const userEmail = await getUserEmail(payment.userId, tx);
 
-    if (level.label === 'friendly_reminder') {
-      await triggerEmailNotification(userEmail, 'password_reset', {
-        name: userEmail.split('@')[0],
-        email: userEmail,
-        resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
-      }).catch(() => {});
-      await logAuditEvent({
-        userId: `payment_${payment.id}`,
-        action: 'dunning_reminder',
-        resource: 'payments',
-        details: `Friendly reminder sent for payment #${payment.id} (${(payment.amount / 100).toFixed(2)} ${payment.currency})`,
-      });
-      reminded++;
-    } else if (level.label === 'warning') {
-      await triggerEmailNotification(userEmail, 'password_reset', {
-        name: userEmail.split('@')[0],
-        email: userEmail,
-        resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
-      }).catch(() => {});
-      await logAuditEvent({
-        userId: `payment_${payment.id}`,
-        action: 'dunning_warning',
-        resource: 'payments',
-        details: `Warning sent for payment #${payment.id} — license at risk`,
-      });
-      warned++;
-    } else if (level.label === 'final_notice') {
-      await triggerEmailNotification(userEmail, 'password_reset', {
-        name: userEmail.split('@')[0],
-        email: userEmail,
-        resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
-      }).catch(() => {});
-      if (payment.licenseId) {
-        await db.update(licenses).set({ status: 'locked' }).where(eq(licenses.id, payment.licenseId));
-      }
-      await logAuditEvent({
-        userId: `payment_${payment.id}`,
-        action: 'dunning_final_notice',
-        resource: 'payments',
-        details: `Final notice + lock for payment #${payment.id}, license #${payment.licenseId}`,
-      });
-      finalNoticed++;
-      locked++;
-    } else if (level.label === 'lock') {
-      if (payment.licenseId) {
-        await db.update(licenses).set({ status: 'locked' }).where(eq(licenses.id, payment.licenseId));
-        await triggerWSNotificationBroadcast({
-          type: 'broadcast_alert',
-          subject: 'Playback Disabled — Payment Required',
-          body: `License #${payment.licenseId} has been locked due to non-payment.`,
-          recipient: 'all',
-        });
+      if (level.label === 'friendly_reminder') {
+        await triggerEmailNotification(userEmail, 'password_reset', {
+          name: userEmail.split('@')[0],
+          email: userEmail,
+          resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
+        }).catch(() => {});
         await logAuditEvent({
           userId: `payment_${payment.id}`,
-          action: 'dunning_lock',
-          resource: 'licenses',
-          details: `License #${payment.licenseId} locked due to non-payment`,
+          action: 'dunning_reminder',
+          resource: 'payments',
+          details: `Friendly reminder sent for payment #${payment.id} (${(payment.amount / 100).toFixed(2)} ${payment.currency})`,
         });
+        reminded++;
+      } else if (level.label === 'warning') {
+        await triggerEmailNotification(userEmail, 'password_reset', {
+          name: userEmail.split('@')[0],
+          email: userEmail,
+          resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
+        }).catch(() => {});
+        await logAuditEvent({
+          userId: `payment_${payment.id}`,
+          action: 'dunning_warning',
+          resource: 'payments',
+          details: `Warning sent for payment #${payment.id} — license at risk`,
+        });
+        warned++;
+      } else if (level.label === 'final_notice') {
+        await triggerEmailNotification(userEmail, 'password_reset', {
+          name: userEmail.split('@')[0],
+          email: userEmail,
+          resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
+        }).catch(() => {});
+        if (payment.licenseId) {
+          await tx.update(licenses).set({ status: 'locked' }).where(eq(licenses.id, payment.licenseId));
+        }
+        await logAuditEvent({
+          userId: `payment_${payment.id}`,
+          action: 'dunning_final_notice',
+          resource: 'payments',
+          details: `Final notice + lock for payment #${payment.id}, license #${payment.licenseId}`,
+        });
+        finalNoticed++;
         locked++;
-      }
-    } else if (level.label === 'remove') {
-      if (payment.licenseId) {
-        await db.update(licenses).set({ status: 'removed' }).where(eq(licenses.id, payment.licenseId));
-        await triggerWSNotificationBroadcast({
-          type: 'broadcast_alert',
-          subject: 'License Removed from Catalog',
-          body: `License #${payment.licenseId} has been removed due to prolonged payment failure.`,
-          recipient: 'all',
-        });
-        await logAuditEvent({
-          userId: `payment_${payment.id}`,
-          action: 'dunning_remove',
-          resource: 'licenses',
-          details: `License #${payment.licenseId} removed due to prolonged non-payment`,
-        });
-        removed++;
+      } else if (level.label === 'lock') {
+        if (payment.licenseId) {
+          await tx.update(licenses).set({ status: 'locked' }).where(eq(licenses.id, payment.licenseId));
+          await triggerWSNotificationBroadcast({
+            type: 'broadcast_alert',
+            subject: 'Playback Disabled — Payment Required',
+            body: `License #${payment.licenseId} has been locked due to non-payment.`,
+            recipient: 'all',
+          });
+          await logAuditEvent({
+            userId: `payment_${payment.id}`,
+            action: 'dunning_lock',
+            resource: 'licenses',
+            details: `License #${payment.licenseId} locked due to non-payment`,
+          });
+          locked++;
+        }
+      } else if (level.label === 'remove') {
+        if (payment.licenseId) {
+          await tx.update(licenses).set({ status: 'removed' }).where(eq(licenses.id, payment.licenseId));
+          await triggerWSNotificationBroadcast({
+            type: 'broadcast_alert',
+            subject: 'License Removed from Catalog',
+            body: `License #${payment.licenseId} has been removed due to prolonged payment failure.`,
+            recipient: 'all',
+          });
+          await logAuditEvent({
+            userId: `payment_${payment.id}`,
+            action: 'dunning_remove',
+            resource: 'licenses',
+            details: `License #${payment.licenseId} removed due to prolonged non-payment`,
+          });
+          removed++;
+        }
       }
     }
-  }
 
-  await logAuditEvent({
-    userId: 'system',
-    action: 'dunning_process',
-    resource: 'payments',
-    details: `Dunning run complete: ${reminded} reminded, ${warned} warned, ${finalNoticed} final notice, ${locked} locked, ${removed} removed`,
+    await logAuditEvent({
+      userId: 'system',
+      action: 'dunning_process',
+      resource: 'payments',
+      details: `Dunning run complete: ${reminded} reminded, ${warned} warned, ${finalNoticed} final notice, ${locked} locked, ${removed} removed`,
+    });
+
+    return { reminded, warned, finalNoticed, locked, removed };
   });
-
-  return { reminded, warned, finalNoticed, locked, removed };
 }
 
 export async function getDunningStatus(): Promise<{

@@ -78,7 +78,7 @@ export default function PlaylistManager() {
     }
   };
 
-  const handleAddTrack = async (trackId: number) => {
+  const handleAddTrack = async (trackId: string) => {
     if (!selectedPlaylist) return;
     try {
       await fetchWithAuth(getApiUrl(`/api/playlists/${selectedPlaylist.id}/tracks`), {

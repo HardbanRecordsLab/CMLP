@@ -4,8 +4,12 @@ import { users } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { redisClient } from './redis.ts';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-change-in-production';
-const REFRESH_SECRET = process.env.REFRESH_SECRET || 'default-refresh-secret-change-in-production';
+export const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' 
+  ? (() => { throw new Error('[FATAL] JWT_SECRET is required in production'); })() 
+  : 'dev-jwt-secret-do-not-use-in-production');
+const REFRESH_SECRET = process.env.REFRESH_SECRET || (process.env.NODE_ENV === 'production' 
+  ? (() => { throw new Error('[FATAL] REFRESH_SECRET is required in production'); })() 
+  : 'dev-refresh-secret-do-not-use-in-production');
 
 export interface JwtPayload {
   uid: string;
