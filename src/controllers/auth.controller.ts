@@ -35,22 +35,24 @@ export async function login(req: Request, res: Response) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const isValidPassword = await bcrypt.compare(password, user.pin || '');
+    if (!user.pin) {
+      console.error('[Auth] Login failed: user has no pin/password set:', { email, uid: user.uid });
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.pin);
     if (!isValidPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const accessToken = signToken({
+    const tokenPayload = {
       uid: user.uid,
       email: user.email,
       role: user.role,
-    });
+    };
 
-    const refreshToken = signRefreshToken({
-      uid: user.uid,
-      email: user.email,
-      role: user.role,
-    });
+    const accessToken = signToken(tokenPayload);
+    const refreshToken = signRefreshToken(tokenPayload);
 
     res.cookie('hrl_cmlp_jwt', accessToken, authCookieOptions(15 * 60 * 1000));
     res.cookie('hrl_cmlp_refresh', refreshToken, authCookieOptions(7 * 24 * 60 * 60 * 1000));
@@ -62,9 +64,17 @@ export async function login(req: Request, res: Response) {
       accessToken,
       refreshToken
     });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+  } catch (error: any) {
+    console.error('[Auth] Login error:', {
+      message: error?.message || String(error),
+      name: error?.name,
+      code: error?.code,
+      stack: error?.stack,
+      email,
+    });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 }
 

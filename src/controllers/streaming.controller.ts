@@ -139,3 +139,32 @@ export async function telemetry(req: Request, res: Response) {
     res.status(500).json({ error: e.message || 'Failed to log telemetry' });
   }
 }
+
+export async function cdnVerify(req: Request, res: Response) {
+  const originalUri = req.headers['x-original-uri'] as string || '';
+  const filename = originalUri.replace(/^\//, '');
+
+  if (!filename) {
+    res.status(403).send('Forbidden');
+    return;
+  }
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+
+  const token = authHeader.split('Bearer ')[1];
+  try {
+    const { verifyToken } = await import('../lib/jwt.ts');
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      res.status(401).send('Unauthorized');
+      return;
+    }
+    res.status(200).send('OK');
+  } catch {
+    res.status(401).send('Unauthorized');
+  }
+}

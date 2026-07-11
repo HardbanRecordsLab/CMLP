@@ -42,6 +42,10 @@ function validateRequiredEnv(): void {
     console.error(`[ENV] Missing required variables: ${missing.map(m => m.name).join(', ')}`);
     console.error('[ENV] Application will start but some features may not work correctly.');
   }
+  console.log('[ENV] NODE_ENV:', process.env.NODE_ENV);
+  console.log('[ENV] SQL_HOST:', process.env.SQL_HOST || 'localhost');
+  console.log('[ENV] SQL_PORT:', process.env.SQL_PORT || '5432');
+  console.log('[ENV] SQL_DB_NAME:', process.env.SQL_DB_NAME || 'hbrl_master');
 }
 
 const rateLimiter = createRateLimiter(async (userId, action, resource, details, ipAddress) => {
@@ -97,6 +101,29 @@ process.on('unhandledRejection', (reason) => {
 
 async function setupViteAndStart() {
   validateRequiredEnv();
+
+  try {
+    const { sql } = await import('drizzle-orm');
+    const result = await db.execute(sql`SELECT current_database(), inet_server_port()`);
+    console.log('[DB] Connected to:', result[0]);
+    const colCheck = await db.execute(sql`
+      SELECT column_name FROM information_schema.columns
+      WHERE table_name = 'users' ORDER BY ordinal_position
+    `);
+    const cols = colCheck.map((r: any) => r.column_name);
+    const required = ['email_verified', 'mfa_enabled', 'mfa_secret', 'secondary_color', 'custom_css'];
+    const missing = required.filter(c => !cols.includes(c));
+    if (missing.length > 0) {
+      console.error('[DB] WARNING: users table missing columns:', missing.join(', '));
+      console.error('[DB] Run `npm run db:migrate` to fix schema');
+    } else {
+      console.log('[DB] users table schema OK');
+    }
+  } catch (err: any) {
+    console.error('[DB] Connection check FAILED:', err.message);
+    console.error('[DB] HINT: Run `npm run db:migrate` to create required tables');
+  }
+
   await seedSystemAccounts();
 
   if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {

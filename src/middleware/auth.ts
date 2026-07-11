@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { getUserFromToken } from '../lib/jwt.js';
-import { db } from '../db/index.js';
-import { users } from '../db/schema.js';
+import { getUserFromToken } from '../lib/jwt.ts';
+import { db } from '../db/index.ts';
+import { users } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 
 export interface AuthRequest extends Request {

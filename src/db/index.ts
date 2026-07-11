@@ -16,7 +16,7 @@ export const getPool = () => {
     
     poolInstance = new Pool({
       host,
-      port: parseInt(process.env.SQL_PORT || '5433', 10),
+      port: parseInt(process.env.SQL_PORT || '5432', 10),
       user,
       password,
       database: dbName,

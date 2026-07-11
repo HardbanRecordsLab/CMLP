@@ -25,6 +25,7 @@ import reportsExportRoutes from './reports-export.routes.ts';
 import couponsRoutes from './coupons.routes.ts';
 import { apiKeyAuth } from '../middleware/apiKeyAuth.ts';
 import * as wordpressController from '../controllers/wordpress.controller.ts';
+import * as streamingController from '../controllers/streaming.controller.ts';
 
 const router = Router();
 
@@ -39,6 +40,7 @@ router.use('/playlists', playlistsRoutes);
 router.use('/licenses', licensesRoutes);
 router.use('/payments', paymentsRoutes);
 router.use('/audio', streamingRoutes);
+router.get('/cdn/verify', streamingController.cdnVerify);
 router.use('/wordpress', wordpressRoutes);
 router.use('/admin', adminRoutes);
 router.use('/security', securityRoutes);
