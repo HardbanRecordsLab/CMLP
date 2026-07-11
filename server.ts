@@ -104,15 +104,16 @@ async function setupViteAndStart() {
 
   try {
     const { sql } = await import('drizzle-orm');
-    const result = await db.execute(sql`SELECT current_database(), inet_server_port()`);
-    console.log('[DB] Connected to:', result[0]);
-    const colCheck = await db.execute(sql`
+    const connResult = await db.execute(sql`SELECT current_database(), inet_server_port()`);
+    const connRow = (connResult as any).rows?.[0] || (connResult as any)[0];
+    console.log('[DB] Connected to:', connRow);
+    const colResult = await db.execute(sql`
       SELECT column_name FROM information_schema.columns
       WHERE table_name = 'users' ORDER BY ordinal_position
     `);
-    const cols = colCheck.map((r: any) => r.column_name);
+    const cols = ((colResult as any).rows || colResult).map((r: any) => r.column_name);
     const required = ['email_verified', 'mfa_enabled', 'mfa_secret', 'secondary_color', 'custom_css'];
-    const missing = required.filter(c => !cols.includes(c));
+    const missing = required.filter((c: string) => !cols.includes(c));
     if (missing.length > 0) {
       console.error('[DB] WARNING: users table missing columns:', missing.join(', '));
       console.error('[DB] Run `npm run db:migrate` to fix schema');
