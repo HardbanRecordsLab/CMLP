@@ -26,6 +26,8 @@ import couponsRoutes from './coupons.routes.ts';
 import { apiKeyAuth } from '../middleware/apiKeyAuth.ts';
 import * as wordpressController from '../controllers/wordpress.controller.ts';
 import * as streamingController from '../controllers/streaming.controller.ts';
+import * as adminController from '../controllers/admin.controller.ts';
+import { requireAuth, requireRole } from '../middleware/auth.ts';
 
 const router = Router();
 
@@ -57,5 +59,11 @@ router.use('/webhook-manager', webhookManagerRoutes);
 router.use('/dunning', dunningRoutes);
 router.use('/reports/export', reportsExportRoutes);
 router.use('/coupons', couponsRoutes);
+
+// Aliasy dla kompatybilności wstecznej (frontend uderza w /api/stats zamiast /api/admin/stats)
+router.get('/stats', requireAuth, requireRole('admin'), adminController.getStats);
+router.get('/users', requireAuth, requireRole('admin'), adminController.getUsers);
+router.post('/users', requireAuth, requireRole('admin'), adminController.createUser);
+router.get('/audit-logs', requireAuth, requireRole('admin'), adminController.getAuditLogs);
 
 export default router;

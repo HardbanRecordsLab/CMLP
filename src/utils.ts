@@ -30,6 +30,14 @@ export function getWsUrl(): string {
       return formatted.endsWith('/') ? formatted : `${formatted}/`;
     }
   }
-  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-  return `${protocol}//${window.location.host}/`;
+  // Fallback: jeśli nie ma VITE_API_URL, użyj API URL z getApiUrl
+  const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://api.cmlp.hardbanrecordslab.online';
+  try {
+    const url = new URL(apiBaseUrl);
+    const wsProtocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${wsProtocol}//${url.host}/`;
+  } catch (e) {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//api.cmlp.hardbanrecordslab.online/`;
+  }
 }

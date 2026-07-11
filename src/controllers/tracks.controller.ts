@@ -81,7 +81,7 @@ export async function create(req: any, res: Response) {
       console.error('[Transcode] Failed to enqueue for track', newTrack.id, transcodeErr);
     }
 
-    await clearCache('track_meta:*');
+    await clearCache('tracks:*');
 
     await logAuditEvent({
       userId: req.user?.uid || 'admin',
