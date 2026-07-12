@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Home, ArrowLeft, ShieldAlert, Radio, User, Laptop, Menu, X, ExternalLink, Music } from 'lucide-react';
+import { Home, ArrowLeft, ShieldAlert, Radio, User, Laptop, Menu, X, ExternalLink, Music, LogOut } from 'lucide-react';
 import logoSrc from '@/assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from './LanguageSelector.tsx';
 import { useTranslation } from 'react-i18next';
+import { useLogout } from '@/components/auth/AuthContext.tsx';
 
 interface NavigationProps {
   currentView: 'b2b' | 'whitelabel' | 'admin';
@@ -11,6 +12,7 @@ interface NavigationProps {
 export default function Navigation({ currentView }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const onLogout = useLogout();
 
   const viewLabels = {
     b2b: {
@@ -102,15 +104,24 @@ export default function Navigation({ currentView }: NavigationProps) {
           <div className="flex items-center gap-3">
             <LanguageSelector />
 
-            <a 
-              href="/cmlp/"
-              className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold text-xs rounded transition flex items-center gap-1.5"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>{t('common.exit_portal')}</span>
-            </a>
+             <a 
+               href="/cmlp/"
+               className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold text-xs rounded transition flex items-center gap-1.5"
+             >
+               <ArrowLeft className="w-3.5 h-3.5" />
+               <span>{t('common.exit_portal')}</span>
+             </a>
 
-            <button 
+             <button 
+               onClick={onLogout}
+               className="px-3.5 py-1.5 bg-red-950 hover:bg-red-900 border border-red-800 text-red-200 font-bold text-xs rounded transition flex items-center gap-1.5"
+               title="Wyloguj"
+             >
+               <LogOut className="w-3.5 h-3.5" />
+               <span className="hidden sm:inline">WYLOGUJ</span>
+             </button>
+
+             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1 px-2 border border-slate-800 bg-slate-900/40 rounded text-slate-400 hover:text-slate-200 lg:hidden transition"
               aria-label="Toggle navigation menu"
@@ -148,14 +159,20 @@ export default function Navigation({ currentView }: NavigationProps) {
               <span className="font-bold flex items-center gap-2"><Music className="w-4 h-4" /> TRACK LIBRARY</span>
               <ExternalLink className="w-3.5 h-3.5 opacity-60" />
             </a>
-            <a 
-              href="/cmlp/admin" 
-              className={`flex items-center justify-between p-3 rounded-xl border text-xs transition ${currentView === 'admin' ? 'bg-purple-600/10 border-purple-500/40 text-purple-300' : 'bg-slate-900/30 border-slate-800 text-slate-400 hover:text-white'}`}
-            >
-              <span className="font-bold flex items-center gap-2"><ShieldAlert className="w-4 h-4" /> {t('common.admin_console')}</span>
-              <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-            </a>
-          </div>
+             <a 
+               href="/cmlp/admin" 
+               className={`flex items-center justify-between p-3 rounded-xl border text-xs transition ${currentView === 'admin' ? 'bg-purple-600/10 border-purple-500/40 text-purple-300' : 'bg-slate-900/30 border-slate-800 text-slate-400 hover:text-white'}`}
+             >
+               <span className="font-bold flex items-center gap-2"><ShieldAlert className="w-4 h-4" /> {t('common.admin_console')}</span>
+               <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+             </a>
+             <button
+               onClick={onLogout}
+               className="flex items-center justify-between p-3 rounded-xl border text-xs bg-red-900/20 border-red-800 text-red-400 hover:text-white transition"
+             >
+               <span className="font-bold flex items-center gap-2"><LogOut className="w-4 h-4" /> WYLOGUJ</span>
+             </button>
+           </div>
         </div>
       )}
     </nav>

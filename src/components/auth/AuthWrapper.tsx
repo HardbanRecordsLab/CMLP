@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Login from '@/components/auth/Login.tsx';
 import ForgotPassword from '@/components/auth/ForgotPassword.tsx';
+import { AuthProvider } from '@/components/auth/AuthContext.tsx';
 
 interface User {
   uid: string;
   email: string;
   role: string;
   accessToken: string;
+  refreshToken?: string;
 }
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
@@ -29,12 +31,16 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
   const handleLogin = (userData: User) => {
     localStorage.setItem('auth_token', userData.accessToken);
     localStorage.setItem('auth_user', JSON.stringify(userData));
+    if (userData.refreshToken) {
+      localStorage.setItem('refresh_token', userData.refreshToken);
+    }
     setUser(userData);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
+    localStorage.removeItem('refresh_token');
     setUser(null);
   };
 
@@ -45,5 +51,9 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
     return <Login onLogin={handleLogin} onForgot={() => setShowForgot(true)} />;
   }
 
-  return <>{children}</>;
+  return (
+    <AuthProvider onLogout={handleLogout}>
+      {children}
+    </AuthProvider>
+  );
 }

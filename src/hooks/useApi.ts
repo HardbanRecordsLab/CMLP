@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { refreshAccessToken } from '@/lib/jwt.ts';
 
 export function useApi() {
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,20 @@ export function useApi() {
       const headers = new Headers(options.headers || {});
       headers.set('Authorization', `Bearer ${token}`);
 
-      const response = await fetch(url, { ...options, headers });
+      let response = await fetch(url, { ...options, headers });
+
+      if (response.status === 401) {
+        const refresh = localStorage.getItem('refresh_token');
+        if (refresh) {
+          const tokens = refreshAccessToken(refresh);
+          if (tokens) {
+            localStorage.setItem('auth_token', tokens.accessToken);
+            localStorage.setItem('refresh_token', tokens.refreshToken);
+            headers.set('Authorization', `Bearer ${tokens.accessToken}`);
+            response = await fetch(url, { ...options, headers });
+          }
+        }
+      }
 
       if (!response.ok) {
         throw new Error(`API Error: ${response.statusText}`);
