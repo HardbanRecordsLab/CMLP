@@ -81,8 +81,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use('/api', (await import('./src/middleware/csrf.ts')).csrfProtection);
-
 app.use((req, res, next) => {
   const nonce = crypto.randomBytes(16).toString('base64');
   res.locals.nonce = nonce;
