@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { redisClient, blockIp as redisBlockIp, unblockIp } from '../lib/redis.ts';
+import { redisClient, blockIp as redisBlockIp, unblockIp, scanKeys } from '../lib/redis.ts';
 
 export const blockedIps = new Set<string>();
 
@@ -36,7 +36,7 @@ const checkAndIncrement = async (key: string, maxRequests: number, windowMs: num
 
 const syncBlockedIps = async () => {
   try {
-    const keys = await redisClient.keys(`${TEMP_BAN_PREFIX}*`);
+    const keys = await scanKeys(`${TEMP_BAN_PREFIX}*`);
     const currentBlocked = new Set<string>();
     for (const key of keys) {
       const ip = key.replace(TEMP_BAN_PREFIX, '');

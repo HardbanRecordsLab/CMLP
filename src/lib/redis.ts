@@ -139,9 +139,20 @@ export const getCachedTrackMetadata = async (trackId: string): Promise<any | nul
   }
 };
 
+export const scanKeys = async (pattern: string): Promise<string[]> => {
+  const results: string[] = [];
+  let cursor = '0';
+  do {
+    const [nextCursor, batch] = await redis.scan(cursor, 'MATCH', pattern, 'COUNT', 100);
+    cursor = nextCursor;
+    results.push(...batch);
+  } while (cursor !== '0');
+  return results;
+};
+
 export const clearCache = async (pattern: string): Promise<void> => {
   try {
-    const keys = await redis.keys(pattern);
+    const keys = await scanKeys(pattern);
     if (keys.length > 0) {
       await redis.del(...keys);
       console.log(`[Redis] Cleared ${keys.length} keys matching ${pattern}`);

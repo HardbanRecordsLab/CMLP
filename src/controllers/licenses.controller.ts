@@ -73,6 +73,14 @@ Signed dynamically on behalf of Hardban Records Lab.`;
     });
 
     const [authorUser] = await db.select().from(users).where(eq(users.uid, authorUid));
+    await logAuditEvent({
+      userId: authorUid,
+      action: 'license_created',
+      resource: 'licenses',
+      details: `License created for ${companyName} (${licenseType}) — cert: ${certificateNumber}`,
+      ipAddress: req.ip,
+    });
+
     emitWebhookEvent(authorUser?.id ?? null, 'license.created', {
       id: newLicense.id,
       companyName,
@@ -173,6 +181,15 @@ export async function sign(req: any, res: Response) {
     }).where(eq(contracts.licenseId, licenseId)).returning();
 
     if (!updated) { res.status(404).json({ error: 'Contract not found' }); return; }
+
+    await logAuditEvent({
+      userId: req.user?.uid || 'unknown',
+      action: 'license_signed',
+      resource: 'licenses',
+      details: `License #${licenseId} contract signed by ${req.user?.email || 'unknown'}`,
+      ipAddress: req.ip,
+    });
+
     res.json(updated);
   } catch (e) {
     res.status(500).json({ error: 'Failed to sign contract' });
@@ -197,6 +214,14 @@ export async function renew(req: any, res: Response) {
       status: 'active',
     }).where(eq(licenses.id, id)).returning();
 
+    await logAuditEvent({
+      userId: req.user?.uid || 'unknown',
+      action: 'license_renewed',
+      resource: 'licenses',
+      details: `License #${id} renewed (+${days} days) for ${existing.companyName}`,
+      ipAddress: req.ip,
+    });
+
     res.json(updated);
   } catch (e) {
     res.status(500).json({ error: 'Failed to renew license' });
@@ -216,6 +241,15 @@ export async function cancel(req: any, res: Response) {
     }).where(eq(licenses.id, id)).returning();
 
     if (!updated) { res.status(404).json({ error: 'License not found' }); return; }
+
+    await logAuditEvent({
+      userId: req.user?.uid || 'unknown',
+      action: 'license_cancelled',
+      resource: 'licenses',
+      details: `License #${id} cancelled for ${existing.companyName}`,
+      ipAddress: req.ip,
+    });
+
     res.json(updated);
   } catch (e) {
     res.status(500).json({ error: 'Failed to cancel license' });

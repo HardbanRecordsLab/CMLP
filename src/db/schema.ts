@@ -56,7 +56,9 @@ export const companies = pgTable('companies', {
   status: text('status').default('active'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, (table) => ({
+  ownerIdIdx: index('companies_owner_id_idx').on(table.ownerId),
+}));
 
 export const tracks = pgTable('tracks', {
   id: serial('id').primaryKey(),
@@ -137,6 +139,7 @@ export const licenses = pgTable('licenses', {
   companyIdIdx: index('licenses_company_id_idx').on(table.companyId),
   statusIdx: index('licenses_status_idx').on(table.status),
   expiresAtIdx: index('licenses_expires_at_idx').on(table.expiresAt),
+  authorUidIdx: index('licenses_author_uid_idx').on(table.authorUid),
 }));
 
 export const contracts = pgTable('contracts', {

@@ -2,13 +2,14 @@
 /**
  * Template Name: Regulamin
  * @package HRL_Theme
+ *Last updated: 2026-07-12
  */
 get_header();
 ?>
 <div class="legal-page-wrapper">
 <div class="legal-content">
     <h1><?php esc_html_e( 'Regulamin Świadczenia Usług', 'hrl-theme' ); ?></h1>
-    <p class="legal-date"><?php esc_html_e( 'Ostatnia aktualizacja: 23 maja 2026 r.', 'hrl-theme' ); ?></p>
+    <p class="legal-date"><?php esc_html_e( 'Ostatnia aktualizacja: 12 lipca 2026 r.', 'hrl-theme' ); ?></p>
 
     <h2><?php esc_html_e( '1. Postanowienia ogólne', 'hrl-theme' ); ?></h2>
     <p><?php esc_html_e( 'Niniejszy regulamin określa zasady korzystania z platformy HardbanRecords Lab (HRL), w tym serwisów CMLP (Commercial Music Licensing Platform), HRL BlogCast, Radio HRL oraz Muzyczna Kreacja Słów. Korzystanie z platformy oznacza akceptację niniejszego regulaminu.', 'hrl-theme' ); ?></p>
@@ -23,7 +24,7 @@ get_header();
     <p><?php esc_html_e( 'Wszystkie utwory dostępne na platformie są w 100% autorskie i należą do HardbanRecords Lab. Klient otrzymuje niewyłączną, niezbywalną licencję na publiczne odtwarzanie w oznaczonym lokalu. Licencja jest wolna od opłat OZZ (ZAiKS, STOART, ZPAV, SAWP).', 'hrl-theme' ); ?></p>
 
     <h2><?php esc_html_e( '5. Płatności i subskrypcje', 'hrl-theme' ); ?></h2>
-    <p><?php esc_html_e( 'Opłaty za subskrypcje B2B pobierane są z góry w cyklu miesięcznym lub rocznym. Wszystkie ceny podane są w złotych polskich (PLN) i zawierają podatek VAT. Płatności obsługiwane są przez Stripe.', 'hrl-theme' ); ?></p>
+    <p><?php esc_html_e( 'Opłaty za subskrypcje B2B pobierane są z góry w cyklu miesięcznym lub rocznym. Wszystkie ceny podane są w złotych polskich (PLN) i zawierają podatek VAT. Płatności obsługiwane są przez Stripe, PayPal i PayU.', 'hrl-theme' ); ?></p>
 
     <h2><?php esc_html_e( '6. Odpowiedzialność', 'hrl-theme' ); ?></h2>
     <p><?php esc_html_e( 'HRL dokłada wszelkich starań, aby platforma działała nieprzerwanie (cel: 99,9% uptime). Nie ponosimy odpowiedzialności za przerwy wynikające z działania siły wyższej, awarii infrastruktury zewnętrznej (dostawcy VPS, CDN) oraz nieprawidłowego korzystania z platformy przez Użytkownika.', 'hrl-theme' ); ?></p>

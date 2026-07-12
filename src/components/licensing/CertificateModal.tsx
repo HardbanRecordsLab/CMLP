@@ -9,9 +9,10 @@ interface CertificateModalProps {
   address: string;
   issueDate: string;
   validUntil: string;
+  certificateNumber?: string;
 }
 
-export default function CertificateModal({ isOpen, onClose, clientName, address, issueDate, validUntil }: CertificateModalProps) {
+export default function CertificateModal({ isOpen, onClose, clientName, address, issueDate, validUntil, certificateNumber }: CertificateModalProps) {
   if (!isOpen) return null;
 
   const downloadPDF = () => {
@@ -22,8 +23,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
         format: 'a4'
       });
 
-      const certSuffix = "AROMA99";
-      const certificateNumber = `HRL-LIC-${certSuffix}`;
+      const certNumber = certificateNumber || `HRL-LIC-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
       // 1. Elegancja i Autentyczność - Podwójna Ramka Certyfikatu
       doc.setDrawColor(15, 23, 42); // slate-900
@@ -60,7 +60,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setTextColor(15, 23, 42);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
-      doc.text(`Certificate Reference Number: ${certificateNumber}`, 105, 70, { align: "center" });
+      doc.text(`Certificate Reference Number: ${certNumber}`, 105, 70, { align: "center" });
 
       // 3. Treść Prawna i Oświadczenie o Zwolnieniu
       doc.setFont("helvetica", "normal");
@@ -161,7 +161,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setFontSize(9);
       doc.text("[ Digitally Signed / Verified ]", 133, 256);
 
-      doc.save(`Exemption_Certificate_HRL_${certificateNumber}.pdf`);
+      doc.save(`Exemption_Certificate_HRL_${certNumber}.pdf`);
     } catch (e: any) {
       console.error('Failed to generate PDF:', e);
     }

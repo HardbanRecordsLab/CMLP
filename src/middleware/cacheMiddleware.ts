@@ -10,7 +10,7 @@ All cache entries have TTLs to ensure data freshness.
 */
 
 import { Request, Response, NextFunction } from 'express';
-import { redisClient } from '../lib/redis.ts';
+import { redisClient, scanKeys } from '../lib/redis.ts';
 
 /**
  * Generic cache middleware that wraps express.json() handlers with Redis caching.
@@ -117,7 +117,7 @@ export const getCachedTrackMetadata = async (trackId: string): Promise<any | nul
  */
 export const clearCache = async (pattern: string): Promise<void> => {
   try {
-    const keys = await redisClient.keys(pattern);
+    const keys = await scanKeys(pattern);
     if (keys.length > 0) {
       await redisClient.del(...keys);
       console.log(`[Redis] Cleared ${keys.length} keys matching ${pattern}`);

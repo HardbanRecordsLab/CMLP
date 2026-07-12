@@ -4,16 +4,28 @@ interface InvoiceModalProps {
   isOpen: boolean;
   onClose: () => void;
   invoiceId: string;
+  clientName?: string;
+  clientAddress?: string;
+  clientNip?: string;
+  amount?: number;
+  currency?: string;
+  issueDate?: string;
+  vatRate?: number;
 }
 
-export default function InvoiceModal({ isOpen, onClose, invoiceId }: InvoiceModalProps) {
+export default function InvoiceModal({ isOpen, onClose, invoiceId, clientName, clientAddress, clientNip, amount, currency, issueDate, vatRate }: InvoiceModalProps) {
   if (!isOpen) return null;
+
+  const netAmount = amount ? (amount / 100).toFixed(2) : '0.00';
+  const vatPercent = vatRate || 23;
+  const vatAmount = amount ? ((amount * vatPercent / 10000).toFixed(2)) : '0.00';
+  const grossAmount = amount ? ((amount * (1 + vatPercent / 100) / 100).toFixed(2)) : '0.00';
+  const cur = currency || 'PLN';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
       <div className="w-full max-w-2xl bg-white text-slate-900 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-        
-        {/* Header Bar */}
+
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
           <div className="flex items-center gap-2">
             <h2 className="font-semibold text-lg">Invoice {invoiceId}</h2>
@@ -32,9 +44,8 @@ export default function InvoiceModal({ isOpen, onClose, invoiceId }: InvoiceModa
           </div>
         </div>
 
-        {/* Invoice Content */}
         <div className="flex-1 overflow-y-auto p-8 font-sans">
-          
+
           <div className="flex justify-between items-start mb-12">
             <div>
               <div className="w-12 h-12 bg-blue-600 text-white flex items-center justify-center font-bold text-xl rounded mb-4">H</div>
@@ -44,18 +55,16 @@ export default function InvoiceModal({ isOpen, onClose, invoiceId }: InvoiceModa
             </div>
             <div className="text-right">
               <p className="text-sm font-semibold text-slate-900">Invoice No: {invoiceId}</p>
-              <p className="text-sm text-slate-500 mt-1">Date: 2026-06-13</p>
-              <p className="text-sm text-slate-500">Due Date: 2026-06-27</p>
+              <p className="text-sm text-slate-500 mt-1">Date: {issueDate || new Date().toISOString().split('T')[0]}</p>
             </div>
           </div>
 
           <div className="flex justify-between mb-12">
             <div>
               <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Billed To</p>
-              <p className="font-medium text-slate-900">Kawiarnia Aroma - Branch 1</p>
-              <p className="text-sm text-slate-500">ul. Przykładowa 12/4</p>
-              <p className="text-sm text-slate-500">00-001 Warszawa, Poland</p>
-              <p className="text-sm text-slate-500">NIP: 9876543210</p>
+              <p className="font-medium text-slate-900">{clientName || 'Client'}</p>
+              <p className="text-sm text-slate-500">{clientAddress || 'Address not provided'}</p>
+              {clientNip && <p className="text-sm text-slate-500">NIP: {clientNip}</p>}
             </div>
           </div>
 
@@ -71,13 +80,12 @@ export default function InvoiceModal({ isOpen, onClose, invoiceId }: InvoiceModa
             <tbody className="divide-y divide-slate-100">
               <tr>
                 <td className="py-4">
-                  <p className="text-sm font-medium text-slate-900">PMPro Level 2 Subscription</p>
-                  <p className="text-xs text-slate-500">Coverage: 2026-06-01 to 2026-06-30</p>
-                  <p className="text-xs text-slate-500 mt-1">Incl. Royalty-Free Music License & White-label</p>
+                  <p className="text-sm font-medium text-slate-900">HRL License Subscription</p>
+                  <p className="text-xs text-slate-500">Incl. Royalty-Free Music License & White-label</p>
                 </td>
                 <td className="py-4 text-sm text-slate-900 text-center">1</td>
-                <td className="py-4 text-sm text-slate-900 text-right">299.00 PLN</td>
-                <td className="py-4 text-sm text-slate-900 text-right">299.00 PLN</td>
+                <td className="py-4 text-sm text-slate-900 text-right">{netAmount} {cur}</td>
+                <td className="py-4 text-sm text-slate-900 text-right">{netAmount} {cur}</td>
               </tr>
             </tbody>
           </table>
@@ -86,15 +94,15 @@ export default function InvoiceModal({ isOpen, onClose, invoiceId }: InvoiceModa
             <div className="w-64 space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Subtotal (Net)</span>
-                <span className="font-medium text-slate-900">299.00 PLN</span>
+                <span className="font-medium text-slate-900">{netAmount} {cur}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">VAT (23%)</span>
-                <span className="font-medium text-slate-900">68.77 PLN</span>
+                <span className="text-slate-500">VAT ({vatPercent}%)</span>
+                <span className="font-medium text-slate-900">{vatAmount} {cur}</span>
               </div>
               <div className="flex justify-between border-t border-slate-200 pt-3">
                 <span className="font-bold text-slate-900">Total (Gross)</span>
-                <span className="font-bold text-slate-900">367.77 PLN</span>
+                <span className="font-bold text-slate-900">{grossAmount} {cur}</span>
               </div>
             </div>
           </div>

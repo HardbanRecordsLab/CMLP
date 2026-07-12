@@ -31,10 +31,10 @@ import { requireAuth, requireRole } from '../middleware/auth.ts';
 
 const router = Router();
 
+router.use('/health', healthRoutes);
 router.use(apiKeyAuth);
 
 router.get('/player/:clientId', wordpressController.getPlayer);
-router.use('/health', healthRoutes);
 router.use('/outlet', outletRoutes);
 router.use('/auth', authRoutes);
 router.use('/tracks', tracksRoutes);

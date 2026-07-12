@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getApiUrl } from '@/utils.ts';
 
 interface VerifyData {
   valid: boolean;
@@ -33,7 +34,7 @@ export default function VerifyCertificate({ certNumber }: { certNumber: string }
   useEffect(() => {
     if (!certNumber) return;
     setLoading(true);
-    fetch(`/api/verify/certificate/${encodeURIComponent(certNumber)}`)
+    fetch(getApiUrl(`/api/verify/certificate/${encodeURIComponent(certNumber)}`))
       .then(r => r.json())
       .then(d => {
         if (d.valid === false && !d.certificate) {

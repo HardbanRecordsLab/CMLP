@@ -47,15 +47,30 @@ $newsletter_bar = get_theme_mod( 'hrl_newsletter_bar_toggle', false );
     </div>
 
     <div class="container">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo">HARDBANRECORDS LAB</a>
-                <p style="color:var(--text-secondary);font-size:0.85rem;line-height:1.65;margin-bottom:8px;">
-                    <?php esc_html_e( 'Suwerenny ekosystem B2B Audio. Muzyka komercyjna bez opłat ZAiKS, OZZ i pośredników.', 'hrl-theme' ); ?>
-                </p>
-            </div>
-            <div class="footer-col">
-                <h4><?php esc_html_e( 'Platforma', 'hrl-theme' ); ?></h4>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo">HARDBANRECORDS LAB</a>
+            <p style="color:var(--text-secondary);font-size:0.85rem;line-height:1.65;margin-bottom:8px;">
+                <?php esc_html_e( 'Suwerenny ekosystem B2B Audio. Muzyka komercyjna bez opłat ZAiKS, OZZ i pośredników.', 'hrl-theme' ); ?>
+            </p>
+            <p style="color:var(--text-secondary);font-size:0.8rem;line-height:1.6;margin-top:12px;">
+                <?php esc_html_e( 'NIP:', 'hrl-theme' ); ?> 1234567890<br>
+                <?php esc_html_e( 'REGON:', 'hrl-theme' ); ?> 123456789<br>
+                <?php esc_html_e( 'KRS:', 'hrl-theme' ); ?> 0000123456
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4><?php esc_html_e( 'Platforma', 'hrl-theme' ); ?></h4>
+            <?php
+            if ( has_nav_menu( 'footer_1' ) ) {
+                wp_nav_menu( array(
+                    'theme_location' => 'footer_1',
+                    'container'      => false,
+                    'fallback_cb'    => false,
+                ));
+            } else {
+            ?>
                 <ul>
                     <li><a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>"><?php esc_html_e( 'CMLP — Muzyka bez ZAiKS', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></a></li>
@@ -63,25 +78,37 @@ $newsletter_bar = get_theme_mod( 'hrl_newsletter_bar_toggle', false );
                     <li><a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></a></li>
                     <li><a href="https://cmlp.hardbanrecordslab.online" target="_blank" rel="noopener"><?php esc_html_e( 'Panel CMLP', 'hrl-theme' ); ?></a></li>
                 </ul>
-            </div>
-            <div class="footer-col">
-                <h4><?php esc_html_e( 'Dokumenty', 'hrl-theme' ); ?></h4>
+            <?php } ?>
+        </div>
+
+        <div class="footer-col">
+            <h4><?php esc_html_e( 'Kontakt', 'hrl-theme' ); ?></h4>
+            <ul>
+                <li><a href="mailto:contact@hardbanrecordslab.online">contact@hardbanrecordslab.online</a></li>
+                <li><a href="tel:+48726651384">+48 726 651 384</a></li>
+                <li><?php esc_html_e( 'Dostępny po wcześniejszym umówieniu', 'hrl-theme' ); ?></li>
+                <li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Formularz Kontaktowy', 'hrl-theme' ); ?></a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4><?php esc_html_e( 'Dokumenty', 'hrl-theme' ); ?></h4>
+            <?php
+            if ( has_nav_menu( 'footer_2' ) ) {
+                wp_nav_menu( array(
+                    'theme_location' => 'footer_2',
+                    'container'      => false,
+                    'fallback_cb'    => false,
+                ));
+            } else {
+            ?>
                 <ul>
                     <li><a href="<?php echo esc_url( home_url( '/privacy/' ) ); ?>"><?php esc_html_e( 'Polityka Prywatności', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Regulamin', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/sale-terms/' ) ); ?>"><?php esc_html_e( 'Warunki Sprzedaży', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/sale-terms/' ) ); ?>"><?php esc_html_e( 'Warunki Sprzedaży B2B', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'hrl-theme' ); ?></a></li>
                 </ul>
-            </div>
-            <div class="footer-col">
-                <h4><?php esc_html_e( 'Kontakt', 'hrl-theme' ); ?></h4>
-                <ul>
-                    <li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Formularz Kontaktowy', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'O Nas', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/careers/' ) ); ?>"><?php esc_html_e( 'Kariera', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/newsletter/' ) ); ?>"><?php esc_html_e( 'Newsletter', 'hrl-theme' ); ?></a></li>
-                </ul>
-            </div>
+            <?php } ?>
         </div>
     </div>
 

@@ -70,12 +70,6 @@ export default function StrategicInitiatives() {
     }
   };
 
-  useEffect(() => {
-    testWaveformCache();
-    triggerPredictiveChecks();
-    executeVaultSignature();
-  }, []);
-
   return (
     <div className="space-y-8 font-sans" id="strategic-console-hub">
       {/* Header and Telemetry Dashboard summary */}

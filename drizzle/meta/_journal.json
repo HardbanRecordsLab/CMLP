@@ -50,6 +50,13 @@
       "when": 1783878826377,
       "tag": "0006_plain_dormammu",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1783881298000,
+      "tag": "0007_sparkling_skin",
+      "breakpoints": true
     }
   ]
 }

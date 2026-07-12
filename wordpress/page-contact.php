@@ -32,8 +32,8 @@ get_header();
                 <?php endif; ?>
             </div>
             <div>
-                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">📧</div><h3><?php esc_html_e( 'Email', 'hrl-theme' ); ?></h3><p>contact@hardbanrecordslab.online</p></div>
-                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">📞</div><h3><?php esc_html_e( 'Telefon', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Dostępny po wcześniejszym umówieniu', 'hrl-theme' ); ?></p></div>
+                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">📧</div><h3><?php esc_html_e( 'Email', 'hrl-theme' ); ?></h3><p><a href="mailto:contact@hardbanrecordslab.online">contact@hardbanrecordslab.online</a></p></div>
+                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">📞</div><h3><?php esc_html_e( 'Telefon', 'hrl-theme' ); ?></h3><p><a href="tel:+48726651384">+48 726 651 384</a></p><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;"><?php esc_html_e( 'Dostępny po wcześniejszym umówieniu', 'hrl-theme' ); ?></p></div>
                 <div class="product-card"><div class="product-card-icon">⏱️</div><h3><?php esc_html_e( 'Czas Odpowiedzi', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Do 24h w dni robocze', 'hrl-theme' ); ?></p></div>
             </div>
         </div>
