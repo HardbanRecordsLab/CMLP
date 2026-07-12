@@ -8,7 +8,7 @@ router.post('/login', authController.login);
 router.post('/register', authController.register);
 router.post('/refresh', authController.refresh);
 router.post('/register-sync', authController.registerSync);
-router.get('/mfa/status', authController.mfaStatus);
+router.get('/mfa/status', requireAuth, authController.mfaStatus);
 router.post('/mfa/validate', authController.mfaValidate);
 router.post('/mfa/setup', requireAuth, authController.mfaSetup);
 router.post('/mfa/confirm', requireAuth, authController.mfaConfirm);

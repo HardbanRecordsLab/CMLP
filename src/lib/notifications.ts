@@ -210,7 +210,7 @@ export async function triggerWSNotificationBroadcast(data: {
 // Dispatches customizable email template through configured SMTP/SendGrid parameters
 export async function triggerEmailNotification(
   toEmail: string,
-  type: 'user_registration' | 'license_expiry' | 'payment_confirmation' | 'password_reset' | 'email_verification',
+  type: 'user_registration' | 'license_expiry' | 'payment_confirmation' | 'password_reset' | 'email_verification' | 'dunning',
   variables: Record<string, string>
 ): Promise<{ success: boolean; logId?: number; error?: string }> {
   try {
@@ -235,6 +235,9 @@ export async function triggerEmailNotification(
     } else if (type === 'email_verification') {
       rawSubject = 'Verify Your Email - Hardban Records Lab';
       rawBody = 'Hello {{name}},\n\nThank you for registering. Please verify your email address by clicking the link below:\n\n{{verificationUrl}}\n\nThis link expires in 24 hours.\n\nBest regards,\nHardban Records Lab Team';
+    } else if (type === 'dunning') {
+      rawSubject = '{{subject}}';
+      rawBody = 'Hello {{name}},\n\n{{body}}\n\nBest regards,\nHardban Records Lab Billing Team';
     } else {
       throw new Error(`Invalid email trigger type: ${type}`);
     }

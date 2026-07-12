@@ -1,6 +1,11 @@
 <?php
+/**
+ * Template Name: Polityka Prywatności
+ * @package HRL_Theme
+ */
 get_header();
 ?>
+<div class="legal-page-wrapper">
 <div class="legal-content">
     <h1><?php esc_html_e( 'Polityka Prywatności', 'hrl-theme' ); ?></h1>
     <p class="legal-date"><?php esc_html_e( 'Ostatnia aktualizacja: 23 maja 2026 r.', 'hrl-theme' ); ?></p>
@@ -28,5 +33,6 @@ get_header();
 
     <h2><?php esc_html_e( '8. Bezpieczeństwo', 'hrl-theme' ); ?></h2>
     <p><?php esc_html_e( 'Stosujemy szyfrowanie SSL/TLS, izolację kontenerów Docker, restrykcyjne uprawnienia systemu plików (chmod 750) oraz walidację JWT dla wszystkich endpointów API.', 'hrl-theme' ); ?></p>
-</div>
+</div><!-- .legal-content -->
+</div><!-- .legal-page-wrapper -->
 <?php get_footer(); ?>

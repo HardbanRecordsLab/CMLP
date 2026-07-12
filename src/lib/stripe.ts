@@ -8,7 +8,7 @@ let stripeClient: Stripe | null = null;
 
 function getStripe(): Stripe {
   if (!stripeClient) {
-    stripeClient = new Stripe(stripeSecretKey, { apiVersion: '2024-12-18' as any });
+    stripeClient = new Stripe(stripeSecretKey, { apiVersion: '2025-04-06' as any });
   }
   return stripeClient;
 }
@@ -48,9 +48,6 @@ export const rawBodyMiddleware = (req: Request, res: Response, next: NextFunctio
 
 export const verifyStripeWebhook = (payload: string | Buffer, signature: string | undefined): Stripe.Event | null => {
   if (!signature || !stripeWebhookSecretValue) {
-    if (process.env.NODE_ENV !== 'production') {
-      return null;
-    }
     console.warn('[Stripe Webhook] Missing signature or webhook secret');
     return null;
   }

@@ -4,8 +4,8 @@ module.exports = {
       name: "hrl-licensing-platform",
       script: "./dist/server.cjs",
       cwd: "/opt/cmlp",
-      instances: 1,
-      exec_mode: "fork",
+      instances: 4,
+      exec_mode: "cluster",
       watch: false,
       env: {
         NODE_ENV: "production",

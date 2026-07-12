@@ -172,6 +172,7 @@ export const payments = pgTable('payments', {
   gatewayTransactionId: text('gateway_transaction_id'),
   licenseId: integer('license_id').references(() => licenses.id, { onDelete: 'cascade' }),
   vatRate: integer('vat_rate').default(23),
+  couponCode: text('coupon_code'),
   createdAt: timestamp('created_at').defaultNow(),
 }, (table) => ({
   userIdIdx: index('payments_user_id_idx').on(table.userId),

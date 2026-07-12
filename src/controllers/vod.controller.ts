@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import path from 'path';
+import fs from 'fs';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { vod_content } from '../db/schema.ts';
@@ -51,6 +53,12 @@ export async function create(req: any, res: Response) {
 export async function remove(req: any, res: Response) {
   try {
     const id = parseInt(req.params.id, 10);
+    const existing = await db.select().from(vod_content).where(eq(vod_content.id, id)).limit(1);
+    if (existing.length > 0 && existing[0].filename) {
+      const mediaPath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
+      const filePath = path.join(mediaPath, existing[0].filename);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    }
     await db.delete(vod_content).where(eq(vod_content.id, id));
 
     await logAuditEvent({

@@ -21,6 +21,8 @@ export const getPool = () => {
       password,
       database: dbName,
       connectionTimeoutMillis: 15000,
+      idleTimeoutMillis: 30000,
+      max: 20,
     });
     poolInstance.on('error', (err) => {
       console.error('Unexpected error on idle SQL pool client:', err);

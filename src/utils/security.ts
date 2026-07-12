@@ -63,10 +63,8 @@ export function verifyTOTP(secret: string, userToken: string): boolean {
 export function sanitizeString(input: string): string {
   if (typeof input !== 'string') return '';
   return input
-    .replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, '') // Remove script blocks
-    .replace(/on\w+="[^"]*"/gi, '') // Remove inline handlers
-    .replace(/on\w+='[^']*'/gi, '')
-    .replace(/javascript:/gi, '') // Remove iframe/js redirects
+    .replace(/<[^>]*>/g, '')
+    .replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' } as Record<string, string>)[c] || c)
     .trim();
 }
 

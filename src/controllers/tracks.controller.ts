@@ -195,11 +195,13 @@ export async function remove(req: any, res: Response) {
       return res.status(404).json({ error: 'Track not found' });
     }
     const t = track[0];
+    const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
     if (t.filename) {
-      const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
       const filePath = path.join(mediaBasePath, t.filename);
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     }
+    const hlsDir = path.join(mediaBasePath, 'hls', String(id));
+    if (fs.existsSync(hlsDir)) fs.rmSync(hlsDir, { recursive: true, force: true });
     await db.delete(tracks).where(eq(tracks.id, id));
     await clearCache('tracks:*');
     res.status(204).send();

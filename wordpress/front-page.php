@@ -21,8 +21,8 @@ get_header();
             <?php esc_html_e( 'Pierwsza w Polsce platforma B2B oferująca w pełni autorską, licencjonowaną muzykę tła dla gastronomii, retailu, wellness i korporacji — z całkowitym wyłączeniem opłat OZZ (ZAiKS, STOART, ZPAV, SAWP). Stream Premium Audio, Certyfikaty Wolności, White-Label Players.', 'hrl-theme' ); ?>
         </p>
         <div class="hero-actions">
-<a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Platforma CMLP', 'hrl-theme' ); ?></a>
-             <a href="<?php echo esc_url( home_url( '/academy/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'HRL Academy', 'hrl-theme' ); ?></a>
+            <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Platforma CMLP', 'hrl-theme' ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></a>
         </div>
     </div>
 </section>
@@ -56,40 +56,6 @@ get_header();
                 <h3><?php esc_html_e( 'White-Label Player', 'hrl-theme' ); ?></h3>
                 <p><?php esc_html_e( 'Dedykowany odtwarzacz z Twoim logo i brandem. Własna subdomena, PIN dostępu, integracja przez API. Dla sieci franczyzowych.', 'hrl-theme' ); ?></p>
                 <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-outline"><?php esc_html_e( 'Więcej →', 'hrl-theme' ); ?></a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════════════ ACADEMY SECTION ══════════════════════════ -->
-<section class="section" id="academy" style="background: rgba(18,15,12,0.2);">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Edukacja Kreatywna', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'HRL Academy — Kursy dla Twórców', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Premium kursy online z produkcji muzycznej, licencjonowania, rozwoju SaaS i biznesu kreatywnego. Certyfikaty ukończenia, sesje mentoringowe, dostęp do zamkniętej społeczności.', 'hrl-theme' ); ?>
-        </p>
-
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-card-icon">🎓</div>
-                <h3><?php esc_html_e( 'Produkcja Audio', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Kursy z masteringu, kompozycji, sound designu i AI Audio. Od podstaw do profesjonalnego studia.', 'hrl-theme' ); ?></p>
-                <a href="https://app-course-hub.hardbanrecordslab.online" class="btn btn-outline" target="_blank" rel="noopener"><?php esc_html_e( 'Aplikacja Academy →', 'hrl-theme' ); ?></a>
-            </div>
-
-            <div class="product-card">
-                <div class="product-card-icon">⚖️</div>
-                <h3><?php esc_html_e( 'Licencjonowanie i Prawo', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Jak legalnie sprzedawać muzykę, omijać OZZ i budować własny katalog praw autorskich.', 'hrl-theme' ); ?></p>
-                <a href="https://app-course-hub.hardbanrecordslab.online" class="btn btn-outline" target="_blank" rel="noopener"><?php esc_html_e( 'Zapisz się →', 'hrl-theme' ); ?></a>
-            </div>
-
-            <div class="product-card">
-                <div class="product-card-icon">💻</div>
-                <h3><?php esc_html_e( 'SaaS & DevOps', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Budowa własnych platform streamingowych, API, Docker, VPS, architektura mikroserwisów.', 'hrl-theme' ); ?></p>
-                <a href="https://app-course-hub.hardbanrecordslab.online" class="btn btn-outline" target="_blank" rel="noopener"><?php esc_html_e( 'Rozpocznij →', 'hrl-theme' ); ?></a>
             </div>
         </div>
     </div>

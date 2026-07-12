@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node';
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import crypto from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import { createServer as createViteServer } from 'vite';
 import { createRateLimiter, blockedIps } from './src/middleware/rateLimiter.ts';
@@ -79,12 +80,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use((req, res, next) => {
+  const nonce = crypto.randomBytes(16).toString('base64');
+  res.locals.nonce = nonce;
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.setHeader('Content-Security-Policy', "default-src 'self' 'unsafe-inline' https: data: blob: wss:; frame-ancestors 'self';");
+  res.setHeader('Content-Security-Policy', `default-src 'self'; script-src 'self' 'nonce-${nonce}' https: 'unsafe-inline'; style-src 'self' 'nonce-${nonce}' https: 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob:; connect-src 'self' https: wss:; frame-ancestors 'self';`);
   next();
 });
 

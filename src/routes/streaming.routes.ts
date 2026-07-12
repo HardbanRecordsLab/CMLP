@@ -6,6 +6,6 @@ const router = Router();
 
 router.get('/token/:filename', requireAuth, streamingController.getToken);
 router.get('/:filename', streamingController.streamFile);
-router.post('/telemetry/playback', streamingController.telemetry);
+router.post('/telemetry/playback', requireAuth, streamingController.telemetry);
 
 export default router;

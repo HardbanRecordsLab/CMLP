@@ -79,47 +79,47 @@ get_header();
         <h2 class="section-title"><?php esc_html_e( 'Wybierz Plan dla Swojego Biznesu', 'hrl-theme' ); ?></h2>
         <div class="pakiety-grid">
             <div class="pakiet-card" style="cursor:default;">
-                <div class="pakiet-name"><?php esc_html_e( 'Basic', 'hrl-theme' ); ?></div>
-                <div class="pakiet-price">99<span>zł/mies.</span></div>
+                <div class="pakiet-name"><?php esc_html_e( 'Starter', 'hrl-theme' ); ?></div>
+                <div class="pakiet-price">199<span>zł/mies.</span></div>
                 <ul class="pakiet-features">
                     <li>✓ 1 lokal</li>
                     <li>✓ Podstawowa biblioteka</li>
                     <li>✓ Certyfikat QR</li>
-                    <li>✓ Jakość MP3 192kbps</li>
-                    <li>✓ Standard Support</li>
+                    <li>✓ Jakość MP3 320kbps</li>
+                    <li>✓ Basic Support</li>
                 </ul>
             </div>
             <div class="pakiet-card" style="cursor:default;">
-                <div class="pakiet-name"><?php esc_html_e( 'Standard', 'hrl-theme' ); ?></div>
-                <div class="pakiet-price">199<span>zł/mies.</span></div>
+                <div class="pakiet-name"><?php esc_html_e( 'Business', 'hrl-theme' ); ?></div>
+                <div class="pakiet-price">399<span>zł/mies.</span></div>
                 <ul class="pakiet-features">
                     <li>✓ Do 3 lokali</li>
-                    <li>✓ Rozszerzona biblioteka</li>
-                    <li>✓ Audio 320kbps</li>
+                    <li>✓ 50 utworów</li>
                     <li>✓ Priorytet Support</li>
                     <li>✓ Raporty miesięczne</li>
+                    <li>✓ Certyfikat Direct</li>
                 </ul>
             </div>
             <div class="pakiet-card" style="cursor:default;">
                 <div class="pakiet-name"><?php esc_html_e( 'Premium', 'hrl-theme' ); ?></div>
-                <div class="pakiet-price">299<span>zł/mies.</span></div>
+                <div class="pakiet-price">799<span>zł/mies.</span></div>
                 <ul class="pakiet-features">
                     <li>✓ Do 10 lokali</li>
-                    <li>✓ Pełna biblioteka</li>
-                    <li>✓ Bezstratne WAV</li>
+                    <li>✓ 200 utworów</li>
                     <li>✓ White-Label Player</li>
-                    <li>✓ API REST dostęp</li>
+                    <li>✓ Priorytet Support</li>
+                    <li>✓ Analityka Odtworzeń</li>
                 </ul>
             </div>
             <div class="pakiet-card" style="cursor:default;">
                 <div class="pakiet-name"><?php esc_html_e( 'Enterprise', 'hrl-theme' ); ?></div>
-                <div class="pakiet-price">499<span>zł/mies.</span></div>
+                <div class="pakiet-price">4&nbsp;999<span>zł/mies.</span></div>
                 <ul class="pakiet-features">
-                    <li>✓ Bez limitu lokali</li>
-                    <li>✓ Custom playlisty</li>
-                    <li>✓ Dedykowany serwer</li>
+                    <li>✓ Unlimited lokali</li>
+                    <li>✓ Unlimited katalog</li>
+                    <li>✓ Dedykowany opiekun</li>
                     <li>✓ SLA 99.9%</li>
-                    <li>✓ Konsultacje 1:1</li>
+                    <li>✓ API + integracje POS</li>
                 </ul>
             </div>
         </div>

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import crypto from 'node:crypto';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '../db/index.ts';
-import { payments, licenses, users } from '../db/schema.ts';
+import { payments, licenses, users, coupons } from '../db/schema.ts';
 import { verifyStripeWebhook } from '../lib/stripe.ts';
 import Stripe from 'stripe';
 import { logAuditEvent } from '../services/logging.service.ts';
@@ -104,11 +104,12 @@ export async function createCheckoutSession(req: any, res: Response) {
       gatewayTransactionId,
       licenseId,
       vatRate: vatRate || 23,
+      couponCode: couponCode || null,
     }).returning()) as unknown as any[];
 
     if (gateway === 'stripe' && process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
       try {
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-05-27.dahlia' });
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-04-06' as any });
 
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card', 'blik'],
@@ -253,7 +254,7 @@ export async function refund(req: any, res: Response) {
 
     if (payment.gateway === 'stripe' && payment.gatewayTransactionId && process.env.NODE_ENV !== 'test') {
       try {
-        const stripeRefund = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-05-27.dahlia' });
+        const stripeRefund = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-04-06' as any });
         await stripeRefund.refunds.create({
           payment_intent: payment.gatewayTransactionId,
         });
@@ -354,6 +355,9 @@ export async function webhook(req: any, res: Response) {
         if (existing.licenseId && status === 'completed') {
           await db.update(licenses).set({ status: 'active' }).where(eq(licenses.id, existing.licenseId));
           handlePostPaymentActions({ ...existing, status: 'completed' });
+          if (existing.couponCode) {
+            await db.update(coupons).set({ usedCount: sql`used_count + 1` }).where(eq(coupons.code, existing.couponCode));
+          }
         } else if (existing.licenseId && status === 'refunded') {
           await db.update(licenses).set({ status: 'cancelled' }).where(eq(licenses.id, existing.licenseId));
         }

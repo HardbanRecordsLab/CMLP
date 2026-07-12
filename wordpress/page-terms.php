@@ -1,15 +1,20 @@
 <?php
+/**
+ * Template Name: Regulamin
+ * @package HRL_Theme
+ */
 get_header();
 ?>
+<div class="legal-page-wrapper">
 <div class="legal-content">
     <h1><?php esc_html_e( 'Regulamin Świadczenia Usług', 'hrl-theme' ); ?></h1>
     <p class="legal-date"><?php esc_html_e( 'Ostatnia aktualizacja: 23 maja 2026 r.', 'hrl-theme' ); ?></p>
 
     <h2><?php esc_html_e( '1. Postanowienia ogólne', 'hrl-theme' ); ?></h2>
-    <p><?php esc_html_e( 'Niniejszy regulamin określa zasady korzystania z platformy HardbanRecords Lab (HRL), w tym serwisów CMLP Sync Hub, HRL Academy, HRL BlogCast oraz Muzyczna Kreacja Słów. Korzystanie z platformy oznacza akceptację niniejszego regulaminu.', 'hrl-theme' ); ?></p>
+    <p><?php esc_html_e( 'Niniejszy regulamin określa zasady korzystania z platformy HardbanRecords Lab (HRL), w tym serwisów CMLP (Commercial Music Licensing Platform), HRL BlogCast, Radio HRL oraz Muzyczna Kreacja Słów. Korzystanie z platformy oznacza akceptację niniejszego regulaminu.', 'hrl-theme' ); ?></p>
 
     <h2><?php esc_html_e( '2. Zakres usług', 'hrl-theme' ); ?></h2>
-    <p><?php esc_html_e( 'HRL świadczy usługi: licencjonowania muzyki komercyjnej (model B2B Direct Licensing), dostępu do platformy edukacyjnej HRL Academy, personalizowanego tworzenia utworów na zamówienie (MKS), streamingu radiowego oraz dostępu do bazy wiedzy HRL BlogCast.', 'hrl-theme' ); ?></p>
+    <p><?php esc_html_e( 'HRL świadczy usługi: licencjonowania muzyki komercyjnej (model B2B Direct Licensing), personalizowanego tworzenia utworów na zamówienie (Muzyczna Kreacja Słów), streamingu radiowego (Radio HRL) oraz dostępu do bazy wiedzy HRL BlogCast.', 'hrl-theme' ); ?></p>
 
     <h2><?php esc_html_e( '3. Obowiązki Użytkownika', 'hrl-theme' ); ?></h2>
     <p><?php esc_html_e( 'Użytkownik zobowiązuje się do: podawania prawdziwych danych, nieudostępniania swoich danych logowania osobom trzecim, niewykorzystywania utworów w sposób sprzeczny z licencją oraz przestrzegania polskiego prawa autorskiego.', 'hrl-theme' ); ?></p>
@@ -28,5 +33,6 @@ get_header();
 
     <h2><?php esc_html_e( '8. Postanowienia końcowe', 'hrl-theme' ); ?></h2>
     <p><?php esc_html_e( 'Regulamin podlega prawu polskiemu. Wszelkie spory rozstrzygane będą przez sąd właściwy dla siedziby HRL. Zastrzegamy sobie prawo do zmiany regulaminu — o zmianach poinformujemy z 14-dniowym wyprzedzeniem.', 'hrl-theme' ); ?></p>
-</div>
+</div><!-- .legal-content -->
+</div><!-- .legal-page-wrapper -->
 <?php get_footer(); ?>

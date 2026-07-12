@@ -20,6 +20,8 @@ function authCookieOptions(maxAge: number) {
   };
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
@@ -27,22 +29,28 @@ export async function login(req: Request, res: Response) {
     return res.status(400).json({ error: 'Email and password required' });
   }
 
+  if (!EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Invalid credentials' });
+  }
+
   try {
     const userRecords = await db.select().from(users).where(eq(users.email, email));
     const user = userRecords[0];
+    const dummyHash = '$2a$10$' + 'x'.repeat(53);
 
-    if (!user) {
+    const passwordToCheck = user?.pin || dummyHash;
+    const isValidPassword = await bcrypt.compare(password, passwordToCheck);
+
+    if (!user || !isValidPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    if (!user.pin) {
-      console.error('[Auth] Login failed: user has no pin/password set:', { email, uid: user.uid });
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    const isValidPassword = await bcrypt.compare(password, user.pin);
-    if (!isValidPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user.emailVerified) {
+      return res.status(403).json({ error: 'Email not verified. Please check your inbox.' });
     }
 
     const tokenPayload = {
@@ -83,6 +91,14 @@ export async function register(req: Request, res: Response) {
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password required' });
+  }
+
+  if (!EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+
+  if (password.length < 12) {
+    return res.status(400).json({ error: 'Password must be at least 12 characters' });
   }
 
   try {
@@ -188,12 +204,12 @@ export async function registerSync(req: Request, res: Response) {
   }
 }
 
-export async function mfaStatus(req: Request, res: Response) {
+export async function mfaStatus(req: any, res: Response) {
   try {
-    const { email } = req.query;
-    if (!email) { res.json({ mfaEnabled: false }); return; }
+    const userUid = req.user?.uid;
+    if (!userUid) { res.json({ mfaEnabled: false }); return; }
 
-    const record = await db.select().from(users).where(eq(users.email, String(email)));
+    const record = await db.select().from(users).where(eq(users.uid, userUid));
     if (record.length === 0) {
       res.json({ mfaEnabled: false }); return;
     }
@@ -290,6 +306,10 @@ export async function forgotPassword(req: Request, res: Response) {
   const { email } = req.body;
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
+  }
+
+  if (!EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format' });
   }
 
   try {

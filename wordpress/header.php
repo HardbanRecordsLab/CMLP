@@ -46,9 +46,8 @@
                 <ul class="nav-menu">
                     <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="active"><?php esc_html_e( 'Strona Główna', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>"><?php esc_html_e( 'Muzyka bez ZAiKS', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/academy/' ) ); ?>"><?php esc_html_e( 'Kursy i Wiedza', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/blogcast/' ) ); ?>"><?php esc_html_e( 'HRL BlogCast', 'hrl-theme' ); ?></a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>"><?php esc_html_e( 'Utwory na Zamówienie', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/blogcast/' ) ); ?>"><?php esc_html_e( 'BlogCast', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>" class="nav-cta"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></a></li>
                 </ul>
             <?php } ?>

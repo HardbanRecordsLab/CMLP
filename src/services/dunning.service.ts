@@ -52,10 +52,10 @@ export async function runDunningProcess(): Promise<{
       const userEmail = await getUserEmail(payment.userId, tx);
 
       if (level.label === 'friendly_reminder') {
-        await triggerEmailNotification(userEmail, 'password_reset', {
+        await triggerEmailNotification(userEmail, 'dunning', {
           name: userEmail.split('@')[0],
-          email: userEmail,
-          resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
+          subject: 'Payment Reminder - Hardban Records Lab',
+          body: `This is a friendly reminder that payment #${payment.id} for ${(payment.amount / 100).toFixed(2)} ${payment.currency || 'PLN'} is overdue. Please make the payment to avoid any disruption to your service.\n\nYou can manage your billing at: ${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
         }).catch(() => {});
         await logAuditEvent({
           userId: `payment_${payment.id}`,
@@ -65,10 +65,10 @@ export async function runDunningProcess(): Promise<{
         });
         reminded++;
       } else if (level.label === 'warning') {
-        await triggerEmailNotification(userEmail, 'password_reset', {
+        await triggerEmailNotification(userEmail, 'dunning', {
           name: userEmail.split('@')[0],
-          email: userEmail,
-          resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
+          subject: 'URGENT: Payment Required - Hardban Records Lab',
+          body: `Payment #${payment.id} for ${(payment.amount / 100).toFixed(2)} ${payment.currency || 'PLN'} is now 5 days overdue. If payment is not received within 2 days, your license will be locked.\n\nPlease pay immediately at: ${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
         }).catch(() => {});
         await logAuditEvent({
           userId: `payment_${payment.id}`,
@@ -78,10 +78,10 @@ export async function runDunningProcess(): Promise<{
         });
         warned++;
       } else if (level.label === 'final_notice') {
-        await triggerEmailNotification(userEmail, 'password_reset', {
+        await triggerEmailNotification(userEmail, 'dunning', {
           name: userEmail.split('@')[0],
-          email: userEmail,
-          resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
+          subject: 'FINAL NOTICE: License Will Be Locked - Hardban Records Lab',
+          body: `FINAL NOTICE: Payment #${payment.id} for ${(payment.amount / 100).toFixed(2)} ${payment.currency || 'PLN'} is now 7 days overdue. Your license will be locked immediately. To restore service, please pay at: ${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/billing`,
         }).catch(() => {});
         if (payment.licenseId) {
           await tx.update(licenses).set({ status: 'locked' }).where(eq(licenses.id, payment.licenseId));
