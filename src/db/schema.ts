@@ -75,6 +75,7 @@ export const tracks = pgTable('tracks', {
   filename: text('filename').notNull(),
   storagePath: text('storage_path'),
   fileSize: integer('file_size'),
+  fileHash: text('file_hash'),
   format: text('format'),
   metadata: jsonb('metadata'),
   rightsOwnerId: text('rights_owner_id'),

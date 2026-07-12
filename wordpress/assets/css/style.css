@@ -1,0 +1,39 @@
+<?php
+/**
+ * HRL Amoled Premium — CSS Modular Loader
+ * This file is loaded by wp_enqueue_style('hrl-theme-style')
+ * and imports all modular CSS files.
+ *
+ * @package HRL_Theme
+ * @version 3.0.0
+ */
+
+/* ═══════════════════════════════════════════════════════
+   CSS MODULE IMPORTS
+   Each file can be cached separately by CDN.
+   ═══════════════════════════════════════════════════════ */
+
+/* 1. Shared Variables & Base */
+@import url("00-variables.css");
+@import url("01-reset.css");
+@import url("02-typography.css");
+
+/* 2. Layout */
+@import url("03-layout.css");
+
+/* 3. Components */
+@import url("04-components.css");
+
+/* 4. Feature-specific */
+@import url("05-animations.css");
+@import url("06-3d-effects.css");
+
+/* 5. Page areas */
+@import url("07-header.css");
+@import url("08-footer.css");
+
+/* 6. Template-specific (MKS legacy isolation) */
+@import url("09-mks-encapsulated.css");
+
+/* 7. Responsive */
+@import url("10-responsive.css");

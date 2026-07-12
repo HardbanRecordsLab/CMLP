@@ -5,6 +5,7 @@ import { tracks, track_tags } from '../db/schema.ts';
 import * as mm from 'music-metadata';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'node:crypto';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { enqueueTranscodeJob } from '../services/transcoding-queue.service.ts';
 import { clearCache } from '../lib/redis.ts';
@@ -42,6 +43,34 @@ export async function create(req: any, res: Response) {
     }
 
     const filePath = req.file.path;
+    const fileBuffer = fs.readFileSync(filePath);
+
+    const MAGIC_BYTES: Record<string, [number, number[]][]> = {
+      'audio/mpeg': [[0, [0xFF, 0xFB]], [0, [0xFF, 0xF3]], [0, [0xFF, 0xF2]]],
+      'audio/wav': [[0, [0x52, 0x49, 0x46, 0x46]]],
+      'audio/flac': [[0, [0x66, 0x4C, 0x61, 0x43]]],
+      'audio/x-flac': [[0, [0x66, 0x4C, 0x61, 0x43]]],
+    };
+    const patterns = MAGIC_BYTES[req.file.mimetype];
+    if (patterns) {
+      const matches = patterns.some(([offset, bytes]) =>
+        bytes.every((b, i) => fileBuffer[offset + i] === b)
+      );
+      if (!matches) {
+        fs.unlinkSync(filePath);
+        res.status(400).json({ error: 'File signature mismatch' });
+        return;
+      }
+    }
+
+    const fileHash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+    const existingTrack = await db.select().from(tracks).where(eq(tracks.fileHash, fileHash)).limit(1);
+    if (existingTrack.length > 0) {
+      fs.unlinkSync(filePath);
+      res.status(409).json({ error: 'Duplicate file', existingTrackId: existingTrack[0].id });
+      return;
+    }
+
     const metadata = await mm.parseFile(filePath, { duration: true });
 
     let { title, artist, isrc, bpm, genre, mood } = req.body;
@@ -59,6 +88,7 @@ export async function create(req: any, res: Response) {
       durationMs,
       isrc: isrc || 'N/A',
       filename: req.file.filename,
+      fileHash,
       bpm,
       genre: genre.join(','),
       mood: Array.isArray(mood) ? mood.join(',') : mood,

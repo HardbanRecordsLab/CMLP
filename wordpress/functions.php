@@ -1,10 +1,10 @@
 <?php
 /**
  * HRL Amoled Premium — Theme Functions
- * HardbanRecords Lab 2.0
- * Version: 3.0.0
+ * HardbanRecords Lab 3.0 — Full editability, animations, 3D, blocks.
  *
  * @package HRL_Theme
+ * @version 3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,6 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once get_template_directory() . '/includes/class-hrl-category-provisioner.php';
+require_once get_template_directory() . '/customizer.php';
+require_once get_template_directory() . '/widgets/class-hrl-market-watch.php';
+require_once get_template_directory() . '/widgets/class-hrl-radio-player.php';
+require_once get_template_directory() . '/widgets/class-hrl-tagcloud.php';
+require_once get_template_directory() . '/widgets/class-hrl-live-counter.php';
+require_once get_template_directory() . '/widgets/class-hrl-social-links.php';
 
 // ═══════════════════════════════════════════════════════
 // THEME SETUP
@@ -30,6 +36,18 @@ function hrl_theme_setup() {
     ));
     add_theme_support( 'responsive-embeds' );
     add_theme_support( 'align-wide' );
+    add_theme_support( 'custom-spacing' );
+    add_theme_support( 'wp-block-styles' );
+    add_theme_support( 'editor-color-palette', array(
+        array( 'name' => 'Gold',      'slug' => 'gold',      'color' => '#C8A96E' ),
+        array( 'name' => 'Gold Light','slug' => 'gold-light','color' => '#E8D5A3' ),
+        array( 'name' => 'Gold Dark', 'slug' => 'gold-dark', 'color' => '#8B6914' ),
+        array( 'name' => 'Neon Blue', 'slug' => 'neon-blue', 'color' => '#38bdf8' ),
+        array( 'name' => 'Neon Purple','slug' => 'neon-purple','color' => '#a855f7' ),
+        array( 'name' => 'AMOLED Black','slug' => 'amoled-black','color' => '#000000' ),
+        array( 'name' => 'Text Primary','slug' => 'text-primary','color' => '#F5F0E6' ),
+        array( 'name' => 'Text Secondary','slug' => 'text-secondary','color' => 'rgba(245,240,230,0.65)' ),
+    ));
 
     register_nav_menus( array(
         'primary'   => __( 'Primary Menu (Header)', 'hrl-theme' ),
@@ -41,7 +59,52 @@ function hrl_theme_setup() {
 add_action( 'after_setup_theme', 'hrl_theme_setup' );
 
 // ═══════════════════════════════════════════════════════
-// ENQUEUE SCRIPTS & STYLES
+// SIDEBAR & WIDGET AREAS
+// ═══════════════════════════════════════════════════════
+function hrl_register_sidebars() {
+    register_sidebar( array(
+        'name'          => __( 'BlogCast Sidebar', 'hrl-theme' ),
+        'id'            => 'sidebar-blogcast',
+        'description'   => __( 'Sidebar widgets for BlogCast page.', 'hrl-theme' ),
+        'before_widget' => '<section class="widget hrl-sidebar-widget">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ));
+    register_sidebar( array(
+        'name'          => __( 'Default Sidebar', 'hrl-theme' ),
+        'id'            => 'sidebar-default',
+        'description'   => __( 'Default sidebar for generic pages.', 'hrl-theme' ),
+        'before_widget' => '<section class="widget hrl-sidebar-widget">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ));
+    for ( $i = 1; $i <= 4; $i++ ) {
+        register_sidebar( array(
+            'name'          => sprintf( __( 'Footer Column %d', 'hrl-theme' ), $i ),
+            'id'            => 'footer-' . $i,
+            'description'   => sprintf( __( 'Footer column %d widgets.', 'hrl-theme' ), $i ),
+            'before_widget' => '<div class="footer-widget">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<h4 class="widget-title">',
+            'after_title'   => '</h4>',
+        ));
+    }
+    register_sidebar( array(
+        'name'          => __( 'Header Announcement', 'hrl-theme' ),
+        'id'            => 'header-announcement',
+        'description'   => __( 'Sticky banner below navigation.', 'hrl-theme' ),
+        'before_widget' => '<div class="announcement-widget">',
+        'after_widget'  => '</div>',
+        'before_title'  => '',
+        'after_title'   => '',
+    ));
+}
+add_action( 'widgets_init', 'hrl_register_sidebars' );
+
+// ═══════════════════════════════════════════════════════
+// ENQUEUE SCRIPTS & STYLES (modular CSS)
 // ═══════════════════════════════════════════════════════
 function hrl_enqueue_assets() {
     $theme_version = wp_get_theme()->get( 'Version' );
@@ -52,7 +115,7 @@ function hrl_enqueue_assets() {
         array(), null
     );
 
-    wp_enqueue_style( 'hrl-theme-style', get_stylesheet_uri(), array( 'hrl-google-fonts' ), $theme_version );
+    wp_enqueue_style( 'hrl-theme-style', get_template_directory_uri() . '/assets/css/style.css', array( 'hrl-google-fonts' ), $theme_version );
 
     wp_enqueue_script( 'hrl-theme-js', get_template_directory_uri() . '/assets/js/hrla-theme.js', array(), $theme_version, true );
 
@@ -87,6 +150,55 @@ function hrl_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'hrl_enqueue_assets' );
 
 // ═══════════════════════════════════════════════════════
+// BLOCK PATTERNS REGISTRATION
+// ═══════════════════════════════════════════════════════
+function hrl_register_block_patterns() {
+    if ( function_exists( 'register_block_pattern' ) ) {
+        $patterns_dir = get_template_directory() . '/patterns/';
+        $patterns = array( 'hero-amoled', 'product-grid', 'pricing-table', 'contact-form' );
+        foreach ( $patterns as $pattern ) {
+            $file = $patterns_dir . $pattern . '.php';
+            if ( file_exists( $file ) ) {
+                $content = include $file;
+                if ( is_array( $content ) && ! empty( $content['title'] ) ) {
+                    register_block_pattern( 'hrl-theme/' . $pattern, $content );
+                }
+            }
+        }
+    }
+}
+add_action( 'init', 'hrl_register_block_patterns' );
+
+// ═══════════════════════════════════════════════════════
+// BLOCK CATEGORIES
+// ═══════════════════════════════════════════════════════
+function hrl_block_categories( $categories ) {
+    return array_merge( array(
+        array(
+            'slug'  => 'hrl-hero',
+            'title' => __( 'HRL Hero', 'hrl-theme' ),
+        ),
+        array(
+            'slug'  => 'hrl-products',
+            'title' => __( 'HRL Products', 'hrl-theme' ),
+        ),
+        array(
+            'slug'  => 'hrl-pricing',
+            'title' => __( 'HRL Pricing', 'hrl-theme' ),
+        ),
+        array(
+            'slug'  => 'hrl-contact',
+            'title' => __( 'HRL Contact', 'hrl-theme' ),
+        ),
+        array(
+            'slug'  => 'hrl-landing',
+            'title' => __( 'HRL Landing', 'hrl-theme' ),
+        ),
+    ), $categories );
+}
+add_filter( 'block_categories_all', 'hrl_block_categories' );
+
+// ═══════════════════════════════════════════════════════
 // BLOGCAST CATEGORY PROVISIONER
 // ═══════════════════════════════════════════════════════
 function hrl_provision_blog_categories() { HRL_Category_Provisioner::provision(); }
@@ -101,125 +213,44 @@ add_action( 'edited_term',  'hrl_bust_category_cache', 10, 3 );
 add_action( 'delete_term',  'hrl_bust_category_cache', 10, 3 );
 
 // ═══════════════════════════════════════════════════════
-// AJAX: BlogCast Post Filtering (unchanged)
+// AJAX HANDLERS (BlogCast, Ticker)
 // ═══════════════════════════════════════════════════════
-function hrl_filter_posts_handler() {
-    if ( ! isset( $_POST['nonce'] )
-        || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'hrl_blogcast_nonce' )
-    ) { wp_send_json_error( array( 'message' => __( 'Błąd weryfikacji bezpieczeństwa.', 'hrl-theme' ) ), 403 ); }
-
-    $category_id = isset( $_POST['category'] ) ? intval( $_POST['category'] ) : 0;
-    $paged       = isset( $_POST['page'] ) ? max( 1, intval( $_POST['page'] ) ) : 1;
-    $total_posts = (int) wp_count_posts()->publish;
-    $cache_key   = 'hrl_ajax_posts_' . $category_id . '_p' . $paged . '_n' . $total_posts;
-
-    $cached = get_transient( $cache_key );
-    if ( false !== $cached ) {
-        wp_send_json_success( array( 'html' => $cached, 'has_more' => ( 6 === substr_count( $cached, 'article-card' ) ), 'cached' => true ) );
-    }
-
-    $args = array( 'post_type' => 'post', 'posts_per_page' => 6, 'post_status' => 'publish', 'paged' => $paged );
-    if ( $category_id > 0 ) $args['cat'] = $category_id;
-
-    $query  = new WP_Query( $args );
-    $output = '';
-
-    if ( $query->have_posts() ) {
-        $idx = 0;
-        while ( $query->have_posts() ) { $query->the_post();
-            $cats = get_the_category();
-            $bad  = ! empty( $cats ) ? esc_html( $cats[0]->name ) : __( 'Artykuł', 'hrl-theme' );
-            $sty  = ( $idx > 0 ) ? ' style="background:var(--neon-purple);"' : '';
-            $output .= '<article class="article-card">';
-            $output .= '<span class="badge"' . $sty . '>' . ( 0 === $idx ? '🔥 ' : '' ) . $bad . '</span>';
-            $output .= '<a href="' . esc_url( get_permalink() ) . '" class="article-title">' . get_the_title() . '</a>';
-            $output .= '<div class="article-meta">' . esc_html( get_the_date() ) . ' · ' . get_the_author() . '</div>';
-            $output .= '<div class="article-excerpt">' . wp_trim_words( get_the_excerpt(), 18, '...' ) . '</div></article>';
-            $idx++;
-        }
-    } else {
-        $output = '<p style="color:var(--text-secondary);padding:40px 0;text-align:center;grid-column:1/-1;">' . __( 'Brak wpisów w tej sekcji.', 'hrl-theme' ) . '</p>';
-    }
-
-    $has_more = $query->max_num_pages > $paged;
-    wp_reset_postdata();
-    set_transient( $cache_key, $output, 15 * MINUTE_IN_SECONDS );
-    wp_send_json_success( array( 'html' => $output, 'has_more' => $has_more, 'cached' => false ) );
-}
-add_action( 'wp_ajax_hrl_filter_posts', 'hrl_filter_posts_handler' );
-add_action( 'wp_ajax_nopriv_hrl_filter_posts', 'hrl_filter_posts_handler' );
-
-function hrl_bust_posts_cache() {
-    global $wpdb;
-    $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s", '_transient_hrl_ajax_posts_%', '_transient_timeout_hrl_ajax_posts_%' ) );
-}
-add_action( 'save_post', 'hrl_bust_posts_cache' );
-add_action( 'deleted_post', 'hrl_bust_posts_cache' );
-add_action( 'edit_category', 'hrl_bust_posts_cache' );
+require_once get_template_directory() . '/includes/ajax-handlers.php';
 
 // ═══════════════════════════════════════════════════════
-// NEWSLETTER / CONTACT / MKS HANDLERS (unchanged)
+// PREMIUM HELPER FUNCTIONS
 // ═══════════════════════════════════════════════════════
-function hrl_newsletter_subscribe_handler() {
-    if ( ! isset( $_POST['hrl_newsletter_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['hrl_newsletter_nonce'] ) ), 'hrl_newsletter_action' ) )
-        wp_die( esc_html__( 'Błąd weryfikacji bezpieczeństwa.', 'hrl-theme' ) );
 
-    $name    = isset( $_POST['subscriber_name'] ) ? sanitize_text_field( wp_unslash( $_POST['subscriber_name'] ) ) : '';
-    $email   = isset( $_POST['subscriber_email'] ) ? sanitize_email( wp_unslash( $_POST['subscriber_email'] ) ) : '';
-    $consent = isset( $_POST['subscriber_consent'] );
-
-    if ( ! $name || ! $email || ! $consent ) { wp_safe_redirect( add_query_arg( 'subscribe', 'error', wp_get_referer() ) ); exit; }
-
-    $subscribers = get_transient( 'hrl_newsletter_subscribers' );
-    if ( ! is_array( $subscribers ) ) $subscribers = array();
-    $subscribers[] = array( 'name' => $name, 'email' => $email, 'subscribed' => current_time( 'mysql' ) );
-    set_transient( 'hrl_newsletter_subscribers', $subscribers, MONTH_IN_SECONDS );
-    wp_safe_redirect( add_query_arg( 'subscribe', 'success', wp_get_referer() ) );
-    exit;
+/**
+ * Estimate reading time in minutes based on word count.
+ */
+function hrl_estimate_reading_time( $content ) {
+    $word_count = str_word_count( wp_strip_all_tags( $content ) );
+    $minutes    = ceil( $word_count / 200 );
+    return max( 1, (int) $minutes );
 }
-add_action( 'admin_post_hrl_subscribe_newsletter', 'hrl_newsletter_subscribe_handler' );
-add_action( 'admin_post_nopriv_hrl_subscribe_newsletter', 'hrl_newsletter_subscribe_handler' );
 
-function hrl_contact_form_handler() {
-    if ( ! isset( $_POST['hrl_contact_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['hrl_contact_nonce'] ) ), 'hrl_contact_action' ) )
-        wp_die( esc_html__( 'Błąd weryfikacji bezpieczeństwa.', 'hrl-theme' ) );
-
-    $name    = isset( $_POST['contact_name'] ) ? sanitize_text_field( wp_unslash( $_POST['contact_name'] ) ) : '';
-    $email   = isset( $_POST['contact_email'] ) ? sanitize_email( wp_unslash( $_POST['contact_email'] ) ) : '';
-    $subject = isset( $_POST['contact_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['contact_subject'] ) ) : '';
-    $message = isset( $_POST['contact_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['contact_message'] ) ) : '';
-
-    if ( ! $name || ! $email || ! $subject || ! $message ) { wp_safe_redirect( add_query_arg( 'contact', 'error', wp_get_referer() ) ); exit; }
-
-    $contacts = get_transient( 'hrl_contact_submissions' );
-    if ( ! is_array( $contacts ) ) $contacts = array();
-    $contacts[] = array( 'name' => $name, 'email' => $email, 'subject' => $subject, 'message' => $message, 'timestamp' => current_time( 'mysql' ) );
-    set_transient( 'hrl_contact_submissions', $contacts, MONTH_IN_SECONDS );
-    wp_safe_redirect( add_query_arg( 'contact', 'success', wp_get_referer() ) );
-    exit;
+/**
+ * Estimate audio listen time: 1.4x reading time.
+ */
+function hrl_estimate_listen_time( $reading_minutes ) {
+    return max( 1, (int) ceil( (int) $reading_minutes * 1.4 ) );
 }
-add_action( 'admin_post_hrl_contact_form', 'hrl_contact_form_handler' );
-add_action( 'admin_post_nopriv_hrl_contact_form', 'hrl_contact_form_handler' );
 
-function hrl_mks_order_handler() {
-    if ( ! isset( $_POST['hrl_mks_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['hrl_mks_nonce'] ) ), 'hrl_mks_order_action' ) )
-        wp_die( esc_html__( 'Błąd weryfikacji bezpieczeństwa.', 'hrl-theme' ) );
-
-    $name    = isset( $_POST['mks_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mks_name'] ) ) : '';
-    $email   = isset( $_POST['mks_email'] ) ? sanitize_email( wp_unslash( $_POST['mks_email'] ) ) : '';
-    $details = isset( $_POST['mks_details'] ) ? sanitize_textarea_field( wp_unslash( $_POST['mks_details'] ) ) : '';
-
-    if ( ! $name || ! $email || ! $details ) { wp_safe_redirect( add_query_arg( 'mks', 'error', wp_get_referer() ) ); exit; }
-
-    $orders = get_transient( 'hrl_mks_orders' );
-    if ( ! is_array( $orders ) ) $orders = array();
-    $orders[] = array( 'name' => $name, 'email' => $email, 'details' => $details, 'timestamp' => current_time( 'mysql' ) );
-    set_transient( 'hrl_mks_orders', $orders, MONTH_IN_SECONDS );
-    wp_safe_redirect( add_query_arg( 'mks', 'success', wp_get_referer() ) );
-    exit;
+/**
+ * Get theme_mod with fallback.
+ */
+function hrl_mod( $key, $fallback = '' ) {
+    $val = get_theme_mod( $key );
+    return ( '' !== $val ) ? $val : $fallback;
 }
-add_action( 'admin_post_hrl_mks_order', 'hrl_mks_order_handler' );
-add_action( 'admin_post_nopriv_hrl_mks_order', 'hrl_mks_order_handler' );
+
+/**
+ * Check visibility of a section toggle.
+ */
+function hrl_is_visible( $setting ) {
+    return (bool) get_theme_mod( $setting, true );
+}
 
 // ═══════════════════════════════════════════════════════
 // SECURITY & SVG
@@ -233,274 +264,29 @@ function hrl_allow_svg_upload( $mimes ) { $mimes['svg'] = 'image/svg+xml'; retur
 add_filter( 'upload_mimes', 'hrl_allow_svg_upload' );
 
 // ═══════════════════════════════════════════════════════
-// PREMIUM 2.0 HELPER FUNCTIONS
+// POLICY: enqueue modular CSS + body class for admin
 // ═══════════════════════════════════════════════════════
-
-/**
- * Estimate reading time in minutes based on word count.
- * Average reading speed: 200 words per minute.
- *
- * @param string $content Post content.
- * @return int Rounded minutes (minimum 1).
- */
-function hrl_estimate_reading_time( $content ) {
-    $word_count = str_word_count( wp_strip_all_tags( $content ) );
-    $minutes    = ceil( $word_count / 200 );
-    return max( 1, (int) $minutes );
+function hrl_admin_body_class( $classes ) {
+    if ( is_admin() ) {
+        $classes[] = 'hrl-admin';
+    }
+    return $classes;
 }
-
-/**
- * Estimate audio listen time based on reading time.
- * Approx 1.4× reading time (narration is slower).
- *
- * @param int $reading_minutes Reading time in minutes.
- * @return int Rounded listen time minutes.
- */
-function hrl_estimate_listen_time( $reading_minutes ) {
-    return max( 1, (int) ceil( (int) $reading_minutes * 1.4 ) );
-}
+add_filter( 'admin_body_class', 'hrl_admin_body_class' );
 
 // ═══════════════════════════════════════════════════════
-// LIVE TICKER ENGINE v2.0
-// News: RMF FM RSS (fetch_feed). Financial: NBP + CoinGecko + Yahoo.
-// All cached 900 seconds via WordPress Transients. Zero fallback arrays.
+// THEME MODE BODY CLASSES (for targeted CSS)
 // ═══════════════════════════════════════════════════════
-
-/**
- * Ticker 1 — Live news headlines from RMF FM RSS.
- * Uses WordPress fetch_feed() (SimplePie). Cache: 900s.
- * If RSS fails, returns empty array (no fallback).
- */
-function hrl_get_live_news_items() {
-    $cached = get_transient( 'hrl_live_news' );
-    if ( false !== $cached ) return $cached;
-
-    $items = array();
-    $feed = @fetch_feed( 'https://www.rmf24.pl/feed' );
-
-    if ( ! is_wp_error( $feed ) ) {
-        $max  = $feed->get_item_quantity( 10 );
-        $feds = $feed->get_items( 0, $max );
-        foreach ( $feds as $fi ) {
-            $title = trim( wp_strip_all_tags( $fi->get_title() ) );
-            if ( empty( $title ) ) continue;
-            $items[] = array(
-                'title' => $title,
-                'url'   => esc_url( $fi->get_permalink() ),
-            );
-        }
+function hrl_body_classes( $classes ) {
+    if ( hrl_mod( 'hrl_3d_tilt_toggle', true ) ) {
+        $classes[] = 'hrl-3d-enabled';
     }
-
-    // Fallback: if fetch_feed returns empty, try raw XML parse via wp_remote_get
-    if ( empty( $items ) ) {
-        $resp = wp_remote_get( 'https://www.rmf24.pl/feed', array( 'timeout' => 8 ) );
-        if ( ! is_wp_error( $resp ) && 200 === wp_remote_retrieve_response_code( $resp ) ) {
-            $xml = wp_remote_retrieve_body( $resp );
-            if ( $xml ) {
-                // Fix CDATA escaping that sometimes breaks SimplePie
-                $xml = preg_replace( '/&(?!(?:amp|lt|gt|quot|apos|#\d+);)/', '&', $xml );
-                $simple = simplexml_load_string( $xml );
-                if ( $simple && isset( $simple->channel->item ) ) {
-                    $count = 0;
-                    foreach ( $simple->channel->item as $it ) {
-                        if ( $count >= 10 ) break;
-                        $title = trim( wp_strip_all_tags( (string) $it->title ) );
-                        if ( empty( $title ) ) continue;
-                        $items[] = array(
-                            'title' => $title,
-                            'url'   => esc_url( (string) $it->link ),
-                        );
-                        $count++;
-                    }
-                }
-            }
-        }
+    if ( get_theme_mod( 'hrl_3d_cursor_toggle', false ) ) {
+        $classes[] = 'hrl-cursor-enabled';
     }
-
-    set_transient( 'hrl_live_news', $items, 900 );
-    return $items;
+    if ( ! get_theme_mod( 'hrl_animations_toggle', true ) ) {
+        $classes[] = 'hrl-animations-disabled';
+    }
+    return $classes;
 }
-
-/**
- * Ticker 2 — Live financial data string.
- * Three sources combined with [FOREX] [STOCKS] [CRYPTO] markers.
- * Cache: 900s.
- */
-function hrl_get_live_financial_string() {
-    $cached = get_transient( 'hrl_live_financial' );
-    if ( false !== $cached ) return $cached;
-
-    $forex_parts  = array();
-    $crypto_parts = array();
-    $stock_parts  = array();
-
-    // ─── 1. FOREX: NBP Table A (all vs PLN) ───
-    $nbp = wp_remote_get( 'https://api.nbp.pl/api/exchangerates/tables/A/?format=json', array( 'timeout' => 8 ) );
-    if ( ! is_wp_error( $nbp ) && 200 === wp_remote_retrieve_response_code( $nbp ) ) {
-        $nd = json_decode( wp_remote_retrieve_body( $nbp ), true );
-        if ( isset( $nd[0]['rates'] ) ) {
-            $wanted = array( 'USD', 'EUR', 'CHF', 'GBP' );
-            foreach ( $nd[0]['rates'] as $r ) {
-                if ( in_array( $r['code'], $wanted, true ) ) {
-                    $forex_parts[] = $r['code'] . '/PLN: ' . number_format( (float) $r['mid'], 2, '.', '' );
-                }
-            }
-        }
-    }
-
-    // ─── 2. CRYPTO: CoinGecko (BTC, ETH vs USD + PLN) ───
-    $cg = wp_remote_get(
-        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,pln',
-        array( 'timeout' => 8 )
-    );
-    if ( ! is_wp_error( $cg ) && 200 === wp_remote_retrieve_response_code( $cg ) ) {
-        $cd = json_decode( wp_remote_retrieve_body( $cg ), true );
-        if ( isset( $cd['bitcoin']['usd'] ) ) {
-            $crypto_parts[] = 'BTC: $' . number_format( (float) $cd['bitcoin']['usd'], 0, '.', ',' );
-        }
-        if ( isset( $cd['ethereum']['usd'] ) ) {
-            $crypto_parts[] = 'ETH: $' . number_format( (float) $cd['ethereum']['usd'], 0, '.', ',' );
-        }
-    }
-
-    // ─── 3. STOCKS: Yahoo Finance ───
-    $stocks = array( '^WIG20' => 'WIG20', 'NVDA' => 'NVDA', 'AAPL' => 'AAPL' );
-    foreach ( $stocks as $sym => $label ) {
-        $yr = wp_remote_get(
-            'https://query1.finance.yahoo.com/v8/finance/chart/' . urlencode( $sym ) . '?range=1d&interval=1d',
-            array( 'timeout' => 6 )
-        );
-        if ( ! is_wp_error( $yr ) && 200 === wp_remote_retrieve_response_code( $yr ) ) {
-            $yd = json_decode( wp_remote_retrieve_body( $yr ), true );
-            if ( isset( $yd['chart']['result'][0]['meta']['regularMarketPrice'] ) ) {
-                $p = (float) $yd['chart']['result'][0]['meta']['regularMarketPrice'];
-                if ( '^WIG20' === $sym ) {
-                    $stock_parts[] = $label . ': ' . number_format( $p, 2, '.', '' );
-                } else {
-                    $stock_parts[] = $label . ': $' . number_format( $p, 2, '.', '' );
-                }
-            }
-        }
-    }
-
-    // ─── Assemble (order: CRYPTO → FOREX → STOCKS per spec) ───
-    $segments = array();
-    if ( ! empty( $crypto_parts ) ) $segments[] = '[CRYPTO] ' . implode( ' | ', $crypto_parts );
-    if ( ! empty( $forex_parts ) )  $segments[] = '[FOREX] ' . implode( ' | ', $forex_parts );
-    if ( ! empty( $stock_parts ) )  $segments[] = '[STOCKS] ' . implode( ' | ', $stock_parts );
-
-    $result = implode( ' || ', $segments );
-
-    set_transient( 'hrl_live_financial', $result, 900 );
-    return $result;
-}
-
-/**
- * Render news ticker HTML from RMF FM RSS.
- */
-function hrl_get_ticker_news_html() {
-    $cached = get_transient( 'hrl_ticker_news_html' );
-    if ( false !== $cached ) return $cached;
-
-    $items = hrl_get_live_news_items();
-    $html  = '';
-    $sep   = '<span class="ticker-separator">///</span>';
-
-    if ( ! empty( $items ) ) {
-        $all = array_merge( $items, array_slice( $items, 0, max( 2, intval( count( $items ) / 2 ) ) ) );
-        foreach ( $all as $i => $item ) {
-            if ( $i > 0 ) $html .= $sep . "\n";
-            $html .= '<span class="ticker-item"><a href="' . esc_url( $item['url'] ) . '">' . esc_html( $item['title'] ) . '</a></span>' . "\n";
-        }
-    }
-
-    set_transient( 'hrl_ticker_news_html', $html, 900 );
-    return $html;
-}
-
-/**
- * Render financial multi-market ticker HTML.
- * Segments: FOREX, STOCKS, CRYPTO.
- */
-function hrl_get_ticker_financial_html() {
-    $cached = get_transient( 'hrl_ticker_financial_html' );
-    if ( false !== $cached ) return $cached;
-
-    $raw        = hrl_get_live_financial_string();
-    $items_html = '';
-    $sep        = '<span class="ticker-separator">◆</span>';
-
-    $items = array_merge( explode( ' || ', $raw ), explode( ' || ', $raw ) );
-
-    foreach ( $items as $i => $segment ) {
-        $segment = trim( $segment );
-        if ( empty( $segment ) ) continue;
-
-        $label = '';
-        $value = $segment;
-        if ( 0 === strpos( $segment, '[FOREX]' ) ) {
-            $label = '<span class="ticker-segment forex">💱</span>';
-            $value = substr( $segment, 7 );
-        } elseif ( 0 === strpos( $segment, '[STOCKS]' ) ) {
-            $label = '<span class="ticker-segment stocks">📈</span>';
-            $value = substr( $segment, 8 );
-        } elseif ( 0 === strpos( $segment, '[CRYPTO]' ) ) {
-            $label = '<span class="ticker-segment crypto">₿</span>';
-            $value = substr( $segment, 8 );
-        }
-
-        if ( $i > 0 ) $items_html .= $sep . "\n";
-        $items_html .= '<span class="ticker-item">' . $label . ' ' . esc_html( $value ) . '</span>' . "\n";
-    }
-
-    set_transient( 'hrl_ticker_financial_html', $items_html, 900 );
-    return $items_html;
-}
-
-// ═══════════════════════════════════════════════════════
-// AJAX: LIVE TICKER POLLING (60s refresh)
-// ═══════════════════════════════════════════════════════
-
-/**
- * AJAX handler — returns fresh news ticker HTML.
- * Bypasses cache to deliver the latest headlines.
- */
-function hrl_ticker_news_ajax() {
-    if ( ! isset( $_POST['nonce'] )
-        || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'hrl_ticker_nonce' )
-    ) { wp_send_json_error( array( 'message' => 'Invalid nonce' ), 403 ); }
-
-    // Purge news caches so we fetch fresh data
-    delete_transient( 'hrl_live_news' );
-    delete_transient( 'hrl_ticker_news_html' );
-
-    $html = hrl_get_ticker_news_html();
-    if ( empty( $html ) ) {
-        $html = '<span class="ticker-item">' . esc_html__( 'Ładowanie wiadomości z RMF FM...', 'hrl-theme' ) . '</span>';
-    }
-    wp_send_json_success( array( 'html' => $html ) );
-}
-add_action( 'wp_ajax_hrl_ticker_news', 'hrl_ticker_news_ajax' );
-add_action( 'wp_ajax_nopriv_hrl_ticker_news', 'hrl_ticker_news_ajax' );
-
-/**
- * AJAX handler — returns fresh financial ticker HTML.
- * Bypasses cache to deliver the latest crypto/forex/stock prices.
- */
-function hrl_ticker_financial_ajax() {
-    if ( ! isset( $_POST['nonce'] )
-        || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'hrl_ticker_nonce' )
-    ) { wp_send_json_error( array( 'message' => 'Invalid nonce' ), 403 ); }
-
-    // Purge financial caches so we fetch fresh data
-    delete_transient( 'hrl_live_financial' );
-    delete_transient( 'hrl_ticker_financial_html' );
-
-    $html = hrl_get_ticker_financial_html();
-    if ( empty( $html ) ) {
-        $html = '<span class="ticker-item">' . esc_html__( 'Ładowanie danych rynkowych...', 'hrl-theme' ) . '</span>';
-    }
-    wp_send_json_success( array( 'html' => $html ) );
-}
-add_action( 'wp_ajax_hrl_ticker_financial', 'hrl_ticker_financial_ajax' );
-add_action( 'wp_ajax_nopriv_hrl_ticker_financial', 'hrl_ticker_financial_ajax' );
+add_filter( 'body_class', 'hrl_body_classes' );

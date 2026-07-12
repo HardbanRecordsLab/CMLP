@@ -383,10 +383,8 @@ function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: any; onNext
   useEffect(() => {
     if (!currentTrack) { setAudioSrc(''); return; }
     let cancelled = false;
-    const token = localStorage.getItem('auth_token');
-    if (!token) return;
     fetch(getApiUrl(`/api/audio/token/${currentTrack.filename}`), {
-      headers: { 'Authorization': `Bearer ${token}` }
+      credentials: 'include',
     })
       .then(res => res.json())
       .then(data => {
@@ -515,7 +513,7 @@ export default function B2BDashboard() {
     const uid = userData?.uid;
     if (!uid) return;
 
-    fetch(getApiUrl(`/api/audio/token/${encodeURIComponent(raw)}`))
+    fetch(getApiUrl(`/api/audio/token/${encodeURIComponent(raw)}`), { credentials: 'include' })
       .then(r => r.ok ? r.json() : Promise.reject())
       .then((data: any) => setAudioSrc(getApiUrl(`/api/audio/${encodeURIComponent(base)}${ext}?uid=${data.uid}&hrl_token=${data.token}`)))
       .catch(() => setAudioSrc(''));

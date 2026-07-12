@@ -1,0 +1,25 @@
+/*
+Theme Name: HRL Amoled Premium Child
+Description: Child theme for HRL Amoled Premium. Override template-parts, add custom CSS, extend functionality.
+Template: hrl-theme
+Version: 3.0.0
+*/
+
+/* ═══════════════════════════════════════════════════════
+   CHILD THEME — Custom overrides go here.
+   All parent template-parts can be overridden by
+   copying them into this theme's template-parts/ folder.
+   ═══════════════════════════════════════════════════════ */
+
+/* Example: override accent color */
+:root {
+  --gold: #D4AF37;
+  --gold-light: #F0D878;
+}
+
+/* Example: custom hero section */
+.hrl-custom-hero {
+  background: linear-gradient(135deg, #000 0%, #1a0a00 100%);
+  padding: 120px 20px;
+  text-align: center;
+}

@@ -9,6 +9,7 @@ import { createServer as createViteServer } from 'vite';
 import { createRateLimiter, blockedIps } from './src/middleware/rateLimiter.ts';
 import { errorHandler, notFoundHandler } from './src/middleware/errorHandler.ts';
 import { sanitizeRequestPayload } from './src/utils/security.ts';
+import { csrfProtection } from './src/middleware/csrf.ts';
 import { logAuditEvent } from './src/services/logging.service.ts';
 import { db } from './src/db/index.ts';
 import { users } from './src/db/schema.ts';
@@ -56,6 +57,7 @@ const rateLimiter = createRateLimiter(async (userId, action, resource, details, 
 app.use(compression());
 app.use(express.json());
 app.use(rateLimiter);
+app.use('/api', csrfProtection);
 app.use('/api', apiRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -78,6 +80,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
   next();
 });
+
+app.use('/api', (await import('./src/middleware/csrf.ts')).csrfProtection);
 
 app.use((req, res, next) => {
   const nonce = crypto.randomBytes(16).toString('base64');
@@ -133,7 +137,12 @@ async function setupViteAndStart() {
   if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
     startTranscodeWorker();
     startWebhookRetryProcessor();
-    setInterval(() => {
+    const { redisClient } = await import('./src/lib/redis.ts');
+    setInterval(async () => {
+      const lockKey = 'cmlp:dunning:lock';
+      const lockValue = Date.now().toString();
+      const acquired = await redisClient.set(lockKey, lockValue, 'PX', 55 * 60 * 1000, 'NX').catch(() => null);
+      if (!acquired) return;
       runDunningProcess().catch(e => console.error('[Dunning CRON] Error:', e.message));
     }, 60 * 60 * 1000).unref();
   }

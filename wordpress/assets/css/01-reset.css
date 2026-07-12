@@ -1,0 +1,40 @@
+/* ═══════════════════════════════════════════════════════
+   01-RESET.CSS
+   ═══════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+ul, ol {
+  list-style: none;
+}
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+a:hover {
+  color: var(--gold-light);
+}
+::selection {
+  background: var(--gold);
+  color: #000;
+}

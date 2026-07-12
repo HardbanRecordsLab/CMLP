@@ -158,8 +158,18 @@ export async function register(req: Request, res: Response) {
   }
 }
 
+function getCookie(req: Request, name: string): string | undefined {
+  const cookieStr = req.headers.cookie;
+  if (!cookieStr) return undefined;
+  for (const part of cookieStr.split(';')) {
+    const [k, v] = part.trim().split('=');
+    if (k === name) return decodeURIComponent(v);
+  }
+  return undefined;
+}
+
 export async function refresh(req: Request, res: Response) {
-  const { refreshToken } = req.body;
+  const refreshToken = req.body.refreshToken || getCookie(req, 'hrl_cmlp_refresh');
 
   if (!refreshToken) {
     return res.status(400).json({ error: 'Refresh token required' });

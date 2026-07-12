@@ -121,6 +121,7 @@ export async function createCheckoutSession(req: any, res: Response) {
                   name: `HRL ${transactionType.toUpperCase()} - License ${licenseId || 'General'}`,
                 },
                 unit_amount: parseInt(amount, 10),
+                recurring: { interval: 'month' as const },
               },
               quantity: 1,
             },
@@ -130,7 +131,7 @@ export async function createCheckoutSession(req: any, res: Response) {
             licenseId: licenseId ? licenseId.toString() : '',
             userId: userRecord.id.toString(),
           },
-          mode: 'payment',
+          mode: 'subscription',
           success_url: `${process.env.FRONTEND_URL || req.headers.origin || 'http://localhost:5173'}/admin/licensing?payment=success&txId=${gatewayTransactionId}`,
           cancel_url: `${req.headers.origin || 'http://localhost:5173'}/admin/licensing`,
         });

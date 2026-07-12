@@ -6,7 +6,6 @@ interface User {
   uid: string;
   email: string;
   role: string;
-  accessToken: string;
 }
 
 export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => void; onForgot?: () => void }) {
@@ -41,7 +40,6 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
         uid: data.uid,
         email: data.email,
         role: data.role,
-        accessToken: data.accessToken
       });
     } catch (err: any) {
       setError(err.message || t('login.error_failed'));

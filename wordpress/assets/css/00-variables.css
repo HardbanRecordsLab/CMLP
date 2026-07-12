@@ -1,0 +1,39 @@
+/* ═══════════════════════════════════════════════════════
+   00-VARIABLES.CSS — Root Custom Properties
+   ═══════════════════════════════════════════════════════ */
+:root {
+  /* Colors */
+  --bg-main: #000000;
+  --bg-card: rgba(18, 15, 12, 0.75);
+  --bg-widget: linear-gradient(145deg, rgba(25, 20, 15, 0.6), rgba(5, 5, 5, 0.9));
+  --gold: #C8A96E;
+  --gold-light: #E8D5A3;
+  --gold-dark: #8B6914;
+  --gold-neon: #FFCA61;
+  --neon-blue: #38bdf8;
+  --neon-purple: #a855f7;
+  --text-primary: #F5F0E6;
+  --text-secondary: rgba(245, 240, 230, 0.65);
+  --border-color: rgba(200, 169, 110, 0.18);
+  --border-glow: rgba(200, 169, 110, 0.2);
+  --market-up: #10b981;
+  --market-down: #ef4444;
+
+  /* Gradients */
+  --gradient-accent: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+  --gradient-gold: linear-gradient(135deg, #C8A96E 0%, #E8D5A3 50%, #8B6914 100%);
+
+  /* Fonts */
+  --font-headings: 'Playfair Display', Georgia, serif;
+  --font-accents: 'Cinzel', serif;
+  --font-sans: 'DM Sans', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Effects */
+  --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-premium: 0 12px 40px 0 rgba(0, 0, 0, 0.85);
+
+  /* 3D */
+  --hrl-perspective: 1000px;
+  --hrl-tilt-intensity: 15deg;
+}

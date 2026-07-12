@@ -178,10 +178,29 @@
       polling = false;
     }
 
-    // First poll after 1s (after page render), then every 60s
     setTimeout(function () {
       hrlTickerPoll();
       setInterval(hrlTickerPoll, pollMs);
     }, 1000);
   }
+
+  // ═══════════════════════════════════════════════════════
+  // WIDGET RADIO PLAYERS (compact sidebar Radio HRL)
+  // ═══════════════════════════════════════════════════════
+  document.querySelectorAll('.hrl-widget-play-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var url = btn.getAttribute('data-stream');
+      if (!url) return;
+      var existing = document.getElementById('hrl-widget-audio');
+      if (existing) existing.pause();
+      var a = document.createElement('audio');
+      a.id = 'hrl-widget-audio';
+      a.src = url;
+      a.play().catch(function(){});
+      btn.textContent = '⏸';
+      a.addEventListener('pause', function(){ btn.textContent = '▶'; });
+      a.addEventListener('playing', function(){ btn.textContent = '⏸'; });
+    });
+  });
+
 })();

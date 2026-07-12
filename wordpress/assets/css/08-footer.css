@@ -1,0 +1,47 @@
+/* ═══════════════════════════════════════════════════════
+   08-FOOTER.CSS
+   ═══════════════════════════════════════════════════════ */
+.site-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 60px 20px 30px;
+  text-align: center;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  text-align: left;
+}
+.footer-col h4 {
+  font-family: var(--font-accents);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 8px; }
+.footer-col ul li a {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--gold-light); }
+.footer-logo {
+  font-family: var(--font-accents);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  display: block;
+  text-decoration: none;
+}
+.footer-bottom {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}

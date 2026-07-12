@@ -1,0 +1,18 @@
+/* ═══════════════════════════════════════════════════════
+   09-MKS-ENCAPSULATED.CSS — Legacy MKS Isolation Layer
+   Re-exports critical MKS styles scoped to #mks-page-root.
+   Original full MKS CSS lives in page-muzyczna-kreacja-slow.php inline.
+   ═══════════════════════════════════════════════════════ */
+#mks-page-root {
+  --mks-gold: #C8A96E;
+  --mks-gold-light: #E8D5A3;
+  --mks-gold-dark: #8B6914;
+  --mks-gold-neon: #FFCA61;
+  --mks-text-primary: #F5F0E6;
+  --mks-text-secondary: #a3998a;
+  --mks-white: #FFFFFF;
+  --mks-border-glow: rgba(200,169,110,0.2);
+  --mks-shadow: 0 12px 40px 0 rgba(0,0,0,0.82);
+  --mks-font-headings: 'Playfair Display', Georgia, serif;
+  --mks-font-sans: 'DM Sans', 'Inter', sans-serif;
+}

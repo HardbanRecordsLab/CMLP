@@ -1,0 +1,28 @@
+/* ═══════════════════════════════════════════════════════
+   02-TYPOGRAPHY.CSS
+   ═══════════════════════════════════════════════════════ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 3rem); }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.1rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.9rem; }
+p { margin-bottom: 1rem; line-height: 1.7; color: var(--text-secondary); }
+strong { color: var(--gold-light); font-weight: 600; }
+em { font-style: italic; }
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2rem 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }

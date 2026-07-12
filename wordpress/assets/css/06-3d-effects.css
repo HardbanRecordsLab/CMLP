@@ -1,0 +1,161 @@
+/* ═══════════════════════════════════════════════════════
+   HRL AMOLED PREMIUM — 3D EFFECTS
+   Tilt, perspective, 3D cursor, parallax, transforms
+   ═══════════════════════════════════════════════════════ */
+
+/* ── 3D Card Tilt ── */
+[data-tilt] {
+  transform-style: preserve-3d;
+  transform: perspective(var(--hrl-perspective, 1000px));
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+[data-tilt] .tilt-content {
+  transform: translateZ(20px);
+}
+[data-tilt] .tilt-float {
+  transform: translateZ(40px);
+}
+
+/* ── 3D Card Flip ── */
+.hrl-3d-flip {
+  perspective: 1200px;
+  display: inline-block;
+}
+.hrl-3d-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.hrl-3d-flip:hover .hrl-3d-flip-inner,
+.hrl-3d-flip.is-flipped .hrl-3d-flip-inner {
+  transform: rotateY(180deg);
+}
+.hrl-3d-flip-front,
+.hrl-3d-flip-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.hrl-3d-flip-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Custom 3D Cursor ── */
+.hrl-cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  will-change: transform;
+}
+.hrl-cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  mix-blend-mode: difference;
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+  will-change: transform;
+}
+.hrl-cursor-dot.hover-link {
+  width: 14px; height: 14px;
+  background: var(--gold-light);
+}
+.hrl-cursor-ring.hover-link {
+  width: 56px; height: 56px;
+  border-color: var(--gold-light);
+}
+
+@media (hover: none) {
+  .hrl-cursor-dot, .hrl-cursor-ring { display: none !important; }
+}
+
+/* ── 3D Depth Layers ── */
+.hrl-depth-1 { transform: translateZ(10px); }
+.hrl-depth-2 { transform: translateZ(25px); }
+.hrl-depth-3 { transform: translateZ(45px); }
+
+/* ── Parallax Container ── */
+.hrl-parallax-container {
+  perspective: 1200px;
+  perspective-origin: center;
+  overflow: hidden;
+}
+
+/* ── 3D Wave Background ── */
+.hrl-wave-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* ── Gold Shimmer (3D metallic surfaces) ── */
+.hrl-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.hrl-shimmer::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(200,169,110,0.08),
+    transparent,
+    rgba(200,169,110,0.04),
+    transparent
+  );
+  animation: shimmerRotate 4s linear infinite;
+}
+@keyframes shimmerRotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── 3D Hover Lift ── */
+.hrl-lift {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.hrl-lift:hover {
+  transform: translateY(-8px) rotateX(2deg);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.5),
+    0 0 30px rgba(200,169,110,0.08);
+}
+
+/* ── Particle Burst ── */
+.hrl-particles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hrl-particle {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleBurst 1.2s ease-out forwards;
+}
+@keyframes particleBurst {
+  0%   { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+}

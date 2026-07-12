@@ -1,5 +1,10 @@
 import { useState, useCallback } from 'react';
 
+function getCsrfToken(): string | undefined {
+  const match = document.cookie.match(/(?:^|;\s*)hrl_csrf=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : undefined;
+}
+
 export function useApi() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -9,37 +14,31 @@ export function useApi() {
     setError(null);
 
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) {
-        throw new Error('Not authenticated');
+      const headers = new Headers(options.headers || {});
+
+      if (options.method && !['GET', 'HEAD'].includes(options.method.toUpperCase())) {
+        const csrf = getCsrfToken();
+        if (csrf) headers.set('X-CSRF-Token', csrf);
       }
 
-      const headers = new Headers(options.headers || {});
-      headers.set('Authorization', `Bearer ${token}`);
-
-      let response = await fetch(url, { ...options, headers });
+      let response = await fetch(url, {
+        ...options,
+        headers,
+        credentials: 'include',
+      });
 
       if (response.status === 401) {
-        const refresh = localStorage.getItem('refresh_token');
-        if (refresh) {
-          try {
-            const refreshRes = await fetch('/api/auth/refresh', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ refreshToken: refresh })
-            });
-            if (refreshRes.ok) {
-              const data = await refreshRes.json();
-              localStorage.setItem('auth_token', data.accessToken);
-              localStorage.setItem('refresh_token', data.refreshToken);
-              headers.set('Authorization', `Bearer ${data.accessToken}`);
-              response = await fetch(url, { ...options, headers });
-            }
-          } catch {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('refresh_user');
-            localStorage.removeItem('refresh_token');
+        try {
+          const refreshRes = await fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+          });
+          if (refreshRes.ok) {
+            response = await fetch(url, { ...options, headers, credentials: 'include' });
           }
+        } catch {
+          // refresh failed
         }
       }
 
