@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { refreshAccessToken } from '@/lib/jwt.ts';
 
 export function useApi() {
   const [loading, setLoading] = useState(false);
@@ -23,12 +22,23 @@ export function useApi() {
       if (response.status === 401) {
         const refresh = localStorage.getItem('refresh_token');
         if (refresh) {
-          const tokens = refreshAccessToken(refresh);
-          if (tokens) {
-            localStorage.setItem('auth_token', tokens.accessToken);
-            localStorage.setItem('refresh_token', tokens.refreshToken);
-            headers.set('Authorization', `Bearer ${tokens.accessToken}`);
-            response = await fetch(url, { ...options, headers });
+          try {
+            const refreshRes = await fetch('/api/auth/refresh', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ refreshToken: refresh })
+            });
+            if (refreshRes.ok) {
+              const data = await refreshRes.json();
+              localStorage.setItem('auth_token', data.accessToken);
+              localStorage.setItem('refresh_token', data.refreshToken);
+              headers.set('Authorization', `Bearer ${data.accessToken}`);
+              response = await fetch(url, { ...options, headers });
+            }
+          } catch {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('refresh_user');
+            localStorage.removeItem('refresh_token');
           }
         }
       }
