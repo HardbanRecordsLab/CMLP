@@ -88,6 +88,10 @@ export async function createCheckoutSession(req: any, res: Response) {
       res.status(400).json({ error: 'Amount, gateway, and transactionType are required' }); return;
     }
 
+    if (gateway === 'payu') {
+      res.status(400).json({ error: 'PayU is not available. Please use Stripe.' }); return;
+    }
+
     const gatewayTransactionId = `${gateway.toUpperCase()}-TX-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
     const [newPayment] = (await db.insert(payments).values({
@@ -126,7 +130,7 @@ export async function createCheckoutSession(req: any, res: Response) {
             userId: userRecord.id.toString(),
           },
           mode: 'payment',
-          success_url: `${req.headers.origin || 'http://localhost:5173'}/api/payments/simulate-success?txId=${gatewayTransactionId}`,
+          success_url: `${process.env.FRONTEND_URL || req.headers.origin || 'http://localhost:5173'}/admin/licensing?payment=success&txId=${gatewayTransactionId}`,
           cancel_url: `${req.headers.origin || 'http://localhost:5173'}/admin/licensing`,
         });
 
@@ -147,11 +151,13 @@ export async function createCheckoutSession(req: any, res: Response) {
       }
     }
 
-    const sessionUrl = `/api/payments/simulate-success?txId=${gatewayTransactionId}`;
+    if (process.env.NODE_ENV === 'production') {
+      res.status(400).json({ error: `Unsupported gateway: ${gateway}. Only Stripe is available.` }); return;
+    }
 
     res.status(201).json({
       payment: newPayment,
-      sessionUrl,
+      sessionUrl: `/api/payments/simulate-success?txId=${gatewayTransactionId}`,
       gatewayTransactionId,
     });
   } catch (e) {
@@ -161,6 +167,11 @@ export async function createCheckoutSession(req: any, res: Response) {
 }
 
 export async function simulateSuccess(req: Request, res: Response) {
+  if (process.env.NODE_ENV === 'production' && (req as any).user?.role !== 'admin') {
+    res.status(403).send('Forbidden in production');
+    return;
+  }
+
   try {
     const txId = req.query.txId as string;
     if (!txId) { res.status(400).send('Transaction ID required'); return; }
@@ -240,6 +251,18 @@ export async function refund(req: any, res: Response) {
       res.status(403).json({ error: 'Forbidden' }); return;
     }
 
+    if (payment.gateway === 'stripe' && payment.gatewayTransactionId && process.env.NODE_ENV !== 'test') {
+      try {
+        const stripeRefund = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-05-27.dahlia' });
+        await stripeRefund.refunds.create({
+          payment_intent: payment.gatewayTransactionId,
+        });
+      } catch (stripeErr: any) {
+        console.error('[Refund] Stripe refund failed:', stripeErr.message);
+        res.status(500).json({ error: `Stripe refund failed: ${stripeErr.message}` }); return;
+      }
+    }
+
     const [updated] = await db.update(payments).set({
       status: 'refunded',
     }).where(eq(payments.id, payId)).returning();
@@ -249,6 +272,14 @@ export async function refund(req: any, res: Response) {
         status: 'cancelled',
       }).where(eq(licenses.id, payment.licenseId));
     }
+
+    await logAuditEvent({
+      userId: userUid,
+      action: 'payment_refunded',
+      resource: 'payments',
+      details: `Payment ${payId} refunded via ${payment.gateway}`,
+      ipAddress: req.ip,
+    });
 
     res.json(updated);
   } catch (e) {

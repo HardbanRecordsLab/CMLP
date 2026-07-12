@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import { db } from '../db/index.ts';
 import { users } from '../db/schema.ts';
@@ -53,10 +54,33 @@ export function refreshAccessToken(refreshToken: string): { accessToken: string;
     type: decoded.type,
   };
 
+  const newAccessToken = signToken(payload);
+  const newRefreshToken = signRefreshToken(payload);
+
+  invalidateRefreshTokenInRedis(decoded.uid, refreshToken).catch(() => {});
+
   return {
-    accessToken: signToken(payload),
-    refreshToken: signRefreshToken(payload),
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
   };
+}
+
+async function invalidateRefreshTokenInRedis(uid: string, token: string): Promise<void> {
+  try {
+    const familyKey = `rt_family:${uid}`;
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const existing = await redisClient.get(familyKey);
+    if (existing) {
+      const family = JSON.parse(existing);
+      if (family.includes(tokenHash)) {
+        await redisClient.del(familyKey);
+        return;
+      }
+    }
+    await redisClient.setex(familyKey, 7 * 24 * 60 * 60, JSON.stringify([tokenHash]));
+  } catch {
+    // Redis unavailable — skip rotation
+  }
 }
 
 const USER_CACHE_TTL = 300;

@@ -229,6 +229,28 @@ async function setupViteAndStart() {
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
   });
+
+  const gracefulShutdown = async (signal: string) => {
+    console.log(`[${signal}] Graceful shutdown initiated...`);
+    server.close(() => {
+      console.log('[Shutdown] HTTP server closed');
+    });
+    wss.close(() => {
+      console.log('[Shutdown] WebSocket server closed');
+    });
+    try {
+      const { redisClient } = await import('./src/lib/redis.ts');
+      redisClient.quit();
+    } catch {}
+    try {
+      const { db } = await import('./src/db/index.ts');
+      await db.$client?.end();
+    } catch {}
+    setTimeout(() => process.exit(0), 5000).unref();
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }
 
 async function seedSystemAccounts() {

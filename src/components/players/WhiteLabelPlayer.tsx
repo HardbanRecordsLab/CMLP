@@ -108,61 +108,71 @@ export default function WhiteLabelPlayer() {
     const currentTrack = tracks[currentTrackIndex];
     if (!currentTrack || !audioRef.current) return;
 
+    let cancelled = false;
     reportTelemetry(currentTrack);
 
     const token = localStorage.getItem('auth_token');
-    const uid = localStorage.getItem('hrl_uid') || 'anonymous';
-    const hrlParam = token ? `&hrl_token=${token}` : '';
-    const audioSource = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${uid}${hrlParam}`);
+    if (!token) return;
 
-    // Clean up previous HLS instance
-    if (hlsRef.current) {
-      hlsRef.current.destroy();
-      hlsRef.current = null;
-    }
+    fetch(getApiUrl(`/api/audio/token/${currentTrack.filename}`), {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (cancelled || !data.token) return;
 
-    if (currentTrack.filename.endsWith('.m3u8') && Hls.isSupported()) {
-      const hls = new Hls({
-        enableWorker: true,
-        lowLatencyMode: true,
-        backBufferLength: 90
-      });
-      hlsRef.current = hls;
+        const audioSource = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${data.uid}&hrl_token=${data.token}`);
 
-      hls.loadSource(audioSource);
-      hls.attachMedia(audioRef.current);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        if (isPlaying) {
-          audioRef.current?.play().catch(console.error);
+        // Clean up previous HLS instance
+        if (hlsRef.current) {
+          hlsRef.current.destroy();
+          hlsRef.current = null;
         }
-      });
-      
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        if (data.fatal) {
-          switch (data.type) {
-            case Hls.ErrorTypes.NETWORK_ERROR:
-              hls.startLoad();
-              break;
-            case Hls.ErrorTypes.MEDIA_ERROR:
-              hls.recoverMediaError();
-              break;
-            default:
-              hls.destroy();
-              break;
+
+        if (currentTrack.filename.endsWith('.m3u8') && Hls.isSupported()) {
+          const hls = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true,
+            backBufferLength: 90
+          });
+          hlsRef.current = hls;
+
+          hls.loadSource(audioSource);
+          hls.attachMedia(audioRef.current!);
+
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            if (isPlaying) {
+              audioRef.current?.play().catch(console.error);
+            }
+          });
+          
+          hls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  hls.startLoad();
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  hls.recoverMediaError();
+                  break;
+                default:
+                  hls.destroy();
+                  break;
+              }
+            }
+          });
+        } else {
+          audioRef.current!.src = audioSource;
+          audioRef.current!.load();
+          if (isPlaying) {
+            audioRef.current!.play().catch(console.error);
           }
         }
-      });
-    } else {
-      // Fallback for native HLS (Safari) or standard MP3/MP4 files (using existing setup structure)
-      audioRef.current.src = audioSource;
-      audioRef.current.load();
-      if (isPlaying) {
-        audioRef.current.play().catch(console.error);
-      }
-    }
+      })
+      .catch(console.error);
 
     return () => {
+      cancelled = true;
       if (hlsRef.current) {
         hlsRef.current.destroy();
         hlsRef.current = null;

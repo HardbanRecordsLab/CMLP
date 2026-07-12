@@ -39,7 +39,7 @@ export async function create(req: any, res: Response) {
     const [newLicense] = (await db.insert(licenses).values({
       companyName,
       licenseType,
-      status: 'active',
+      status: 'pending',
       certificateNumber,
       expiresAt,
       authorUid,

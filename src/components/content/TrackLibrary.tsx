@@ -50,21 +50,23 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
     } catch {}
   };
 
-  const togglePlay = (track: Track) => {
+  const togglePlay = async (track: Track) => {
     if (playingId === track.id) {
       audioRef.current?.pause();
       setPlayingId(null);
       return;
     }
-    const token = localStorage.getItem('auth_token');
-    const uid = localStorage.getItem('hrl_uid') || 'anonymous';
-    const hrlParam = token ? `&hrl_token=${token}` : '';
-    const src = getApiUrl(`/api/audio/${track.filename}?uid=${uid}${hrlParam}`);
-
-    if (!audioRef.current) audioRef.current = new Audio();
-    audioRef.current.src = src;
-    audioRef.current.play().then(() => setPlayingId(track.id)).catch(() => {});
-    audioRef.current.onended = () => setPlayingId(null);
+    try {
+      const res = await fetchWithAuth(getApiUrl(`/api/audio/token/${track.filename}`));
+      const data = await res.json();
+      if (data.token) {
+        const src = getApiUrl(`/api/audio/${track.filename}?uid=${data.uid}&hrl_token=${data.token}`);
+        if (!audioRef.current) audioRef.current = new Audio();
+        audioRef.current.src = src;
+        audioRef.current.play().then(() => setPlayingId(track.id)).catch(() => {});
+        audioRef.current.onended = () => setPlayingId(null);
+      }
+    } catch {}
   };
 
   return (

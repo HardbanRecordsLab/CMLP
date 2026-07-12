@@ -378,12 +378,31 @@ function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: any; onNext
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [audioSrc, setAudioSrc] = useState('');
 
   useEffect(() => {
-    if (audioRef.current && currentTrack) {
+    if (!currentTrack) { setAudioSrc(''); return; }
+    let cancelled = false;
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+    fetch(getApiUrl(`/api/audio/token/${currentTrack.filename}`), {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (cancelled || !data.token) return;
+        const src = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${data.uid}&hrl_token=${data.token}`);
+        setAudioSrc(src);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [currentTrack]);
+
+  useEffect(() => {
+    if (audioRef.current && audioSrc) {
       audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
     }
-  }, [currentTrack]);
+  }, [audioSrc]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -441,7 +460,7 @@ function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: any; onNext
 
       <audio
         ref={audioRef}
-        src={getApiUrl(`/api/audio/${currentTrack.filename}`)}
+        src={audioSrc}
         onTimeUpdate={() => setCurrentTime(audioRef.current?.currentTime || 0)}
         onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
         onEnded={onNext}
@@ -483,6 +502,24 @@ export default function B2BDashboard() {
       })
       .catch(() => {});
   };
+
+  const [audioSrc, setAudioSrc] = useState('');
+
+  useEffect(() => {
+    if (!currentTrack?.filename) return;
+    const raw = currentTrack.filename;
+    const match = raw.match(/\.(mp3|wav|flac|ogg|aac|m4a)$/i);
+    if (!match) return;
+    const base = raw.slice(0, -(match[0].length));
+    const ext = match[0].toLowerCase();
+    const uid = userData?.uid;
+    if (!uid) return;
+
+    fetch(getApiUrl(`/api/audio/token/${encodeURIComponent(raw)}`))
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then((data: any) => setAudioSrc(getApiUrl(`/api/audio/${encodeURIComponent(base)}${ext}?uid=${data.uid}&hrl_token=${data.token}`)))
+      .catch(() => setAudioSrc(''));
+  }, [currentTrack?.filename, userData?.uid]);
 
   useEffect(() => {
     fetchTrackList();

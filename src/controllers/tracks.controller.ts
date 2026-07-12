@@ -177,7 +177,7 @@ export async function generateTrackTags(req: any, res: Response) {
       userId: req.user?.uid || 'admin',
       action: 'track_tags_generated',
       resource: 'track_tags',
-      details: `Generated AI tags for track #${trackId}: ${mood.join(', ')}`,
+      details: `Generated estimated tags for track #${trackId}: ${mood.join(', ')}`,
       ipAddress: req.ip,
     });
     res.json(result);
