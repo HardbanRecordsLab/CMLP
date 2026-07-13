@@ -90,7 +90,7 @@ Signed dynamically on behalf of Hardban Records Lab.`;
     }).catch((err) => console.error('[Webhook] license.created emit failed:', err));
 
     res.status(201).json(newLicense);
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
     res.status(500).json({ error: 'Failed to create license and contract' });
   }

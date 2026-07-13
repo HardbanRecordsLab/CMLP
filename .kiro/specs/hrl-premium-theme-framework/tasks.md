@@ -1,90 +1,162 @@
-# Implementation Plan: HRL Premium Theme Framework
+# Tasks — HRL Premium Theme Framework
 
-## Overview
+## Faza 1: Fundament i Bootstrap
 
-Transform the HRL Amoled Premium WordPress theme into a 22-module, code-free customization framework. The implementation follows a foundation-first approach: framework bootstrap → module base class → React SPA build tooling → core modules → cross-cutting modules → tests. All 22 modules are implemented as PHP class files in `wordpress/includes/modules/`. The React Theme Options Panel is bundled separately into `wordpress/assets/js/admin-panel/dist/admin-panel.js`.
+- [ ] 1. Refaktoryzacja functions.php — uproszczenie do bootstrapa `HRL_Framework::boot()`
+  - Usuń wszystkie bezpośrednie `require_once` modułów z functions.php
+  - Zachowaj: widgety, ajax-handlers.php, class-hrl-category-provisioner.php
+  - Zachowaj wszystkie helper functions: `hrl_estimate_reading_time()`, `hrl_estimate_listen_time()`, `hrl_mod()`, `hrl_is_visible()`
+  - Zachowaj rejestrację nav menu, sidebars, block patterns, block categories
+  - Dodaj sprawdzanie wersji PHP 8.1+ i WP 6.4+ z admin notice przy niezgodności
+  - Definiuj stałą `HRL_THEME_VERSION`
+  - **Wymaga:** brak
+  - **Pliki:** `wordpress/functions.php`
 
-Existing files preserved unchanged: `functions.php` (modified only to add the Framework bootstrap), `style.css`, all `widgets/`, `includes/ajax-handlers.php`, `includes/class-hrl-category-provisioner.php`.
+- [ ] 2. Stworzenie klasy HRL_Framework (bootstrap modułów)
+  - Plik: `includes/class-hrl-framework.php`
+  - Metoda `boot()`: autodiscovery plików `class-hrl-module-*.php` via `glob()`
+  - Akcja `hrl_modules_loaded` po załadowaniu wszystkich klas
+  - Metoda `init_modules()`: iteracja po slug-ach, filtr `hrl_module_active`, instantiacja klas
+  - **Wymaga:** Zadanie 1
+  - **Pliki:** `wordpress/includes/class-hrl-framework.php`
 
----
+- [ ] 3. Stworzenie klasy bazowej HRL_Module_Base
+  - Abstrakcyjna klasa z metodami: `register()`, `slug()`, `get_option()`, `update_option()`
+  - `get_option()` honoruje filtr `hrl_theme_defaults`
+  - Namespace opcji: `hrl_{slug}_{key}`
+  - **Wymaga:** Zadanie 2
+  - **Pliki:** `wordpress/includes/class-hrl-module-base.php`
 
-## Tasks
+- [ ] 4. Stworzenie bazowego theme.json dla FSE
+  - Plik `theme.json` z: `$schema`, `version: 2`, `settings.color.palette` (12 kolorów AMOLED), `settings.typography.fontFamilies`, `settings.spacing`, `settings.layout`
+  - Obsługa: `appearanceTools: true`, `useRootPaddingAwareAlignments: true`
+  - **Wymaga:** Zadanie 1
+  - **Pliki:** `wordpress/theme.json`
 
-- [ ] 1. Foundation — Framework bootstrap and base class
-  - [ ] 1.1 Add PHP/WP version compatibility guard and Framework bootstrap to `functions.php`
-    - Add `version_compare` check for PHP 8.1+ and WP 6.4+ at the top of `functions.php`, emitting an `admin_notices` error and early return on failure
-    - Replace existing inline requires with `require_once get_template_directory() . '/includes/class-hrl-framework.php'; HRL_Framework::boot();`
-    - Preserve all existing function definitions (`hrl_theme_setup`, `hrl_register_sidebars`, `hrl_enqueue_assets`, `hrl_register_block_patterns`, `hrl_block_categories`, helper functions, security removals)
-    - Define `HRL_THEME_VERSION` constant matching `style.css` Version header
-    - _Requirements: 22.1, 22.6_
+- [ ] 5. Szkielety FSE block templates
+  - `templates/index.html` — fallback
+  - `templates/single.html` — single post
+  - `templates/archive.html` — archiwum
+  - `templates/page.html` — strona statyczna
+  - `templates/404.html` — błąd 404
+  - `templates/search.html` — wyniki wyszukiwania
+  - `parts/header.html` — header template part
+  - `parts/footer.html` — footer template part
+  - `parts/mobile-nav.html` — mobilna nawigacja
+  - **Wymaga:** Zadanie 4
+  - **Pliki:** `wordpress/templates/`, `wordpress/parts/`
 
-  - [ ] 1.2 Create `includes/class-hrl-framework.php` with `HRL_Framework` bootstrap class
-    - Implement `HRL_Framework::boot()`: glob `includes/modules/class-hrl-module-*.php`, require each, fire `hrl_modules_loaded` action, call `self::init_modules()`
-    - Implement `init_modules()`: iterate the 22 module slugs, apply `hrl_module_active` filter per slug, resolve class name via `str_replace('-', '_', ucwords($slug, '-'))`, instantiate and call `register()`
-    - _Requirements: 22.1, 22.2, 22.3_
+- [ ] 6. Setup React SPA — środowisko budowania (admin-panel)
+  - Inicjalizacja `package.json` z `@wordpress/scripts`
+  - Skonfiguruj `webpack.config.js` (lub użyj domyślnego `wp-scripts`)
+  - Struktura: `assets/js/admin-panel/src/index.jsx`, `components/`, `hooks/`
+  - Output: `assets/js/admin-panel/dist/admin-panel.js`
+  - Skrypt `npm run build` i `npm run start`
+  - **Wymaga:** Zadanie 1
+  - **Pliki:** `wordpress/assets/js/admin-panel/`
 
-  - [ ] 1.3 Create `includes/class-hrl-module-base.php` with `HRL_Module_Base` abstract class
-    - Define abstract methods `register(): void` and `slug(): string`
-    - Implement `get_option(string $key, mixed $default): mixed` — applies `hrl_theme_defaults` filter for child-theme overrides, falls back to `get_option('hrl_{slug}_{key}')`
-    - Implement `update_option(string $key, mixed $value): bool`
-    - _Requirements: 22.1, 1.9, 22.4_
+## Faza 2: Moduł 1 — Theme Options Panel (TOP)
 
-  - [ ]* 1.4 Write unit tests for Framework bootstrap
-    - Test that `HRL_Framework::init_modules()` does not instantiate a module whose slug returns `false` from `hrl_module_active`
-    - Test that `get_option()` returns filter-provided default when no stored option exists (Property 26)
-    - _Requirements: 22.3, 1.9_
+- [ ] 7. PHP: Rejestracja admin menu i REST endpoint dla TOP
+  - Klasa `HRL_Module_Options_Panel` rozszerza `HRL_Module_Base`
+  - `add_menu_page()` z tytułem "HRL Theme Options", dashicons-art, pozycja 3
+  - Filtr `hrl_admin_menu_title` dla White Label
+  - REST GET `/wp-json/hrl-theme/v1/settings` — zwraca wszystkie ustawienia, wymaga `manage_options`
+  - REST POST `/wp-json/hrl-theme/v1/settings` — walidacja, sanityzacja, `update_option()`
+  - Rate limiting: transient `hrl_ratelimit_{user_id}`, max 60 req/min → HTTP 429
+  - **Wymaga:** Zadanie 3
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-options-panel.php`
 
-- [ ] 2. Foundation — `theme.json` scaffold and DB migration helper
-  - [ ] 2.1 Create baseline `wordpress/theme.json` with FSE configuration
-    - Define `version: 2`, `settings.color.palette` (8 AMOLED defaults), `settings.typography.fontFamilies` (Playfair Display, Cinzel, DM Sans, JetBrains Mono), `settings.spacing`, `settings.layout.contentSize: "1300px"`, `templateParts` declarations for header and footer
-    - _Requirements: 2.7, 3.9, 6.1_
+- [ ] 8. PHP: Ukrycie sekcji Customizera
+  - Hak `customize_register` → `$wp_customize->remove_section()` dla: hrl_general, hrl_header, hrl_footer, hrl_colors, hrl_typography, hrl_animations, hrl_3d, hrl_sections_visibility, hrl_social
+  - **Wymaga:** Zadanie 7
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-options-panel.php`
 
-  - [ ] 2.2 Create `includes/class-hrl-db-migrator.php` with schema installer
-    - Create `{prefix}hrl_forms` and `{prefix}hrl_form_submissions` tables using `dbDelta()` on `after_switch_theme`
-    - Store schema version in `hrl_db_version` option; run upgrade only when version changes
-    - _Requirements: 9.1, 9.9_
+- [ ] 9. PHP: Enqueue React SPA i wp_localize_script
+  - `wp_enqueue_script('hrl-admin-panel', ...)` z dependency: `['wp-element','wp-api-fetch','wp-i18n']`
+  - `wp_localize_script()` z: `restUrl`, `nonce`, `modules`, `settings`
+  - Enqueue tylko na stronie `hrl-theme-options`
+  - **Wymaga:** Zadania 7, 6
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-options-panel.php`
 
+- [ ] 10. React: Shell SPA — routing modułów i layout
+  - Komponent `App.jsx` z nawigacją boczną (22 moduły)
+  - Routing po hashach lub React state (bez przeładowania strony)
+  - Komponent `SettingsProvider` z React Context — globalny stan ustawień
+  - Funkcja `saveSettings()` via `apiFetch` POST do REST endpoint
+  - Toast powiadomień (sukces/błąd) z timeout 2s
+  - **Wymaga:** Zadanie 9
+  - **Pliki:** `assets/js/admin-panel/src/`
 
-- [ ] 3. React SPA — Admin panel build toolchain
-  - [ ] 3.1 Initialise React SPA project in `wordpress/assets/js/admin-panel/`
-    - Create `package.json` (React 18, `@wordpress/element`, `@wordpress/api-fetch`, `@wordpress/i18n`, Vite, `@vitejs/plugin-react`)
-    - Create `vite.config.js`: `build.outDir = 'dist'`, `build.rollupOptions.output.entryFileNames = 'admin-panel.js'`, `build.lib` mode, external `['react','react-dom']`
-    - Create `index.jsx`: mounts `<App />` to `#hrl-admin-panel-root` using `wp.element.render` / `createRoot`
-    - Create placeholder `components/App.jsx` with tab stubs for each of the 22 modules
-    - _Requirements: 1.2, 1.5_
+- [ ] 11. React: Bazowe komponenty formularza
+  - `TextInput`, `NumberInput`, `ToggleSwitch`, `SelectControl`, `ColorPicker`, `TextareaInput`
+  - Każdy komponent z obsługą `value`, `onChange`, `label`, `description`, `error`
+  - **Wymaga:** Zadanie 10
+  - **Pliki:** `assets/js/admin-panel/src/components/`
 
-  - [ ] 3.2 Add `wp_enqueue_script` wiring in `HRL_Module_Options_Panel` for built React bundle
-    - Enqueue `wordpress/assets/js/admin-panel/dist/admin-panel.js` with deps `['wp-element','wp-api-fetch','wp-i18n']`
-    - `wp_localize_script` with `hrlPanelConfig`: `restUrl`, `nonce`, `modules`, `settings`
-    - Render `<div id="hrl-admin-panel-root"></div>` in `render_panel_root()` callback
-    - _Requirements: 1.2_
+## Faza 3: Moduł 2 — Color System
 
-- [ ] 4. Checkpoint — Foundation smoke test
-  - Ensure `HRL_Framework::boot()` loads without PHP errors, admin menu page appears, React div renders in admin, `theme.json` is valid JSON, DB tables exist.
-  - Ensure all tests pass; ask the user if questions arise.
+- [ ] 12. PHP: Klasa HRL_Module_Color_System — zapis i odczyt palety
+  - Opcja `hrl_color_system_palette` przechowuje JSON z trybami: amoled, light, custom + gradienty
+  - Domyślna paleta AMOLED: 12 zmiennych CSS z istniejącego style.css
+  - Walidacja kolorów: `validate_color()` — hex #RGB/#RRGGBB i rgba()
+  - Sanityzacja przez `hrl_sanitize_color()` w `register_setting()`
+  - **Wymaga:** Zadanie 3
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-color-system.php`
 
-- [ ] 5. Module 1 — Global Theme Options Panel (`class-hrl-module-options-panel.php`)
-  - [ ] 5.1 Register admin menu page and REST endpoint skeleton
-    - `add_menu_page('HRL Theme Options', ...)` at position 3 with `dashicons-art`
-    - Register REST route `GET /wp-json/hrl-theme/v1/settings` returning all `hrl_*` options as JSON (capability: `manage_options`)
-    - Register REST route `POST /wp-json/hrl-theme/v1/settings` with sanitization callbacks and `update_option` persistence; return `{success:true}` or `{success:false, errors:{field:reason}}`
-    - Implement rate-limiting transient (`hrl_ratelimit_{user_id}`, 60 req/60 s, HTTP 429)
-    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.7, 19.7_
+- [ ] 13. PHP: Emisja CSS custom properties w wp_head
+  - Hak `wp_head` priorytet 5 (przed innymi stylami)
+  - `<style id="hrl-color-system-css">:root{ ... }</style>` zastępuje legacy `hrl-customizer-css`
+  - Obsługa gradientów jako `--gradient-{name}: linear-gradient(...)`
+  - **Wymaga:** Zadanie 12
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-color-system.php`
 
-  - [ ] 5.2 Implement Customizer section hiding and child-theme defaults filter
-    - Hook `customize_register` to remove legacy sections: `hrl_general`, `hrl_header`, `hrl_footer`, `hrl_colors`, `hrl_typography`, `hrl_animations`, `hrl_3d`, `hrl_sections_visibility`, `hrl_social`
-    - Expose `hrl_theme_defaults` filter in `get_option()` (already in base class — verify wiring)
-    - _Requirements: 1.6, 1.9_
+- [ ] 14. PHP: Synchronizacja palety z theme.json
+  - `sync_theme_json()`: odczyt theme.json → nadpisanie `settings.color.palette` → zapis
+  - Wywoływana przy każdym zapisie ustawień
+  - **Wymaga:** Zadania 12, 4
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-color-system.php`
 
-  - [ ]* 5.3 Write property test — settings round-trip (Property 2)
-    - **Property 2: Settings round-trip preserves sanitized values**
-    - **Validates: Requirements 1.3, 1.8, 20.1**
+- [ ] 15. React: Zakładka Color System w TOP
+  - Przełącznik trybów: AMOLED / Light / Custom
+  - Dla trybu Custom: 12 color pickerów (jeden per zmienna CSS)
+  - Sekcja Gradienty: do 5 gradientów z polami start/end/kierunek/typ
+  - Komponent `ContrastChecker`: dwa color pickery + wynik ratio WCAG live
+  - **Wymaga:** Zadania 11, 12
+  - **Pliki:** `assets/js/admin-panel/src/components/ColorSystem/`
 
-  - [ ]* 5.4 Write property test — invalid settings produce field-level errors (Property 3)
-    - **Property 3: Invalid settings produce field-level errors**
-    - **Validates: Requirements 1.8, 19.2**
+## Faza 4: Moduł 3 — Typography System
 
-  - [ ]* 5.5 Write property test — rate limit returns HTTP 429 (Property 24)
-    - **Property 24: Rate limit returns HTTP 429 above threshold**
-    - **Validates: Requirements 19.7**
+- [ ] 16. PHP: Klasa HRL_Module_Typography — zapis ustawień czcionek
+  - Opcja `hrl_typography_settings` JSON dla 4 grup: headings, body, mono, accent
+  - Migracja z Customizera: `hrl_font_headings`, `hrl_font_body`, `hrl_font_mono`
+  - Metoda `fluid_size(min, max, vp_min, vp_max)` → `clamp()` CSS
+  - **Wymaga:** Zadanie 3
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-typography.php`
 
+- [ ] 17. PHP: Enqueue Google Fonts (optymalizacja)
+  - `build_google_fonts_url()` — tylko wybrane grubości i subsets w URL
+  - Zastępuje hardkodowany URL z functions.php (ale zachowuje te same domyślne czcionki)
+  - **Wymaga:** Zadanie 16
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-typography.php`
+
+- [ ] 18. PHP: Obsługa lokalnych fontów i Adobe Fonts
+  - Upload WOFF2/WOFF/TTF → `wp-content/uploads/hrl-fonts/`
+  - Generowanie `@font-face` i dołączenie do skompilowanego arkusza
+  - Adobe Fonts: pole Typekit Kit ID → `<script>` w `<head>`
+  - **Wymaga:** Zadanie 16
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-typography.php`
+
+- [ ] 19. PHP: Emisja CSS custom properties typografii i sync theme.json
+  - Zmienne: `--font-headings`, `--font-sans`, `--font-mono`, `--font-accents`
+  - Fluid type scale jako `--fs-{group}: clamp(...)`
+  - Aktualizacja `settings.typography.fontFamilies` w theme.json
+  - **Wymaga:** Zadania 16, 17, 4
+  - **Pliki:** `wordpress/includes/modules/class-hrl-module-typography.php`
+
+- [ ] 20. React: Zakładka Typography w TOP
+  - Dla każdej z 4 grup: source selector (google/local/adobe), font selector, weight/subset
+  - Kontrolki: font-size (min/max px), viewport (min/max), weight, line-height, letter-spacing, transform
+  - Podgląd live tekstu z aktywną czcionką
+  - **Wymaga:** Zadania 11, 16
+  - **Pliki:** `assets/js/admin-panel/src/components/Typography/`

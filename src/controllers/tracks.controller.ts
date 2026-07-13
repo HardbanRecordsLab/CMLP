@@ -122,7 +122,7 @@ export async function create(req: any, res: Response) {
     });
 
     res.status(201).json(newTrack);
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
     if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
@@ -211,7 +211,7 @@ export async function generateTrackTags(req: any, res: Response) {
       ipAddress: req.ip,
     });
     res.json(result);
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
     res.status(500).json({ error: 'Failed to generate track tags' });
   }

@@ -23,7 +23,7 @@ export default function InvoiceModal({ isOpen, onClose, invoiceId, clientName, c
   const cur = currency || 'PLN';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div role="dialog" aria-modal="true" aria-label="Invoice" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
       <div className="w-full max-w-2xl bg-white text-slate-900 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
 
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">

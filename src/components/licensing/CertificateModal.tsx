@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, Printer, Download, ShieldCheck } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 
@@ -168,7 +167,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto" id="certificate-modal">
+    <div role="dialog" aria-modal="true" aria-label="Exemption Certificate" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto" id="certificate-modal">
       <div className="w-full max-w-3xl bg-white text-slate-900 rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto">
         
         {/* Header Bar */}

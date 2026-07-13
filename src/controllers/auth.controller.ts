@@ -72,12 +72,12 @@ export async function login(req: Request, res: Response) {
       accessToken,
       refreshToken
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Auth] Login error:', {
-      message: error?.message || String(error),
-      name: error?.name,
-      code: error?.code,
-      stack: error?.stack,
+      message: error instanceof Error ? error.message : String(error),
+      name: error instanceof Error ? error.name : undefined,
+      code: (error as any)?.code,
+      stack: error instanceof Error ? error.stack : undefined,
       email,
     });
     if (!res.headersSent) {
@@ -208,7 +208,7 @@ export async function registerSync(req: Request, res: Response) {
       await db.update(users).set({ uid }).where(eq(users.email, email));
     }
     res.json({ success: true, role });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
     res.status(500).json({ error: 'Failed to sync user' });
   }
@@ -385,11 +385,12 @@ export async function resetPassword(req: Request, res: Response) {
     });
 
     res.json({ message: 'Password has been reset successfully.' });
-  } catch (error: any) {
-    if (error.name === 'TokenExpiredError') {
+  } catch (error: unknown) {
+    const err = error as { name?: string; message?: string };
+    if (err.name === 'TokenExpiredError') {
       return res.status(400).json({ error: 'Reset token has expired. Please request a new one.' });
     }
-    if (error.name === 'JsonWebTokenError') {
+    if (err.name === 'JsonWebTokenError') {
       return res.status(400).json({ error: 'Invalid reset token.' });
     }
     console.error('Reset password error:', error);
@@ -429,11 +430,12 @@ export async function verifyEmail(req: Request, res: Response) {
     });
 
     res.json({ message: 'Email verified successfully.' });
-  } catch (error: any) {
-    if (error.name === 'TokenExpiredError') {
+  } catch (error: unknown) {
+    const err = error as { name?: string; message?: string };
+    if (err.name === 'TokenExpiredError') {
       return res.status(400).json({ error: 'Verification token has expired. Please request a new one.' });
     }
-    if (error.name === 'JsonWebTokenError') {
+    if (err.name === 'JsonWebTokenError') {
       return res.status(400).json({ error: 'Invalid verification token.' });
     }
     console.error('Email verification error:', error);

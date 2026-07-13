@@ -11,8 +11,8 @@ export async function getWaveform(req: Request, res: Response) {
 
     const waveformInfo = await WaveformCacheService.getWaveform(trackId, filename);
     res.json(waveformInfo);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message || 'Failed to fetch waveform cache status' });
+  } catch (e: unknown) {
+    res.status(500).json({ error: (e instanceof Error ? e.message : String(e)) || 'Failed to fetch waveform cache status' });
   }
 }
 
@@ -25,8 +25,8 @@ export async function predictiveChecks(req: Request, res: Response) {
       checkedCount: results.length,
       results,
     });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message || 'Failed to run predictive licensing sweep' });
+  } catch (e: unknown) {
+    res.status(500).json({ error: (e instanceof Error ? e.message : String(e)) || 'Failed to run predictive licensing sweep' });
   }
 }
 
@@ -54,7 +54,7 @@ export async function signCertificate(req: Request, res: Response) {
       verifiedTransit: isValid,
       engineUsed: signature.startsWith('vault:v1:') ? 'HashiCorp Vault Transit Engine' : 'HRL Local Cryptographic Fallback Engine (HMAC-SHA256)',
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     if (e instanceof VaultUnavailableError) {
       res.status(503).json({
         error: 'VaultUnavailableError',
@@ -63,6 +63,6 @@ export async function signCertificate(req: Request, res: Response) {
       });
       return;
     }
-    res.status(500).json({ error: e.message || 'Failed to generate HashiCorp Vault cryptographic seal' });
+    res.status(500).json({ error: (e instanceof Error ? e.message : String(e)) || 'Failed to generate HashiCorp Vault cryptographic seal' });
   }
 }

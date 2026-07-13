@@ -1,4 +1,4 @@
-import { Users, Music, ListMusic, FileText, Settings, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale, Key, Tag, Headphones, AlertTriangle } from 'lucide-react';
+import { Users, Music, ListMusic, FileText, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale, Key, Tag, Headphones, AlertTriangle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
@@ -149,7 +149,6 @@ export default function AdminDashboard() {
             { id: 'security', icon: Shield, label: t('admin.security_lockdown') },
             { id: 'compliance', icon: Scale, label: 'Compliance OZZ' },
             { id: 'audit', icon: FileSearch, label: 'Audit Trail' },
-            { id: 'settings', icon: Settings, label: t('admin.system_settings') },
             { id: 'strategic', icon: Cpu, label: t('admin.strategic_console') },
           ].map(item => (
             <button
@@ -434,14 +433,7 @@ export default function AdminDashboard() {
             <StrategicInitiatives />
           )}
 
-          {activeTab === 'settings' && (
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-              <h2 className="text-white font-medium mb-4">System Settings</h2>
-              <p className="text-sm text-slate-400">Settings panel — coming soon.</p>
-            </div>
-          )}
-
-          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'customOrders', 'vod', 'licensing', 'dunning', 'billing', 'coupons', 'integrations', 'webhooks', 'apiKeys', 'notifications', 'strategic', 'compliance', 'audit', 'settings', 'reporting'].includes(activeTab) && (
+          {!['overview', 'security', 'media', 'invoices', 'outlets', 'playlists', 'customOrders', 'vod', 'licensing', 'dunning', 'billing', 'coupons', 'integrations', 'webhooks', 'apiKeys', 'notifications', 'strategic', 'compliance', 'audit', 'reporting'].includes(activeTab) && (
             <div className="p-12 text-center text-slate-500 bg-slate-900/50 border border-slate-800 rounded-xl">
               <p>Module <b>{activeTab}</b> is rendering...</p>
             </div>

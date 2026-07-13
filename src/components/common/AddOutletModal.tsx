@@ -39,7 +39,7 @@ export default function AddOutletModal({ isOpen, onClose, onSuccess }: AddOutlet
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto pt-20">
+    <div role="dialog" aria-modal="true" aria-label="Add Outlet" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto pt-20">
       <div className="w-full max-w-md bg-slate-900 text-slate-300 rounded-xl shadow-2xl border border-slate-800 overflow-hidden flex flex-col">
         <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
           <div className="flex items-center gap-2">

@@ -39,8 +39,8 @@ export async function getAll(_req: AuthRequest, res: Response) {
   try {
     const all = await db.select().from(coupons).orderBy(coupons.id, 'desc');
     res.json(all);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -71,8 +71,8 @@ export async function create(req: AuthRequest, res: Response) {
     });
 
     res.status(201).json(coupon);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -93,8 +93,8 @@ export async function remove(req: AuthRequest, res: Response) {
     });
 
     res.status(204).send();
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -107,7 +107,7 @@ export async function validateCoupon(req: AuthRequest, res: Response) {
     if (!result.valid) return res.status(400).json(result);
 
     res.json(result);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }

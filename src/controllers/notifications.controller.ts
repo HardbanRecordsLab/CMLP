@@ -52,7 +52,7 @@ export async function testEmail(req: Request, res: Response) {
       variables || { name: 'Admin Tester', email: toEmail || 'test@hrl.pl' }
     );
     res.json(result);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message || 'Failed to dispatch test notification' });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) || 'Failed to dispatch test notification' });
   }
 }

@@ -44,7 +44,7 @@ export async function create(req: any, res: Response) {
     });
 
     res.status(201).json(newVod[0]);
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
     res.status(500).json({ error: 'Failed to create VOD content' });
   }

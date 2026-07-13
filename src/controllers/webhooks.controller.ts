@@ -23,8 +23,8 @@ export async function licenseCreated(req: Request, res: Response) {
       status: 'synced', direction: 'local_to_wp',
     });
     res.json({ success: true, message: `License ${certificateNumber} notified to WP, email queued to ${authorEmail || 'client'}` });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -37,8 +37,8 @@ export async function licenseExpiring(req: Request, res: Response) {
       status: 'synced', direction: 'local_to_wp',
     });
     res.json({ success: true, message: `WP dashboard reminder posted for ${certificateNumber}` });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -53,8 +53,8 @@ export async function trackUploaded(req: Request, res: Response) {
       });
     }
     res.json({ success: true, message: `Track "${title}" ${autoPost ? 'auto-posted to WP' : 'recorded'}` });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -67,8 +67,8 @@ export async function paymentCompleted(req: Request, res: Response) {
       status: 'synced', direction: 'local_to_wp',
     });
     res.json({ success: true, message: `Invoice generated and sent to WP for payment ${gatewayTransactionId}` });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -77,8 +77,8 @@ export async function customOrderCreated(req: Request, res: Response) {
   try {
     const { id, clientName, description, email } = req.body;
     res.json({ success: true, message: `Admin notified, support ticket created for order #${id} (${clientName})` });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -87,7 +87,7 @@ export async function playbackReported(req: Request, res: Response) {
   try {
     const { trackId, trackTitle, durationPlayed, companyName } = req.body;
     res.json({ success: true, message: `Analytics updated for "${trackTitle}" (${durationPlayed}s)` });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }

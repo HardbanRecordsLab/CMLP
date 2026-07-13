@@ -48,7 +48,7 @@ export async function createUser(req: any, res: Response) {
     });
 
     res.status(201).json(newUser);
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
     res.status(500).json({ error: 'Failed to create user/outlet' });
   }

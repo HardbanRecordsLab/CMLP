@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CreditCard, CheckCircle, RefreshCw, AlertTriangle, ShieldCheck, Check, Info, Trash2, ArrowUpRight, CheckSquare } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';

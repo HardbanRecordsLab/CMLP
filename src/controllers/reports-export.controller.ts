@@ -79,8 +79,8 @@ export async function exportPDF(req: any, res: Response) {
     doc.fontSize(8).fillColor('#999').text('— End of Report —', { align: 'center' });
 
     doc.end();
-  } catch (e: any) {
-    res.status(500).json({ error: 'PDF generation failed: ' + e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: 'PDF generation failed: ' + (e instanceof Error ? e.message : String(e)) });
   }
 }
 
@@ -100,7 +100,7 @@ export async function exportCSV(req: any, res: Response) {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename=hrl_payments_${Date.now()}.csv`);
     res.send(csv);
-  } catch (e: any) {
-    res.status(500).json({ error: 'CSV generation failed: ' + e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: 'CSV generation failed: ' + (e instanceof Error ? e.message : String(e)) });
   }
 }

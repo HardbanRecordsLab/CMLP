@@ -41,8 +41,8 @@ async function handlePostPaymentActions(payment: typeof payments.$inferSelect, u
     }
 
     console.log(`[PostPayment] License ${payment.licenseId}: cert=${certPath ? 'OK' : 'SKIP'}, invoice=${invPath ? 'OK' : 'SKIP'}, email=${userEmail ? 'SENT' : 'SKIP'}`);
-  } catch (e: any) {
-    console.error('[PostPayment] Error:', e.message);
+  } catch (e: unknown) {
+    console.error('[PostPayment] Error:', e instanceof Error ? e.message : String(e));
   }
 }
 
@@ -146,9 +146,9 @@ export async function createCheckoutSession(req: any, res: Response) {
           gatewayTransactionId: session.id,
         });
         return;
-      } catch (stripeErr: any) {
+      } catch (stripeErr: unknown) {
         console.error("Stripe Checkout Error:", stripeErr);
-        res.status(500).json({ error: stripeErr.message || 'Failed to initialize Stripe checkout session' });
+        res.status(500).json({ error: (stripeErr instanceof Error ? stripeErr.message : String(stripeErr)) || 'Failed to initialize Stripe checkout session' });
         return;
       }
     }
@@ -232,8 +232,8 @@ export async function simulateSuccess(req: Request, res: Response) {
         </body>
       </html>
     `);
-  } catch (e: any) {
-    res.status(500).send(`Simulation error: ${e.message}`);
+  } catch (e: unknown) {
+    res.status(500).send(`Simulation error: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 
@@ -259,9 +259,9 @@ export async function refund(req: any, res: Response) {
         await stripeRefund.refunds.create({
           payment_intent: payment.gatewayTransactionId,
         });
-      } catch (stripeErr: any) {
-        console.error('[Refund] Stripe refund failed:', stripeErr.message);
-        res.status(500).json({ error: `Stripe refund failed: ${stripeErr.message}` }); return;
+      } catch (stripeErr: unknown) {
+        console.error('[Refund] Stripe refund failed:', stripeErr instanceof Error ? stripeErr.message : String(stripeErr));
+        res.status(500).json({ error: `Stripe refund failed: ${stripeErr instanceof Error ? stripeErr.message : String(stripeErr)}` }); return;
       }
     }
 

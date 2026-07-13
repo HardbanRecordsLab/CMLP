@@ -6,8 +6,8 @@ export async function getStatus(_req: AuthRequest, res: Response) {
   try {
     const status = await getDunningStatus();
     res.json(status);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -15,7 +15,7 @@ export async function triggerRun(_req: AuthRequest, res: Response) {
   try {
     const result = await runDunningProcess();
     res.json(result);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }
 }

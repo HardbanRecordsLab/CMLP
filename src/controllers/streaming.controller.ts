@@ -147,8 +147,8 @@ export async function telemetry(req: Request, res: Response) {
     });
 
     res.json({ success: true });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message || 'Failed to log telemetry' });
+  } catch (e: unknown) {
+    res.status(500).json({ error: (e instanceof Error ? e.message : String(e)) || 'Failed to log telemetry' });
   }
 }
 
