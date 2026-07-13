@@ -30,12 +30,12 @@ async function addWatermark(doc: PDFKit.PDFDocument) {
   doc.fontSize(fontSize);
   doc.fillColor('#cccccc');
   doc.opacity(0.15);
-  const textWidth = doc.widthOfString('ORIGINAL');
+  const textWidth = doc.widthOfString('PAID');
   const pageWidth = (doc.page?.width || 612);
   const pageHeight = (doc.page?.height || 792);
   const cx = (pageWidth - textWidth) / 2;
   const cy = (pageHeight - fontSize) / 2;
-  doc.translate(cx, cy).rotate(-45).text('ORIGINAL', 0, 0);
+  doc.translate(cx, cy).rotate(-45).text('PAID', 0, 0);
   doc.restore();
 }
 

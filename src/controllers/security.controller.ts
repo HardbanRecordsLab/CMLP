@@ -1,38 +1,64 @@
 import { Request, Response } from 'express';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { redisClient } from '../lib/redis.ts';
+import { isIpBlocked } from '../lib/redis.ts';
+import { blockIp as redisBlockIp } from '../lib/redis.ts';
+import { unblockIp as redisUnblockIp } from '../lib/redis.ts';
 
 export async function getBlocklist(req: any, res: Response) {
-  res.json({ blockedIps: [] });
+  try {
+    const keys = await redisClient.keys('blocked_expiry:*');
+    const blockedIps: { ip: string; expiry: number | null }[] = [];
+    for (const key of keys) {
+      const ip = key.replace('blocked_expiry:', '');
+      const blocked = await isIpBlocked(ip);
+      if (blocked) {
+        const expiry = await redisClient.get(key);
+        blockedIps.push({ ip, expiry: expiry ? parseInt(expiry) : null });
+      }
+    }
+    res.json({ blockedIps });
+  } catch {
+    res.json({ blockedIps: [] });
+  }
 }
 
 export async function blockIp(req: any, res: Response) {
   const { ip } = req.body;
   if (!ip) { res.status(400).json({ error: 'IP is mandatory.' }); return; }
 
-  await logAuditEvent({
-    userId: req.user?.uid,
-    action: 'manual_ip_blocked',
-    resource: 'security',
-    details: `IP manual locked from endpoint control: ${ip}`,
-    ipAddress: req.ip,
-  });
-
-  res.json({ success: true, message: `IP Address ${ip} has been blocked.` });
+  try {
+    await redisBlockIp(ip, 24 * 60 * 60 * 1000);
+    await logAuditEvent({
+      userId: req.user?.uid,
+      action: 'manual_ip_blocked',
+      resource: 'security',
+      details: `IP manually blocked: ${ip}`,
+      ipAddress: req.ip,
+    });
+    res.json({ success: true, message: `IP Address ${ip} has been blocked.` });
+  } catch {
+    res.status(500).json({ error: 'Failed to block IP' });
+  }
 }
 
 export async function unblockIp(req: any, res: Response) {
   const { ip } = req.body;
   if (!ip) { res.status(400).json({ error: 'IP is mandatory.' }); return; }
 
-  await logAuditEvent({
-    userId: req.user?.uid,
-    action: 'manual_ip_unblocked',
-    resource: 'security',
-    details: `IP manually unlocked from control panel: ${ip}`,
-    ipAddress: req.ip,
-  });
-
-  res.json({ success: true, message: `IP Address ${ip} has been restored.` });
+  try {
+    await redisUnblockIp(ip);
+    await logAuditEvent({
+      userId: req.user?.uid,
+      action: 'manual_ip_unblocked',
+      resource: 'security',
+      details: `IP manually unblocked: ${ip}`,
+      ipAddress: req.ip,
+    });
+    res.json({ success: true, message: `IP Address ${ip} has been restored.` });
+  } catch {
+    res.status(500).json({ error: 'Failed to unblock IP' });
+  }
 }
 
 export async function owaspScan(req: any, res: Response) {

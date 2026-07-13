@@ -80,7 +80,17 @@ export async function deleteData(req: any, res: Response) {
   }
 }
 
-export async function consent(req: Request, res: Response) {
+export async function consent(req: any, res: Response) {
   const { analytics, marketing } = req.body;
+  const userUid = req.user?.uid;
+
+  await logAuditEvent({
+    userId: userUid || 'anonymous',
+    action: 'gdpr_consent',
+    resource: 'compliancy',
+    details: `GDPR consent updated: analytics=${!!analytics}, marketing=${!!marketing}`,
+    ipAddress: req.ip,
+  });
+
   res.json({ success: true, stored: true, analytics, marketing });
 }
