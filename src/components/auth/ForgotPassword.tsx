@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { getApiUrl } from '../../utils';
 
 export default function ForgotPassword({ onBack }: { onBack: () => void }) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,9 +21,9 @@ export default function ForgotPassword({ onBack }: { onBack: () => void }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed');
       setSent(true);
-      toast.success('Reset link sent if email exists');
-    } catch (err: any) {
-      toast.error(err.message);
+      toast.success(t('forgotPassword.sentToast'));
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -36,23 +38,23 @@ export default function ForgotPassword({ onBack }: { onBack: () => void }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
           </div>
-          <h2 className="text-xl text-white font-medium">Forgot Password</h2>
-          <p className="text-xs text-slate-500 mt-1">Enter your email and we'll send a reset link</p>
+          <h2 className="text-xl text-white font-medium">{t('forgotPassword.heading')}</h2>
+          <p className="text-xs text-slate-500 mt-1">{t('forgotPassword.desc')}</p>
         </div>
 
         {sent ? (
           <div className="text-center space-y-4">
             <p className="text-sm text-green-400 bg-green-900/10 p-3 rounded border border-green-500/20">
-              If that email exists, a reset link has been sent. Check your inbox.
+              {t('forgotPassword.sentMsg')}
             </p>
             <button onClick={onBack} className="text-xs text-blue-400 hover:text-blue-300 underline">
-              Back to Login
+              {t('forgotPassword.backToLogin')}
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Email</label>
+              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('forgotPassword.emailLabel')}</label>
               <input
                 type="email"
                 value={email}
@@ -66,14 +68,14 @@ export default function ForgotPassword({ onBack }: { onBack: () => void }) {
               disabled={loading}
               className="w-full py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
             >
-              {loading ? 'Sending...' : 'Send Reset Link'}
+              {loading ? t('forgotPassword.sending') : t('forgotPassword.sendResetLink')}
             </button>
             <button
               type="button"
               onClick={onBack}
               className="w-full text-center text-[11px] text-slate-500 hover:text-slate-400 underline pt-2 block"
             >
-              Back to Login
+              {t('forgotPassword.backToLogin')}
             </button>
           </form>
         )}

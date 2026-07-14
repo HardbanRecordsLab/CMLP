@@ -36,7 +36,7 @@ export default function AdminCoupons() {
       const res = await fetch(getApiUrl('/api/coupons'), { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error('Failed to load');
       setCoupons(await res.json());
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
     finally { setLoading(false); }
   };
 
@@ -45,7 +45,7 @@ export default function AdminCoupons() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const body: any = { code: code.toUpperCase(), maxUses: parseInt(maxUses) || 1, minAmount: Math.round((parseFloat(minAmount) || 0) * 100) };
+      const body: Record<string, unknown> = { code: code.toUpperCase(), maxUses: parseInt(maxUses) || 1, minAmount: Math.round((parseFloat(minAmount) || 0) * 100) };
       if (discountPercent) body.discountPercent = parseInt(discountPercent);
       if (discountAmount) body.discountAmount = Math.round((parseFloat(discountAmount) || 0) * 100);
       if (expiresAt) body.expiresAt = expiresAt;
@@ -56,7 +56,7 @@ export default function AdminCoupons() {
       setShowForm(false);
       setCode(''); setDiscountPercent(''); setDiscountAmount(''); setMaxUses('100'); setMinAmount('0'); setExpiresAt('');
       load();
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
 
   const handleDelete = async (id: number) => {
@@ -66,7 +66,7 @@ export default function AdminCoupons() {
       if (!res.ok) throw new Error('Delete failed');
       toast.success('Coupon deleted');
       load();
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
 
   return (

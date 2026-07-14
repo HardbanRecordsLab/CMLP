@@ -15,7 +15,7 @@ interface DunningStatus {
 export default function AdminDunning() {
   const [status, setStatus] = useState<DunningStatus | null>(null);
   const [running, setRunning] = useState(false);
-  const [lastResult, setLastResult] = useState<any>(null);
+  const [lastResult, setLastResult] = useState<unknown>(null);
 
   const token = localStorage.getItem('auth_token');
   const headers = { Authorization: `Bearer ${token}` };
@@ -25,7 +25,7 @@ export default function AdminDunning() {
       const res = await fetch(getApiUrl('/api/dunning/status'), { headers });
       if (!res.ok) throw new Error('Failed');
       setStatus(await res.json());
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
 
   useEffect(() => { load(); }, []);
@@ -40,7 +40,7 @@ export default function AdminDunning() {
       setLastResult(data);
       toast.success('Dunning process completed');
       load();
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
     finally { setRunning(false); }
   };
 

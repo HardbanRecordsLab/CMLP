@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Users } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 interface AddOutletModalProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ export default function AddOutletModal({ isOpen, onClose, onSuccess }: AddOutlet
       onSuccess();
       onClose();
     } catch (err) {
+      toast.error('Failed to add outlet');
       console.error(err);
     }
   };

@@ -26,6 +26,7 @@ import AdminCustomOrders from '@/components/admin/AdminCustomOrders.tsx';
 import AdminDunning from '@/components/admin/AdminDunning.tsx';
 import { Cpu, Video } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
 
 const mockChartData = [
@@ -43,18 +44,18 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeStreams, setActiveStreams] = useState(0);
   const [chartData, setChartData] = useState(mockChartData);
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<Record<string, any> | null>(null);
   const { fetchWithAuth, loading, error } = useApi();
   const [selectedInvoice, setSelectedInvoice] = useState<string | null>(null);
   const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
-  const [outlets, setOutlets] = useState<any[]>([]);
+  const [outlets, setOutlets] = useState<Record<string, any>[]>([]);
 
   const loadOutlets = () => {
     fetchWithAuth(getApiUrl('/api/users'))
       .then(res => res.json())
       .then(data => setOutlets(data))
-      .catch(err => console.error('Failed to load outlets', err));
+      .catch(err => { toast.error('Failed to load outlets'); console.error('Failed to load outlets', err); });
   };
 
   const loadStats = () => {
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
         setStats(data);
         setChartData(data.chartData);
       })
-      .catch(err => console.error('Failed to load stats', err));
+      .catch(err => { toast.error('Failed to load stats'); console.error('Failed to load stats', err); });
   };
 
   useEffect(() => {

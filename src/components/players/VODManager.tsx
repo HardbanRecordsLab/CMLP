@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Video, Plus, Trash2, Shield, Globe, Play } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 export default function VODManager() {
-  const [vods, setVods] = useState<any[]>([]);
+  const [vods, setVods] = useState<Record<string, any>[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
@@ -16,7 +17,7 @@ export default function VODManager() {
     fetchWithAuth(getApiUrl('/api/vod'))
       .then(res => res.json())
       .then(data => setVods(data))
-      .catch(console.error);
+      .catch(e => { toast.error('Failed to load VODs'); console.error(e); });
   };
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function VODManager() {
       setIsPublic(false);
       loadVODs();
     } catch (err) {
+      toast.error('Upload failed');
       console.error(err);
     } finally {
       setIsUploading(false);
@@ -57,6 +59,7 @@ export default function VODManager() {
       await fetchWithAuth(getApiUrl(`/api/vod/${id}`), { method: 'DELETE' });
       loadVODs();
     } catch (err) {
+      toast.error('Failed to delete VOD');
       console.error(err);
     }
   };

@@ -15,14 +15,14 @@ export default function B2BPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
   const [tracks, setTracks] = useState<Track[]>([]);
-  const [playlists, setPlaylists] = useState<any[]>([]);
+  const [playlists, setPlaylists] = useState<{ id: number; title: string }[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<number | null>(null);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<{ type: string; subject: string; body: string; alertType?: string; timestamp?: string }[]>([]);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-  const [activeToast, setActiveToast] = useState<any | null>(null);
+  const [activeToast, setActiveToast] = useState<{ type: string; subject: string; body: string; alertType?: string; timestamp?: string } | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -410,8 +410,8 @@ export default function B2BPlayer() {
       // Generowanie pliku pobierania
       doc.save(`Exemption_Certificate_HRL_${certificateNumber}.pdf`);
       setLogs(prev => [...prev, `[SYSTEM] Successfully generated and downloaded PDF Certificate: Exemption_Certificate_HRL_${certificateNumber}.pdf`]);
-    } catch (e: any) {
-      setLogs(prev => [...prev, `[ERROR] Failed to generate PDF: ${e.message}`]);
+    } catch (e: unknown) {
+      setLogs(prev => [...prev, `[ERROR] Failed to generate PDF: ${e instanceof Error ? e.message : String(e)}`]);
     }
   };
 

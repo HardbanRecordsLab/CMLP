@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { getApiUrl } from '../../utils';
 
 export default function ResetPassword({ token, onDone }: { token: string; onDone: () => void }) {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -11,11 +13,11 @@ export default function ResetPassword({ token, onDone }: { token: string; onDone
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirm) {
-      toast.error('Passwords do not match');
+      toast.error(t('resetPassword.noMatch'));
       return;
     }
     if (password.length < 8) {
-      toast.error('Password must be at least 8 characters');
+      toast.error(t('resetPassword.minLength'));
       return;
     }
     setLoading(true);
@@ -28,9 +30,9 @@ export default function ResetPassword({ token, onDone }: { token: string; onDone
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Reset failed');
       setDone(true);
-      toast.success('Password reset successfully');
-    } catch (err: any) {
-      toast.error(err.message);
+      toast.success(t('resetPassword.successToast'));
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -45,10 +47,10 @@ export default function ResetPassword({ token, onDone }: { token: string; onDone
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-xl text-white font-medium">Password Reset</h2>
-          <p className="text-sm text-slate-400">Your password has been reset successfully.</p>
+          <h2 className="text-xl text-white font-medium">{t('resetPassword.doneHeading')}</h2>
+          <p className="text-sm text-slate-400">{t('resetPassword.doneDesc')}</p>
           <button onClick={onDone} className="text-xs text-blue-400 hover:text-blue-300 underline block w-full">
-            Back to Login
+            {t('resetPassword.backToLogin')}
           </button>
         </div>
       </div>
@@ -64,12 +66,12 @@ export default function ResetPassword({ token, onDone }: { token: string; onDone
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h2 className="text-xl text-white font-medium">Reset Password</h2>
-          <p className="text-xs text-slate-500 mt-1">Enter your new password</p>
+          <h2 className="text-xl text-white font-medium">{t('resetPassword.heading')}</h2>
+          <p className="text-xs text-slate-500 mt-1">{t('resetPassword.desc')}</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">New Password</label>
+            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('resetPassword.newPasswordLabel')}</label>
             <input
               type="password"
               value={password}
@@ -80,7 +82,7 @@ export default function ResetPassword({ token, onDone }: { token: string; onDone
             />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Confirm Password</label>
+            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('resetPassword.confirmPasswordLabel')}</label>
             <input
               type="password"
               value={confirm}
@@ -95,7 +97,7 @@ export default function ResetPassword({ token, onDone }: { token: string; onDone
             disabled={loading}
             className="w-full py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
           >
-            {loading ? 'Resetting...' : 'Reset Password'}
+            {loading ? t('resetPassword.resetting') : t('resetPassword.submitBtn')}
           </button>
         </form>
       </div>

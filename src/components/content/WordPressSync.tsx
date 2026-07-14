@@ -15,6 +15,7 @@ import {
   Play
 } from 'lucide-react';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 interface WordPressSettings {
   wpUrl: string;
@@ -48,7 +49,7 @@ export default function WordPressSync() {
   const [loadingSettings, setLoadingSettings] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
-  const [copiedIndex, setCopiedIndex] = useState<any>(null);
+  const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [syncStatusMsg, setSyncStatusMsg] = useState<string | null>(null);
 
@@ -60,7 +61,7 @@ export default function WordPressSync() {
     event: 'post_published'
   });
   const [webhookTriggering, setWebhookTriggering] = useState(false);
-  const [webhookResponse, setWebhookResponse] = useState<any>(null);
+  const [webhookResponse, setWebhookResponse] = useState<Record<string, unknown> | null>(null);
 
   const fetchSettingsAndLogs = async () => {
     setLoadingSettings(true);
@@ -77,6 +78,7 @@ export default function WordPressSync() {
         setLogs(lData);
       }
     } catch (err) {
+      toast.error('Error loading WordPress integrations data');
       console.error('Error loading WordPress integrations data', err);
     } finally {
       setLoadingSettings(false);
@@ -109,6 +111,7 @@ export default function WordPressSync() {
         alert('Failed to save WordPress settings.');
       }
     } catch (error) {
+      toast.error('Failed to save WordPress settings');
       console.error(error);
     } finally {
       setSavingSettings(false);

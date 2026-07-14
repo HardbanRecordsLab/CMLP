@@ -30,6 +30,7 @@ import {
 } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
 
@@ -41,13 +42,13 @@ export default function ReportingStudio() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // States for reporting data
-  const [usageData, setUsageData] = useState<any>(null);
-  const [financialData, setFinancialData] = useState<any>(null);
-  const [complianceData, setComplianceData] = useState<any>(null);
-  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [usageData, setUsageData] = useState<Record<string, any> | null>(null);
+  const [financialData, setFinancialData] = useState<Record<string, any> | null>(null);
+  const [complianceData, setComplianceData] = useState<Record<string, any> | null>(null);
+  const [auditLogs, setAuditLogs] = useState<Record<string, any>[]>([]);
 
   // Filtering audit logs
-  const [filteredLogs, setFilteredLogs] = useState<any[]>([]);
+  const [filteredLogs, setFilteredLogs] = useState<Record<string, any>[]>([]);
   const [selectedActionFilter, setSelectedActionFilter] = useState<string>('all');
 
   const loadAllReports = async () => {
@@ -70,6 +71,7 @@ export default function ReportingStudio() {
         setFilteredLogs(logs);
       }
     } catch (err) {
+      toast.error('Failed to load reports');
       console.error('Failed to resolve Phase 9 report structures:', err);
     } finally {
       setIsRefreshing(false);
@@ -125,12 +127,12 @@ export default function ReportingStudio() {
       });
     } else if (dataType === 'payments' && financialData) {
       csvContent += "Transaction ID,Amount Grosz/Cents,Currency,Gateway Service,Type,Status,Authorized Date\r\n";
-      financialData.recentPayments.forEach((p: any) => {
+      (financialData.recentPayments as Array<Record<string, any>>).forEach((p: Record<string, any>) => {
         csvContent += `"${p.gatewayTransactionId || p.id}","${p.amount}","${p.currency}","${p.gateway}","${p.transactionType || 'subscription'}","${p.status}","${p.createdAt}"\r\n`;
       });
     } else if (dataType === 'genres' && usageData) {
       csvContent += "Genre Category,Active Audio Tracks Count\r\n";
-      usageData.genreDistribution.forEach((g: any) => {
+      (usageData.genreDistribution as Array<Record<string, any>>).forEach((g: Record<string, any>) => {
         csvContent += `"${g.name}","${g.count}"\r\n`;
       });
     }
@@ -182,7 +184,7 @@ export default function ReportingStudio() {
             ].map((d) => (
               <button
                 key={d.id}
-                onClick={() => setDateRange(d.id as any)}
+                onClick={() => setDateRange(d.id as 'all' | 'today' | '7days' | '30days' | 'ytd')}
                 className={`px-3 py-1 text-[10px] font-bold uppercase rounded cursor-pointer transition ${
                   dateRange === d.id 
                     ? 'bg-blue-600 text-white' 
@@ -283,7 +285,7 @@ export default function ReportingStudio() {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setRptTab(tab.id as any)}
+              onClick={() => setRptTab(tab.id as 'overview' | 'usage' | 'financials' | 'compliance' | 'audit')}
               className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors border-b-2 -mb-[2px] ${
                 rptTab === tab.id 
                   ? 'border-blue-500 text-white bg-slate-900/40' 
@@ -402,7 +404,7 @@ export default function ReportingStudio() {
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       fontSize={9}
                     >
-                      {usageData.genreDistribution.map((entry: any, index: number) => (
+                      {(usageData.genreDistribution as Array<Record<string, any>>).map((entry: Record<string, any>, index: number) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -456,8 +458,8 @@ export default function ReportingStudio() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800 bg-slate-900/60 font-sans">
-                  {financialData?.recentPayments?.map((pay: any) => (
-                    <tr key={pay.id} className="hover:bg-slate-800/40">
+                  {(financialData?.recentPayments as Array<Record<string, any>>)?.map((pay: Record<string, any>) => (
+                    <tr key={pay.id as React.Key} className="hover:bg-slate-800/40">
                       <td className="px-6 py-3 font-mono text-white tracking-tight">{pay.gatewayTransactionId || `PAY-ID-${pay.id}`}</td>
                       <td className="px-6 py-3 font-semibold text-slate-300">Aroma Cafe Partner Group</td>
                       <td className="px-6 py-3 text-white font-mono">{((pay.amount / 100).toFixed(2))} {pay.currency || 'PLN'}</td>
@@ -489,6 +491,7 @@ export default function ReportingStudio() {
                                   loadAllReports();
                                 }
                               } catch(err) {
+                                toast.error('Failed to process refund');
                                 console.error('Failed to trigger refund session:', err);
                               }
                             }}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { MapPin, Radio, Clock, Play, Volume2, Calendar, RefreshCw, CheckCircle, XCircle, HelpCircle, Save, ChevronDown, ChevronUp } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 interface Location {
   id: number;
@@ -12,8 +13,8 @@ interface Location {
   country: string | null;
   timezone: string | null;
   type: string;
-  playlists: any;
-  complianceStatus: any;
+  playlists: unknown;
+  complianceStatus: unknown;
   status: string;
   lastPlaybackTime: string | null;
 }
@@ -74,8 +75,8 @@ export default function OutletManager() {
       const plData = await plRes.json();
       setLocations(Array.isArray(locData) ? locData : []);
       setPlaylists(Array.isArray(plData) ? plData : []);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to load data');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load data');
     } finally {
       setLoading(false);
     }
@@ -107,14 +108,14 @@ export default function OutletManager() {
     if (Array.isArray(loc.playlists)) {
       return String(loc.playlists[0]?.id || loc.playlists[0] || '');
     }
-    if (typeof loc.playlists === 'object') {
-      return String((loc.playlists as any).id || '');
+    if (typeof loc.playlists === 'object' && loc.playlists !== null) {
+      return String((loc.playlists as Record<string, unknown>).id || '');
     }
     return String(loc.playlists);
   };
 
   const getSchedule = (loc: Location): Schedule => {
-    const cs = loc.complianceStatus as any;
+    const cs = loc.complianceStatus as { schedule?: Schedule } | null;
     if (cs?.schedule) return cs.schedule;
     return { startTime: '08:00', endTime: '22:00', volume: 80 };
   };
@@ -132,6 +133,7 @@ export default function OutletManager() {
       });
       await loadData();
     } catch (err) {
+      toast.error('Failed to save location');
       console.error(err);
     } finally {
       setSavingId(null);
@@ -153,6 +155,7 @@ export default function OutletManager() {
       setSelectedIds(new Set());
       await loadData();
     } catch (err) {
+      toast.error('Failed to assign playlist');
       console.error(err);
     } finally {
       setSavingBulk(false);
@@ -174,6 +177,7 @@ export default function OutletManager() {
       setSelectedIds(new Set());
       await loadData();
     } catch (err) {
+      toast.error('Failed to update schedule');
       console.error(err);
     } finally {
       setSavingBulk(false);

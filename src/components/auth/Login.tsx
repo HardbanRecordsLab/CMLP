@@ -41,8 +41,8 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
         email: data.email,
         role: data.role,
       });
-    } catch (err: any) {
-      setError(err.message || t('login.error_failed'));
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : t('login.error_failed'));
     } finally {
       setLoading(false);
     }
@@ -102,7 +102,7 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
             disabled={loading}
             className="w-full py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
           >
-            {loading ? t('common.loading') : (isRegistering ? "CREATE ACCOUNT" : t('login.submit_btn'))}
+            {loading ? t('common.loading') : (isRegistering ? t('login.createAccount') : t('login.submit_btn'))}
           </button>
           
           <div className="flex justify-between items-center pt-1">
@@ -111,7 +111,7 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
               onClick={() => setIsRegistering(!isRegistering)}
               className="text-[11px] text-slate-500 hover:text-slate-400 underline"
             >
-              {isRegistering ? "Already have an account? Sign In" : "Need an account? Register"}
+              {isRegistering ? t('login.alreadyHaveAccount') : t('login.needAccount')}
             </button>
             {!isRegistering && onForgot && (
               <button
@@ -119,7 +119,7 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
                 onClick={onForgot}
                 className="text-[11px] text-slate-500 hover:text-blue-400 underline"
               >
-                Forgot password?
+                {t('login.forgotPassword')}
               </button>
             )}
           </div>

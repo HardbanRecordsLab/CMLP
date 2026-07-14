@@ -3,17 +3,22 @@
  * Template Part: Content — Single Post
  *
  * @package HRL_Theme
- * @version 3.0.0
+ * @version 5.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
 $reading_time = function_exists( 'hrl_estimate_reading_time' ) ? hrl_estimate_reading_time( get_the_content() ) : 5;
 $listen_time  = function_exists( 'hrl_estimate_listen_time' ) ? hrl_estimate_listen_time( $reading_time ) : 7;
+$word_count   = function_exists( 'hrl_estimate_word_count' ) ? hrl_estimate_word_count( get_the_content() ) : str_word_count( wp_strip_all_tags( get_the_content() ) );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'hrl-single-content' ); ?>>
-    <header class="entry-header" style="border-bottom:1px solid var(--border-color);padding-bottom:24px;margin-bottom:30px;">
+
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'amoled-article-view' ); ?>>
+
+    <header class="article-post-header" style="border-bottom:1px solid var(--border-color);padding-bottom:24px;margin-bottom:30px;">
+
         <?php
         $cats = get_the_category();
         if ( $cats ) :
@@ -28,21 +33,23 @@ $listen_time  = function_exists( 'hrl_estimate_listen_time' ) ? hrl_estimate_lis
         endif;
         ?>
 
-        <h1 class="entry-title" style="font-family:var(--font-accents);font-size:2.4rem;font-weight:700;color:#FFFFFF;line-height:1.2;margin-bottom:16px;">
+        <h1 style="font-family:var(--font-headings);font-size:2.4rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:16px;">
             <?php the_title(); ?>
         </h1>
 
-        <div class="entry-meta" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:0.82rem;color:var(--gold);font-family:var(--font-mono, 'JetBrains Mono', monospace);margin-bottom:16px;">
+        <div class="article-meta" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:0.82rem;color:var(--gold);font-family:var(--font-mono, 'JetBrains Mono', monospace);margin-bottom:16px;">
             <span>
                 <?php echo get_avatar( get_the_author_meta( 'ID' ), 20, '', '', array( 'style' => 'border-radius:50%;vertical-align:middle;margin-right:5px;border:1px solid var(--gold);' ) ); ?>
                 <?php the_author(); ?>
             </span>
             <span style="color:var(--border-color);">|</span>
-            <span><?php echo get_the_date(); ?></span>
+            <span>📅 <?php echo get_the_date(); ?></span>
             <span style="color:var(--border-color);">|</span>
-            <span><?php echo esc_html( $reading_time ); ?> min <?php esc_html_e( 'czytania', 'hrl-theme' ); ?></span>
+            <span>📖 <?php echo esc_html( $reading_time ); ?> min <?php esc_html_e( 'czytania', 'hrl-theme' ); ?></span>
             <span style="color:var(--border-color);">|</span>
-            <span><?php echo esc_html( $listen_time ); ?> min <?php esc_html_e( 'odsłuchu', 'hrl-theme' ); ?></span>
+            <span>🎧 <?php echo esc_html( $listen_time ); ?> min <?php esc_html_e( 'odsłuchu', 'hrl-theme' ); ?></span>
+            <span style="color:var(--border-color);">|</span>
+            <span>📝 <?php echo esc_html( number_format_i18n( $word_count ) ); ?> <?php esc_html_e( 'słów', 'hrl-theme' ); ?></span>
         </div>
 
         <?php if ( has_post_thumbnail() ) : ?>
@@ -57,6 +64,21 @@ $listen_time  = function_exists( 'hrl_estimate_listen_time' ) ? hrl_estimate_lis
     </div>
 
     <footer class="entry-footer" style="margin-top:40px;padding-top:24px;border-top:1px solid var(--border-color);">
+        <?php if ( has_tag() ) : ?>
+            <div style="margin-bottom:24px;">
+                <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-right:8px;"><?php esc_html_e( 'Tagi:', 'hrl-theme' ); ?></span>
+                <?php the_tags( '<span style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">', '', '</span>' ); ?>
+            </div>
+        <?php endif; ?>
+
+        <div style="margin-bottom:24px;">
+            <a href="<?php echo esc_url( home_url( '/blogcast/' ) ); ?>"
+               style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;letter-spacing:1px;text-transform:uppercase;">
+                ← <?php esc_html_e( 'Wróć do BlogCast', 'hrl-theme' ); ?>
+            </a>
+        </div>
+
         <?php get_template_part( 'template-parts/content', 'post-navigation' ); ?>
     </footer>
+
 </article>

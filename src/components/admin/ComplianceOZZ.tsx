@@ -7,8 +7,8 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 const COLORS = ['#10b981', '#f59e0b', '#ef4444'];
 
 export default function ComplianceOZZ() {
-  const [compliance, setCompliance] = useState<any>(null);
-  const [licenses, setLicenses] = useState<any[]>([]);
+  const [compliance, setCompliance] = useState<Record<string, any> | null>(null);
+  const [licenses, setLicenses] = useState<Record<string, any>[]>([]);
   const [tab, setTab] = useState<'overview' | 'certificates' | 'jurisdictions' | 'renewals'>('overview');
   const { fetchWithAuth, loading } = useApi();
 
@@ -79,7 +79,7 @@ export default function ComplianceOZZ() {
           { id: 'jurisdictions', icon: Globe, label: 'Jurisdictions' },
           { id: 'renewals', icon: RefreshCw, label: 'Auto-Renewal' },
         ].map(t => (
-          <button key={t.id} onClick={() => setTab(t.id as any)}
+          <button key={t.id} onClick={() => setTab(t.id as 'overview' | 'certificates' | 'jurisdictions' | 'renewals')}
             className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold border-b-2 -mb-[2px] transition ${
               tab === t.id ? 'border-emerald-500 text-white bg-slate-900/40' : 'border-transparent text-slate-400 hover:text-white'
             }`}>

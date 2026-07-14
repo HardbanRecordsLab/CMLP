@@ -11,7 +11,7 @@ interface CustomOrder {
   budget: number | null;
   status: string;
   deadline: string | null;
-  metadata: any;
+  metadata: unknown;
   createdAt: string;
   updatedAt: string;
 }
@@ -38,7 +38,7 @@ export default function AdminCustomOrders() {
       const res = await fetch(getApiUrl('/api/custom-orders'), { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error('Failed to load');
       setOrders(await res.json());
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
     finally { setLoading(false); }
   };
 
@@ -48,7 +48,7 @@ export default function AdminCustomOrders() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const body: any = { title, description, status };
+    const body: Record<string, unknown> = { title, description, status };
     if (budget) body.budget = Math.round(parseFloat(budget) * 100);
     if (deadline) body.deadline = deadline;
 
@@ -60,7 +60,7 @@ export default function AdminCustomOrders() {
       toast.success(editingId ? 'Order updated' : 'Order created');
       resetForm();
       load();
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
 
   const handleDelete = async (id: number) => {
@@ -70,7 +70,7 @@ export default function AdminCustomOrders() {
       if (!res.ok) throw new Error('Delete failed');
       toast.success('Order deleted');
       load();
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
 
   const handleEdit = (o: CustomOrder) => {

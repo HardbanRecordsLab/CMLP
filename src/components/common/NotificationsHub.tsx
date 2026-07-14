@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Bell, Shield, RefreshCw, Send, CheckCircle2, AlertTriangle, Database, AlertCircle, Sparkles } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 interface NotificationSettings {
   id?: number;
@@ -72,12 +73,12 @@ export default function NotificationsHub() {
     fetchWithAuth(getApiUrl('/api/notifications/settings'))
       .then(res => res.json())
       .then(data => setSettings(data))
-      .catch(err => console.error('Failed to load notification configurations', err));
+      .catch(err => { toast.error('Failed to load notification configurations'); console.error('Failed to load notification configurations', err); });
 
     fetchWithAuth(getApiUrl('/api/notifications/logs'))
       .then(res => res.json())
       .then(data => setLogs(data))
-      .catch(err => console.error('Failed to load notification audit trails', err));
+      .catch(err => { toast.error('Failed to load notification audit trails'); console.error('Failed to load notification audit trails', err); });
   };
 
   useEffect(() => {
@@ -404,7 +405,7 @@ export default function NotificationsHub() {
                   <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Scenario Template Mode</label>
                   <select
                     value={testEmailType}
-                    onChange={e => setTestEmailType(e.target.value as any)}
+                     onChange={e => setTestEmailType(e.target.value as 'user_registration' | 'license_expiry' | 'payment_confirmation')}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
                   >
                     <option value="user_registration">User Registration (Welcome)</option>
@@ -635,7 +636,7 @@ export default function NotificationsHub() {
                   <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Push Severity Class</label>
                   <select
                     value={broadcastType}
-                    onChange={e => setBroadcastType(e.target.value as any)}
+                     onChange={e => setBroadcastType(e.target.value as 'broadcast_alert' | 'license_expiry' | 'payment_confirmation')}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
                   >
                     <option value="broadcast_alert">System Notice (General)</option>

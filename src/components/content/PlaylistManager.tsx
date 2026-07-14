@@ -3,13 +3,17 @@ import { Plus, Edit, Trash2, Shield, Globe, ShieldOff, Search, Music, ArrowUp, A
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import { Track } from '@/types.ts';
+import toast from 'react-hot-toast';
+import Pagination from '@/components/common/Pagination.tsx';
 
 export default function PlaylistManager() {
-  const [playlists, setPlaylists] = useState<any[]>([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
+  const [playlists, setPlaylists] = useState<Record<string, any>[]>([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Record<string, any> | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [searchTrack, setSearchTrack] = useState('');
+  const [trackPage, setTrackPage] = useState(1);
+  const [trackTotalPages, setTrackTotalPages] = useState(1);
   const { fetchWithAuth } = useApi();
 
   const [formData, setFormData] = useState({ title: '', description: '', isPublic: false });
@@ -18,27 +22,37 @@ export default function PlaylistManager() {
     fetchWithAuth(getApiUrl('/api/playlists'))
       .then(res => res.json())
       .then(data => setPlaylists(data))
-      .catch(console.error);
+      .catch(e => { toast.error('Failed to load playlists'); console.error(e); });
   };
 
   const loadAllTracks = () => {
-    fetchWithAuth(getApiUrl('/api/tracks/public'))
+    const params = new URLSearchParams({ page: String(trackPage), limit: '20' });
+    if (searchTrack) params.set('search', searchTrack);
+    fetchWithAuth(getApiUrl(`/api/tracks/public?${params}`))
       .then(res => res.json())
-      .then(data => setTracks(data))
-      .catch(console.error);
+      .then(data => {
+        if (data && data.data) {
+          setTracks(data.data);
+          setTrackTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setTracks(data);
+          setTrackTotalPages(1);
+        }
+      })
+      .catch(e => { toast.error('Failed to load tracks'); console.error(e); });
   };
 
   const loadPlaylistDetails = (id: number) => {
     fetchWithAuth(getApiUrl(`/api/playlists/${id}`))
       .then(res => res.json())
       .then(data => setSelectedPlaylist(data))
-      .catch(console.error);
+      .catch(e => { toast.error('Failed to load playlist details'); console.error(e); });
   };
 
   useEffect(() => {
     loadPlaylists();
     loadAllTracks();
-  }, []);
+  }, [trackPage, searchTrack]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +77,7 @@ export default function PlaylistManager() {
       setFormData({ title: '', description: '', isPublic: false });
       loadPlaylists();
     } catch (err) {
+      toast.error('Failed to save playlist');
       console.error(err);
     }
   };
@@ -74,6 +89,7 @@ export default function PlaylistManager() {
       if (selectedPlaylist?.id === id) setSelectedPlaylist(null);
       loadPlaylists();
     } catch (err) {
+      toast.error('Failed to delete playlist');
       console.error(err);
     }
   };
@@ -88,6 +104,7 @@ export default function PlaylistManager() {
       });
       loadPlaylistDetails(selectedPlaylist.id);
     } catch (err) {
+      toast.error('Failed to add track');
       console.error(err);
     }
   };
@@ -100,14 +117,13 @@ export default function PlaylistManager() {
       });
       loadPlaylistDetails(selectedPlaylist.id);
     } catch (err) {
+      toast.error('Failed to remove track');
       console.error(err);
     }
   };
 
   const availableTracks = tracks.filter(t => 
-    !selectedPlaylist?.tracks?.find((pt: any) => pt.id === t.id) &&
-    (t.title.toLowerCase().includes(searchTrack.toLowerCase()) || 
-     t.artist.toLowerCase().includes(searchTrack.toLowerCase()))
+    !selectedPlaylist?.tracks?.find((pt: Record<string, any>) => pt.id === t.id)
   );
 
   return (
@@ -223,8 +239,8 @@ export default function PlaylistManager() {
               {/* Tracks in Playlist */}
               <div className="w-1/2 border-r border-slate-800 p-4 overflow-y-auto flex flex-col gap-2">
                 <h3 className="text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-2">Playlist Contents</h3>
-                {selectedPlaylist.tracks?.map((track: any) => (
-                  <div key={track.id} className="flex justify-between items-center p-3 bg-slate-800 rounded border border-slate-700">
+                {selectedPlaylist.tracks?.map((track: Record<string, any>) => (
+                  <div key={track.id as React.Key} className="flex justify-between items-center p-3 bg-slate-800 rounded border border-slate-700">
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm text-white truncate">{track.title}</p>
                       <p className="text-[11px] text-slate-400 truncate">{track.artist}</p>
@@ -249,7 +265,7 @@ export default function PlaylistManager() {
                   <input 
                     placeholder="Search library..." 
                     value={searchTrack}
-                    onChange={e => setSearchTrack(e.target.value)}
+                    onChange={e => { setSearchTrack(e.target.value); setTrackPage(1); }}
                     className="w-full bg-slate-800 border border-slate-700 rounded pl-9 pr-3 py-2 text-xs text-white" 
                   />
                 </div>
@@ -267,6 +283,7 @@ export default function PlaylistManager() {
                     </button>
                   </div>
                 ))}
+                <Pagination page={trackPage} totalPages={trackTotalPages} onPageChange={setTrackPage} />
               </div>
             </div>
           </div>

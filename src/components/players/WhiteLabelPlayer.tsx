@@ -5,6 +5,7 @@ import { getApiUrl } from '@/utils.ts';
 import { Track } from '@/types.ts';
 import Navigation from '@/components/common/Navigation.tsx';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
 export default function WhiteLabelPlayer() {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ export default function WhiteLabelPlayer() {
   const [error, setError] = useState('');
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   
-  const [config, setConfig] = useState<any>(null);
+  const [config, setConfig] = useState<Record<string, any> | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   
@@ -34,7 +35,7 @@ export default function WhiteLabelPlayer() {
       return cached ? JSON.parse(cached) : [];
     } catch { return []; }
   };
-  const getCachedConfig = (): any | null => {
+  const getCachedConfig = (): Record<string, any> | null => {
     try {
       const cached = localStorage.getItem(CACHE_KEY_CONFIG);
       return cached ? JSON.parse(cached) : null;
@@ -67,7 +68,7 @@ export default function WhiteLabelPlayer() {
         setTracks(fetched);
         cacheTracks(fetched);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (!navigator.onLine) {
         const cachedConfig = getCachedConfig();
         const cachedTracksList = getCachedTracks();
@@ -78,7 +79,7 @@ export default function WhiteLabelPlayer() {
           return;
         }
       }
-      setError(err.message);
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -100,6 +101,7 @@ export default function WhiteLabelPlayer() {
         })
       });
     } catch (e) {
+      toast.error('Failed to report telemetry');
       console.error('Failed to report telemetry', e);
     }
   };
@@ -142,7 +144,7 @@ export default function WhiteLabelPlayer() {
 
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
             if (isPlaying) {
-              audioRef.current?.play().catch(console.error);
+              audioRef.current?.play().catch(e => { toast.error('Playback failed'); console.error(e); });
             }
           });
           
@@ -165,11 +167,11 @@ export default function WhiteLabelPlayer() {
           audioRef.current!.src = audioSource;
           audioRef.current!.load();
           if (isPlaying) {
-            audioRef.current!.play().catch(console.error);
+            audioRef.current!.play().catch(e => { toast.error('Playback failed'); console.error(e); });
           }
         }
       })
-      .catch(console.error);
+      .catch(e => { toast.error('Failed to load audio'); console.error(e); });
 
     return () => {
       cancelled = true;

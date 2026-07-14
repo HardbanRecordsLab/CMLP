@@ -2,23 +2,24 @@ import { useState, useEffect } from 'react';
 import { Activity, BellRing, ShieldAlert, Cpu, CheckCircle2, AlertTriangle, Play, HelpCircle, HardDrive, Zap } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 export default function StrategicInitiatives() {
   const { fetchWithAuth, loading } = useApi();
   
   // Waveform state
   const [trackId, setTrackId] = useState<string>('1');
-  const [waveformResult, setWaveformResult] = useState<any>(null);
+  const [waveformResult, setWaveformResult] = useState<Record<string, any> | null>(null);
   const [waveformError, setWaveformError] = useState<string | null>(null);
 
   // Predictive checks state
-  const [expiryResults, setExpiryResults] = useState<any>(null);
+  const [expiryResults, setExpiryResults] = useState<Record<string, any> | null>(null);
   const [checkingExpiries, setCheckingExpiries] = useState<boolean>(false);
 
   // Vault/transit state
   const [certNum, setCertNum] = useState<string>('HRL/ZAiKS/2026/0922');
   const [outletName, setOutletName] = useState<string>('Aroma Jazz Cafe Warsaw');
-  const [vaultResult, setVaultResult] = useState<any>(null);
+  const [vaultResult, setVaultResult] = useState<Record<string, any> | null>(null);
   const [vaultSigning, setVaultSigning] = useState<boolean>(false);
 
   const testWaveformCache = async () => {
@@ -28,8 +29,8 @@ export default function StrategicInitiatives() {
       if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
       const data = await res.json();
       setWaveformResult(data);
-    } catch (e: any) {
-      setWaveformError(e.message || 'Error executing waveform cache fetch');
+    } catch (e: unknown) {
+      setWaveformError(e instanceof Error ? e.message : 'Error executing waveform cache fetch');
     }
   };
 
@@ -42,6 +43,7 @@ export default function StrategicInitiatives() {
       const data = await res.json();
       setExpiryResults(data);
     } catch (e) {
+      toast.error('Failed to run predictive checks');
       console.error(e);
     } finally {
       setCheckingExpiries(false);
@@ -64,6 +66,7 @@ export default function StrategicInitiatives() {
       const data = await res.json();
       setVaultResult(data);
     } catch (e) {
+      toast.error('Failed to generate vault signature');
       console.error(e);
     } finally {
       setVaultSigning(false);
@@ -234,7 +237,7 @@ export default function StrategicInitiatives() {
                     No active licenses are currently within the 14-day expiry threshold.
                   </div>
                 ) : (
-                  expiryResults.results?.map((item: any, idx: number) => (
+                  expiryResults.results?.map((item: { certificateNumber: string; companyName: string; escalationLevel: string; daysRemaining: number; actionTaken: string }, idx: number) => (
                     <div key={idx} className="p-3 bg-slate-950 border border-slate-800/80 rounded-lg flex flex-col gap-2">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-bold text-white font-mono">{item.certificateNumber}</span>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Lock, EyeOff, UserCheck, RefreshCw, AlertTriangle, Download, Trash2, Key, CheckCircle, Ban, ArrowRight, UserX, FileText } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
+import toast from 'react-hot-toast';
 
 export default function SecurityConsole() {
   const { fetchWithAuth, loading: apiLoading } = useApi();
@@ -23,9 +24,9 @@ export default function SecurityConsole() {
 
   const [blockedIps, setBlockedIps] = useState<string[]>([]);
   const [newIpToBlock, setNewIpToBlock] = useState('');
-  const [gdprExportData, setGdprExportData] = useState<any | null>(null);
+  const [gdprExportData, setGdprExportData] = useState<Record<string, any> | null>(null);
   const [confirmDeleteShow, setConfirmDeleteShow] = useState(false);
-  const [owaspResults, setOwaspResults] = useState<any | null>(null);
+  const [owaspResults, setOwaspResults] = useState<Record<string, any> | null>(null);
   const [owaspRunning, setOwaspRunning] = useState(false);
 
   // Load basic configurations on load
@@ -47,7 +48,8 @@ export default function SecurityConsole() {
       const res = await fetch(getApiUrl(`/api/auth/mfa/status?email=${encodeURIComponent(email)}`));
       const data = await res.json();
       setMfaEnabled(data.mfaEnabled);
-    } catch (e: any) {
+    } catch (e: unknown) {
+      toast.error('Failed checking MFA status');
       console.error('Failed checking MFA status', e);
     }
   };
@@ -57,7 +59,8 @@ export default function SecurityConsole() {
       const res = await fetchWithAuth(getApiUrl('/api/security/blocklist'));
       const data = await res.json();
       setBlockedIps(data.blockedIps || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
+      toast.error('Unable to load blocklist');
       console.log('Unable to load blocklist (might be non-admin session)');
     }
   };
@@ -70,7 +73,7 @@ export default function SecurityConsole() {
       const res = await fetchWithAuth(getApiUrl('/api/auth/mfa/setup'), { method: 'POST' });
       const data = await res.json();
       setMfaSecretData(data);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Błąd podczas generowania sekretu MFA.');
     } finally {
       setMfaSettingUp(false);
@@ -94,8 +97,8 @@ export default function SecurityConsole() {
       setMfaEnabled(true);
       setMfaSecretData(null);
       setMfaConfirmCode('');
-    } catch (e: any) {
-      setErrorStr(e.message || 'Niepoprawny kod weryfikacji MFA. Spróbuj ponownie.');
+    } catch (e: unknown) {
+      setErrorStr((e as Error).message || 'Niepoprawny kod weryfikacji MFA. Spróbuj ponownie.');
     }
   };
 
@@ -107,7 +110,7 @@ export default function SecurityConsole() {
       const data = await res.json();
       setSuccessStr(data.message || 'MFA zostało pomyślnie wyłączone.');
       setMfaEnabled(false);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Wystąpił błąd podczas wyłączania MFA.');
     }
   };
@@ -127,7 +130,7 @@ export default function SecurityConsole() {
       setSuccessStr(data.message || 'IP zablokowane.');
       setNewIpToBlock('');
       loadBlocklist();
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Błąd podczas blokowania adresu IP.');
     }
   };
@@ -143,7 +146,7 @@ export default function SecurityConsole() {
       const data = await res.json();
       setSuccessStr(data.message || 'IP odblokowane.');
       loadBlocklist();
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Błąd podczas odblokowywania adresu IP.');
     }
   };
@@ -157,7 +160,7 @@ export default function SecurityConsole() {
       const data = await res.json();
       setGdprExportData(data);
       setSuccessStr('Przenośny plik danych RODO wygenerowany pomyślnie.');
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Błąd podczas eksportowania danych RODO.');
     }
   };
@@ -171,7 +174,7 @@ export default function SecurityConsole() {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('auth_user');
       window.location.reload();
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Błąd krytyczny podczas usuwania profilu.');
     }
   };
@@ -198,7 +201,7 @@ export default function SecurityConsole() {
       const data = await res.json();
       setOwaspResults(data);
       setSuccessStr('Skanowanie OWASP Top 10 zakończone. Analizy i logi pomyślnie zarchiwizowane.');
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorStr('Błąd wywołania skanowania OWASP Top 10.');
     } finally {
       setOwaspRunning(false);
@@ -229,7 +232,7 @@ export default function SecurityConsole() {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => { clearMessages(); setActiveSubTab(tab.id as any); }}
+              onClick={() => { clearMessages(); setActiveSubTab(tab.id as 'mfa' | 'blocklist' | 'owasp' | 'gdpr'); }}
               className={`px-3 py-1.5 rounded text-xs font-semibold tracking-wide transition uppercase cursor-pointer ${
                 activeSubTab === tab.id
                   ? 'bg-blue-600 text-white shadow'
@@ -633,16 +636,16 @@ export default function SecurityConsole() {
                   </div>
 
                   <div className="divide-y divide-slate-800">
-                    {owaspResults.scans.map((scan: any) => (
-                      <div key={scan.id} className="p-5 flex flex-col sm:flex-row gap-4 justify-between hover:bg-slate-950/20 transition">
+                    {owaspResults.scans.map((scan: Record<string, any>) => (
+                      <div key={scan.id as React.Key} className="p-5 flex flex-col sm:flex-row gap-4 justify-between hover:bg-slate-950/20 transition">
                         <div className="space-y-1 sm:max-w-2xl">
                           <span className="text-[9px] font-mono font-bold tracking-widest text-slate-500 uppercase">{scan.id}</span>
-                          <h4 className="text-xs font-bold text-white">{scan.title}</h4>
-                          <p className="text-xs text-slate-400">{scan.details}</p>
+                          <h4 className="text-xs font-bold text-white">{scan.title as string}</h4>
+                          <p className="text-xs text-slate-400">{scan.details as string}</p>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <span className="px-2.5 py-1 bg-emerald-950/40 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold uppercase tracking-wider rounded">
-                            {scan.result}
+                            {scan.result as string}
                           </span>
                         </div>
                       </div>

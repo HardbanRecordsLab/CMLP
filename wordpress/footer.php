@@ -53,11 +53,6 @@ $newsletter_bar = get_theme_mod( 'hrl_newsletter_bar_toggle', false );
             <p style="color:var(--text-secondary);font-size:0.85rem;line-height:1.65;margin-bottom:8px;">
                 <?php esc_html_e( 'Suwerenny ekosystem B2B Audio. Muzyka komercyjna bez opłat ZAiKS, OZZ i pośredników.', 'hrl-theme' ); ?>
             </p>
-            <p style="color:var(--text-secondary);font-size:0.8rem;line-height:1.6;margin-top:12px;">
-                <?php esc_html_e( 'NIP:', 'hrl-theme' ); ?> 1234567890<br>
-                <?php esc_html_e( 'REGON:', 'hrl-theme' ); ?> 123456789<br>
-                <?php esc_html_e( 'KRS:', 'hrl-theme' ); ?> 0000123456
-            </p>
         </div>
 
         <div class="footer-col">

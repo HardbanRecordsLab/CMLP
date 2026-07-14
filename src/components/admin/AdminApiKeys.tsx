@@ -32,8 +32,8 @@ export default function AdminApiKeys() {
       });
       if (!res.ok) throw new Error('Failed to load');
       setKeys(await res.json());
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -57,8 +57,8 @@ export default function AdminApiKeys() {
       setName('');
       toast.success('API key created');
       loadKeys();
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : String(err));
     }
   };
 
@@ -73,8 +73,8 @@ export default function AdminApiKeys() {
       if (!res.ok) throw new Error('Delete failed');
       toast.success('API key deleted');
       loadKeys();
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : String(err));
     }
   };
 

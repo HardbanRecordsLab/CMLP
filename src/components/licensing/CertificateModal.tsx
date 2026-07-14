@@ -1,5 +1,6 @@
 import { X, Printer, Download, ShieldCheck } from 'lucide-react';
 import { jsPDF } from 'jspdf';
+import toast from 'react-hot-toast';
 
 interface CertificateModalProps {
   isOpen: boolean;
@@ -161,7 +162,8 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.text("[ Digitally Signed / Verified ]", 133, 256);
 
       doc.save(`Exemption_Certificate_HRL_${certNumber}.pdf`);
-    } catch (e: any) {
+    } catch (e: unknown) {
+      toast.error('Failed to generate PDF');
       console.error('Failed to generate PDF:', e);
     }
   };

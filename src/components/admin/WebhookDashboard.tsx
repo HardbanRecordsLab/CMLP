@@ -58,7 +58,7 @@ export default function WebhookDashboard() {
 
   const handleSave = async () => {
     if (!url || selectedEvents.length === 0) return;
-    const body: any = { url, events: selectedEvents };
+    const body: Record<string, unknown> = { url, events: selectedEvents };
     if (!editItem && secret) body.secret = secret;
 
     try {
