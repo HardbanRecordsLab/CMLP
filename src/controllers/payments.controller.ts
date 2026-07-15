@@ -9,6 +9,7 @@ import { logAuditEvent } from '../services/logging.service.ts';
 import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
 import { generateLicenseCertificate, generateInvoice } from '../services/certificate.service.ts';
 import { triggerEmailNotification } from '../lib/notifications.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 
 async function handlePostPaymentActions(payment: typeof payments.$inferSelect, userEmail?: string) {
   if (!payment.licenseId) return;
@@ -46,6 +47,9 @@ async function handlePostPaymentActions(payment: typeof payments.$inferSelect, u
   }
 }
 
+const PAYMENTS_SORT_COLUMNS = ['id', 'amount', 'currency', 'status', 'gateway', 'createdAt'];
+const PAYMENTS_SEARCH_COLUMNS = ['gatewayTransactionId', 'status', 'gateway'];
+
 export async function getAll(req: any, res: Response) {
   try {
     const userUid = req.user?.uid;
@@ -54,13 +58,11 @@ export async function getAll(req: any, res: Response) {
     const [userRecord] = await db.select().from(users).where(eq(users.uid, userUid));
     if (!userRecord) { res.status(404).json({ error: 'User not found' }); return; }
 
-    let results;
-    if (userRecord.role === 'admin') {
-      results = await db.select().from(payments);
-    } else {
-      results = await db.select().from(payments).where(eq(payments.userId, userRecord.id));
-    }
-    res.json(results);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, PAYMENTS_SEARCH_COLUMNS);
+    const roleCond = userRecord.role !== 'admin' ? eq(payments.userId, userRecord.id) : undefined;
+    const result = await paginateQuery(payments, [searchCond, roleCond], params, PAYMENTS_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error fetching payments' });
   }
@@ -256,9 +258,19 @@ export async function refund(req: any, res: Response) {
     if (payment.gateway === 'stripe' && payment.gatewayTransactionId && process.env.NODE_ENV !== 'test') {
       try {
         const stripeRefund = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-04-06' as any });
-        await stripeRefund.refunds.create({
-          payment_intent: payment.gatewayTransactionId,
-        });
+        const txId = payment.gatewayTransactionId;
+        const paymentIntent = txId.startsWith('pi_') ? txId : undefined;
+        if (paymentIntent) {
+          await stripeRefund.refunds.create({ payment_intent: paymentIntent });
+        } else {
+          const session = await stripeRefund.checkout.sessions.retrieve(txId);
+          const pi = session.payment_intent as string | null;
+          if (pi) {
+            await stripeRefund.refunds.create({ payment_intent: pi });
+          } else {
+            res.status(400).json({ error: 'No payment intent found for this session' }); return;
+          }
+        }
       } catch (stripeErr: unknown) {
         console.error('[Refund] Stripe refund failed:', stripeErr instanceof Error ? stripeErr.message : String(stripeErr));
         res.status(500).json({ error: `Stripe refund failed: ${stripeErr instanceof Error ? stripeErr.message : String(stripeErr)}` }); return;
@@ -292,6 +304,7 @@ export async function refund(req: any, res: Response) {
 async function processWebhook(gateway: string, rawPayload: string, signature: string | undefined, body: any) {
   let txId = '';
   let status = 'pending';
+  let paymentIntentId: string | undefined;
 
   if (gateway === 'stripe') {
     const event = verifyStripeWebhook(rawPayload, signature);
@@ -302,6 +315,7 @@ async function processWebhook(gateway: string, rawPayload: string, signature: st
     const normalized = normalizeStripeStatus(event?.type, event?.data?.object);
     txId = normalized.txId;
     status = normalized.status;
+    paymentIntentId = (normalized as any).paymentIntentId;
   } else if (gateway === 'payu') {
     const normalized = normalizePayuStatus(body);
     txId = normalized.txId;
@@ -310,7 +324,7 @@ async function processWebhook(gateway: string, rawPayload: string, signature: st
     return { txId: '', status: '', error: `Unsupported payment gateway: ${gateway}` };
   }
 
-  return { txId, status, error: null };
+  return { txId, status, error: null, paymentIntentId };
 }
 
 async function processWithRetry(fn: () => Promise<any>, maxRetries = 3): Promise<any> {
@@ -341,17 +355,25 @@ export async function webhook(req: any, res: Response) {
       res.status(statusCode).json({ error: parsed.error }); return;
     }
 
-    const { txId, status } = parsed;
+    const { txId, status, paymentIntentId } = parsed as any;
 
     if (txId) {
-      const [existing] = await db.select().from(payments).where(eq(payments.gatewayTransactionId, txId));
+      let existing = await db.select().from(payments).where(eq(payments.gatewayTransactionId, txId)).then(r => r[0]);
+
+      if (!existing && paymentIntentId) {
+        existing = await db.select().from(payments).where(eq(payments.gatewayTransactionId, paymentIntentId)).then(r => r[0]);
+      }
 
       if (existing && ['completed', 'refunded', 'failed'].includes(existing.status)) {
         res.status(200).json({ received: true, idempotent: true }); return;
       }
 
       if (existing) {
-        await db.update(payments).set({ status }).where(eq(payments.id, existing.id));
+        const updates: Record<string, any> = { status };
+        if (paymentIntentId && existing.gatewayTransactionId !== paymentIntentId) {
+          updates.gatewayTransactionId = paymentIntentId;
+        }
+        await db.update(payments).set(updates).where(eq(payments.id, existing.id));
 
         if (existing.licenseId && status === 'completed') {
           await db.update(licenses).set({ status: 'active' }).where(eq(licenses.id, existing.licenseId));
@@ -392,7 +414,8 @@ export async function webhook(req: any, res: Response) {
 
 function normalizeStripeStatus(eventType: string, object: any) {
   if (eventType === 'checkout.session.completed') {
-    return { txId: object?.id, status: 'completed' };
+    const paymentIntentId = object?.payment_intent as string | undefined;
+    return { txId: object?.id, status: 'completed', paymentIntentId };
   }
   if (eventType === 'payment_intent.succeeded') {
     return { txId: object?.id, status: 'completed' };

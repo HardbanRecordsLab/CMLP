@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CreditCard, CheckCircle, RefreshCw, AlertTriangle, ShieldCheck, Check, Info, Trash2, ArrowUpRight, CheckSquare } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useTranslation } from 'react-i18next';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
@@ -24,15 +25,22 @@ export default function PaymentPortal() {
   const [loading, setLoading] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState<'stripe' | 'payu'>('stripe');
   const [selectedTier, setSelectedTier] = useState<'starter' | 'premium' | 'enterprise'>('premium');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const { fetchWithAuth } = useApi();
 
   const loadPayments = () => {
-    fetchWithAuth(getApiUrl('/api/payments'))
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/payments?${params}`))
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (data && data.data) {
+          setPayments(data.data);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
           setPayments(data);
+          setTotalPages(1);
         }
       })
       .catch(e => { toast.error('Failed to load payments'); console.error(e); });
@@ -40,7 +48,7 @@ export default function PaymentPortal() {
 
   useEffect(() => {
     loadPayments();
-  }, []);
+  }, [page]);
 
   const handleCheckout = async (type: 'subscription' | 'one-time', overrideAmount?: number) => {
     setLoading(true);
@@ -276,6 +284,8 @@ export default function PaymentPortal() {
               <p className="text-center text-xs text-slate-500 pt-10">{t('paymentPortal.noTransactions')}</p>
             )}
           </div>
+
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
 
           <div className="p-2.5 bg-blue-500/5 border border-blue-500/10 rounded-lg flex gap-2">
             <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />

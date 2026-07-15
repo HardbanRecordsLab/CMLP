@@ -4,6 +4,7 @@ import { db } from '../db/index.ts';
 import { coupons } from '../db/schema.ts';
 import { AuthRequest } from '../middleware/auth.ts';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 
 export async function validateCouponCode(code: string, amount: number): Promise<{
   valid: boolean;
@@ -35,10 +36,15 @@ export async function validateCouponCode(code: string, amount: number): Promise<
   };
 }
 
-export async function getAll(_req: AuthRequest, res: Response) {
+const COUPONS_SORT_COLUMNS = ['id', 'code', 'discountPercent', 'discountAmount', 'maxUses', 'usedCount', 'expiresAt', 'createdAt'];
+const COUPONS_SEARCH_COLUMNS = ['code'];
+
+export async function getAll(req: AuthRequest, res: Response) {
   try {
-    const all = await db.select().from(coupons).orderBy(coupons.id, 'desc');
-    res.json(all);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, COUPONS_SEARCH_COLUMNS);
+    const result = await paginateQuery(coupons, [searchCond], params, COUPONS_SORT_COLUMNS);
+    res.json(result);
   } catch (e: unknown) {
     res.status(500).json({ error: e instanceof Error ? e.message : String(e) });
   }

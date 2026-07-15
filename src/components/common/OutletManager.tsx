@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Radio, Clock, Play, Volume2, Calendar, RefreshCw, CheckCircle, XCircle, HelpCircle, Save, ChevronDown, ChevronUp } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
@@ -58,6 +59,8 @@ export default function OutletManager() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [savingId, setSavingId] = useState<number | null>(null);
@@ -69,13 +72,20 @@ export default function OutletManager() {
     setLoading(true);
     setError(null);
     try {
+      const params = new URLSearchParams({ page: String(page), limit: '20' });
       const [locRes, plRes] = await Promise.all([
-        fetchWithAuth(getApiUrl('/api/outlet/locations')),
+        fetchWithAuth(getApiUrl(`/api/outlet/locations?${params}`)),
         fetchWithAuth(getApiUrl('/api/playlists')),
       ]);
       const locData = await locRes.json();
       const plData = await plRes.json();
-      setLocations(Array.isArray(locData) ? locData : []);
+      if (locData && locData.data) {
+        setLocations(locData.data);
+        setTotalPages(locData.pagination?.totalPages || 1);
+      } else if (Array.isArray(locData)) {
+        setLocations(locData);
+        setTotalPages(1);
+      }
       setPlaylists(Array.isArray(plData) ? plData : []);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : t('outletManager.failedToLoad'));
@@ -86,7 +96,7 @@ export default function OutletManager() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [page]);
 
   const toggleSelect = (id: number) => {
     setSelectedIds(prev => {
@@ -329,6 +339,7 @@ export default function OutletManager() {
           );
         })}
       </div>
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 }

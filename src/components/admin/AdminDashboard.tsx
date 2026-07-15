@@ -1,4 +1,5 @@
 import { Users, Music, ListMusic, FileText, Shield, Activity, RefreshCw, FileSearch, Download, FileSignature, CreditCard, Globe, Bell, TrendingUp, Webhook, Scale, Key, Tag, Headphones, AlertTriangle } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useApi } from '@/hooks/useApi.ts';
@@ -50,11 +51,22 @@ export default function AdminDashboard() {
   const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
   const [outlets, setOutlets] = useState<Record<string, unknown>[]>([]);
+  const [outletsPage, setOutletsPage] = useState(1);
+  const [outletsTotalPages, setOutletsTotalPages] = useState(1);
 
   const loadOutlets = () => {
-    fetchWithAuth(getApiUrl('/api/users'))
+    const params = new URLSearchParams({ page: String(outletsPage), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/users?${params}`))
       .then(res => res.json())
-      .then(data => setOutlets(data))
+      .then(data => {
+        if (data && data.data) {
+          setOutlets(data.data);
+          setOutletsTotalPages(data.pagination?.totalPages || 1);
+        } else {
+          setOutlets(data);
+          setOutletsTotalPages(1);
+        }
+      })
       .catch(err => { toast.error('Failed to load outlets'); console.error('Failed to load outlets', err); });
   };
 
@@ -74,7 +86,11 @@ export default function AdminDashboard() {
     } else if (activeTab === 'overview') {
       loadStats();
     }
-  }, [activeTab, fetchWithAuth]);
+  }, [activeTab, fetchWithAuth, outletsPage]);
+
+  useEffect(() => {
+    if (activeTab !== 'outlets') setOutletsPage(1);
+  }, [activeTab]);
 
   useEffect(() => {
     // Determine WS URL based on current protocol
@@ -298,40 +314,43 @@ export default function AdminDashboard() {
               ) : error ? (
                 <div className="p-8 text-center text-red-400">Failed to load outlets.</div>
               ) : (
-                <div className="overflow-hidden rounded border border-slate-800">
-                  <table className="w-full text-left text-sm whitespace-nowrap">
-                    <thead className="bg-slate-950 text-slate-500 text-[10px] uppercase tracking-widest">
-                      <tr>
-                        <th className="px-6 py-3">Outlet Name</th>
-                        <th className="px-6 py-3">Role</th>
-                        <th className="px-6 py-3">Created At</th>
-                        <th className="px-6 py-3 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-800 bg-slate-900">
-                      {outlets.map(user => (
-                        <tr key={user.id as React.Key} className="hover:bg-slate-800/50">
-                          <td className="px-6 py-4 font-medium text-white">{user.email as string}</td>
-                          <td className="px-6 py-4">
-                            <span className="px-2 py-1 bg-purple-900/40 text-purple-400 text-[10px] border border-purple-500/20 rounded">{user.role as string}</span>
-                          </td>
-                          <td className="px-6 py-4 text-xs text-slate-400">{new Date(user.createdAt as string).toLocaleDateString()}</td>
-                          <td className="px-6 py-4 text-right flex justify-end gap-3">
-                            <button onClick={() => setIsCertModalOpen(true)} className="text-[10px] uppercase font-bold tracking-widest text-emerald-500 hover:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 flex items-center gap-1 rounded transition">
-                              <FileSignature className="w-3 h-3" /> DOCS
-                            </button>
-                            <button className="text-xs text-blue-500 hover:text-blue-400 font-semibold">VIEW</button>
-                          </td>
-                        </tr>
-                      ))}
-                      {outlets.length === 0 && (
+                <>
+                  <div className="overflow-hidden rounded border border-slate-800">
+                    <table className="w-full text-left text-sm whitespace-nowrap">
+                      <thead className="bg-slate-950 text-slate-500 text-[10px] uppercase tracking-widest">
                         <tr>
-                          <td colSpan={4} className="px-6 py-8 text-center text-slate-500">No outlets found.</td>
+                          <th className="px-6 py-3">Outlet Name</th>
+                          <th className="px-6 py-3">Role</th>
+                          <th className="px-6 py-3">Created At</th>
+                          <th className="px-6 py-3 text-right">Actions</th>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800 bg-slate-900">
+                        {outlets.map(user => (
+                          <tr key={user.id as React.Key} className="hover:bg-slate-800/50">
+                            <td className="px-6 py-4 font-medium text-white">{user.email as string}</td>
+                            <td className="px-6 py-4">
+                              <span className="px-2 py-1 bg-purple-900/40 text-purple-400 text-[10px] border border-purple-500/20 rounded">{user.role as string}</span>
+                            </td>
+                            <td className="px-6 py-4 text-xs text-slate-400">{new Date(user.createdAt as string).toLocaleDateString()}</td>
+                            <td className="px-6 py-4 text-right flex justify-end gap-3">
+                              <button onClick={() => setIsCertModalOpen(true)} className="text-[10px] uppercase font-bold tracking-widest text-emerald-500 hover:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 flex items-center gap-1 rounded transition">
+                                <FileSignature className="w-3 h-3" /> DOCS
+                              </button>
+                              <button className="text-xs text-blue-500 hover:text-blue-400 font-semibold">VIEW</button>
+                            </td>
+                          </tr>
+                        ))}
+                        {outlets.length === 0 && (
+                          <tr>
+                            <td colSpan={4} className="px-6 py-8 text-center text-slate-500">No outlets found.</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  <Pagination page={outletsPage} totalPages={outletsTotalPages} onPageChange={setOutletsPage} />
+                </>
               )}
             </div>
           )}

@@ -17,6 +17,7 @@ import {
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import Pagination from '@/components/common/Pagination.tsx';
 
 interface WordPressSettings {
   wpUrl: string;
@@ -48,6 +49,8 @@ export default function WordPressSync() {
   });
 
   const [logs, setLogs] = useState<SyncLog[]>([]);
+  const [logPage, setLogPage] = useState(1);
+  const [logTotalPages, setLogTotalPages] = useState(1);
   const [loadingSettings, setLoadingSettings] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -74,10 +77,17 @@ export default function WordPressSync() {
         setSettings(sData);
       }
 
-      const logsRes = await fetch(getApiUrl('/api/wordpress/logs'));
+      const logParams = new URLSearchParams({ page: String(logPage), limit: '20' });
+      const logsRes = await fetch(getApiUrl(`/api/wordpress/logs?${logParams}`));
       if (logsRes.ok) {
         const lData = await logsRes.json();
-        setLogs(lData);
+        if (lData && lData.data) {
+          setLogs(lData.data);
+          setLogTotalPages(lData.pagination?.totalPages || 1);
+        } else if (Array.isArray(lData)) {
+          setLogs(lData);
+          setLogTotalPages(1);
+        }
       }
     } catch (err: unknown) {
       toast.error(t('wordPressSync.loadError'));
@@ -89,7 +99,7 @@ export default function WordPressSync() {
 
   useEffect(() => {
     fetchSettingsAndLogs();
-  }, []);
+  }, [logPage]);
 
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,8 +117,13 @@ export default function WordPressSync() {
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 3000);
         // Refresh logs in case config updates trigger entries
-        const logsRes = await fetch(getApiUrl('/api/wordpress/logs'));
-        if (logsRes.ok) setLogs(await logsRes.json());
+        const logParams = new URLSearchParams({ page: String(logPage), limit: '20' });
+        const logsRes = await fetch(getApiUrl(`/api/wordpress/logs?${logParams}`));
+        if (logsRes.ok) {
+          const lData = await logsRes.json();
+          if (lData && lData.data) setLogs(lData.data);
+          else if (Array.isArray(lData)) setLogs(lData);
+        }
       } else {
         alert(t('wordPressSync.saveError'));
       }
@@ -136,9 +151,12 @@ export default function WordPressSync() {
         }
         
         // Refresh logs
-        const logsRes = await fetch(getApiUrl('/api/wordpress/logs'));
+        const logParams = new URLSearchParams({ page: String(logPage), limit: '20' });
+        const logsRes = await fetch(getApiUrl(`/api/wordpress/logs?${logParams}`));
         if (logsRes.ok) {
-          setLogs(await logsRes.json());
+          const lData = await logsRes.json();
+          if (lData && lData.data) setLogs(lData.data);
+          else if (Array.isArray(lData)) setLogs(lData);
         }
       } else {
         setSyncStatusMsg(t('wordPressSync.syncExecError'));
@@ -164,8 +182,13 @@ export default function WordPressSync() {
         const output = await res.json();
         setWebhookResponse(output);
         // Refresh logs to show live webhook registration
-        const logsRes = await fetch(getApiUrl('/api/wordpress/logs'));
-        if (logsRes.ok) setLogs(await logsRes.json());
+        const logParams = new URLSearchParams({ page: String(logPage), limit: '20' });
+        const logsRes = await fetch(getApiUrl(`/api/wordpress/logs?${logParams}`));
+        if (logsRes.ok) {
+          const lData = await logsRes.json();
+          if (lData && lData.data) setLogs(lData.data);
+          else if (Array.isArray(lData)) setLogs(lData);
+        }
       } else {
         setWebhookResponse({ error: t('wordPressSync.webhookServerError') });
       }
@@ -483,6 +506,7 @@ export default function WordPressSync() {
             </table>
           </div>
         )}
+        {logs.length > 0 && <Pagination page={logPage} totalPages={logTotalPages} onPageChange={setLogPage} />}
       </div>
       
     </div>

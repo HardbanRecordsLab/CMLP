@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Scale, ShieldCheck, AlertTriangle, RefreshCw, FileText, Building2, Globe, CheckCircle } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -12,6 +13,10 @@ export default function ComplianceOZZ() {
   const [compliance, setCompliance] = useState<Record<string, unknown> | null>(null);
   const [licenses, setLicenses] = useState<Record<string, unknown>[]>([]);
   const [tab, setTab] = useState<'overview' | 'certificates' | 'jurisdictions' | 'renewals'>('overview');
+  const [certPage, setCertPage] = useState(1);
+  const [certTotalPages, setCertTotalPages] = useState(1);
+  const [renewalPage, setRenewalPage] = useState(1);
+  const [renewalTotalPages, setRenewalTotalPages] = useState(1);
   const { fetchWithAuth, loading } = useApi();
 
   const loadData = useCallback(() => {
@@ -19,13 +24,28 @@ export default function ComplianceOZZ() {
       .then(res => res.json())
       .then(setCompliance)
       .catch(() => {});
-    fetchWithAuth(getApiUrl('/api/licenses'))
-      .then(res => res.json())
-      .then(data => setLicenses(Array.isArray(data) ? data : []))
-      .catch(() => {});
   }, [fetchWithAuth]);
 
+  const loadLicenses = useCallback(() => {
+    const params = new URLSearchParams({ page: String(certPage), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/licenses?${params}`))
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.data) {
+          setLicenses(data.data);
+          setCertTotalPages(data.pagination?.totalPages || 1);
+          setRenewalTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setLicenses(data);
+          setCertTotalPages(1);
+          setRenewalTotalPages(1);
+        }
+      })
+      .catch(() => {});
+  }, [fetchWithAuth, certPage]);
+
   useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => { loadLicenses(); }, [loadLicenses]);
 
   const activeLics = licenses.filter(l => l.status === 'active');
   const expiredLics = licenses.filter(l => new Date(l.expiresAt as string) < new Date());
@@ -154,6 +174,7 @@ export default function ComplianceOZZ() {
               {licenses.length === 0 && <tr><td colSpan={6} className="px-6 py-8 text-center text-slate-500">{t('complianceOzz.noCertificates')}</td></tr>}
             </tbody>
           </table>
+          <Pagination page={certPage} totalPages={certTotalPages} onPageChange={setCertPage} />
         </div>
       )}
 
@@ -261,6 +282,7 @@ export default function ComplianceOZZ() {
                   <tr><td colSpan={5} className="px-6 py-8 text-center text-slate-500">{t('complianceOzz.noRenewals')}</td></tr>}
               </tbody>
             </table>
+            <Pagination page={certPage} totalPages={certTotalPages} onPageChange={setCertPage} />
           </div>
         </div>
       )}

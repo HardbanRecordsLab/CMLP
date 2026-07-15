@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, CheckCircle, AlertTriangle, XCircle, Search, FileText, RefreshCw, Trash2, Calendar, Award, ShieldAlert, CheckSquare, Download } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useTranslation } from 'react-i18next';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
@@ -30,6 +31,8 @@ export default function LicensingManager() {
   const [selectedLicense, setSelectedLicense] = useState<License | null>(null);
   const [contract, setContract] = useState<Contract | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   
   // Creation form state
@@ -43,11 +46,17 @@ export default function LicensingManager() {
   const { fetchWithAuth } = useApi();
 
   const loadLicenses = () => {
-    fetchWithAuth(getApiUrl('/api/licenses'))
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
+    if (searchQuery) params.set('search', searchQuery);
+    fetchWithAuth(getApiUrl(`/api/licenses?${params}`))
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (data && data.data) {
+          setLicenses(data.data);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
           setLicenses(data);
+          setTotalPages(1);
         }
       })
       .catch(e => { toast.error('Failed to load licenses'); console.error(e); });
@@ -55,7 +64,7 @@ export default function LicensingManager() {
 
   useEffect(() => {
     loadLicenses();
-  }, []);
+  }, [page, searchQuery]);
 
   const handleSelectLicense = (lic: License) => {
     setSelectedLicense(lic);
@@ -227,6 +236,7 @@ export default function LicensingManager() {
             <p className="text-center text-xs text-slate-500 pt-10">{t('licensingManager.noLicenses')}</p>
           )}
         </div>
+        <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
       </div>
 
       {/* Main Action Content Area */}

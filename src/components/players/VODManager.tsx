@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Video, Plus, Trash2, Shield, Globe, Play } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
@@ -9,6 +10,8 @@ export default function VODManager() {
   const { t } = useTranslation();
   const [vods, setVods] = useState<Record<string, unknown>[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -16,15 +19,24 @@ export default function VODManager() {
   const { fetchWithAuth } = useApi();
 
   const loadVODs = () => {
-    fetchWithAuth(getApiUrl('/api/vod'))
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/vod?${params}`))
       .then(res => res.json())
-      .then(data => setVods(data))
+      .then(data => {
+        if (data && data.data) {
+          setVods(data.data);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else {
+          setVods(data);
+          setTotalPages(1);
+        }
+      })
       .catch(e => { toast.error(t('vodManager.failedToLoad')); console.error(e); });
   };
 
   useEffect(() => {
     loadVODs();
-  }, []);
+  }, [page]);
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -154,6 +166,7 @@ export default function VODManager() {
               </div>
             )}
           </div>
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </div>
     </div>
