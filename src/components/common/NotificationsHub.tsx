@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Bell, Shield, RefreshCw, Send, CheckCircle2, AlertTriangle, Database, AlertCircle, Sparkles } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
@@ -57,6 +58,8 @@ export default function NotificationsHub() {
   });
 
   const [logs, setLogs] = useState<NotificationLog[]>([]);
+  const [logPage, setLogPage] = useState(1);
+  const [logTotalPages, setLogTotalPages] = useState(1);
   const [selectedTemplate, setSelectedTemplate] = useState<'welcome' | 'expiry' | 'payment'>('welcome');
 
   // Broadcast and Test state
@@ -77,15 +80,24 @@ export default function NotificationsHub() {
       .then(data => setSettings(data))
       .catch(err => { toast.error(t('notificationsHub.loadConfigError')); console.error('Failed to load notification configurations', err); });
 
-    fetchWithAuth(getApiUrl('/api/notifications/logs'))
+    const logParams = new URLSearchParams({ page: String(logPage), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/notifications/logs?${logParams}`))
       .then(res => res.json())
-      .then(data => setLogs(data))
+      .then(data => {
+        if (data && data.data) {
+          setLogs(data.data);
+          setLogTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setLogs(data);
+          setLogTotalPages(1);
+        }
+      })
       .catch(err => { toast.error(t('notificationsHub.loadLogsError')); console.error('Failed to load notification audit trails', err); });
   };
 
   useEffect(() => {
     loadSettingsAndLogs();
-  }, [fetchWithAuth]);
+  }, [fetchWithAuth, logPage]);
 
   // Handle saving configurations
   const handleSaveSettings = (e: React.FormEvent) => {
@@ -750,70 +762,73 @@ export default function NotificationsHub() {
               <p className="text-[11px] text-slate-600 mt-1">{t('notificationsHub.emptyLogsHint')}</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="bg-slate-950 text-slate-400 font-mono text-[9px] uppercase tracking-wider border-b border-slate-850">
-                  <tr>
-                    <th className="px-5 py-3">{t('notificationsHub.timestampHeader')}</th>
-                    <th className="px-5 py-3">{t('notificationsHub.channelHeader')}</th>
-                    <th className="px-5 py-3">{t('notificationsHub.eventTypeHeader')}</th>
-                    <th className="px-5 py-3">{t('notificationsHub.recipientHeader')}</th>
-                    <th className="px-5 py-3">{t('notificationsHub.subjectHeader')}</th>
-                    <th className="px-5 py-3">{t('notificationsHub.transitStatusHeader')}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-850 bg-slate-900/20 font-sans">
-                  {logs.map(log => (
-                    <tr key={log.id} className="hover:bg-slate-900/40 transition">
-                      <td className="px-5 py-3.5 text-slate-400 text-[11px] font-mono">
-                        {new Date(log.createdAt).toLocaleString()}
-                      </td>
-                      <td className="px-5 py-3.5">
-                        <span className={`px-2 py-0.5 text-[9px] font-mono font-bold rounded border ${
-                          log.channel === 'email' 
-                            ? 'bg-blue-950/50 text-blue-400 border-blue-500/20' 
-                            : 'bg-purple-950/50 text-purple-400 border-purple-500/20'
-                        }`}>
-                          {log.channel.toUpperCase()}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3.5 font-mono text-slate-300 text-[10px]">
-                        {log.type}
-                      </td>
-                      <td className="px-5 py-3.5 text-slate-300 text-[11px] font-mono truncate max-w-xsSelector">
-                        {log.recipient}
-                      </td>
-                      <td className="px-5 py-3.5 text-slate-200 font-medium truncate max-w-sm">
-                        {log.subject}
-                      </td>
-                      <td className="px-5 py-3.5">
-                        {log.status === 'sent' ? (
-                          <div className="flex items-center gap-1 text-emerald-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span className="font-semibold text-[10px]">{t('notificationsHub.statusSuccess')}</span>
-                          </div>
-                        ) : (
-                          <div className="space-y-0.5">
-                            <div className="flex items-center gap-1 text-red-400 font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
-                              <span className="text-[10px]">{t('notificationsHub.statusFailed')}</span>
-                            </div>
-                            {log.errorMessage && (
-                              <p className="text-[9px] font-mono text-red-500 max-w-sm overflow-hidden text-ellipsis">
-                                {log.errorMessage}
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      </td>
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs whitespace-nowrap">
+                  <thead className="bg-slate-950 text-slate-400 font-mono text-[9px] uppercase tracking-wider border-b border-slate-850">
+                    <tr>
+                      <th className="px-5 py-3">{t('notificationsHub.timestampHeader')}</th>
+                      <th className="px-5 py-3">{t('notificationsHub.channelHeader')}</th>
+                      <th className="px-5 py-3">{t('notificationsHub.eventTypeHeader')}</th>
+                      <th className="px-5 py-3">{t('notificationsHub.recipientHeader')}</th>
+                      <th className="px-5 py-3">{t('notificationsHub.subjectHeader')}</th>
+                      <th className="px-5 py-3">{t('notificationsHub.transitStatusHeader')}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-850 bg-slate-900/20 font-sans">
+                    {logs.map(log => (
+                      <tr key={log.id} className="hover:bg-slate-900/40 transition">
+                        <td className="px-5 py-3.5 text-slate-400 text-[11px] font-mono">
+                          {new Date(log.createdAt).toLocaleString()}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <span className={`px-2 py-0.5 text-[9px] font-mono font-bold rounded border ${
+                            log.channel === 'email' 
+                              ? 'bg-blue-950/50 text-blue-400 border-blue-500/20' 
+                              : 'bg-purple-950/50 text-purple-400 border-purple-500/20'
+                          }`}>
+                            {log.channel.toUpperCase()}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5 font-mono text-slate-300 text-[10px]">
+                          {log.type}
+                        </td>
+                        <td className="px-5 py-3.5 text-slate-300 text-[11px] font-mono truncate max-w-xsSelector">
+                          {log.recipient}
+                        </td>
+                        <td className="px-5 py-3.5 text-slate-200 font-medium truncate max-w-sm">
+                          {log.subject}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {log.status === 'sent' ? (
+                            <div className="flex items-center gap-1 text-emerald-400">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                              <span className="font-semibold text-[10px]">{t('notificationsHub.statusSuccess')}</span>
+                            </div>
+                          ) : (
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-1 text-red-400 font-semibold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                                <span className="text-[10px]">{t('notificationsHub.statusFailed')}</span>
+                              </div>
+                              {log.errorMessage && (
+                                <p className="text-[9px] font-mono text-red-500 max-w-sm overflow-hidden text-ellipsis">
+                                  {log.errorMessage}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Pagination page={logPage} totalPages={logTotalPages} onPageChange={setLogPage} />
+            </>
           )}
-        </div>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   );
 }

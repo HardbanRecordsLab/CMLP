@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Tag, Plus, Trash2, Percent, DollarSign } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getApiUrl } from '../../utils';
+import Pagination from '@/components/common/Pagination.tsx';
 
 interface Coupon {
   id: number;
@@ -21,6 +22,8 @@ export default function AdminCoupons() {
   const { t } = useTranslation();
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [code, setCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState('');
@@ -35,14 +38,22 @@ export default function AdminCoupons() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch(getApiUrl('/api/coupons'), { headers: { Authorization: `Bearer ${token}` } });
+      const params = new URLSearchParams({ page: String(page), limit: '20' });
+      const res = await fetch(getApiUrl(`/api/coupons?${params}`), { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error('Failed to load');
-      setCoupons(await res.json());
+      const data = await res.json();
+      if (data && data.data) {
+        setCoupons(data.data);
+        setTotalPages(data.pagination?.totalPages || 1);
+      } else if (Array.isArray(data)) {
+        setCoupons(data);
+        setTotalPages(1);
+      }
     } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
     finally { setLoading(false); }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [page]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,6 +164,7 @@ export default function AdminCoupons() {
               </div>
             );
           })}
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       )}
     </div>

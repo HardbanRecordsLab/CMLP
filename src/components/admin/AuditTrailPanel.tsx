@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, Search, RefreshCw, Filter } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 
@@ -35,20 +36,32 @@ export default function AuditTrailPanel() {
   const [actionFilter, setActionFilter] = useState('');
   const [resourceFilter, setResourceFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { fetchWithAuth, loading } = useApi();
 
   const loadLogs = useCallback(() => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
     if (actionFilter) params.set('action', actionFilter);
     if (resourceFilter) params.set('resource', resourceFilter);
 
     fetchWithAuth(getApiUrl(`/api/admin/audit-logs?${params.toString()}`))
       .then(res => res.json())
-      .then(data => setLogs(Array.isArray(data) ? data : []))
-      .catch(() => setLogs([]));
-  }, [fetchWithAuth, actionFilter, resourceFilter]);
+      .then(data => {
+        if (data && data.data) {
+          setLogs(data.data);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setLogs(data);
+          setTotalPages(1);
+        }
+      })
+      .catch(() => { setLogs([]); setTotalPages(1); });
+  }, [fetchWithAuth, actionFilter, resourceFilter, page]);
 
   useEffect(() => { loadLogs(); }, [loadLogs]);
+
+  useEffect(() => { setPage(1); }, [actionFilter, resourceFilter, searchQuery]);
 
   const filteredLogs = logs.filter(log =>
     !searchQuery || log.details.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -163,6 +176,8 @@ export default function AuditTrailPanel() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
 
       <div className="mt-3 text-[10px] text-slate-600 font-mono">
         {filteredLogs.length} {t('auditTrail.logEntries')}

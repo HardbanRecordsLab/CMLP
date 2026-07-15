@@ -9,6 +9,7 @@ import { logAuditEvent } from '../services/logging.service.ts';
 import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
 import { generateLicenseCertificate, generateInvoice } from '../services/certificate.service.ts';
 import { triggerEmailNotification } from '../lib/notifications.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 
 async function handlePostPaymentActions(payment: typeof payments.$inferSelect, userEmail?: string) {
   if (!payment.licenseId) return;
@@ -46,6 +47,9 @@ async function handlePostPaymentActions(payment: typeof payments.$inferSelect, u
   }
 }
 
+const PAYMENTS_SORT_COLUMNS = ['id', 'amount', 'currency', 'status', 'gateway', 'createdAt'];
+const PAYMENTS_SEARCH_COLUMNS = ['gatewayTransactionId', 'status', 'gateway'];
+
 export async function getAll(req: any, res: Response) {
   try {
     const userUid = req.user?.uid;
@@ -54,13 +58,11 @@ export async function getAll(req: any, res: Response) {
     const [userRecord] = await db.select().from(users).where(eq(users.uid, userUid));
     if (!userRecord) { res.status(404).json({ error: 'User not found' }); return; }
 
-    let results;
-    if (userRecord.role === 'admin') {
-      results = await db.select().from(payments);
-    } else {
-      results = await db.select().from(payments).where(eq(payments.userId, userRecord.id));
-    }
-    res.json(results);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, PAYMENTS_SEARCH_COLUMNS);
+    const roleCond = userRecord.role !== 'admin' ? eq(payments.userId, userRecord.id) : undefined;
+    const result = await paginateQuery(payments, [searchCond, roleCond], params, PAYMENTS_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error fetching payments' });
   }

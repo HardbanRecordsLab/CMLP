@@ -94,14 +94,25 @@ function B2BOverview() {
 function B2BLicenses() {
   const { t } = useTranslation();
   const [licenses, setLicenses] = useState<Record<string, unknown>[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { fetchWithAuth } = useApi();
 
   useEffect(() => {
-    fetchWithAuth(getApiUrl('/api/licenses'))
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/licenses?${params}`))
       .then(res => res.json())
-      .then(data => setLicenses(Array.isArray(data) ? data as Record<string, unknown>[] : []))
+      .then(data => {
+        if (data && data.data) {
+          setLicenses(data.data as Record<string, unknown>[]);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setLicenses(data as Record<string, unknown>[]);
+          setTotalPages(1);
+        }
+      })
       .catch(() => {});
-  }, [fetchWithAuth]);
+  }, [fetchWithAuth, page]);
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
@@ -148,6 +159,7 @@ function B2BLicenses() {
           </tbody>
         </table>
       </div>
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 }
@@ -155,14 +167,25 @@ function B2BLicenses() {
 function B2BPayments() {
   const { t } = useTranslation();
   const [payments, setPayments] = useState<Record<string, unknown>[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { fetchWithAuth } = useApi();
 
   useEffect(() => {
-    fetchWithAuth(getApiUrl('/api/payments'))
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/payments?${params}`))
       .then(res => res.json())
-      .then(data => setPayments(Array.isArray(data) ? data as Record<string, unknown>[] : []))
+      .then(data => {
+        if (data && data.data) {
+          setPayments(data.data as Record<string, unknown>[]);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setPayments(data as Record<string, unknown>[]);
+          setTotalPages(1);
+        }
+      })
       .catch(() => {});
-  }, [fetchWithAuth]);
+  }, [fetchWithAuth, page]);
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
@@ -204,6 +227,7 @@ function B2BPayments() {
           </tbody>
         </table>
       </div>
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 }

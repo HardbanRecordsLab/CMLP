@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Webhook, Plus, RefreshCw, Trash2, Copy, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 
@@ -25,6 +26,8 @@ interface WebhookItem {
 export default function WebhookDashboard() {
   const { t } = useTranslation();
   const [webhooks, setWebhooks] = useState<WebhookItem[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<WebhookItem | null>(null);
   const [url, setUrl] = useState('');
@@ -34,11 +37,20 @@ export default function WebhookDashboard() {
   const { fetchWithAuth, loading } = useApi();
 
   const loadWebhooks = useCallback(() => {
-    fetchWithAuth(getApiUrl('/api/webhook-manager'))
+    const params = new URLSearchParams({ page: String(page), limit: '20' });
+    fetchWithAuth(getApiUrl(`/api/webhook-manager?${params}`))
       .then(res => res.json())
-      .then(data => setWebhooks(data))
+      .then(data => {
+        if (data && data.data) {
+          setWebhooks(data.data);
+          setTotalPages(data.pagination?.totalPages || 1);
+        } else if (Array.isArray(data)) {
+          setWebhooks(data);
+          setTotalPages(1);
+        }
+      })
       .catch(() => {});
-  }, [fetchWithAuth]);
+  }, [fetchWithAuth, page]);
 
   useEffect(() => { loadWebhooks(); }, [loadWebhooks]);
 
@@ -227,6 +239,8 @@ export default function WebhookDashboard() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">

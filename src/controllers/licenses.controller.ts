@@ -6,16 +6,18 @@ import crypto from 'crypto';
 import PDFDocument from 'pdfkit';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
+
+const LICENSES_SORT_COLUMNS = ['id', 'certificateNumber', 'licenseType', 'status', 'issuedAt', 'expiresAt', 'createdAt'];
+const LICENSES_SEARCH_COLUMNS = ['certificateNumber', 'licenseType'];
 
 export async function getAll(req: any, res: Response) {
   try {
-    if (req.user?.role !== 'admin') {
-      const allLicenses = await db.select().from(licenses).where(eq(licenses.authorUid, req.user.uid));
-      res.json(allLicenses);
-    } else {
-      const allLicenses = await db.select().from(licenses);
-      res.json(allLicenses);
-    }
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, LICENSES_SEARCH_COLUMNS);
+    const authCond = req.user?.role !== 'admin' ? eq(licenses.authorUid, req.user.uid) : undefined;
+    const result = await paginateQuery(licenses, [searchCond, authCond], params, LICENSES_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error fetching licenses' });
   }

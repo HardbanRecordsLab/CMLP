@@ -16,6 +16,7 @@ import {
   Printer,
   FileSpreadsheet
 } from 'lucide-react';
+import Pagination from '@/components/common/Pagination.tsx';
 import { 
   AreaChart, Area, 
   LineChart, Line, 
@@ -52,25 +53,35 @@ export default function ReportingStudio() {
   // Filtering audit logs
   const [filteredLogs, setFilteredLogs] = useState<Record<string, unknown>[]>([]);
   const [selectedActionFilter, setSelectedActionFilter] = useState<string>('all');
+  const [auditPage, setAuditPage] = useState(1);
+  const [auditTotalPages, setAuditTotalPages] = useState(1);
 
   const loadAllReports = async () => {
     setIsRefreshing(true);
     try {
       // Parallel execution of analytical endpoint fetches
+      const usageParams = new URLSearchParams({ page: String(auditPage), limit: '20' });
       const [usageRes, finRes, compRes, logsRes] = await Promise.all([
         fetchWithAuth(getApiUrl('/api/reports/usage')),
         fetchWithAuth(getApiUrl('/api/reports/financials')),
         fetchWithAuth(getApiUrl('/api/reports/compliance')),
-        fetchWithAuth(getApiUrl('/api/audit-logs'))
+        fetchWithAuth(getApiUrl(`/api/audit-logs?${usageParams.toString()}`))
       ]);
 
       if (usageRes.ok) setUsageData(await usageRes.json());
       if (finRes.ok) setFinancialData(await finRes.json());
       if (compRes.ok) setComplianceData(await compRes.json());
       if (logsRes.ok) {
-        const logs = await logsRes.json();
-        setAuditLogs(logs);
-        setFilteredLogs(logs);
+        const logsData = await logsRes.json();
+        if (logsData && logsData.data) {
+          setAuditLogs(logsData.data);
+          setFilteredLogs(logsData.data);
+          setAuditTotalPages(logsData.pagination?.totalPages || 1);
+        } else if (Array.isArray(logsData)) {
+          setAuditLogs(logsData);
+          setFilteredLogs(logsData);
+          setAuditTotalPages(1);
+        }
       }
     } catch (err: unknown) {
       toast.error(t('reportingStudio.loadError'));
@@ -82,7 +93,9 @@ export default function ReportingStudio() {
 
   useEffect(() => {
     loadAllReports();
-  }, [fetchWithAuth]);
+  }, [fetchWithAuth, auditPage]);
+
+  useEffect(() => { setAuditPage(1); }, [searchQuery, selectedActionFilter, dateRange]);
 
   // Apply real-time client-side search and filtering on audit logs
   useEffect(() => {
@@ -655,6 +668,7 @@ export default function ReportingStudio() {
               </tbody>
             </table>
           </div>
+          <Pagination page={auditPage} totalPages={auditTotalPages} onPageChange={setAuditPage} />
         </div>
       )}
     </div>

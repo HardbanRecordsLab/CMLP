@@ -3,30 +3,17 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { users, audit_logs } from '../db/schema.ts';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
+
+const USERS_SORT_COLUMNS = ['id', 'email', 'role', 'createdAt'];
+const USERS_SEARCH_COLUMNS = ['email', 'name'];
 
 export async function getUsers(req: any, res: Response) {
   try {
-    const allUsers = await db.select({
-      id: users.id,
-      uid: users.uid,
-      email: users.email,
-      name: users.name,
-      role: users.role,
-      pmproLevel: users.pmproLevel,
-      logoUrl: users.logoUrl,
-      primaryColor: users.primaryColor,
-      appName: users.appName,
-      secondaryColor: users.secondaryColor,
-      fontFamily: users.fontFamily,
-      playerSkin: users.playerSkin,
-      welcomeMessage: users.welcomeMessage,
-      outletName: users.outletName,
-      customCSS: users.customCSS,
-      mfaEnabled: users.mfaEnabled,
-      emailVerified: users.emailVerified,
-      createdAt: users.createdAt,
-    }).from(users);
-    res.json(allUsers);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, USERS_SEARCH_COLUMNS);
+    const result = await paginateQuery(users, [searchCond], params, USERS_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Database error' });
   }
@@ -68,23 +55,24 @@ export async function getStats(req: any, res: Response) {
   }
 }
 
+const AUDIT_SORT_COLUMNS = ['id', 'action', 'resource', 'createdAt', 'ipAddress'];
+const AUDIT_SEARCH_COLUMNS = ['action', 'resource', 'details'];
+
 export async function getAuditLogs(req: any, res: Response) {
   try {
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, AUDIT_SEARCH_COLUMNS);
+
     const action = req.query.action as string;
     const resource = req.query.resource as string;
 
-    let logs = await db.select().from(audit_logs);
+    const conditions = [searchCond];
+    if (action) conditions.push(eq(audit_logs.action, action));
+    if (resource) conditions.push(eq(audit_logs.resource, resource));
 
-    if (action) {
-      logs = logs.filter(l => l.action === action);
-    }
-    if (resource) {
-      logs = logs.filter(l => l.resource === resource);
-    }
+    const result = await paginateQuery(audit_logs, conditions, params, AUDIT_SORT_COLUMNS);
 
-    logs.sort((a,b) => b.id - a.id);
-
-    if (logs.length === 0) {
+    if (result.pagination.total === 0 && !params.search && !action && !resource) {
       const dummyLogs = [
         { id: 100, userId: 'admin', action: 'user_login', resource: 'users', details: 'Admin console interactive session authenticated', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 5 * 60 * 1000) },
         { id: 99, userId: 'admin', action: 'broadcast_alert', resource: 'notifications', details: 'Alert broadcast triggered: ZAiKS Exemption Policy updates dispatched', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 22 * 60 * 1000) },
@@ -96,7 +84,7 @@ export async function getAuditLogs(req: any, res: Response) {
       res.json(dummyLogs); return;
     }
 
-    res.json(logs);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Failed to load audit logs' });
   }

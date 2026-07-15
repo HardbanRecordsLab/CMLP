@@ -6,6 +6,7 @@ import { db } from '../db/index.ts';
 import { api_keys, users } from '../db/schema.ts';
 import { AuthRequest } from '../middleware/auth.ts';
 import { NotFoundError, ForbiddenError, ValidationError } from '../utils/errors.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 
 const KEY_PREFIX = 'hrl_';
 
@@ -21,20 +22,20 @@ function generateApiKey(): string {
   return `${KEY_PREFIX}${crypto.randomBytes(32).toString('hex')}`;
 }
 
-export async function getAll(req: AuthRequest, res: Response) {
-  const userId = await resolveUserId(req);
-  const keys = await db.select({
-    id: api_keys.id,
-    name: api_keys.name,
-    keyPrefix: api_keys.keyPrefix,
-    scopes: api_keys.scopes,
-    lastUsedAt: api_keys.lastUsedAt,
-    expiresAt: api_keys.expiresAt,
-    isActive: api_keys.isActive,
-    createdAt: api_keys.createdAt,
-  }).from(api_keys).where(eq(api_keys.userId, userId));
+const API_KEY_SORT_COLUMNS = ['id', 'name', 'isActive', 'lastUsedAt', 'createdAt'];
+const API_KEY_SEARCH_COLUMNS = ['name'];
 
-  res.json(keys);
+export async function getAll(req: AuthRequest, res: Response) {
+  try {
+    const userId = await resolveUserId(req);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, API_KEY_SEARCH_COLUMNS);
+    const result = await paginateQuery(api_keys, [searchCond, eq(api_keys.userId, userId)], params, API_KEY_SORT_COLUMNS);
+    res.json(result);
+  } catch (e: unknown) {
+    if (e instanceof NotFoundError || e instanceof ForbiddenError || e instanceof ValidationError) throw e;
+    res.status(500).json({ error: 'Failed to load API keys' });
+  }
 }
 
 export async function getById(req: AuthRequest, res: Response) {

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Music, Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getApiUrl } from '../../utils';
+import Pagination from '@/components/common/Pagination.tsx';
 
 interface CustomOrder {
   id: number;
@@ -23,6 +24,8 @@ export default function AdminCustomOrders() {
   const { t } = useTranslation();
   const [orders, setOrders] = useState<CustomOrder[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [title, setTitle] = useState('');
@@ -37,14 +40,22 @@ export default function AdminCustomOrders() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch(getApiUrl('/api/custom-orders'), { headers: { Authorization: `Bearer ${token}` } });
+      const params = new URLSearchParams({ page: String(page), limit: '20' });
+      const res = await fetch(getApiUrl(`/api/custom-orders?${params}`), { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error('Failed to load');
-      setOrders(await res.json());
+      const data = await res.json();
+      if (data && data.data) {
+        setOrders(data.data);
+        setTotalPages(data.pagination?.totalPages || 1);
+      } else if (Array.isArray(data)) {
+        setOrders(data);
+        setTotalPages(1);
+      }
     } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
     finally { setLoading(false); }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [page]);
 
   const resetForm = () => { setTitle(''); setDescription(''); setBudget(''); setDeadline(''); setStatus('pending'); setEditingId(null); setShowForm(false); };
 
@@ -167,6 +178,7 @@ export default function AdminCustomOrders() {
               </div>
             );
           })}
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       )}
     </div>

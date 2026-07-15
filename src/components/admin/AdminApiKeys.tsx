@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Key, Plus, Trash2, Copy, Eye, EyeOff, RefreshCw, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getApiUrl } from '../../utils';
+import Pagination from '@/components/common/Pagination.tsx';
 
 interface ApiKey {
   id: number;
@@ -19,6 +20,8 @@ export default function AdminApiKeys() {
   const { t } = useTranslation();
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [showCreate, setShowCreate] = useState(false);
   const [name, setName] = useState('');
   const [newKey, setNewKey] = useState<string | null>(null);
@@ -29,11 +32,19 @@ export default function AdminApiKeys() {
     setLoading(true);
     try {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(getApiUrl('/api/api-keys'), {
+      const params = new URLSearchParams({ page: String(page), limit: '20' });
+      const res = await fetch(getApiUrl(`/api/api-keys?${params}`), {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to load');
-      setKeys(await res.json());
+      const data = await res.json();
+      if (data && data.data) {
+        setKeys(data.data);
+        setTotalPages(data.pagination?.totalPages || 1);
+      } else if (Array.isArray(data)) {
+        setKeys(data);
+        setTotalPages(1);
+      }
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : String(err));
     } finally {
@@ -41,7 +52,7 @@ export default function AdminApiKeys() {
     }
   };
 
-  useEffect(() => { loadKeys(); }, []);
+  useEffect(() => { loadKeys(); }, [page]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,6 +178,7 @@ export default function AdminApiKeys() {
               </button>
             </div>
           ))}
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       )}
     </div>

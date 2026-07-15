@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
-import { getNotificationSettings, saveNotificationSettings, getNotificationLogs, triggerWSNotificationBroadcast, triggerEmailNotification } from '../lib/notifications.ts';
+import { getNotificationSettings, saveNotificationSettings, triggerWSNotificationBroadcast, triggerEmailNotification } from '../lib/notifications.ts';
+import { notification_logs } from '../db/schema.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 
 export async function getSettings(req: Request, res: Response) {
   try {
@@ -19,10 +21,15 @@ export async function saveSettings(req: Request, res: Response) {
   }
 }
 
+const LOGS_SORT_COLUMNS = ['id', 'channel', 'notificationType', 'status', 'createdAt'];
+const LOGS_SEARCH_COLUMNS = ['notificationType', 'recipient', 'subject'];
+
 export async function getLogs(req: Request, res: Response) {
   try {
-    const logs = await getNotificationLogs();
-    res.json(logs);
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, LOGS_SEARCH_COLUMNS);
+    const result = await paginateQuery(notification_logs, [searchCond], params, LOGS_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Failed to fetch notification logs history' });
   }

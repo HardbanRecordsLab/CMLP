@@ -5,16 +5,18 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { vod_content } from '../db/schema.ts';
 import { logAuditEvent } from '../services/logging.service.ts';
+import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
+
+const VOD_SORT_COLUMNS = ['id', 'title', 'createdAt'];
+const VOD_SEARCH_COLUMNS = ['title', 'description'];
 
 export async function getAll(req: any, res: Response) {
   try {
-    if (req.user?.role !== 'admin') {
-      const allVod = await db.select().from(vod_content).where(eq(vod_content.authorUid, req.user.uid));
-      res.json(allVod);
-    } else {
-      const allVod = await db.select().from(vod_content);
-      res.json(allVod);
-    }
+    const params = parsePagination(req.query);
+    const searchCond = buildSearchCondition(params.search, VOD_SEARCH_COLUMNS);
+    const authCond = req.user?.role !== 'admin' ? eq(vod_content.authorUid, req.user.uid) : undefined;
+    const result = await paginateQuery(vod_content, [searchCond, authCond], params, VOD_SORT_COLUMNS);
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Failed to fetch VOD content' });
   }
