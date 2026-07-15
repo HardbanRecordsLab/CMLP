@@ -44,7 +44,7 @@ export default function UploadTrackModal({ isOpen, onClose, onSuccess }: UploadT
       });
       onSuccess();
       onClose();
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to upload track');
       console.error(err);
     }

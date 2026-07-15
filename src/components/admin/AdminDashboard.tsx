@@ -44,12 +44,12 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeStreams, setActiveStreams] = useState(0);
   const [chartData, setChartData] = useState(mockChartData);
-  const [stats, setStats] = useState<Record<string, any> | null>(null);
+  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
   const { fetchWithAuth, loading, error } = useApi();
   const [selectedInvoice, setSelectedInvoice] = useState<string | null>(null);
   const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
-  const [outlets, setOutlets] = useState<Record<string, any>[]>([]);
+  const [outlets, setOutlets] = useState<Record<string, unknown>[]>([]);
 
   const loadOutlets = () => {
     fetchWithAuth(getApiUrl('/api/users'))
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
                return newData;
             });
           }
-        } catch (err) {}
+        } catch (err: unknown) {}
       };
 
       ws.onclose = () => {
@@ -181,15 +181,15 @@ export default function AdminDashboard() {
                 </div>
                 <div className="col-span-1 bg-slate-900/50 p-5 border border-slate-800 rounded-xl">
                   <p className="text-slate-500 text-xs uppercase tracking-wider mb-1">Registered Outlets</p>
-                  <p className="text-3xl font-light text-white tabular-nums">{stats ? stats.totalUsers : '-'}</p>
+                  <p className="text-3xl font-light text-white tabular-nums">{stats ? stats.totalUsers as number : '-'}</p>
                 </div>
                 <div className="col-span-1 bg-slate-900/50 p-5 border border-slate-800 rounded-xl">
                   <p className="text-slate-500 text-xs uppercase tracking-wider mb-1">Media Library</p>
-                  <p className="text-3xl font-light text-white tabular-nums">{stats ? stats.totalTracks : '-'} Tracks</p>
+                  <p className="text-3xl font-light text-white tabular-nums">{stats ? stats.totalTracks as number : '-'} Tracks</p>
                 </div>
                 <div className="col-span-1 bg-slate-900/50 p-5 border border-slate-800 rounded-xl">
                   <p className="text-slate-500 text-xs uppercase tracking-wider mb-1">Total Revenue</p>
-                  <p className="text-3xl font-light text-white tabular-nums">{stats ? stats.revenue : '-'}</p>
+                  <p className="text-3xl font-light text-white tabular-nums">{stats ? stats.revenue as string : '-'}</p>
                 </div>
               </div>
 
@@ -310,12 +310,12 @@ export default function AdminDashboard() {
                     </thead>
                     <tbody className="divide-y divide-slate-800 bg-slate-900">
                       {outlets.map(user => (
-                        <tr key={user.id} className="hover:bg-slate-800/50">
-                          <td className="px-6 py-4 font-medium text-white">{user.email}</td>
+                        <tr key={user.id as React.Key} className="hover:bg-slate-800/50">
+                          <td className="px-6 py-4 font-medium text-white">{user.email as string}</td>
                           <td className="px-6 py-4">
-                            <span className="px-2 py-1 bg-purple-900/40 text-purple-400 text-[10px] border border-purple-500/20 rounded">{user.role}</span>
+                            <span className="px-2 py-1 bg-purple-900/40 text-purple-400 text-[10px] border border-purple-500/20 rounded">{user.role as string}</span>
                           </td>
-                          <td className="px-6 py-4 text-xs text-slate-400">{new Date(user.createdAt).toLocaleDateString()}</td>
+                          <td className="px-6 py-4 text-xs text-slate-400">{new Date(user.createdAt as string).toLocaleDateString()}</td>
                           <td className="px-6 py-4 text-right flex justify-end gap-3">
                             <button onClick={() => setIsCertModalOpen(true)} className="text-[10px] uppercase font-bold tracking-widest text-emerald-500 hover:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 flex items-center gap-1 rounded transition">
                               <FileSignature className="w-3 h-3" /> DOCS

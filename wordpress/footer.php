@@ -102,6 +102,13 @@ $newsletter_bar = get_theme_mod( 'hrl_newsletter_bar_toggle', false );
                     <li><a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Regulamin', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/sale-terms/' ) ); ?>"><?php esc_html_e( 'Warunki Sprzedaży B2B', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/cookies/' ) ); ?>"><?php esc_html_e( 'Polityka Cookies', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/license-agreement/' ) ); ?>"><?php esc_html_e( 'Regulamin Licencji', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/gdpr-consent/' ) ); ?>"><?php esc_html_e( 'Klauzula RODO', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/newsletter-terms/' ) ); ?>"><?php esc_html_e( 'Regulamin Newslettera', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/security-policy/' ) ); ?>"><?php esc_html_e( 'Polityka Bezpieczeństwa', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/api-terms/' ) ); ?>"><?php esc_html_e( 'Regulamin API Enterprise', 'hrl-theme' ); ?></a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/data-retention/' ) ); ?>"><?php esc_html_e( 'Polityka Retencji Danych', 'hrl-theme' ); ?></a></li>
                 </ul>
             <?php } ?>
         </div>

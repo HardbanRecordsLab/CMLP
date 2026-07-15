@@ -90,7 +90,7 @@ export default function LicensingManager() {
         loadLicenses();
         handleSelectLicense(data);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to create license');
       console.error(err);
     }
@@ -106,7 +106,7 @@ export default function LicensingManager() {
         // Reload contract
         handleSelectLicense(selectedLicense);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to sign contract');
       console.error(err);
     }
@@ -128,7 +128,7 @@ export default function LicensingManager() {
         setSelectedLicense(updated);
         loadLicenses();
       }
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to renew license');
       console.error(err);
     }
@@ -147,7 +147,7 @@ export default function LicensingManager() {
         setSelectedLicense(updated);
         loadLicenses();
       }
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to cancel license');
       console.error(err);
     }

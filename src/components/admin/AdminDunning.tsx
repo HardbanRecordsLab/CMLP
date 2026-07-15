@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Bell, AlertCircle, Lock, Trash2, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getApiUrl } from '../../utils';
@@ -13,6 +14,7 @@ interface DunningStatus {
 }
 
 export default function AdminDunning() {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<DunningStatus | null>(null);
   const [running, setRunning] = useState(false);
   const [lastResult, setLastResult] = useState<unknown>(null);
@@ -31,39 +33,39 @@ export default function AdminDunning() {
   useEffect(() => { load(); }, []);
 
   const handleRun = async () => {
-    if (!confirm('Run dunning process now? This will send escalation emails.')) return;
+    if (!confirm(t('adminDunning.runConfirm'))) return;
     setRunning(true);
     try {
       const res = await fetch(getApiUrl('/api/dunning/run'), { method: 'POST', headers });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed');
       setLastResult(data);
-      toast.success('Dunning process completed');
+      toast.success(t('adminDunning.processCompleted'));
       load();
     } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
     finally { setRunning(false); }
   };
 
   const bars = status ? [
-    { label: 'Overdue', value: status.overdue, icon: AlertTriangle, color: 'bg-yellow-500', textColor: 'text-yellow-400' },
-    { label: 'Friendly Reminder', value: status.friendlyReminder, icon: Bell, color: 'bg-orange-500', textColor: 'text-orange-400' },
-    { label: 'Warning', value: status.warning, icon: AlertCircle, color: 'bg-red-500', textColor: 'text-red-400' },
-    { label: 'Final Notice + Locked', value: status.finalNotice, icon: Lock, color: 'bg-red-700', textColor: 'text-red-400' },
-    { label: 'Locked', value: status.locked, icon: Lock, color: 'bg-red-800', textColor: 'text-red-400' },
-    { label: 'Removed', value: status.removed, icon: Trash2, color: 'bg-gray-700', textColor: 'text-gray-400' },
+    { label: t('adminDunning.overdue'), value: status.overdue, icon: AlertTriangle, color: 'bg-yellow-500', textColor: 'text-yellow-400' },
+    { label: t('adminDunning.friendlyReminder'), value: status.friendlyReminder, icon: Bell, color: 'bg-orange-500', textColor: 'text-orange-400' },
+    { label: t('adminDunning.warning'), value: status.warning, icon: AlertCircle, color: 'bg-red-500', textColor: 'text-red-400' },
+    { label: t('adminDunning.finalNoticeLocked'), value: status.finalNotice, icon: Lock, color: 'bg-red-700', textColor: 'text-red-400' },
+    { label: t('adminDunning.locked'), value: status.locked, icon: Lock, color: 'bg-red-800', textColor: 'text-red-400' },
+    { label: t('adminDunning.removed'), value: status.removed, icon: Trash2, color: 'bg-gray-700', textColor: 'text-gray-400' },
   ] : [];
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-white font-medium">Auto-Dunning Status</h2>
+        <h2 className="text-white font-medium">{t('adminDunning.heading')}</h2>
         <button onClick={handleRun} disabled={running} className="flex items-center gap-1.5 px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold transition cursor-pointer disabled:opacity-50">
-          <RefreshCw size={14} className={running ? 'animate-spin' : ''} /> {running ? 'Running...' : 'Run Dunning'}
+          <RefreshCw size={14} className={running ? 'animate-spin' : ''} /> {running ? t('adminDunning.running') : t('adminDunning.runDunning')}
         </button>
       </div>
 
       {!status ? (
-        <div className="text-sm text-slate-400 animate-pulse">Loading...</div>
+        <div className="text-sm text-slate-400 animate-pulse">{t('adminDunning.loading')}</div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
           {bars.map(b => (
@@ -74,7 +76,7 @@ export default function AdminDunning() {
               </div>
               <div className="flex items-end gap-2">
                 <span className="text-2xl font-bold text-white">{b.value}</span>
-                <span className="text-xs text-slate-600 mb-1">licenses</span>
+                <span className="text-xs text-slate-600 mb-1">{t('adminDunning.licenses')}</span>
               </div>
               <div className="mt-2 h-2 bg-slate-800 rounded-full overflow-hidden">
                 <div className={`h-full ${b.color} rounded-full transition-all`} style={{ width: `${Math.min(100, (b.value / Math.max(1, bars.reduce((s, x) => s + x.value, 0))) * 100)}%` }} />
@@ -86,7 +88,7 @@ export default function AdminDunning() {
 
       {lastResult && (
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <h3 className="text-sm text-white font-medium mb-2">Last Run Result</h3>
+          <h3 className="text-sm text-white font-medium mb-2">{t('adminDunning.lastRunResult')}</h3>
           <pre className="text-xs text-slate-400 font-mono">{JSON.stringify(lastResult, null, 2)}</pre>
         </div>
       )}

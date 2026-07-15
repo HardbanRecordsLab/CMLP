@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Shield, Search, RefreshCw, Filter } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
@@ -29,6 +30,7 @@ const RESOURCE_OPTIONS = [
 ];
 
 export default function AuditTrailPanel() {
+  const { t } = useTranslation();
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [actionFilter, setActionFilter] = useState('');
   const [resourceFilter, setResourceFilter] = useState('');
@@ -68,10 +70,10 @@ export default function AuditTrailPanel() {
         <div>
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-white font-medium">Audit Trail</h2>
+            <h2 className="text-white font-medium">{t('auditTrail.heading')}</h2>
           </div>
           <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider">
-            Immutable security event log — all admin actions recorded
+            {t('auditTrail.description')}
           </p>
         </div>
         <button onClick={loadLogs} className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded transition">
@@ -86,7 +88,7 @@ export default function AuditTrailPanel() {
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search logs..."
+            placeholder={t('auditTrail.searchPlaceholder')}
             className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
           />
         </div>
@@ -97,7 +99,7 @@ export default function AuditTrailPanel() {
             onChange={e => setActionFilter(e.target.value)}
             className="pl-8 pr-8 py-2 bg-slate-950 border border-slate-700 rounded text-xs text-slate-300 focus:outline-none focus:border-cyan-500 appearance-none cursor-pointer"
           >
-            <option value="">All Actions</option>
+            <option value="">{t('auditTrail.allActions')}</option>
             {ACTION_OPTIONS.map(a => (
               <option key={a} value={a}>{a.replace(/_/g, ' ')}</option>
             ))}
@@ -110,7 +112,7 @@ export default function AuditTrailPanel() {
             onChange={e => setResourceFilter(e.target.value)}
             className="pl-8 pr-8 py-2 bg-slate-950 border border-slate-700 rounded text-xs text-slate-300 focus:outline-none focus:border-cyan-500 appearance-none cursor-pointer"
           >
-            <option value="">All Resources</option>
+            <option value="">{t('auditTrail.allResources')}</option>
             {RESOURCE_OPTIONS.map(r => (
               <option key={r} value={r}>{r}</option>
             ))}
@@ -122,12 +124,12 @@ export default function AuditTrailPanel() {
         <table className="w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-slate-950 text-slate-500 text-[10px] uppercase tracking-widest">
             <tr>
-              <th className="px-6 py-3">Action</th>
-              <th className="px-6 py-3">Resource</th>
-              <th className="px-6 py-3">Details</th>
-              <th className="px-6 py-3">User</th>
-              <th className="px-6 py-3">IP Address</th>
-              <th className="px-6 py-3 text-right">Timestamp</th>
+              <th className="px-6 py-3">{t('auditTrail.actionHeader')}</th>
+              <th className="px-6 py-3">{t('auditTrail.resourceHeader')}</th>
+              <th className="px-6 py-3">{t('auditTrail.detailsHeader')}</th>
+              <th className="px-6 py-3">{t('auditTrail.userHeader')}</th>
+              <th className="px-6 py-3">{t('auditTrail.ipAddressHeader')}</th>
+              <th className="px-6 py-3 text-right">{t('auditTrail.timestampHeader')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 bg-slate-900">
@@ -154,7 +156,7 @@ export default function AuditTrailPanel() {
             {filteredLogs.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
-                  {loading ? 'Loading audit logs...' : 'No audit logs found.'}
+                  {loading ? t('auditTrail.loading') : t('auditTrail.emptyState')}
                 </td>
               </tr>
             )}
@@ -163,8 +165,8 @@ export default function AuditTrailPanel() {
       </div>
 
       <div className="mt-3 text-[10px] text-slate-600 font-mono">
-        {filteredLogs.length} log entries
-        {(actionFilter || resourceFilter) && ' (filtered)'}
+        {filteredLogs.length} {t('auditTrail.logEntries')}
+        {(actionFilter || resourceFilter) && t('auditTrail.filtered')}
       </div>
     </div>
   );

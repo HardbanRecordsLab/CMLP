@@ -42,7 +42,7 @@ export default function B2BPlayer() {
       
       ws.onopen = () => {
         setLogs(prev => [...prev, "[WS] Connected to telemetry."]);
-        ws.send(JSON.stringify({ type: 'register', clientName: 'Kawiarnia Aroma B2B' }));
+        ws.send(JSON.stringify({ type: 'register', clientName: t('b2bPlayer.clientName') }));
       };
       
       ws.onmessage = (event) => {
@@ -58,7 +58,7 @@ export default function B2BPlayer() {
               setActiveToast(null);
             }, 9000);
           }
-        } catch (err) {}
+        } catch (err: unknown) {}
       };
       
       ws.onclose = () => {
@@ -102,7 +102,7 @@ export default function B2BPlayer() {
           setTracks(Array.isArray(data) ? data : []);
           const count = Array.isArray(data) ? data.length : 0;
           if (count > 0) {
-             setLogs(prev => [...prev, `[LIBRARY] Loaded ${count} tracks.`]);
+              setLogs(prev => [...prev, `[LIBRARY] ${t('b2bPlayer.loadedTracks', { count })}`]);
           }
         })
         .catch(err => setLogs(prev => [...prev, `[ERROR] Failed to fetch tracks: ${err.message}`]));
@@ -435,7 +435,7 @@ export default function B2BPlayer() {
             A
           </div>
           <div>
-            <h1 className="text-sm font-medium text-white">Kawiarnia Aroma</h1>
+            <h1 className="text-sm font-medium text-white">{t('b2bPlayer.headerTitle')}</h1>
             <div className="flex items-center text-[10px] uppercase tracking-tighter text-emerald-400 mt-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
               {t('b2b.license_status')}
@@ -565,7 +565,7 @@ export default function B2BPlayer() {
           <div className="w-full max-w-md aspect-square bg-slate-900 rounded-xl border border-slate-800 shadow-2xl overflow-hidden relative mb-12">
             <img 
               src={currentTrack?.coverUrl || "https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&q=80&w=1200"} 
-              alt="Cover"
+              alt={t('b2bPlayer.coverAlt')}
               className="w-full h-full object-cover opacity-60"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
@@ -625,13 +625,13 @@ export default function B2BPlayer() {
         {/* Right Col: Settings & Schedules */}
         <div className="w-80 bg-slate-900/30 border-l border-slate-800 p-6 flex flex-col">
           <div className="mb-8">
-            <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-4">Available Playlists</h3>
+            <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-4">{t('b2bPlayer.availablePlaylists')}</h3>
             <div className="space-y-2">
               <div 
                 onClick={() => setSelectedPlaylist(null)}
                 className={`p-3 rounded border text-xs font-medium cursor-pointer transition ${!selectedPlaylist ? 'bg-slate-800 border-slate-700 text-white' : 'bg-transparent border-slate-800 text-slate-500 hover:border-slate-700'}`}
               >
-                All Tracks (Default)
+                {t('b2bPlayer.allTracksDefault')}
               </div>
               {playlists.map((pl) => (
                 <div 
@@ -647,10 +647,10 @@ export default function B2BPlayer() {
 
           <div className="mb-6 p-4 bg-emerald-950/20 border border-emerald-500/10 rounded-xl">
             <h4 className="text-xs font-bold text-white flex items-center gap-1.5 mb-1.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" /> Certification & Compliance
+              <ShieldCheck className="w-4 h-4 text-emerald-400" /> {t('b2bPlayer.certificationCompliance')}
             </h4>
             <p className="text-[10px] text-slate-400 leading-relaxed mb-3">
-              Official royalty exemption certificate regarding public broadcast of copyright-exempt media.
+              {t('b2bPlayer.certificationDesc')}
             </p>
             <button 
               onClick={downloadCertificatePDF}
@@ -663,9 +663,9 @@ export default function B2BPlayer() {
           </div>
 
           <div className="mb-8">
-            <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-4">B2B Content Filters</h3>
+            <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-4">{t('b2bPlayer.contentFilters')}</h3>
             <label className="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded cursor-pointer">
-              <span className="text-xs font-medium text-slate-300">Explicit Filter</span>
+              <span className="text-xs font-medium text-slate-300">{t('b2bPlayer.explicitFilter')}</span>
               <div className="relative inline-block w-8 mr-2 align-middle select-none transition duration-200 ease-in">
                 <input type="checkbox" name="toggle" id="toggle" className="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 appearance-none cursor-pointer" defaultChecked />
                 <label htmlFor="toggle" className="toggle-label block overflow-hidden h-4 rounded-full bg-slate-700 cursor-pointer"></label>
@@ -674,7 +674,7 @@ export default function B2BPlayer() {
           </div>
 
           <div className="flex-1 min-h-0 bg-slate-950 rounded border border-slate-800 p-4 font-mono text-[10px] text-emerald-400 overflow-y-auto">
-            <div className="mb-2 text-slate-600 uppercase tracking-widest">{"// Live Auditor Log"}</div>
+            <div className="mb-2 text-slate-600 uppercase tracking-widest">{t('b2bPlayer.auditorLog')}</div>
             {logs.map((log, i) => (
               <div key={i} className="mb-1.5 leading-relaxed opacity-80">{log}</div>
             ))}

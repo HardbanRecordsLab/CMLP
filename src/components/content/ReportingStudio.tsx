@@ -31,10 +31,12 @@ import {
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
 
 export default function ReportingStudio() {
+  const { t } = useTranslation();
   const { fetchWithAuth, loading, error } = useApi();
   const [rptTab, setRptTab] = useState<'overview' | 'usage' | 'financials' | 'compliance' | 'audit'>('overview');
   const [dateRange, setDateRange] = useState<'all' | 'today' | '7days' | '30days' | 'ytd'>('all');
@@ -42,13 +44,13 @@ export default function ReportingStudio() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // States for reporting data
-  const [usageData, setUsageData] = useState<Record<string, any> | null>(null);
-  const [financialData, setFinancialData] = useState<Record<string, any> | null>(null);
-  const [complianceData, setComplianceData] = useState<Record<string, any> | null>(null);
-  const [auditLogs, setAuditLogs] = useState<Record<string, any>[]>([]);
+  const [usageData, setUsageData] = useState<Record<string, unknown> | null>(null);
+  const [financialData, setFinancialData] = useState<Record<string, unknown> | null>(null);
+  const [complianceData, setComplianceData] = useState<Record<string, unknown> | null>(null);
+  const [auditLogs, setAuditLogs] = useState<Record<string, unknown>[]>([]);
 
   // Filtering audit logs
-  const [filteredLogs, setFilteredLogs] = useState<Record<string, any>[]>([]);
+  const [filteredLogs, setFilteredLogs] = useState<Record<string, unknown>[]>([]);
   const [selectedActionFilter, setSelectedActionFilter] = useState<string>('all');
 
   const loadAllReports = async () => {
@@ -70,8 +72,8 @@ export default function ReportingStudio() {
         setAuditLogs(logs);
         setFilteredLogs(logs);
       }
-    } catch (err) {
-      toast.error('Failed to load reports');
+    } catch (err: unknown) {
+      toast.error(t('reportingStudio.loadError'));
       console.error('Failed to resolve Phase 9 report structures:', err);
     } finally {
       setIsRefreshing(false);
@@ -93,22 +95,22 @@ export default function ReportingStudio() {
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       result = result.filter(log => 
-        log.details.toLowerCase().includes(q) || 
-        log.resource.toLowerCase().includes(q) || 
-        log.action.toLowerCase().includes(q) ||
-        (log.userId && log.userId.toLowerCase().includes(q))
+        (log.details as string).toLowerCase().includes(q) || 
+        (log.resource as string).toLowerCase().includes(q) || 
+        (log.action as string).toLowerCase().includes(q) ||
+        (log.userId as string && (log.userId as string).toLowerCase().includes(q))
       );
     }
 
     // Direct Date range simulation filters for mock demonstration
     if (dateRange === 'today') {
       result = result.filter(log => {
-        const age = Date.now() - new Date(log.createdAt).getTime();
+        const age = Date.now() - new Date(log.createdAt as string).getTime();
         return age <= 24 * 60 * 60 * 1000;
       });
     } else if (dateRange === '7days') {
       result = result.filter(log => {
-        const age = Date.now() - new Date(log.createdAt).getTime();
+        const age = Date.now() - new Date(log.createdAt as string).getTime();
         return age <= 7 * 24 * 60 * 60 * 1000;
       });
     }
@@ -123,16 +125,16 @@ export default function ReportingStudio() {
     if (dataType === 'raw_audit') {
       csvContent += "ID,Timestamp,Operator,Security Action,Resource Context,Details,IP Terminal\r\n";
       filteredLogs.forEach(entry => {
-        csvContent += `"${entry.id}","${entry.createdAt}","${entry.userId || 'system'}","${entry.action}","${entry.resource}","${entry.details.replace(/"/g, '""')}","${entry.ipAddress || '127.0.0.1'}"\r\n`;
+        csvContent += `"${entry.id as string}","${entry.createdAt as string}","${entry.userId as string || 'system'}","${entry.action as string}","${entry.resource as string}","${(entry.details as string).replace(/"/g, '""')}","${entry.ipAddress as string || '127.0.0.1'}"\r\n`;
       });
     } else if (dataType === 'payments' && financialData) {
       csvContent += "Transaction ID,Amount Grosz/Cents,Currency,Gateway Service,Type,Status,Authorized Date\r\n";
-      (financialData.recentPayments as Array<Record<string, any>>).forEach((p: Record<string, any>) => {
+      (financialData.recentPayments as Array<Record<string, unknown>>).forEach((p: Record<string, unknown>) => {
         csvContent += `"${p.gatewayTransactionId || p.id}","${p.amount}","${p.currency}","${p.gateway}","${p.transactionType || 'subscription'}","${p.status}","${p.createdAt}"\r\n`;
       });
     } else if (dataType === 'genres' && usageData) {
       csvContent += "Genre Category,Active Audio Tracks Count\r\n";
-      (usageData.genreDistribution as Array<Record<string, any>>).forEach((g: Record<string, any>) => {
+      (usageData.genreDistribution as Array<Record<string, unknown>>).forEach((g: Record<string, unknown>) => {
         csvContent += `"${g.name}","${g.count}"\r\n`;
       });
     }
@@ -156,9 +158,9 @@ export default function ReportingStudio() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900/40 p-5 border border-slate-800 rounded-xl">
         <div>
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-blue-500" /> Analytics & Reports Studio
+            <TrendingUp className="w-5 h-5 text-blue-500" /> {t('reportingStudio.heading')}
           </h2>
-          <p className="text-xs text-slate-400">Enterprise analytical services, secure audit logs, and compliance telemetry.</p>
+          <p className="text-xs text-slate-400">{t('reportingStudio.description')}</p>
         </div>
 
         <div className="flex items-center gap-3 self-stretch md:self-auto justify-between md:justify-end">
@@ -176,11 +178,11 @@ export default function ReportingStudio() {
           {/* Date range pivots */}
           <div className="bg-slate-950 border border-slate-800 rounded-lg p-1 flex gap-1">
             {[
-              { id: 'all', label: 'All' },
-              { id: 'today', label: 'Today' },
-              { id: '7days', label: '7D' },
-              { id: '30days', label: '30D' },
-              { id: 'ytd', label: 'YTD' }
+              { id: 'all', label: t('reportingStudio.dateAll') },
+              { id: 'today', label: t('reportingStudio.dateToday') },
+              { id: '7days', label: t('reportingStudio.date7d') },
+              { id: '30days', label: t('reportingStudio.date30d') },
+              { id: 'ytd', label: t('reportingStudio.dateYtd') }
             ].map((d) => (
               <button
                 key={d.id}
@@ -203,9 +205,9 @@ export default function ReportingStudio() {
         <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl relative overflow-hidden">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase">Gross Revenue</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase">{t('reportingStudio.grossRevenue')}</p>
               <h3 className="text-2xl font-light text-white mt-2 font-mono">
-                {financialData ? ((financialData.totalRevenue / 100).toLocaleString('pl-PL', { minimumFractionDigits: 2 })) : '-'} <span className="text-xs text-slate-500">PLN</span>
+                {financialData ? ((financialData.totalRevenue as number / 100).toLocaleString('pl-PL', { minimumFractionDigits: 2 })) : '-'} <span className="text-xs text-slate-500">PLN</span>
               </h3>
             </div>
             <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
@@ -214,16 +216,16 @@ export default function ReportingStudio() {
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 mt-3">
             <ArrowUpRight className="w-3.5 h-3.5" />
-            <span>+14.8% Monthly Recurring Revenue</span>
+            <span>{t('reportingStudio.trendRevenue')}</span>
           </div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl relative overflow-hidden">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase">Total Completed Plays</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase">{t('reportingStudio.totalPlays')}</p>
               <h3 className="text-2xl font-light text-white mt-2 font-mono">
-                {usageData ? usageData.totalPlaybacks.toLocaleString() : '-'}
+                {usageData ? (usageData.totalPlaybacks as number).toLocaleString() : '-'}
               </h3>
             </div>
             <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
@@ -232,16 +234,16 @@ export default function ReportingStudio() {
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 mt-3">
             <ArrowUpRight className="w-3.5 h-3.5" />
-            <span>+22.3% Playback Density</span>
+            <span>{t('reportingStudio.trendPlayback')}</span>
           </div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl relative overflow-hidden">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase">Exemption Certificates</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase">{t('reportingStudio.exemptionCerts')}</p>
               <h3 className="text-2xl font-light text-white mt-2 font-mono">
-                {complianceData ? complianceData.totalCertificates : '-'} / <span className="text-xs text-slate-500">{complianceData ? (complianceData.statusBreakdown?.active || 0) : 0} Active</span>
+                {complianceData ? (complianceData.totalCertificates as number) : '-'} / <span className="text-xs text-slate-500">{complianceData ? ((complianceData.statusBreakdown as Record<string, unknown>)?.active as number || 0) : 0} Active</span>
               </h3>
             </div>
             <div className="p-2 bg-purple-500/10 text-purple-400 rounded-lg">
@@ -250,14 +252,14 @@ export default function ReportingStudio() {
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 mt-3">
             <CheckCircle className="w-3.5 h-3.5" />
-            <span>100% ZAiKS/STOART exempt ratio</span>
+            <span>{t('reportingStudio.trendExempt')}</span>
           </div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl relative overflow-hidden">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase">Audit Records</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase">{t('reportingStudio.auditRecords')}</p>
               <h3 className="text-2xl font-light text-white mt-2 font-mono">
                 {auditLogs.length} <span className="text-xs text-slate-500">Events</span>
               </h3>
@@ -268,7 +270,7 @@ export default function ReportingStudio() {
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-slate-400 mt-3">
             <Database className="w-3.5 h-3.5 text-blue-500" />
-            <span>Tamper-proof security timeline</span>
+            <span>{t('reportingStudio.trendSecurity')}</span>
           </div>
         </div>
       </div>
@@ -277,11 +279,11 @@ export default function ReportingStudio() {
       <div className="border-b border-slate-850 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex overflow-x-auto gap-1">
           {[
-            { id: 'overview', icon: TrendingUp, label: 'Analytics Studio' },
-            { id: 'usage', icon: TrendingUp, label: 'Usage Stats' },
-            { id: 'financials', icon: Coins, label: 'Financial Ledger' },
-            { id: 'compliance', icon: Scale, label: 'Compliance Audit' },
-            { id: 'audit', icon: FileClock, label: 'Audit Timeline' }
+            { id: 'overview', icon: TrendingUp, label: t('reportingStudio.tabOverview') },
+            { id: 'usage', icon: TrendingUp, label: t('reportingStudio.tabUsage') },
+            { id: 'financials', icon: Coins, label: t('reportingStudio.tabFinancials') },
+            { id: 'compliance', icon: Scale, label: t('reportingStudio.tabCompliance') },
+            { id: 'audit', icon: FileClock, label: t('reportingStudio.tabAudit') }
           ].map(tab => (
             <button
               key={tab.id}
@@ -307,7 +309,7 @@ export default function ReportingStudio() {
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 rounded text-[11px] font-bold cursor-pointer transition"
             id="btn-pdf-download"
           >
-            <Printer className="w-3.5 h-3.5" /> PDF REPORT
+            <Printer className="w-3.5 h-3.5" /> {t('reportingStudio.pdfReport')}
           </a>
           <a
             href={getApiUrl('/api/reports/export/csv')}
@@ -316,7 +318,7 @@ export default function ReportingStudio() {
             className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold cursor-pointer transition shadow-lg shadow-emerald-950/20"
             id="btn-export-csv"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5" /> EXPORT CSV
+            <FileSpreadsheet className="w-3.5 h-3.5" /> {t('reportingStudio.exportCsv')}
           </a>
         </div>
       </div>
@@ -327,12 +329,12 @@ export default function ReportingStudio() {
           {/* Active WebSocket sockets flow chart */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col h-80">
             <div>
-              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">WebSocket Ingress Connections</h3>
-              <p className="text-[10px] text-slate-400 mt-1">Simulated concurrent stream traffic reporting points in venues.</p>
+              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">{t('reportingStudio.chartWsConnections')}</h3>
+              <p className="text-[10px] text-slate-400 mt-1">{t('reportingStudio.chartWsDesc')}</p>
             </div>
             <div className="flex-1 w-full min-h-0 mt-5">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={usageData?.peakHourTraffic || []}>
+                <AreaChart data={usageData?.peakHourTraffic as Record<string, unknown>[] || []}>
                   <defs>
                     <linearGradient id="colorOverview" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
@@ -352,16 +354,16 @@ export default function ReportingStudio() {
           {/* Subscriptions Tier Pricing Allocation bar chart */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col h-80">
             <div>
-              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">Active Billing Allocations</h3>
-              <p className="text-[10px] text-slate-400 mt-1">Aggregated membership proceeds classified by subscription level.</p>
+              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">{t('reportingStudio.chartBillingAllocations')}</h3>
+              <p className="text-[10px] text-slate-400 mt-1">{t('reportingStudio.chartBillingDesc')}</p>
             </div>
             <div className="flex-1 w-full min-h-0 mt-5 flex items-center justify-center">
               {financialData ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={[
-                    { name: 'Starter', amount: (financialData.billingByTier.starter / 100) },
-                    { name: 'Premium / PRO', amount: (financialData.billingByTier.premium / 100) },
-                    { name: 'Enterprise VIP', amount: (financialData.billingByTier.enterprise / 100) }
+                    { name: 'Starter', amount: ((financialData.billingByTier as Record<string, unknown>).starter as number / 100) },
+                    { name: 'Premium / PRO', amount: ((financialData.billingByTier as Record<string, unknown>).premium as number / 100) },
+                    { name: 'Enterprise VIP', amount: ((financialData.billingByTier as Record<string, unknown>).enterprise as number / 100) }
                   ]}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#101726" />
                     <XAxis dataKey="name" stroke="#475569" fontSize={10} />
@@ -375,7 +377,7 @@ export default function ReportingStudio() {
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="text-slate-500 text-xs">Loading analytics...</div>
+                <div className="text-slate-500 text-xs">{t('reportingStudio.loadingAnalytics')}</div>
               )}
             </div>
           </div>
@@ -387,15 +389,15 @@ export default function ReportingStudio() {
           {/* Genre distribution chart (Pie) */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col h-80">
             <div>
-              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">Music Library Genre Proportions</h3>
-              <p className="text-[10px] text-slate-400 mt-1">Representation of current active catalog segmented by musical genre.</p>
+              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">{t('reportingStudio.chartGenreProportions')}</h3>
+              <p className="text-[10px] text-slate-400 mt-1">{t('reportingStudio.chartGenreDesc')}</p>
             </div>
             <div className="flex-1 flex items-center justify-center min-h-0 mt-4">
               {usageData ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={usageData.genreDistribution}
+                      data={usageData.genreDistribution as Record<string, unknown>[]}
                       cx="50%"
                       cy="50%"
                       outerRadius={70}
@@ -404,7 +406,7 @@ export default function ReportingStudio() {
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       fontSize={9}
                     >
-                      {(usageData.genreDistribution as Array<Record<string, any>>).map((entry: Record<string, any>, index: number) => (
+                      {(usageData.genreDistribution as Array<Record<string, unknown>>).map((entry: Record<string, unknown>, index: number) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -412,7 +414,7 @@ export default function ReportingStudio() {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="text-slate-500 text-xs text-center">Loading distribution stats...</div>
+                <div className="text-slate-500 text-xs text-center">{t('reportingStudio.loadingDistribution')}</div>
               )}
             </div>
           </div>
@@ -420,12 +422,12 @@ export default function ReportingStudio() {
           {/* Peak hour play completions line chart */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col h-80">
             <div>
-              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">Diurnal Playback Curves</h3>
-              <p className="text-[10px] text-slate-400 mt-1">Average hourly play completions reported by remote streaming clients.</p>
+              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">{t('reportingStudio.chartDiurnalPlayback')}</h3>
+              <p className="text-[10px] text-slate-400 mt-1">{t('reportingStudio.chartDiurnalDesc')}</p>
             </div>
             <div className="flex-1 w-full min-h-0 mt-5">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={usageData?.peakHourTraffic || []}>
+                <LineChart data={usageData?.peakHourTraffic as Record<string, unknown>[] || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#101726" />
                   <XAxis dataKey="hour" stroke="#475569" fontSize={10} />
                   <YAxis stroke="#475569" fontSize={10} />
@@ -442,30 +444,30 @@ export default function ReportingStudio() {
         <div className="space-y-6">
           {/* Quick Stats & Interactive Refund Module */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-            <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">Core Payment Processing Log</h3>
+            <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">{t('reportingStudio.paymentLogHeading')}</h3>
             
             <div className="overflow-x-auto rounded border border-slate-800">
               <table className="w-full text-left text-xs whitespace-nowrap">
                 <thead className="bg-slate-950 font-mono text-[9px] uppercase tracking-widest text-slate-400">
                   <tr>
-                    <th className="px-6 py-3">Transaction ID</th>
-                    <th className="px-6 py-3">Client Outlet</th>
-                    <th className="px-6 py-3">Amount Charged</th>
-                    <th className="px-6 py-3">Gateway Service</th>
-                    <th className="px-6 py-3">Type</th>
-                    <th className="px-6 py-3">Status</th>
-                    <th className="px-6 py-3 text-right">Refund Action</th>
+                    <th className="px-6 py-3">{t('reportingStudio.transactionIdHeader')}</th>
+                    <th className="px-6 py-3">{t('reportingStudio.clientOutletHeader')}</th>
+                    <th className="px-6 py-3">{t('reportingStudio.amountHeader')}</th>
+                    <th className="px-6 py-3">{t('reportingStudio.gatewayHeader')}</th>
+                    <th className="px-6 py-3">{t('reportingStudio.typeHeader')}</th>
+                    <th className="px-6 py-3">{t('reportingStudio.statusHeader')}</th>
+                    <th className="px-6 py-3 text-right">{t('reportingStudio.refundActionHeader')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800 bg-slate-900/60 font-sans">
-                  {(financialData?.recentPayments as Array<Record<string, any>>)?.map((pay: Record<string, any>) => (
+                  {(financialData?.recentPayments as Array<Record<string, unknown>>)?.map((pay: Record<string, unknown>) => (
                     <tr key={pay.id as React.Key} className="hover:bg-slate-800/40">
-                      <td className="px-6 py-3 font-mono text-white tracking-tight">{pay.gatewayTransactionId || `PAY-ID-${pay.id}`}</td>
+                      <td className="px-6 py-3 font-mono text-white tracking-tight">{pay.gatewayTransactionId as string || `PAY-ID-${pay.id as string}`}</td>
                       <td className="px-6 py-3 font-semibold text-slate-300">Aroma Cafe Partner Group</td>
-                      <td className="px-6 py-3 text-white font-mono">{((pay.amount / 100).toFixed(2))} {pay.currency || 'PLN'}</td>
-                      <td className="px-6 py-3 font-mono text-blue-400 uppercase">{(pay.gateway || 'stripe')}</td>
+                      <td className="px-6 py-3 text-white font-mono">{((pay.amount as number / 100).toFixed(2))} {pay.currency as string || 'PLN'}</td>
+                      <td className="px-6 py-3 font-mono text-blue-400 uppercase">{(pay.gateway as string || 'stripe')}</td>
                       <td className="px-6 py-3">
-                        <span className="text-[10px] text-slate-400 capitalize">{(pay.transactionType || 'subscription')}</span>
+                        <span className="text-[10px] text-slate-400 capitalize">{(pay.transactionType as string || 'subscription')}</span>
                       </td>
                       <td className="px-6 py-3">
                         <span className={`px-2 py-0.5 text-[9px] font-bold rounded ${
@@ -475,7 +477,7 @@ export default function ReportingStudio() {
                             ? 'bg-purple-900/40 text-purple-400 border border-purple-500/20'
                             : 'bg-yellow-900/40 text-yellow-400 border border-yellow-500/20'
                         }`}>
-                          {pay.status.toUpperCase()}
+                          {(pay.status as string).toUpperCase()}
                         </span>
                       </td>
                       <td className="px-6 py-3 text-right">
@@ -487,20 +489,20 @@ export default function ReportingStudio() {
                                   method: 'POST'
                                 });
                                 if (res.ok) {
-                                  alert('Simulated transaction refund parsed successfully. License updated.');
+                                  alert(t('reportingStudio.refundAlert'));
                                   loadAllReports();
                                 }
-                              } catch(err) {
-                                toast.error('Failed to process refund');
+                              } catch(err: unknown) {
+                                toast.error(t('reportingStudio.refundError'));
                                 console.error('Failed to trigger refund session:', err);
                               }
                             }}
                             className="bg-red-500/10 hover:bg-red-600 hover:text-white border border-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded transition cursor-pointer"
                           >
-                            VOID / REFUND
+                            {t('reportingStudio.voidRefund')}
                           </button>
                         ) : (
-                          <span className="text-[10px] text-slate-500 italic">Settled</span>
+                          <span className="text-[10px] text-slate-500 italic">{t('reportingStudio.settled')}</span>
                         )}
                       </td>
                     </tr>
@@ -517,8 +519,8 @@ export default function ReportingStudio() {
           {/* Certificate Exemption Status visual map */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col h-80">
             <div>
-              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">Licensing Status Breakdown</h3>
-              <p className="text-[10px] text-slate-400 mt-1">Percentage configuration breakdown of exempt certificates ledgers.</p>
+              <h3 className="text-white text-xs font-semibold uppercase tracking-wider">{t('reportingStudio.chartLicensingBreakdown')}</h3>
+              <p className="text-[10px] text-slate-400 mt-1">{t('reportingStudio.chartLicensingDesc')}</p>
             </div>
             <div className="flex-1 w-full min-h-0 mt-5 flex items-center justify-center">
               {complianceData ? (
@@ -526,9 +528,9 @@ export default function ReportingStudio() {
                   <PieChart>
                     <Pie
                       data={[
-                        { name: 'Active Certificate', value: complianceData.statusBreakdown.active },
-                        { name: 'Expired Certificate', value: complianceData.statusBreakdown.expired },
-                        { name: 'Cancelled Exemption', value: complianceData.statusBreakdown.cancelled }
+                        { name: 'Active Certificate', value: (complianceData.statusBreakdown as Record<string, unknown>).active as number },
+                        { name: 'Expired Certificate', value: (complianceData.statusBreakdown as Record<string, unknown>).expired as number },
+                        { name: 'Cancelled Exemption', value: (complianceData.statusBreakdown as Record<string, unknown>).cancelled as number }
                       ]}
                       cx="50%"
                       cy="50%"
@@ -545,7 +547,7 @@ export default function ReportingStudio() {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="text-slate-500 text-xs">Loading compliance stats...</div>
+                <div className="text-slate-500 text-xs">{t('reportingStudio.loadingCompliance')}</div>
               )}
             </div>
           </div>
@@ -554,20 +556,20 @@ export default function ReportingStudio() {
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="p-1 px-2 bg-emerald-950 border border-emerald-500/20 text-emerald-400 rounded text-[9px] font-mono font-bold uppercase">ZAiKS Exempt</span>
-                <span className="p-1 px-2 bg-blue-950 border border-blue-500/20 text-blue-400 rounded text-[9px] font-mono font-bold uppercase">STOART Exempt</span>
+                <span className="p-1 px-2 bg-emerald-950 border border-emerald-500/20 text-emerald-400 rounded text-[9px] font-mono font-bold uppercase">{t('reportingStudio.zaiksExempt')}</span>
+                <span className="p-1 px-2 bg-blue-950 border border-blue-500/20 text-blue-400 rounded text-[9px] font-mono font-bold uppercase">{t('reportingStudio.stoartExempt')}</span>
               </div>
-              <h4 className="text-white text-xs font-semibold uppercase">Legal Exemption Policy Statement</h4>
+              <h4 className="text-white text-xs font-semibold uppercase">{t('reportingStudio.policyHeading')}</h4>
               <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
-                All media catalog tracks uploaded inside Hardban Records Lab are verified and registered with International Standard Recording Codes (ISRC). Clients playing direct-licensed streams of HRL catalog tracks represent full legal compliance, bypassing the requirements of paying public execution royalties directly to ZAiKS, STOART, and ZPAV licensing societies.
+                {t('reportingStudio.policyText')}
               </p>
             </div>
             <div className="mt-4 p-3 bg-slate-950 border border-slate-850 rounded-lg flex items-center justify-between">
               <div>
-                <p className="text-[9px] text-slate-500 font-mono">DIGITAL SIGNINGS AUDIT RATIO</p>
-                <p className="text-sm font-bold text-white mt-1">{complianceData ? complianceData.signingRatio : 100}% Verification Rate</p>
+                <p className="text-[9px] text-slate-500 font-mono">{t('reportingStudio.auditRatio')}</p>
+                <p className="text-sm font-bold text-white mt-1">{complianceData ? complianceData.signingRatio as number : 100}% {t('reportingStudio.verificationRate')}</p>
               </div>
-              <div className="text-emerald-400 text-xs font-bold font-mono">SECURE SIGNED</div>
+              <div className="text-emerald-400 text-xs font-bold font-mono">{t('reportingStudio.secureSigned')}</div>
             </div>
           </div>
         </div>
@@ -581,7 +583,7 @@ export default function ReportingStudio() {
               <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
               <input 
                 type="text" 
-                placeholder="Query audit trail by keyword details, operator..."
+                placeholder={t('reportingStudio.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-blue-500 focus:outline-none rounded-lg pl-9 pr-4 py-2 text-xs text-white transition-all placeholder:text-slate-600"
@@ -597,14 +599,14 @@ export default function ReportingStudio() {
                 className="bg-slate-950 border border-slate-800 text-slate-400 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
                 id="select-audit-action"
               >
-                <option value="all">All Security Actions</option>
-                <option value="user_login">User Logins</option>
-                <option value="outlet_create">Outlet Create</option>
-                <option value="track_upload">Track Uploads</option>
-                <option value="contract_signature">Contract Signings</option>
-                <option value="payment_refund">Refund Trials</option>
-                <option value="sync_wordpress">WordPress Syncs</option>
-                <option value="broadcast_alert">Dispatched Alerts</option>
+                <option value="all">{t('reportingStudio.filterAll')}</option>
+                <option value="user_login">{t('reportingStudio.filterUserLogins')}</option>
+                <option value="outlet_create">{t('reportingStudio.filterOutletCreate')}</option>
+                <option value="track_upload">{t('reportingStudio.filterTrackUploads')}</option>
+                <option value="contract_signature">{t('reportingStudio.filterContractSignings')}</option>
+                <option value="payment_refund">{t('reportingStudio.filterRefundTrials')}</option>
+                <option value="sync_wordpress">{t('reportingStudio.filterWpSyncs')}</option>
+                <option value="broadcast_alert">{t('reportingStudio.filterDispatchedAlerts')}</option>
               </select>
             </div>
           </div>
@@ -614,21 +616,21 @@ export default function ReportingStudio() {
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead className="bg-slate-950 text-slate-500 text-[9px] uppercase tracking-wider font-mono">
                 <tr>
-                  <th className="px-5 py-3">Log ID</th>
-                  <th className="px-5 py-3">Timestamp (UTC/Local)</th>
-                  <th className="px-5 py-3">Authorized UID</th>
-                  <th className="px-5 py-3">Security Action</th>
-                  <th className="px-5 py-3">Resource Context</th>
-                  <th className="px-5 py-3">Audit Details Summary</th>
-                  <th className="px-5 py-3 text-right">Terminal Terminal IP</th>
+                  <th className="px-5 py-3">{t('reportingStudio.logIdHeader')}</th>
+                  <th className="px-5 py-3">{t('reportingStudio.timestampHeader')}</th>
+                  <th className="px-5 py-3">{t('reportingStudio.uidHeader')}</th>
+                  <th className="px-5 py-3">{t('reportingStudio.actionHeader')}</th>
+                  <th className="px-5 py-3">{t('reportingStudio.resourceHeader')}</th>
+                  <th className="px-5 py-3">{t('reportingStudio.detailsHeader')}</th>
+                  <th className="px-5 py-3 text-right">{t('reportingStudio.ipHeader')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800 bg-slate-900/40">
                 {filteredLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-800/45 text-slate-300">
-                    <td className="px-5 py-3 font-mono text-[10px] text-slate-500">#{log.id}</td>
-                    <td className="px-5 py-3 text-slate-400 text-[10px]">{new Date(log.createdAt).toLocaleTimeString()} • {new Date(log.createdAt).toLocaleDateString()}</td>
-                    <td className="px-5 py-3 font-semibold text-white text-[10px]">{log.userId || 'system'}</td>
+                  <tr key={log.id as React.Key} className="hover:bg-slate-800/45 text-slate-300">
+                    <td className="px-5 py-3 font-mono text-[10px] text-slate-500">#{log.id as string}</td>
+                    <td className="px-5 py-3 text-slate-400 text-[10px]">{new Date(log.createdAt as string).toLocaleTimeString()} • {new Date(log.createdAt as string).toLocaleDateString()}</td>
+                    <td className="px-5 py-3 font-semibold text-white text-[10px]">{log.userId as string || 'system'}</td>
                     <td className="px-5 py-3">
                       <span className={`px-2 py-0.5 text-[8px] font-mono tracking-wider font-bold rounded ${
                         log.action === 'user_login' ? 'bg-blue-950 text-blue-400' :
@@ -637,17 +639,17 @@ export default function ReportingStudio() {
                         log.action === 'payment_refund' ? 'bg-red-950 text-red-400' :
                         'bg-slate-800 text-slate-300'
                       }`}>
-                        {log.action.toUpperCase()}
+                        {(log.action as string).toUpperCase()}
                       </span>
                     </td>
-                    <td className="px-5 py-3 text-[10px] font-mono text-slate-500">{log.resource}</td>
-                    <td className="px-5 py-3 text-slate-200 text-[10.5px] max-w-sm truncate whitespace-normal leading-relaxed">{log.details}</td>
-                    <td className="px-5 py-3 text-right font-mono text-[10px] text-slate-500">{log.ipAddress || '127.0.0.1'}</td>
+                    <td className="px-5 py-3 text-[10px] font-mono text-slate-500">{log.resource as string}</td>
+                    <td className="px-5 py-3 text-slate-200 text-[10.5px] max-w-sm truncate whitespace-normal leading-relaxed">{log.details as string}</td>
+                    <td className="px-5 py-3 text-right font-mono text-[10px] text-slate-500">{log.ipAddress as string || '127.0.0.1'}</td>
                   </tr>
                 ))}
                 {filteredLogs.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="px-5 py-8 text-center text-slate-500 italic">No corresponding audit events found. Try adapting filters.</td>
+                    <td colSpan={7} className="px-5 py-8 text-center text-slate-500 italic">{t('reportingStudio.emptyAudit')}</td>
                   </tr>
                 )}
               </tbody>

@@ -1,6 +1,7 @@
 import { X, Printer, Download, ShieldCheck } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 interface CertificateModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface CertificateModalProps {
 }
 
 export default function CertificateModal({ isOpen, onClose, clientName, address, issueDate, validUntil, certificateNumber }: CertificateModalProps) {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   const downloadPDF = () => {
@@ -43,8 +45,8 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(100, 116, 139); // slate-500
-      doc.text("COMMERCIAL MUSIC LICENSING PLATFORM (CMLP)", 105, 36, { align: "center" });
-      doc.text("TECHNICAL & LEGAL COMPLIANCE DIVISION", 105, 41, { align: "center" });
+      doc.text(t('certificateModal.pdfHeaderSubtitle'), 105, 36, { align: "center" });
+      doc.text(t('certificateModal.pdfHeaderDivision'), 105, 41, { align: "center" });
 
       // Gruba czarna linia separacyjna
       doc.setDrawColor(15, 23, 42);
@@ -55,20 +57,19 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setTextColor(16, 185, 129); // emerald-500
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
-      doc.text("CERTIFICATE OF ROYALTY EXEMPTION", 105, 62, { align: "center" });
+      doc.text(t('certificateModal.certTitle'), 105, 62, { align: "center" });
 
       doc.setTextColor(15, 23, 42);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
-      doc.text(`Certificate Reference Number: ${certNumber}`, 105, 70, { align: "center" });
+      doc.text(t('certificateModal.certRefNumber', { number: certNumber }), 105, 70, { align: "center" });
 
       // 3. Treść Prawna i Oświadczenie o Zwolnieniu
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       doc.setTextColor(51, 65, 85); // slate-700
       
-      const paragraph1 = `This document officially certifies that the business entity operating under the commercial name:`;
-      doc.text(paragraph1, 20, 85);
+      doc.text(t('certificateModal.paragraph1'), 20, 85);
 
       // Blok Licencjobiorcy (Licensee Highlight Card)
       doc.setFillColor(248, 250, 252); // slate-50
@@ -84,7 +85,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor(100, 116, 139);
-      doc.text("Registered Outlet Address / Location:", 25, 105);
+      doc.text(t('certificateModal.addressLabel'), 25, 105);
       doc.setTextColor(15, 23, 42);
       doc.setFontSize(11);
       doc.text(address, 25, 111);
@@ -94,19 +95,19 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setTextColor(51, 65, 85);
 
       const bodyText2 = doc.splitTextToSize(
-        "Is hereby granted a full, unrestricted legal exemption from the payment of public performance royalties and licensing fees to any regional Collective Rights Management Organizations (OZZ / PROs), including but not limited to regional administrative societies such as ZAiKS, STOART, ZPAV, and SAWP.",
+        t('certificateModal.body2'),
         170
       );
       doc.text(bodyText2, 20, 132);
 
       const bodyText3 = doc.splitTextToSize(
-        "This exemption is validated under Article 107 of the Polish Act on Copyright and Related Rights (Ustawa o prawie autorskim i prawach pokrewnych), as the media broadcasted within the Licensee's customer-facing business boundaries originates exclusively from the Custom Music Licensing Platform (CMLP) catalog. All sound recordings, lyrics, and musical arrangements in this catalog are fully, directly-licensed from independent artists who have explicitly retained their individual economic copyrights and are not associated with or represented by any regional collective collection society.",
+        t('certificateModal.body3'),
         170
       );
       doc.text(bodyText3, 20, 150);
 
       const bodyText4 = doc.splitTextToSize(
-        "Furthermore, this certificate guarantees that any background audio playback inside the location above is compliant with current intellectual property laws and does not constitute copyright infringement.",
+        t('certificateModal.body4'),
         170
       );
       doc.text(bodyText4, 20, 185);
@@ -116,7 +117,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.rect(20, 205, 80, 22, "FD");
       doc.setTextColor(100, 116, 139);
       doc.setFontSize(9);
-      doc.text("ISSUE DATE (VALID FROM)", 24, 211);
+      doc.text(t('certificateModal.issueDateLabel'), 24, 211);
       doc.setTextColor(15, 23, 42);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
@@ -127,7 +128,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setTextColor(100, 116, 139);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
-      doc.text("EXPIRATION DATE (VALID UNTIL)", 114, 211);
+      doc.text(t('certificateModal.expirationDateLabel'), 114, 211);
       doc.setTextColor(15, 23, 42);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
@@ -142,47 +143,47 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor(100, 116, 139);
-      doc.text("Issuer / Representative Details:", 20, 248);
+      doc.text(t('certificateModal.issuerDetails'), 20, 248);
       doc.setTextColor(15, 23, 42);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
-      doc.text("Hardban Records Lab Sp. z o.o.", 20, 254);
+      doc.text(t('certificateModal.issuerName'), 20, 254);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(100, 116, 139);
-      doc.text("Legal and Compliance Department", 20, 259);
-      doc.text("KRS: 0000123456 | NIP: 1234567890", 20, 264);
+      doc.text(t('certificateModal.legalDepartment'), 20, 259);
+      doc.text(t('certificateModal.krsNip'), 20, 264);
 
       doc.line(130, 260, 185, 260);
       doc.setFontSize(8);
-      doc.text("AUTHORIZED DIGITAL SIGNATURE", 131, 264);
+      doc.text(t('certificateModal.digitalSignature'), 131, 264);
       doc.setTextColor(16, 185, 129);
       doc.setFont("helvetica", "italic");
       doc.setFontSize(9);
-      doc.text("[ Digitally Signed / Verified ]", 133, 256);
+      doc.text(t('certificateModal.signedVerified'), 133, 256);
 
       doc.save(`Exemption_Certificate_HRL_${certNumber}.pdf`);
     } catch (e: unknown) {
-      toast.error('Failed to generate PDF');
+      toast.error(t('certificateModal.failedToGenerate'));
       console.error('Failed to generate PDF:', e);
     }
   };
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Exemption Certificate" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto" id="certificate-modal">
+    <div role="dialog" aria-modal="true" aria-label={t('certificateModal.ariaLabel')} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto" id="certificate-modal">
       <div className="w-full max-w-3xl bg-white text-slate-900 rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto">
         
         {/* Header Bar */}
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50 print:hidden">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-600" />
-            <h2 className="font-semibold text-lg">Exemption Certificate</h2>
+            <h2 className="font-semibold text-lg">{t('certificateModal.heading')}</h2>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => window.print()} className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded transition" title="Print Certificate">
+            <button onClick={() => window.print()} className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded transition" title={t('certificateModal.printTitle')}>
               <Printer className="w-4 h-4" />
             </button>
-            <button onClick={downloadPDF} className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded transition" title="Download dynamic PDF">
+            <button onClick={downloadPDF} className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded transition" title={t('certificateModal.downloadTitle')}>
               <Download className="w-4 h-4" />
             </button>
             <button onClick={onClose} className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded transition ml-2" id="close-modal-btn">
@@ -197,42 +198,42 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
             <div className="absolute top-0 left-0 w-16 h-16 bg-slate-900 rounded-lg flex items-center justify-center print:hidden">
               <span className="text-white font-bold tracking-widest text-2xl">HRL</span>
             </div>
-            <h1 className="text-3xl font-bold uppercase tracking-widest text-slate-900">Certificate of Exemption</h1>
-            <p className="text-sm text-slate-500 uppercase tracking-widest mt-2">Public Performance Licensing (ZAiKS / STOART / ZPAV)</p>
+            <h1 className="text-3xl font-bold uppercase tracking-widest text-slate-900">{t('certificateModal.documentTitle')}</h1>
+            <p className="text-sm text-slate-500 uppercase tracking-widest mt-2">{t('certificateModal.documentSubtitle')}</p>
           </div>
 
           <div className="space-y-6 text-slate-800 leading-relaxed text-justify mb-12">
             <p>
-              This document certifies that the business entity operating under the name <strong>{clientName}</strong>, located at <strong>{address}</strong>, is completely exempt from the obligation to pay public performance royalties to collective rights management organizations (OZZ), including but not limited to ZAiKS, STOART, ZPAV, and SAWP.
+              {t('certificateModal.paragraphModal1', { clientName, address })}
             </p>
             <p>
-              The exemption is granted on the basis that the music broadcasted at the aforementioned location is sourced exclusively from the <strong>Commercial Music Licensing Platform (CMLP)</strong> operated by Hardban Records Lab Sp. z o.o. The entire catalog provided under this license consists of 100% royalty-free tracks directly licensed from independent artists and rights holders who do not belong to any collective rights management organization.
+              {t('certificateModal.paragraphModal2')}
             </p>
             <p>
-              Under Article 107 of the Polish Copyright and Related Rights Act (Ustawa o prawie autorskim i prawach pokrewnych), public playback of the licensed compositions does not infringe upon the copyrights managed by OZZ.
+              {t('certificateModal.paragraphModal3')}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-8 mb-16">
             <div className="bg-slate-50 p-6 rounded border border-slate-200">
-              <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Issue Date</p>
+              <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">{t('certificateModal.issueDate')}</p>
               <p className="font-semibold text-slate-900">{issueDate}</p>
             </div>
             <div className="bg-slate-50 p-6 rounded border border-slate-200">
-              <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Valid Until</p>
+              <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">{t('certificateModal.validUntil')}</p>
               <p className="font-semibold text-slate-900">{validUntil}</p>
             </div>
           </div>
 
           <div className="flex justify-between items-end mt-16 pt-8 border-t border-slate-200">
             <div>
-              <p className="text-sm font-semibold text-slate-900">Hardban Records Lab Sp. z o.o.</p>
-              <p className="text-xs text-slate-500">Legal Department & Compliance</p>
-              <p className="text-xs text-slate-500">KRS: 0000123456 | NIP: 1234567890</p>
+              <p className="text-sm font-semibold text-slate-900">{t('certificateModal.issuerName')}</p>
+              <p className="text-xs text-slate-500">{t('certificateModal.legalDeptCompliance')}</p>
+              <p className="text-xs text-slate-500">{t('certificateModal.krsNip')}</p>
             </div>
             <div className="text-center">
               <div className="w-48 border-b border-slate-400 mb-2"></div>
-              <p className="text-xs text-slate-500 uppercase tracking-widest">Authorized Signature</p>
+              <p className="text-xs text-slate-500 uppercase tracking-widest">{t('certificateModal.authorizedSignature')}</p>
             </div>
           </div>
 

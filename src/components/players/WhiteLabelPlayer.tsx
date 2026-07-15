@@ -16,7 +16,7 @@ export default function WhiteLabelPlayer() {
   const [error, setError] = useState('');
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   
-  const [config, setConfig] = useState<Record<string, any> | null>(null);
+  const [config, setConfig] = useState<Record<string, unknown> | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   
@@ -35,7 +35,7 @@ export default function WhiteLabelPlayer() {
       return cached ? JSON.parse(cached) : [];
     } catch { return []; }
   };
-  const getCachedConfig = (): Record<string, any> | null => {
+  const getCachedConfig = (): Record<string, unknown> | null => {
     try {
       const cached = localStorage.getItem(CACHE_KEY_CONFIG);
       return cached ? JSON.parse(cached) : null;
@@ -54,7 +54,7 @@ export default function WhiteLabelPlayer() {
         body: JSON.stringify({ pin })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to login');
+      if (!res.ok) throw new Error(data.error || t('whitelabel.failedToLogin'));
       
       localStorage.setItem('auth_token', data.accessToken);
       localStorage.setItem(CACHE_KEY_CONFIG, JSON.stringify(data.config));
@@ -96,12 +96,12 @@ export default function WhiteLabelPlayer() {
         body: JSON.stringify({
           trackId: track.id,
           trackTitle: track.title,
-          companyName: config?.appName || 'White Label Outlet',
+          companyName: config?.appName || t('whitelabel.whiteLabelOutlet'),
           durationPlayed: 0
         })
       });
-    } catch (e) {
-      toast.error('Failed to report telemetry');
+    } catch (e: unknown) {
+      toast.error(t('whitelabel.failedToReportTelemetry'));
       console.error('Failed to report telemetry', e);
     }
   };
@@ -144,7 +144,7 @@ export default function WhiteLabelPlayer() {
 
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
             if (isPlaying) {
-              audioRef.current?.play().catch(e => { toast.error('Playback failed'); console.error(e); });
+              audioRef.current?.play().catch(e => { toast.error(t('whitelabel.playbackFailed')); console.error(e); });
             }
           });
           
@@ -167,11 +167,11 @@ export default function WhiteLabelPlayer() {
           audioRef.current!.src = audioSource;
           audioRef.current!.load();
           if (isPlaying) {
-            audioRef.current!.play().catch(e => { toast.error('Playback failed'); console.error(e); });
+            audioRef.current!.play().catch(e => { toast.error(t('whitelabel.playbackFailed')); console.error(e); });
           }
         }
       })
-      .catch(e => { toast.error('Failed to load audio'); console.error(e); });
+      .catch(e => { toast.error(t('whitelabel.failedToLoadAudio')); console.error(e); });
 
     return () => {
       cancelled = true;
@@ -213,11 +213,11 @@ export default function WhiteLabelPlayer() {
   useEffect(() => {
     if (!config) return;
     const root = document.documentElement;
-    root.style.setProperty('--player-primary', config.primaryColor || '#3b82f6');
-    root.style.setProperty('--player-secondary', config.secondaryColor || '#1e293b');
-    root.style.setProperty('--player-font', config.fontFamily || 'Inter, system-ui, sans-serif');
-    root.style.setProperty('--player-skin', config.playerSkin || 'dark');
-    root.style.fontFamily = config.fontFamily || 'Inter, system-ui, sans-serif';
+    root.style.setProperty('--player-primary', config.primaryColor as string || '#3b82f6');
+    root.style.setProperty('--player-secondary', config.secondaryColor as string || '#1e293b');
+    root.style.setProperty('--player-font', config.fontFamily as string || 'Inter, system-ui, sans-serif');
+    root.style.setProperty('--player-skin', config.playerSkin as string || 'dark');
+    root.style.fontFamily = config.fontFamily as string || 'Inter, system-ui, sans-serif';
   }, [config]);
 
   // 4.8 — Offline detection
@@ -268,7 +268,7 @@ export default function WhiteLabelPlayer() {
               value={pin}
               onChange={e => setPin(e.target.value)}
               className="w-full text-center text-3xl tracking-widest p-4 rounded bg-slate-950 border border-slate-800 focus:outline-none focus:border-blue-500 mb-4 text-white placeholder-slate-800"
-              placeholder="••••"
+              placeholder={t('whitelabel.pinPlaceholder')}
             />
             <button 
               disabled={loading || pin.length < 4}
@@ -285,24 +285,24 @@ export default function WhiteLabelPlayer() {
   }
 
   const currentTrack = tracks[currentTrackIndex];
-  const accentColor = config?.primaryColor || "#2563eb";
-  const brandName = config?.appName || "White Label Radio";
+  const accentColor = config?.primaryColor as string || "#2563eb";
+  const brandName = config?.appName as string || t('whitelabel.brandName');
 
-  const skinClass = `skin-${config?.playerSkin || 'dark'}`;
+  const skinClass = `skin-${config?.playerSkin as string || 'dark'}`;
 
   return (
     <div className={`flex flex-col min-h-screen bg-slate-950 font-sans text-slate-300 ${skinClass} player-container`}>
       <Navigation currentView="whitelabel" />
       {isOffline && (
         <div className="bg-amber-500/20 text-amber-400 text-[10px] uppercase tracking-widest text-center py-2 border-b border-amber-500/30">
-          Offline Mode — playing from cache
+          {t('whitelabel.offlineMode')}
         </div>
       )}
       <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-2xl mx-auto w-full">
         {/* Branding Canvas */}
         <div className="text-center mb-12">
           {config?.logoUrl ? (
-            <img src={config.logoUrl} alt="Logo" className="w-20 h-20 mx-auto mb-6 object-contain" />
+            <img src={config.logoUrl as string} alt={t('whitelabel.logoAlt')} className="w-20 h-20 mx-auto mb-6 object-contain" />
           ) : (
             <div className="w-20 h-20 mx-auto text-white flex items-center justify-center text-3xl font-bold mb-6 rounded-xl" style={{ backgroundColor: accentColor }}>
               {brandName.charAt(0)}

@@ -3,6 +3,7 @@ import { Mail, Bell, Shield, RefreshCw, Send, CheckCircle2, AlertTriangle, Datab
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 interface NotificationSettings {
   id?: number;
@@ -35,6 +36,7 @@ interface NotificationLog {
 }
 
 export default function NotificationsHub() {
+  const { t } = useTranslation();
   const { fetchWithAuth, loading: apiLoading } = useApi();
   const [activeTab, setActiveTab] = useState<'settings' | 'templates' | 'broadcast' | 'logs'>('settings');
   const [settings, setSettings] = useState<NotificationSettings>({
@@ -73,12 +75,12 @@ export default function NotificationsHub() {
     fetchWithAuth(getApiUrl('/api/notifications/settings'))
       .then(res => res.json())
       .then(data => setSettings(data))
-      .catch(err => { toast.error('Failed to load notification configurations'); console.error('Failed to load notification configurations', err); });
+      .catch(err => { toast.error(t('notificationsHub.loadConfigError')); console.error('Failed to load notification configurations', err); });
 
     fetchWithAuth(getApiUrl('/api/notifications/logs'))
       .then(res => res.json())
       .then(data => setLogs(data))
-      .catch(err => { toast.error('Failed to load notification audit trails'); console.error('Failed to load notification audit trails', err); });
+      .catch(err => { toast.error(t('notificationsHub.loadLogsError')); console.error('Failed to load notification audit trails', err); });
   };
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function NotificationsHub() {
   // Handle saving configurations
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
-    setSaveStatus('Saving config settings...');
+    setSaveStatus(t('notificationsHub.savingConfig'));
     fetchWithAuth(getApiUrl('/api/notifications/settings'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -97,12 +99,12 @@ export default function NotificationsHub() {
       .then(res => res.json())
       .then(data => {
         setSettings(data);
-        setSaveStatus('Config settings and mail templates saved successfully!');
+        setSaveStatus(t('notificationsHub.configSaved'));
         setTimeout(() => setSaveStatus(null), 3000);
         loadSettingsAndLogs();
       })
       .catch(err => {
-        setSaveStatus('Error saving configurations: ' + err.message);
+        setSaveStatus(t('notificationsHub.configSaveError') + ': ' + err.message);
         setTimeout(() => setSaveStatus(null), 5000);
       });
   };
@@ -177,17 +179,17 @@ export default function NotificationsHub() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
-            <Bell className="w-5 h-5 text-blue-500" /> Phase 8: Email Notifications & Alert Hub
+            <Bell className="w-5 h-5 text-blue-500" /> {t('notificationsHub.heading')}
           </h1>
           <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">
-            Configure SMTP / SendGrid Providers & Broadcast Real-Time WS Messages to Connected Venues
+            {t('notificationsHub.subtitle')}
           </p>
         </div>
         <button 
           onClick={loadSettingsAndLogs} 
           className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 rounded-lg transition"
         >
-          <RefreshCw className="w-3.5 h-3.5" /> Refresh Status
+          <RefreshCw className="w-3.5 h-3.5" /> {t('notificationsHub.refreshStatus')}
         </button>
       </div>
 
@@ -201,7 +203,7 @@ export default function NotificationsHub() {
               : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30'
           }`}
         >
-          Provider & Credentials
+          {t('notificationsHub.tabSettings')}
         </button>
         <button 
           onClick={() => setActiveTab('templates')}
@@ -211,7 +213,7 @@ export default function NotificationsHub() {
               : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30'
           }`}
         >
-          Mail Templates Customizer
+          {t('notificationsHub.tabTemplates')}
         </button>
         <button 
           onClick={() => setActiveTab('broadcast')}
@@ -221,7 +223,7 @@ export default function NotificationsHub() {
               : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30'
           }`}
         >
-          WS Pulse Broadcaster
+          {t('notificationsHub.tabBroadcast')}
         </button>
         <button 
           onClick={() => setActiveTab('logs')}
@@ -231,7 +233,7 @@ export default function NotificationsHub() {
               : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30'
           }`}
         >
-          Notification LEDGER
+          {t('notificationsHub.tabLogs')}
         </button>
       </div>
 
@@ -247,13 +249,13 @@ export default function NotificationsHub() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <form onSubmit={handleSaveSettings} className="lg:col-span-2 bg-slate-900/40 border border-slate-850 p-6 rounded-xl space-y-5">
             <div>
-              <h3 className="text-sm font-semibold text-white">Mail Gateway Configuration</h3>
-              <p className="text-[11px] text-slate-500">Choose the standard server communication protocols</p>
+              <h3 className="text-sm font-semibold text-white">{t('notificationsHub.mailGatewayHeading')}</h3>
+              <p className="text-[11px] text-slate-500">{t('notificationsHub.mailGatewayDesc')}</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1.5">Active Carrier Provider</label>
+                <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1.5">{t('notificationsHub.activeProviderLabel')}</label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
@@ -265,7 +267,7 @@ export default function NotificationsHub() {
                     }`}
                   >
                     <Mail className="w-4 h-4" />
-                    <span className="text-xs font-semibold">SMTP (Nodemailer)</span>
+                    <span className="text-xs font-semibold">{t('notificationsHub.providerSmtp')}</span>
                   </button>
                   <button
                     type="button"
@@ -277,31 +279,31 @@ export default function NotificationsHub() {
                     }`}
                   >
                     <Shield className="w-4 h-4" />
-                    <span className="text-xs font-semibold">SendGrid HTTP API</span>
+                    <span className="text-xs font-semibold">{t('notificationsHub.providerSendgrid')}</span>
                   </button>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">From Sender Address</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.fromEmailLabel')}</label>
                   <input
                     type="email"
                     value={settings.fromEmail}
                     onChange={e => setSettings(s => ({ ...s, fromEmail: e.target.value }))}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
-                    placeholder="noreply@hrl.pl"
+                    placeholder={t('notificationsHub.fromEmailPlaceholder')}
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">From Display Name</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.fromNameLabel')}</label>
                   <input
                     type="text"
                     value={settings.fromName}
                     onChange={e => setSettings(s => ({ ...s, fromName: e.target.value }))}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
-                    placeholder="Hardban Records Lab"
+                    placeholder={t('notificationsHub.fromNamePlaceholder')}
                     required
                   />
                 </div>
@@ -311,61 +313,61 @@ export default function NotificationsHub() {
                 <div className="space-y-3 pt-2 border-t border-slate-850">
                   <div className="grid grid-cols-3 gap-3">
                     <div className="col-span-2">
-                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">SMTP Server Host</label>
+                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.smtpHostLabel')}</label>
                       <input
                         type="text"
                         value={settings.smtpHost}
                         onChange={e => setSettings(s => ({ ...s, smtpHost: e.target.value }))}
                         className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none font-mono"
-                        placeholder="smtp.mailtrap.io"
+                        placeholder={t('notificationsHub.smtpHostPlaceholder')}
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Server Port</label>
+                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.smtpPortLabel')}</label>
                       <input
                         type="number"
                         value={settings.smtpPort}
                         onChange={e => setSettings(s => ({ ...s, smtpPort: Number(e.target.value) }))}
                         className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none font-mono"
-                        placeholder="587"
+                        placeholder={t('notificationsHub.smtpPortPlaceholder')}
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">SMTP User Credentials</label>
+                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.smtpUserLabel')}</label>
                       <input
                         type="text"
                         value={settings.smtpUser}
                         onChange={e => setSettings(s => ({ ...s, smtpUser: e.target.value }))}
                         className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none font-mono"
-                        placeholder="username"
+                        placeholder={t('notificationsHub.smtpUserPlaceholder')}
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">SMTP Secret Password</label>
+                      <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.smtpPassLabel')}</label>
                       <input
                         type="password"
                         value={settings.smtpPass}
                         onChange={e => setSettings(s => ({ ...s, smtpPass: e.target.value }))}
                         className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none font-mono"
-                        placeholder="••••••••••••"
+                        placeholder={t('notificationsHub.smtpPassPlaceholder')}
                       />
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="pt-2 border-t border-slate-850">
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">SendGrid Secret API Key</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.sendgridApiKeyLabel')}</label>
                   <input
                     type="password"
                     value={settings.sendgridApiKey}
                     onChange={e => setSettings(s => ({ ...s, sendgridApiKey: e.target.value }))}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none font-mono"
-                    placeholder="SG.xxxxxxxxxxxxxxxxx"
+                    placeholder={t('notificationsHub.sendgridApiKeyPlaceholder')}
                   />
-                  <p className="text-[10px] text-slate-500 mt-1.5">API request will be executed to sendgrid endpoints via Bearer token authorization header.</p>
+                  <p className="text-[10px] text-slate-500 mt-1.5">{t('notificationsHub.sendgridApiKeyHint')}</p>
                 </div>
               )}
             </div>
@@ -375,7 +377,7 @@ export default function NotificationsHub() {
                 type="submit"
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold tracking-wide transition flex items-center gap-2 shadow-lg shadow-blue-500/15"
               >
-                <Database className="w-3.5 h-3.5" /> Save Configuration Parameters
+                <Database className="w-3.5 h-3.5" /> {t('notificationsHub.saveConfigBtn')}
               </button>
             </div>
           </form>
@@ -384,33 +386,33 @@ export default function NotificationsHub() {
           <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-xl flex flex-col justify-between">
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-semibold text-white">Sandbox Email Simulator</h3>
-                <p className="text-[11px] text-slate-500">Test template parsing & dispatch loops instantaneously</p>
+                <h3 className="text-sm font-semibold text-white">{t('notificationsHub.sandboxHeading')}</h3>
+                <p className="text-[11px] text-slate-500">{t('notificationsHub.sandboxDesc')}</p>
               </div>
 
               <form onSubmit={handleSendTestEmail} className="space-y-3.5">
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Email Recipient Address</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.recipientEmailLabel')}</label>
                   <input
                     type="email"
                     value={testEmail}
                     onChange={e => setTestEmail(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
-                    placeholder="venue-owner@agency.com"
+                    placeholder={t('notificationsHub.recipientEmailPlaceholder')}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Scenario Template Mode</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.scenarioModeLabel')}</label>
                   <select
                     value={testEmailType}
                      onChange={e => setTestEmailType(e.target.value as 'user_registration' | 'license_expiry' | 'payment_confirmation')}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
                   >
-                    <option value="user_registration">User Registration (Welcome)</option>
-                    <option value="license_expiry">License Expiration Exemption Warning</option>
-                    <option value="payment_confirmation">Payment Receipt Invoice Details</option>
+                    <option value="user_registration">{t('notificationsHub.scenarioRegistration')}</option>
+                    <option value="license_expiry">{t('notificationsHub.scenarioLicenseExpiry')}</option>
+                    <option value="payment_confirmation">{t('notificationsHub.scenarioPaymentReceipt')}</option>
                   </select>
                 </div>
 
@@ -418,7 +420,7 @@ export default function NotificationsHub() {
                   type="submit"
                   className="w-full py-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2"
                 >
-                  <Send className="w-3 h-3" /> Execute Test Send Loop
+                  <Send className="w-3 h-3" /> {t('notificationsHub.execTestSendBtn')}
                 </button>
               </form>
 
@@ -432,15 +434,15 @@ export default function NotificationsHub() {
                     <>
                       <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                       <div>
-                        <p className="font-semibold">Dispatch simulation success!</p>
-                        <p className="text-[10px] text-slate-400 mt-0.5">Recorded log audit ID: {testResult.logId || 'N/A'}</p>
+                        <p className="font-semibold">{t('notificationsHub.dispatchSuccess')}</p>
+                        <p className="text-[10px] text-slate-400 mt-0.5">{t('notificationsHub.recordedLogId')}: {testResult.logId || t('notificationsHub.na')}</p>
                       </div>
                     </>
                   ) : (
                     <>
                       <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
                       <div>
-                        <p className="font-semibold">Dispatch failed</p>
+                        <p className="font-semibold">{t('notificationsHub.dispatchFailed')}</p>
                         <p className="text-[10px] text-slate-400 mt-0.5">{testResult.error}</p>
                       </div>
                     </>
@@ -451,10 +453,10 @@ export default function NotificationsHub() {
 
             <div className="p-4 bg-slate-950/60 border border-slate-850/50 rounded-xl text-[11px] text-slate-500 space-y-2 mt-4">
               <span className="font-semibold text-slate-400 flex items-center gap-1">
-                <Shield className="w-3 h-3 text-blue-500" /> Default Mailtrap Sandbox Protection
+                <Shield className="w-3 h-3 text-blue-500" /> {t('notificationsHub.sandboxProtectionTitle')}
               </span>
               <p className="leading-relaxed">
-                If the SMTP host is left as default (mailtrap.io and licensing_notifications_user config), emails are captured in sandbox mode. This mimics full transmission and saves log entries to the ledger database without crashing.
+                {t('notificationsHub.sandboxProtectionDesc')}
               </p>
             </div>
           </div>
@@ -466,7 +468,7 @@ export default function NotificationsHub() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-1 bg-slate-950/80 border border-slate-850 rounded-xl overflow-hidden">
             <div className="p-3 bg-slate-900 border-b border-slate-850">
-              <span className="text-[11px] uppercase tracking-wider font-extrabold text-slate-400">SELECT SCENARIO</span>
+              <span className="text-[11px] uppercase tracking-wider font-extrabold text-slate-400">{t('notificationsHub.selectScenario')}</span>
             </div>
             <div className="divide-y divide-slate-850/60">
               <button
@@ -477,8 +479,8 @@ export default function NotificationsHub() {
                     : 'text-slate-400 hover:text-white hover:bg-slate-900/40'
                 }`}
               >
-                <p className="text-xs">User Registration</p>
-                <p className="text-[10px] text-slate-500 mt-1">Sent on company registration confirmation</p>
+                <p className="text-xs">{t('notificationsHub.scenarioUserReg')}</p>
+                <p className="text-[10px] text-slate-500 mt-1">{t('notificationsHub.scenarioUserRegDesc')}</p>
               </button>
 
               <button
@@ -489,8 +491,8 @@ export default function NotificationsHub() {
                     : 'text-slate-400 hover:text-white hover:bg-slate-900/40'
                 }`}
               >
-                <p className="text-xs">License Expiry warning</p>
-                <p className="text-[10px] text-slate-500 mt-1">Alert threshold warnings prior to lapse</p>
+                <p className="text-xs">{t('notificationsHub.scenarioLicenseExp')}</p>
+                <p className="text-[10px] text-slate-500 mt-1">{t('notificationsHub.scenarioLicenseExpDesc')}</p>
               </button>
 
               <button
@@ -501,33 +503,33 @@ export default function NotificationsHub() {
                     : 'text-slate-400 hover:text-white hover:bg-slate-900/40'
                 }`}
               >
-                <p className="text-xs">Payment Receipts</p>
-                <p className="text-[10px] text-slate-500 mt-1">Checkout confirmations for subscription renewals</p>
+                <p className="text-xs">{t('notificationsHub.scenarioPayment')}</p>
+                <p className="text-[10px] text-slate-500 mt-1">{t('notificationsHub.scenarioPaymentDesc')}</p>
               </button>
             </div>
           </div>
 
           <form onSubmit={handleSaveSettings} className="md:col-span-3 bg-slate-900/40 border border-slate-850 p-6 rounded-xl space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-white capitalize">{selectedTemplate} Mail Content Template</h3>
-              <p className="text-[11px] text-slate-500 mt-0.5">Edit custom subject headings and full body texts</p>
+              <h3 className="text-sm font-semibold text-white capitalize">{selectedTemplate} {t('notificationsHub.mailContentTemplate')}</h3>
+              <p className="text-[11px] text-slate-500 mt-0.5">{t('notificationsHub.editTemplateDesc')}</p>
             </div>
 
             {selectedTemplate === 'welcome' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Subject Title Heading</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.subjectLabel')}</label>
                   <input
                     type="text"
                     value={settings.templateWelcomeSubject}
                     onChange={e => setSettings(s => ({ ...s, templateWelcomeSubject: e.target.value }))}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
-                    placeholder="Welcome dynamic header..."
+                    placeholder={t('notificationsHub.welcomeSubjectPlaceholder')}
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Body Text Content</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.bodyLabel')}</label>
                   <textarea
                     value={settings.templateWelcomeBody}
                     onChange={e => setSettings(s => ({ ...s, templateWelcomeBody: e.target.value }))}
@@ -536,10 +538,10 @@ export default function NotificationsHub() {
                   />
                 </div>
                 <div className="p-3 bg-slate-950 rounded-lg text-[10px] text-slate-500 space-y-1">
-                  <p className="font-semibold text-slate-400">Available interpolation variables:</p>
+                  <p className="font-semibold text-slate-400">{t('notificationsHub.availableVars')}</p>
                   <ul className="list-disc leading-relaxed pl-4">
-                    <li><code className="text-blue-400">{"{{name}}"}</code>: Recipient full user name / company outlet lead contacts name</li>
-                    <li><code className="text-blue-400">{"{{email}}"}</code>: Registered account login email address</li>
+                    <li><code className="text-blue-400">{"{{name}}"}</code>: {t('notificationsHub.varNameDesc')}</li>
+                    <li><code className="text-blue-400">{"{{email}}"}</code>: {t('notificationsHub.varEmailDesc')}</li>
                   </ul>
                 </div>
               </div>
@@ -548,7 +550,7 @@ export default function NotificationsHub() {
             {selectedTemplate === 'expiry' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Subject Title Heading</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.subjectLabel')}</label>
                   <input
                     type="text"
                     value={settings.templateExpirySubject}
@@ -558,7 +560,7 @@ export default function NotificationsHub() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Body Text Content</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.bodyLabel')}</label>
                   <textarea
                     value={settings.templateExpiryBody}
                     onChange={e => setSettings(s => ({ ...s, templateExpiryBody: e.target.value }))}
@@ -567,11 +569,11 @@ export default function NotificationsHub() {
                   />
                 </div>
                 <div className="p-3 bg-slate-950 rounded-lg text-[10px] text-slate-500 space-y-1">
-                  <p className="font-semibold text-slate-400">Available interpolation variables:</p>
+                  <p className="font-semibold text-slate-400">{t('notificationsHub.availableVars')}</p>
                   <ul className="list-disc leading-relaxed pl-4">
-                    <li><code className="text-blue-400">{"{{companyName}}"}</code>: Outlet/Company registered legal name</li>
-                    <li><code className="text-blue-400">{"{{certificateNumber}}"}</code>: Exemption license target certificate index string</li>
-                    <li><code className="text-blue-400">{"{{expiresAt}}"}</code>: Target date of subscription lapse</li>
+                    <li><code className="text-blue-400">{"{{companyName}}"}</code>: {t('notificationsHub.varCompanyNameDesc')}</li>
+                    <li><code className="text-blue-400">{"{{certificateNumber}}"}</code>: {t('notificationsHub.varCertNumberDesc')}</li>
+                    <li><code className="text-blue-400">{"{{expiresAt}}"}</code>: {t('notificationsHub.varExpiresAtDesc')}</li>
                   </ul>
                 </div>
               </div>
@@ -580,7 +582,7 @@ export default function NotificationsHub() {
             {selectedTemplate === 'payment' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Subject Title Heading</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.subjectLabel')}</label>
                   <input
                     type="text"
                     value={settings.templatePaymentSubject}
@@ -590,7 +592,7 @@ export default function NotificationsHub() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Body Text Content</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.bodyLabel')}</label>
                   <textarea
                     value={settings.templatePaymentBody}
                     onChange={e => setSettings(s => ({ ...s, templatePaymentBody: e.target.value }))}
@@ -599,11 +601,11 @@ export default function NotificationsHub() {
                   />
                 </div>
                 <div className="p-3 bg-slate-950 rounded-lg text-[10px] text-slate-500 space-y-1">
-                  <p className="font-semibold text-slate-400">Available interpolation variables:</p>
+                  <p className="font-semibold text-slate-400">{t('notificationsHub.availableVars')}</p>
                   <ul className="list-disc leading-relaxed pl-4">
-                    <li><code className="text-blue-400">{"{{amount}}"}</code>: Sum processed during checkout transaction</li>
-                    <li><code className="text-blue-400">{"{{currency}}"}</code>: ISO currency key utilized during payments (e.g. PLN, EUR, USD)</li>
-                    <li><code className="text-blue-400">{"{{gateway}}"}</code>: Billing vendor protocol used (Stripe / PayPal)</li>
+                    <li><code className="text-blue-400">{"{{amount}}"}</code>: {t('notificationsHub.varAmountDesc')}</li>
+                    <li><code className="text-blue-400">{"{{currency}}"}</code>: {t('notificationsHub.varCurrencyDesc')}</li>
+                    <li><code className="text-blue-400">{"{{gateway}}"}</code>: {t('notificationsHub.varGatewayDesc')}</li>
                   </ul>
                 </div>
               </div>
@@ -614,7 +616,7 @@ export default function NotificationsHub() {
                 type="submit"
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold tracking-wide transition shadow-lg shadow-blue-500/15"
               >
-                Save Updated Template Content
+                {t('notificationsHub.saveTemplateBtn')}
               </button>
             </div>
           </form>
@@ -626,44 +628,44 @@ export default function NotificationsHub() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <form onSubmit={handleBroadcastAlert} className="lg:col-span-2 bg-slate-900/40 border border-slate-850 p-6 rounded-xl space-y-5">
             <div>
-              <h3 className="text-sm font-semibold text-white">WebSocket Alert Dispatcher</h3>
-              <p className="text-[11px] text-slate-500">Transmit structural popup payloads directly to connected venues</p>
+              <h3 className="text-sm font-semibold text-white">{t('notificationsHub.wsDispatcherHeading')}</h3>
+              <p className="text-[11px] text-slate-500">{t('notificationsHub.wsDispatcherDesc')}</p>
             </div>
 
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-1">
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Push Severity Class</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.severityLabel')}</label>
                   <select
                     value={broadcastType}
                      onChange={e => setBroadcastType(e.target.value as 'broadcast_alert' | 'license_expiry' | 'payment_confirmation')}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
                   >
-                    <option value="broadcast_alert">System Notice (General)</option>
-                    <option value="license_expiry">License Expiry Reminder (Purple)</option>
-                    <option value="payment_confirmation">Payment Broadcast (Emerald)</option>
+                    <option value="broadcast_alert">{t('notificationsHub.severitySystemNotice')}</option>
+                    <option value="license_expiry">{t('notificationsHub.severityLicenseExpiry')}</option>
+                    <option value="payment_confirmation">{t('notificationsHub.severityPaymentBroadcast')}</option>
                   </select>
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Alert Title / Heading</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.alertTitleLabel')}</label>
                   <input
                     type="text"
                     value={broadcastSubject}
                     onChange={e => setBroadcastSubject(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg focus:border-blue-500 outline-none"
-                    placeholder="System Server Reboots Scheduled..."
+                    placeholder={t('notificationsHub.alertTitlePlaceholder')}
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">Detail Message Body</label>
+                <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-1">{t('notificationsHub.detailBodyLabel')}</label>
                 <textarea
                   value={broadcastBody}
                   onChange={e => setBroadcastBody(e.target.value)}
                   className="w-full h-32 bg-slate-950 border border-slate-800 text-xs text-white p-3 rounded-lg focus:border-blue-500 outline-none resize-none font-mono"
-                  placeholder="Attention: background streams will momentarily re-negotiate TLS on 3:00 AM UTC..."
+                  placeholder={t('notificationsHub.detailBodyPlaceholder')}
                   required
                 />
               </div>
@@ -675,7 +677,7 @@ export default function NotificationsHub() {
                 disabled={!broadcastSubject || !broadcastBody}
                 className="px-5 py-2.5 bg-blue-600 disabled:opacity-50 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold tracking-wide transition flex items-center gap-1.5 shadow-lg shadow-blue-500/15"
               >
-                <Send className="w-3.5 h-3.5 animate-bounce" /> Broadcast Push Alerts Now
+                <Send className="w-3.5 h-3.5 animate-bounce" /> {t('notificationsHub.broadcastBtn')}
               </button>
             </div>
           </form>
@@ -684,22 +686,22 @@ export default function NotificationsHub() {
           <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-xl flex flex-col justify-between">
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-semibold text-white">Stream Socket Network</h3>
-                <p className="text-[11px] text-slate-500">Real-Time connection status indices</p>
+                <h3 className="text-sm font-semibold text-white">{t('notificationsHub.streamSocketHeading')}</h3>
+                <p className="text-[11px] text-slate-500">{t('notificationsHub.streamSocketDesc')}</p>
               </div>
 
               <div className="space-y-3 font-mono">
                 <div className="flex justify-between items-center py-2 border-b border-slate-850">
-                  <span className="text-[10px] text-slate-500">SOCKET SERVICE</span>
-                  <span className="text-[10px] text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded border border-emerald-500/20">OPERATIONAL</span>
+                  <span className="text-[10px] text-slate-500">{t('notificationsHub.socketService')}</span>
+                  <span className="text-[10px] text-emerald-400 bg-emerald-900/20 px-2 py-0.5 rounded border border-emerald-500/20">{t('notificationsHub.operational')}</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-slate-850">
-                  <span className="text-[10px] text-slate-500">PORT ALIGNMENT</span>
-                  <span className="text-[10px] text-slate-300">3000 (Proxy routed)</span>
+                  <span className="text-[10px] text-slate-500">{t('notificationsHub.portAlignment')}</span>
+                  <span className="text-[10px] text-slate-300">3000 ({t('notificationsHub.proxyRouted')})</span>
                 </div>
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-[10px] text-slate-500">ACTIVE HANDSHAKES</span>
-                  <span className="text-xs text-blue-400 font-extrabold font-mono">LIVE CONNECTED</span>
+                  <span className="text-[10px] text-slate-500">{t('notificationsHub.activeHandshakes')}</span>
+                  <span className="text-xs text-blue-400 font-extrabold font-mono">{t('notificationsHub.liveConnected')}</span>
                 </div>
               </div>
 
@@ -707,9 +709,9 @@ export default function NotificationsHub() {
                 <div className="p-3.5 bg-blue-950/40 border border-blue-500/20 text-blue-300 text-xs rounded-xl flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-bold">Broadcast Executed successfully!</p>
+                    <p className="font-bold">{t('notificationsHub.broadcastSuccess')}</p>
                     <p className="text-[10px] text-slate-400 mt-1">
-                      Pushed payload to connected sockets. Synced with client nodes.
+                      {t('notificationsHub.broadcastSuccessDesc')}
                     </p>
                   </div>
                 </div>
@@ -718,10 +720,10 @@ export default function NotificationsHub() {
 
             <div className="p-4 bg-slate-950/60 border border-slate-850/50 rounded-xl text-[11px] text-slate-500 space-y-1.5 mt-4">
               <span className="font-semibold text-slate-400 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3 text-yellow-500" /> Active Broadcast Protocol
+                <AlertCircle className="w-3 h-3 text-yellow-500" /> {t('notificationsHub.activeBroadcastProtocol')}
               </span>
               <p className="leading-relaxed">
-                When dispatched, this triggers a real-time event that reaches client terminals and triggers floating toast notifications, reflecting real-time system changes immediately.
+                {t('notificationsHub.activeBroadcastDesc')}
               </p>
             </div>
           </div>
@@ -733,31 +735,31 @@ export default function NotificationsHub() {
         <div className="bg-slate-900/40 border border-slate-850 rounded-xl overflow-hidden">
           <div className="p-4 bg-slate-900 border-b border-slate-850 flex justify-between items-center">
             <div>
-              <h3 className="text-xs uppercase tracking-wider font-extrabold text-white">System Notification Ledger</h3>
-              <p className="text-[11px] text-slate-500 mt-0.5">Chronological record of emails and broadcast logs</p>
+              <h3 className="text-xs uppercase tracking-wider font-extrabold text-white">{t('notificationsHub.ledgerHeading')}</h3>
+              <p className="text-[11px] text-slate-500 mt-0.5">{t('notificationsHub.ledgerDesc')}</p>
             </div>
             <span className="text-[10px] font-mono bg-slate-950 px-2.5 py-1 rounded border border-slate-800 text-slate-400">
-              Total Logged: {logs.length}
+              {t('notificationsHub.totalLogged', { count: logs.length })}
             </span>
           </div>
 
           {logs.length === 0 ? (
             <div className="p-12 text-center text-slate-500">
               <Database className="w-8 h-8 mx-auto text-slate-700 mb-3" />
-              <p className="text-sm">No notification dispatches have been recorded yet.</p>
-              <p className="text-[11px] text-slate-600 mt-1">Configure your SMTP settings to start tracking mail and socket broadcasts.</p>
+              <p className="text-sm">{t('notificationsHub.emptyLogs')}</p>
+              <p className="text-[11px] text-slate-600 mt-1">{t('notificationsHub.emptyLogsHint')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs whitespace-nowrap">
                 <thead className="bg-slate-950 text-slate-400 font-mono text-[9px] uppercase tracking-wider border-b border-slate-850">
                   <tr>
-                    <th className="px-5 py-3">Timestamp</th>
-                    <th className="px-5 py-3">Channel</th>
-                    <th className="px-5 py-3">Event Type</th>
-                    <th className="px-5 py-3">Recipient Address</th>
-                    <th className="px-5 py-3">Subject / Heading</th>
-                    <th className="px-5 py-3">Transit Status</th>
+                    <th className="px-5 py-3">{t('notificationsHub.timestampHeader')}</th>
+                    <th className="px-5 py-3">{t('notificationsHub.channelHeader')}</th>
+                    <th className="px-5 py-3">{t('notificationsHub.eventTypeHeader')}</th>
+                    <th className="px-5 py-3">{t('notificationsHub.recipientHeader')}</th>
+                    <th className="px-5 py-3">{t('notificationsHub.subjectHeader')}</th>
+                    <th className="px-5 py-3">{t('notificationsHub.transitStatusHeader')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-850 bg-slate-900/20 font-sans">
@@ -788,13 +790,13 @@ export default function NotificationsHub() {
                         {log.status === 'sent' ? (
                           <div className="flex items-center gap-1 text-emerald-400">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span className="font-semibold text-[10px]">SUCCESS</span>
+                            <span className="font-semibold text-[10px]">{t('notificationsHub.statusSuccess')}</span>
                           </div>
                         ) : (
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-1 text-red-400 font-semibold">
                               <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
-                              <span className="text-[10px]">TRANSMIT FAILED</span>
+                              <span className="text-[10px]">{t('notificationsHub.statusFailed')}</span>
                             </div>
                             {log.errorMessage && (
                               <p className="text-[9px] font-mono text-red-500 max-w-sm overflow-hidden text-ellipsis">

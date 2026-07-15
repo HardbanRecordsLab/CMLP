@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Webhook, Plus, RefreshCw, Trash2, Copy, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 
 const WEBHOOK_EVENTS = [
-  { id: 'license.created', label: 'License Created' },
-  { id: 'license.expiring', label: 'License Expiring' },
-  { id: 'payment.completed', label: 'Payment Completed' },
-  { id: 'track.uploaded', label: 'Track Uploaded' },
-  { id: 'custom_order.created', label: 'Custom Order Created' },
+  { id: 'license.created', labelKey: 'webhookDashboard.eventLicenseCreated' },
+  { id: 'license.expiring', labelKey: 'webhookDashboard.eventLicenseExpiring' },
+  { id: 'payment.completed', labelKey: 'webhookDashboard.eventPaymentCompleted' },
+  { id: 'track.uploaded', labelKey: 'webhookDashboard.eventTrackUploaded' },
+  { id: 'custom_order.created', labelKey: 'webhookDashboard.eventCustomOrderCreated' },
 ];
 
 interface WebhookItem {
@@ -22,6 +23,7 @@ interface WebhookItem {
 }
 
 export default function WebhookDashboard() {
+  const { t } = useTranslation();
   const [webhooks, setWebhooks] = useState<WebhookItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<WebhookItem | null>(null);
@@ -81,7 +83,7 @@ export default function WebhookDashboard() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this webhook?')) return;
+    if (!confirm(t('webhookDashboard.deleteConfirm'))) return;
     try {
       await fetchWithAuth(getApiUrl(`/api/webhook-manager/${id}`), { method: 'DELETE' });
       loadWebhooks();
@@ -119,10 +121,10 @@ export default function WebhookDashboard() {
         <div>
           <div className="flex items-center gap-2">
             <Webhook className="w-5 h-5 text-blue-400" />
-            <h2 className="text-white font-medium">Webhook Manager</h2>
+            <h2 className="text-white font-medium">{t('webhookDashboard.heading')}</h2>
           </div>
           <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider">
-            Configure outgoing webhook endpoints for real-time events
+            {t('webhookDashboard.description')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -130,7 +132,7 @@ export default function WebhookDashboard() {
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
           <button onClick={openCreate} className="px-4 py-2 bg-blue-600 text-white rounded text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1">
-            <Plus className="w-3 h-3" /> ADD WEBHOOK
+            <Plus className="w-3 h-3" /> {t('webhookDashboard.addWebhook')}
           </button>
         </div>
       </div>
@@ -139,12 +141,12 @@ export default function WebhookDashboard() {
         <table className="w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-slate-950 text-slate-500 text-[10px] uppercase tracking-widest">
             <tr>
-              <th className="px-6 py-3">URL</th>
-              <th className="px-6 py-3">Events</th>
-              <th className="px-6 py-3">Status</th>
-              <th className="px-6 py-3">Failures</th>
-              <th className="px-6 py-3">Last Triggered</th>
-              <th className="px-6 py-3 text-right">Actions</th>
+              <th className="px-6 py-3">{t('webhookDashboard.urlHeader')}</th>
+              <th className="px-6 py-3">{t('webhookDashboard.eventsHeader')}</th>
+              <th className="px-6 py-3">{t('webhookDashboard.statusHeader')}</th>
+              <th className="px-6 py-3">{t('webhookDashboard.failuresHeader')}</th>
+              <th className="px-6 py-3">{t('webhookDashboard.lastTriggeredHeader')}</th>
+              <th className="px-6 py-3 text-right">{t('webhookDashboard.actionsHeader')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 bg-slate-900">
@@ -156,7 +158,7 @@ export default function WebhookDashboard() {
                     <button
                       onClick={() => copyToClipboard(hook.url, hook.id)}
                       className="text-slate-500 hover:text-white transition flex-shrink-0"
-                      title="Copy URL"
+                      title={t('webhookDashboard.copyUrl')}
                     >
                       {copiedId === hook.id ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                     </button>
@@ -181,7 +183,7 @@ export default function WebhookDashboard() {
                     }`}
                   >
                     {hook.isActive ? <CheckCircle className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                    {hook.isActive ? 'Active' : 'Inactive'}
+                    {hook.isActive ? t('webhookDashboard.active') : t('webhookDashboard.inactive')}
                   </button>
                 </td>
                 <td className="px-6 py-4">
@@ -195,7 +197,7 @@ export default function WebhookDashboard() {
                   )}
                 </td>
                 <td className="px-6 py-4 text-xs text-slate-500">
-                  {hook.lastTriggeredAt ? new Date(hook.lastTriggeredAt).toLocaleString() : 'Never'}
+                  {hook.lastTriggeredAt ? new Date(hook.lastTriggeredAt).toLocaleString() : t('webhookDashboard.never')}
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
@@ -203,7 +205,7 @@ export default function WebhookDashboard() {
                       onClick={() => openEdit(hook)}
                       className="text-[10px] uppercase font-bold tracking-widest text-blue-500 hover:text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-2 py-1 rounded transition"
                     >
-                      EDIT
+                      {t('webhookDashboard.edit')}
                     </button>
                     <button
                       onClick={() => handleDelete(hook.id)}
@@ -218,7 +220,7 @@ export default function WebhookDashboard() {
             {webhooks.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
-                  No webhooks configured. Click "Add Webhook" to create one.
+                  {t('webhookDashboard.emptyState')}
                 </td>
               </tr>
             )}
@@ -232,26 +234,26 @@ export default function WebhookDashboard() {
             <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950 rounded-t-xl">
               <div className="flex items-center gap-2">
                 <Webhook className="w-4 h-4 text-blue-400" />
-                <h2 className="text-white font-medium">{editItem ? 'Edit Webhook' : 'Create Webhook'}</h2>
+                <h2 className="text-white font-medium">{editItem ? t('webhookDashboard.editWebhook') : t('webhookDashboard.createWebhook')}</h2>
               </div>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white transition">
+              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white transition" aria-label={t('webhookDashboard.closeModal')}>
                 <XCircle className="w-5 h-5" />
               </button>
             </div>
             <div className="p-6 space-y-5">
               <div>
-                <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Payload URL</label>
+                <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">{t('webhookDashboard.payloadUrlLabel')}</label>
                 <input
                   type="url"
                   value={url}
                   onChange={e => setUrl(e.target.value)}
-                  placeholder="https://example.com/webhook"
+                  placeholder={t('webhookDashboard.payloadUrlPlaceholder')}
                   className="mt-1 w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Events</label>
+                <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">{t('webhookDashboard.eventsLabel')}</label>
                 <div className="mt-2 space-y-2">
                   {WEBHOOK_EVENTS.map(ev => (
                     <label key={ev.id} className="flex items-center gap-2 cursor-pointer">
@@ -261,7 +263,7 @@ export default function WebhookDashboard() {
                         onChange={() => toggleEvent(ev.id)}
                         className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-slate-300">{ev.label}</span>
+                      <span className="text-sm text-slate-300">{t(ev.labelKey)}</span>
                       <span className="text-[10px] text-slate-600 font-mono">{ev.id}</span>
                     </label>
                   ))}
@@ -271,13 +273,13 @@ export default function WebhookDashboard() {
               {!editItem && (
                 <div>
                   <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">
-                    Secret (optional — auto-generated if empty)
+                    {t('webhookDashboard.secretLabel')}
                   </label>
                   <input
                     type="text"
                     value={secret}
                     onChange={e => setSecret(e.target.value)}
-                    placeholder="Leave empty for auto-generate"
+                    placeholder={t('webhookDashboard.secretPlaceholder')}
                     className="mt-1 w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
                   />
                 </div>
@@ -288,14 +290,14 @@ export default function WebhookDashboard() {
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded transition"
                 >
-                  CANCEL
+                  {t('webhookDashboard.cancel')}
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={!url || selectedEvents.length === 0}
                   className="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {editItem ? 'UPDATE' : 'CREATE'}
+                  {editItem ? t('webhookDashboard.update') : t('webhookDashboard.create')}
                 </button>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { MapPin, Radio, Clock, Play, Volume2, Calendar, RefreshCw, CheckCircle, 
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 interface Location {
   id: number;
@@ -39,20 +40,21 @@ function StatusDot({ status }: { status: string }) {
   );
 }
 
-function formatTime(dateStr: string | null) {
+function formatTime(dateStr: string | null, t: (key: string, opts?: Record<string, unknown>) => string) {
   if (!dateStr) return '—';
   const d = new Date(dateStr);
   const now = new Date();
   const diffMs = now.getTime() - d.getTime();
   const diffMins = Math.floor(diffMs / 60000);
-  if (diffMins < 1) return 'Just now';
-  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffMins < 1) return t('outletManager.justNow');
+  if (diffMins < 60) return t('outletManager.minutesAgo', { count: diffMins });
   const diffHrs = Math.floor(diffMins / 60);
-  if (diffHrs < 24) return `${diffHrs}h ago`;
+  if (diffHrs < 24) return t('outletManager.hoursAgo', { count: diffHrs });
   return d.toLocaleDateString();
 }
 
 export default function OutletManager() {
+  const { t } = useTranslation();
   const [locations, setLocations] = useState<Location[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,7 +78,7 @@ export default function OutletManager() {
       setLocations(Array.isArray(locData) ? locData : []);
       setPlaylists(Array.isArray(plData) ? plData : []);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to load data');
+      setError(err instanceof Error ? err.message : t('outletManager.failedToLoad'));
     } finally {
       setLoading(false);
     }
@@ -132,7 +134,7 @@ export default function OutletManager() {
         }),
       });
       await loadData();
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to save location');
       console.error(err);
     } finally {
@@ -154,7 +156,7 @@ export default function OutletManager() {
       });
       setSelectedIds(new Set());
       await loadData();
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to assign playlist');
       console.error(err);
     } finally {
@@ -176,7 +178,7 @@ export default function OutletManager() {
       });
       setSelectedIds(new Set());
       await loadData();
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Failed to update schedule');
       console.error(err);
     } finally {
@@ -187,7 +189,7 @@ export default function OutletManager() {
   if (loading && locations.length === 0) {
     return (
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <div className="p-12 text-center text-slate-500 animate-pulse">Loading locations...</div>
+        <div className="p-12 text-center text-slate-500 animate-pulse">{t('outletManager.loading')}</div>
       </div>
     );
   }
@@ -198,7 +200,7 @@ export default function OutletManager() {
         <div className="p-12 text-center">
           <p className="text-red-400 mb-4">{error}</p>
           <button onClick={loadData} className="px-4 py-2 bg-blue-600 text-white rounded text-xs font-bold hover:bg-blue-700 transition inline-flex items-center gap-2">
-            <RefreshCw className="w-3.5 h-3.5" /> RETRY
+            <RefreshCw className="w-3.5 h-3.5" /> {t('outletManager.retry')}
           </button>
         </div>
       </div>
@@ -210,8 +212,8 @@ export default function OutletManager() {
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
         <div className="p-12 text-center text-slate-500">
           <MapPin className="w-10 h-10 mx-auto mb-3 text-slate-600" />
-          <p className="text-lg font-medium text-slate-400 mb-1">No locations found</p>
-          <p className="text-sm">Add a location to your company to get started.</p>
+          <p className="text-lg font-medium text-slate-400 mb-1">{t('outletManager.noLocations')}</p>
+          <p className="text-sm">{t('outletManager.addLocationHint')}</p>
         </div>
       </div>
     );
@@ -222,9 +224,9 @@ export default function OutletManager() {
       <div className="p-4 border-b border-slate-800 flex items-center justify-between">
         <div>
           <h2 className="text-white font-medium flex items-center gap-2">
-            <Radio className="w-4 h-4 text-blue-500" /> Multi-Location Outlet Manager
+            <Radio className="w-4 h-4 text-blue-500" /> {t('outletManager.heading')}
           </h2>
-          <p className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-wider">{locations.length} location{locations.length !== 1 ? 's' : ''} registered</p>
+          <p className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-wider">{t('outletManager.locationsRegistered', { count: locations.length })}</p>
         </div>
         <button onClick={loadData} className="text-xs text-slate-400 hover:text-white transition p-1">
           <RefreshCw className="w-4 h-4" />
@@ -233,7 +235,7 @@ export default function OutletManager() {
 
       {selectedIds.size > 0 && (
         <div className="px-4 py-3 bg-blue-900/20 border-b border-blue-500/20 flex flex-wrap items-center gap-3">
-          <span className="text-xs text-blue-300 font-medium">{selectedIds.size} selected</span>
+          <span className="text-xs text-blue-300 font-medium">{t('outletManager.selected', { count: selectedIds.size })}</span>
           <div className="flex items-center gap-2 ml-auto">
             <select
               onChange={(e) => handleBulkAssignPlaylist(e.target.value)}
@@ -241,7 +243,7 @@ export default function OutletManager() {
               disabled={savingBulk}
               className="text-[11px] bg-slate-950 border border-slate-700 rounded px-2 py-1.5 text-slate-200 focus:outline-none focus:border-blue-500"
             >
-              <option value="" disabled>Assign playlist...</option>
+              <option value="" disabled>{t('outletManager.assignPlaylistPlaceholder')}</option>
               {playlists.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
             </select>
             <div className="flex items-center gap-1 text-[11px]">
@@ -251,7 +253,7 @@ export default function OutletManager() {
                 id="bulk-start"
                 className="w-20 bg-slate-950 border border-slate-700 rounded px-1.5 py-1.5 text-slate-200 focus:outline-none focus:border-blue-500"
               />
-              <span className="text-slate-600">to</span>
+              <span className="text-slate-600">{t('outletManager.to')}</span>
               <input
                 type="time"
                 defaultValue="22:00"
@@ -267,7 +269,7 @@ export default function OutletManager() {
                 disabled={savingBulk}
                 className="px-2 py-1.5 bg-blue-600 text-white rounded text-[10px] font-bold hover:bg-blue-700 transition disabled:opacity-50"
               >
-                {savingBulk ? 'SAVING...' : 'SET SCHEDULE'}
+                {savingBulk ? t('outletManager.saving') : t('outletManager.setSchedule')}
               </button>
             </div>
           </div>
@@ -296,10 +298,10 @@ export default function OutletManager() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-white truncate">{loc.name}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded">{loc.type || 'venue'}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded">{loc.type || t('outletManager.venue')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-[11px] text-slate-400 mt-0.5">
-                    <span className="flex items-center gap-1"><Play className="w-3 h-3" /> {formatTime(loc.lastPlaybackTime)}</span>
+                    <span className="flex items-center gap-1"><Play className="w-3 h-3" /> {formatTime(loc.lastPlaybackTime, t)}</span>
                     {loc.city && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {loc.city}</span>}
                   </div>
                 </div>
@@ -345,6 +347,7 @@ function LocationSettings({
   const [startTime, setStartTime] = useState(schedule.startTime);
   const [endTime, setEndTime] = useState(schedule.endTime);
   const [volume, setVolume] = useState(schedule.volume);
+  const { t } = useTranslation();
 
   const isSaving = savingId === loc.id;
 
@@ -359,20 +362,20 @@ function LocationSettings({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-1.5 flex items-center gap-1">
-          <Radio className="w-3 h-3" /> Assigned Playlist
+          <Radio className="w-3 h-3" /> {t('outletManager.assignedPlaylist')}
         </label>
         <select
           value={playlistId}
           onChange={(e) => setPlaylistId(e.target.value)}
           className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
         >
-          <option value="">— No playlist —</option>
+          <option value="">{t('outletManager.noPlaylist')}</option>
           {playlists.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
         </select>
       </div>
       <div>
         <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-1.5 flex items-center gap-1">
-          <Calendar className="w-3 h-3" /> Schedule
+          <Calendar className="w-3 h-3" /> {t('outletManager.schedule')}
         </label>
         <div className="flex items-center gap-2">
           <input
@@ -381,7 +384,7 @@ function LocationSettings({
             onChange={(e) => setStartTime(e.target.value)}
             className="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
           />
-          <span className="text-slate-500 text-xs">to</span>
+          <span className="text-slate-500 text-xs">{t('outletManager.to')}</span>
           <input
             type="time"
             value={endTime}
@@ -392,7 +395,7 @@ function LocationSettings({
       </div>
       <div>
         <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-1.5 flex items-center gap-1">
-          <Volume2 className="w-3 h-3" /> Volume ({volume}%)
+          <Volume2 className="w-3 h-3" /> {t('outletManager.volume', { value: volume })}
         </label>
         <input
           type="range"
@@ -409,7 +412,7 @@ function LocationSettings({
           disabled={isSaving}
           className="px-4 py-2 bg-blue-600 text-white rounded text-xs font-bold hover:bg-blue-700 transition inline-flex items-center gap-1.5 disabled:opacity-50"
         >
-          <Save className="w-3.5 h-3.5" /> {isSaving ? 'SAVING...' : 'SAVE'}
+          <Save className="w-3.5 h-3.5" /> {isSaving ? t('outletManager.saving') : t('outletManager.save')}
         </button>
       </div>
     </div>

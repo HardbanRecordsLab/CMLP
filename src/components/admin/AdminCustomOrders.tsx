@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Music, Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getApiUrl } from '../../utils';
@@ -19,6 +20,7 @@ interface CustomOrder {
 const STATUSES = ['pending', 'in_progress', 'completed', 'cancelled'];
 
 export default function AdminCustomOrders() {
+  const { t } = useTranslation();
   const [orders, setOrders] = useState<CustomOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -57,18 +59,18 @@ export default function AdminCustomOrders() {
       const method = editingId ? 'PUT' : 'POST';
       const res = await fetch(url, { method, headers, body: JSON.stringify(body) });
       if (!res.ok) { const d = await res.json(); throw new Error(d.error || 'Failed'); }
-      toast.success(editingId ? 'Order updated' : 'Order created');
+      toast.success(editingId ? t('adminCustomOrders.updated') : t('adminCustomOrders.created'));
       resetForm();
       load();
     } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this custom order?')) return;
+    if (!confirm(t('adminCustomOrders.deleteConfirm'))) return;
     try {
       const res = await fetch(getApiUrl(`/api/custom-orders/${id}`), { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error('Delete failed');
-      toast.success('Order deleted');
+      toast.success(t('adminCustomOrders.deleted'));
       load();
     } catch (err: unknown) { toast.error(err instanceof Error ? err.message : String(err)); }
   };
@@ -86,55 +88,55 @@ export default function AdminCustomOrders() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-white font-medium">Custom Music Orders</h2>
+        <h2 className="text-white font-medium">{t('adminCustomOrders.heading')}</h2>
         <button onClick={() => { resetForm(); setShowForm(!showForm); }} className="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold transition cursor-pointer">
-          <Plus size={14} /> {showForm ? 'Cancel' : 'New Order'}
+          <Plus size={14} /> {showForm ? t('adminCustomOrders.cancel') : t('adminCustomOrders.newOrder')}
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
           <div>
-            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Title</label>
+            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('adminCustomOrders.titleLabel')}</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" required />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Description</label>
+            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('adminCustomOrders.descriptionLabel')}</label>
             <textarea value={description} onChange={e => setDescription(e.target.value)} rows={3} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Budget (PLN)</label>
+              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('adminCustomOrders.budgetLabel')}</label>
               <input type="number" value={budget} onChange={e => setBudget(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" step="0.01" />
             </div>
             <div>
-              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Deadline</label>
+              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('adminCustomOrders.deadlineLabel')}</label>
               <input type="date" value={deadline} onChange={e => setDeadline(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
             </div>
             <div>
-              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">Status</label>
+              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('adminCustomOrders.statusLabel')}</label>
               <select value={status} onChange={e => setStatus(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                {STATUSES.map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
+                {STATUSES.map(s => <option key={s} value={s}>{t(`adminCustomOrders.${s}`)}</option>)}
               </select>
             </div>
           </div>
           <div className="flex gap-2">
             <button type="submit" className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-bold transition cursor-pointer flex items-center gap-1">
-              <Check size={14} /> {editingId ? 'Update' : 'Create'}
+              <Check size={14} /> {editingId ? t('adminCustomOrders.update') : t('adminCustomOrders.create')}
             </button>
             <button type="button" onClick={resetForm} className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded text-xs transition cursor-pointer flex items-center gap-1">
-              <X size={14} /> Cancel
+              <X size={14} /> {t('adminCustomOrders.cancel')}
             </button>
           </div>
         </form>
       )}
 
       {loading ? (
-        <div className="text-sm text-slate-400 animate-pulse">Loading...</div>
+        <div className="text-sm text-slate-400 animate-pulse">{t('adminCustomOrders.loading')}</div>
       ) : orders.length === 0 ? (
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 text-center text-slate-500">
           <Music size={32} className="mx-auto mb-3 opacity-40" />
-          <p className="text-sm">No custom orders yet.</p>
+          <p className="text-sm">{t('adminCustomOrders.emptyState')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -147,14 +149,14 @@ export default function AdminCustomOrders() {
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-white font-medium">{o.title}</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${statusColor[o.status] || 'text-slate-400 bg-slate-800'}`}>
-                        {o.status.replace('_', ' ')}
+                        {t(`adminCustomOrders.${o.status}`)}
                       </span>
                     </div>
                     {o.description && <p className="text-xs text-slate-500 mt-1">{o.description}</p>}
                     <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-600">
-                      {o.budget != null && <span>Budget: {(o.budget / 100).toFixed(2)} PLN</span>}
-                      {o.deadline && <span>Deadline: {new Date(o.deadline).toLocaleDateString()}</span>}
-                      <span>Created: {new Date(o.createdAt).toLocaleDateString()}</span>
+                      {o.budget != null && <span>{t('adminCustomOrders.budget')} {(o.budget / 100).toFixed(2)} PLN</span>}
+                      {o.deadline && <span>{t('adminCustomOrders.deadline')} {new Date(o.deadline).toLocaleDateString()}</span>}
+                      <span>{t('adminCustomOrders.created')} {new Date(o.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
                   <div className="flex gap-1">

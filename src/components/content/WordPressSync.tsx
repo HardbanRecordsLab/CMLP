@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 interface WordPressSettings {
   wpUrl: string;
@@ -37,6 +38,7 @@ interface SyncLog {
 }
 
 export default function WordPressSync() {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<WordPressSettings>({
     wpUrl: '',
     appUsername: '',
@@ -77,8 +79,8 @@ export default function WordPressSync() {
         const lData = await logsRes.json();
         setLogs(lData);
       }
-    } catch (err) {
-      toast.error('Error loading WordPress integrations data');
+    } catch (err: unknown) {
+      toast.error(t('wordPressSync.loadError'));
       console.error('Error loading WordPress integrations data', err);
     } finally {
       setLoadingSettings(false);
@@ -108,10 +110,10 @@ export default function WordPressSync() {
         const logsRes = await fetch(getApiUrl('/api/wordpress/logs'));
         if (logsRes.ok) setLogs(await logsRes.json());
       } else {
-        alert('Failed to save WordPress settings.');
+        alert(t('wordPressSync.saveError'));
       }
-    } catch (error) {
-      toast.error('Failed to save WordPress settings');
+    } catch (error: unknown) {
+      toast.error(t('wordPressSync.saveError'));
       console.error(error);
     } finally {
       setSavingSettings(false);
@@ -120,7 +122,7 @@ export default function WordPressSync() {
 
   const handleManualSync = async () => {
     setIsSyncing(true);
-    setSyncStatusMsg('Establishing token connection...');
+    setSyncStatusMsg(t('wordPressSync.syncingMsg'));
     try {
       const res = await fetch(getApiUrl('/api/wordpress/sync'), {
         method: 'POST'
@@ -128,9 +130,9 @@ export default function WordPressSync() {
       if (res.ok) {
         const summary = await res.json();
         if (summary.success) {
-          setSyncStatusMsg(`Successfully synchronized ${summary.syncedCount} CMS items!`);
+          setSyncStatusMsg(t('wordPressSync.syncSuccessMsg', { count: summary.syncedCount }));
         } else {
-          setSyncStatusMsg(`Sync completed with exceptions. Synced: ${summary.syncedCount}`);
+          setSyncStatusMsg(t('wordPressSync.syncPartialMsg', { count: summary.syncedCount }));
         }
         
         // Refresh logs
@@ -139,10 +141,10 @@ export default function WordPressSync() {
           setLogs(await logsRes.json());
         }
       } else {
-        setSyncStatusMsg('Error executing synchronization script.');
+        setSyncStatusMsg(t('wordPressSync.syncExecError'));
       }
-    } catch (err) {
-      setSyncStatusMsg('Sync timeout or offline error.');
+    } catch (err: unknown) {
+      setSyncStatusMsg(t('wordPressSync.syncTimeoutError'));
     } finally {
       setIsSyncing(false);
       setTimeout(() => setSyncStatusMsg(null), 5000);
@@ -165,10 +167,10 @@ export default function WordPressSync() {
         const logsRes = await fetch(getApiUrl('/api/wordpress/logs'));
         if (logsRes.ok) setLogs(await logsRes.json());
       } else {
-        setWebhookResponse({ error: 'Server returned error status context' });
+        setWebhookResponse({ error: t('wordPressSync.webhookServerError') });
       }
-    } catch (err) {
-      setWebhookResponse({ error: 'Failed to dispatch webhook event' });
+    } catch (err: unknown) {
+      setWebhookResponse({ error: t('wordPressSync.webhookDispatchError') });
     } finally {
       setWebhookTriggering(false);
     }
@@ -188,11 +190,11 @@ export default function WordPressSync() {
         <div>
           <h2 className="text-xl font-bold text-white flex items-center gap-2 tracking-tight">
             <Globe className="w-5 h-5 text-blue-500" />
-            <span>WordPress Headless CMS Integration</span>
-            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-wide uppercase rounded-full border border-blue-500/20">Phase 7</span>
+            <span>{t('wordPressSync.heading')}</span>
+            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-wide uppercase rounded-full border border-blue-500/20">{t('wordPressSync.phaseBadge')}</span>
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-            Automate live track metadata updates, publishing license exemptions, and receiving bidirectional updates for custom post types and landing page contents.
+            {t('wordPressSync.description')}
           </p>
         </div>
 
@@ -203,7 +205,7 @@ export default function WordPressSync() {
             className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-lg shadow-blue-500/10 cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'SYNCHRONIZING...' : 'TRIGGER MANUAL SYNC'}</span>
+            <span>{isSyncing ? t('wordPressSync.syncing') : t('wordPressSync.triggerSync')}</span>
           </button>
         </div>
       </div>
@@ -211,7 +213,7 @@ export default function WordPressSync() {
       {syncStatusMsg && (
         <div className="bg-blue-950/40 border border-blue-500/30 p-4 rounded-xl text-blue-300 text-xs flex items-center gap-2 animate-pulse">
           <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
-          <span><b>Sync Pipeline Status: </b> {syncStatusMsg}</span>
+          <span><b>{t('wordPressSync.syncPipelineStatus')} </b> {syncStatusMsg}</span>
         </div>
       )}
 
@@ -221,13 +223,13 @@ export default function WordPressSync() {
         {/* Left Column: Config Panel */}
         <div className="lg:col-span-7 bg-slate-900/35 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-            <span>REST API Secure Parameters</span>
+            <span>{t('wordPressSync.restApiParams')}</span>
           </h3>
 
           <form onSubmit={handleSaveSettings} className="space-y-4">
             <div>
               <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
-                <span>WP API Entry Root URL</span>
+                <span>{t('wordPressSync.wpUrlLabel')}</span>
                 <HelpCircle className="w-3 h-3 text-slate-600" />
               </label>
               <div className="relative">
@@ -237,7 +239,7 @@ export default function WordPressSync() {
                   required
                   value={settings.wpUrl}
                   onChange={e => setSettings({ ...settings, wpUrl: e.target.value })}
-                  placeholder="https://yourwordpress.com/wp-json"
+                  placeholder={t('wordPressSync.wpUrlPlaceholder')}
                   className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl p-3 pl-11 text-xs text-white focus:outline-none"
                 />
               </div>
@@ -245,7 +247,7 @@ export default function WordPressSync() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-400 mb-1.5">Application Username</label>
+                <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-400 mb-1.5">{t('wordPressSync.appUsernameLabel')}</label>
                 <div className="relative">
                   <User className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
                   <input
@@ -253,7 +255,7 @@ export default function WordPressSync() {
                     required
                     value={settings.appUsername}
                     onChange={e => setSettings({ ...settings, appUsername: e.target.value })}
-                    placeholder="e.g. licensing_admin"
+                    placeholder={t('wordPressSync.appUsernamePlaceholder')}
                     className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl p-3 pl-11 text-xs text-white focus:outline-none"
                   />
                 </div>
@@ -261,8 +263,8 @@ export default function WordPressSync() {
 
               <div>
                 <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
-                  <span>Application Password</span>
-                  <span className="text-[9px] text-blue-500 lowercase">Secure App Pass</span>
+                  <span>{t('wordPressSync.appPasswordLabel')}</span>
+                  <span className="text-[9px] text-blue-500 lowercase">{t('wordPressSync.secureAppPass')}</span>
                 </label>
                 <div className="relative">
                   <Key className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
@@ -270,7 +272,7 @@ export default function WordPressSync() {
                     type="password"
                     value={settings.appPassword}
                     onChange={e => setSettings({ ...settings, appPassword: e.target.value })}
-                    placeholder="xxxx xxxx xxxx xxxx"
+                    placeholder={t('wordPressSync.appPasswordPlaceholder')}
                     className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl p-3 pl-11 text-xs text-white focus:outline-none"
                   />
                 </div>
@@ -279,8 +281,8 @@ export default function WordPressSync() {
 
             <div className="p-4 bg-slate-950 rounded-xl border border-slate-800/80 flex items-center justify-between">
               <div>
-                <h4 className="text-xs font-semibold text-white">Bidirectional Content Sync</h4>
-                <p className="text-[10px] text-slate-500 mt-0.5">Allow ingestion from WordPress and automatic exports of metrics.</p>
+                <h4 className="text-xs font-semibold text-white">{t('wordPressSync.bidirectionalLabel')}</h4>
+                <p className="text-[10px] text-slate-500 mt-0.5">{t('wordPressSync.bidirectionalDesc')}</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input 
@@ -295,9 +297,9 @@ export default function WordPressSync() {
 
             <div className="flex items-center justify-between pt-2">
               <span className="text-[10px] font-mono text-slate-500 flex items-center gap-1">
-                <span>Last Synchronized: </span>
+                <span>{t('wordPressSync.lastSync')} </span>
                 <span className="text-slate-300">
-                  {settings.lastSyncTime ? new Date(settings.lastSyncTime).toLocaleString() : 'Never'}
+                  {settings.lastSyncTime ? new Date(settings.lastSyncTime).toLocaleString() : t('wordPressSync.never')}
                 </span>
               </span>
 
@@ -306,13 +308,13 @@ export default function WordPressSync() {
                 disabled={savingSettings}
                 className="px-5 py-2.5 bg-slate-100 hover:bg-white text-slate-950 text-xs font-bold rounded-xl transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
               >
-                {savingSettings ? 'SAVING...' : 'SAVE INTEGRATION'}
+                {savingSettings ? t('wordPressSync.saving') : t('wordPressSync.saveBtn')}
               </button>
             </div>
 
             {saveSuccess && (
               <div className="p-2.5 bg-emerald-950/20 border border-emerald-500/20 text-emerald-400 text-xs rounded-lg text-center animate-fade-in">
-                Secure integration parameters saved successfully!
+                {t('wordPressSync.saveSuccess')}
               </div>
             )}
           </form>
@@ -323,16 +325,16 @@ export default function WordPressSync() {
           <div>
             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-1.5">
               <Terminal className="w-4 h-4 text-blue-500" />
-              <span>Inbound Webhook Simulator</span>
+              <span>{t('wordPressSync.webhookHeading')}</span>
             </h3>
             <p className="text-[10px] text-slate-400 mb-4">
-              WordPress sends outbound HTTP notifications on event streams. Simulate an automated webhook payload to test local database ingestion immediately.
+              {t('wordPressSync.webhookDesc')}
             </p>
 
             <div className="space-y-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">Target Action</label>
+                  <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">{t('wordPressSync.targetActionLabel')}</label>
                   <select
                     value={webhookDetails.event}
                     onChange={e => setWebhookDetails({ ...webhookDetails, event: e.target.value })}
@@ -344,7 +346,7 @@ export default function WordPressSync() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">WP Entity ID</label>
+                  <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">{t('wordPressSync.wpEntityIdLabel')}</label>
                   <input
                     type="number"
                     value={webhookDetails.id}
@@ -355,26 +357,26 @@ export default function WordPressSync() {
               </div>
 
               <div>
-                <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">Content Title</label>
+                <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">{t('wordPressSync.contentTitleLabel')}</label>
                 <input
                   type="text"
                   value={webhookDetails.title}
                   onChange={e => setWebhookDetails({ ...webhookDetails, title: e.target.value })}
-                  placeholder="e.g. Spring playlist release"
+                  placeholder={t('wordPressSync.contentTitlePlaceholder')}
                   className="w-full bg-slate-900 border border-slate-800 rounded p-1.5 text-xs text-white focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">Post Type</label>
+                <label className="block text-[9px] uppercase font-mono text-slate-500 mb-1">{t('wordPressSync.postTypeLabel')}</label>
                 <select
                   value={webhookDetails.type}
                   onChange={e => setWebhookDetails({ ...webhookDetails, type: e.target.value })}
                   className="w-full bg-slate-900 border border-slate-800 rounded p-1.5 text-xs text-slate-300 focus:outline-none"
                 >
-                  <option value="post">Standard Post (News / Articles)</option>
-                  <option value="page">Page (Corporate Compliance / Terms)</option>
-                  <option value="custom_post_type">Custom Post (Music Tracks / Release Album)</option>
+                  <option value="post">{t('wordPressSync.postTypeStandard')}</option>
+                  <option value="page">{t('wordPressSync.postTypePage')}</option>
+                  <option value="custom_post_type">{t('wordPressSync.postTypeCustom')}</option>
                 </select>
               </div>
 
@@ -384,14 +386,14 @@ export default function WordPressSync() {
                 className="w-full py-2 bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/30 text-blue-400 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 <Play className="w-3 h-3" />
-                <span>{webhookTriggering ? 'DISPATCHING PAYLOAD...' : 'DISPATCH SIMULATED WEBHOOK'}</span>
+                <span>{webhookTriggering ? t('wordPressSync.dispatching') : t('wordPressSync.dispatchBtn')}</span>
               </button>
             </div>
           </div>
 
           {webhookResponse && (
             <div className="mt-4 p-3 bg-slate-950 border border-slate-800 rounded-xl">
-              <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest block mb-1">Simulator Webhook Response</span>
+              <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest block mb-1">{t('wordPressSync.webhookResponseLabel')}</span>
               <pre className="text-[10px] text-emerald-400 font-mono overflow-x-auto whitespace-pre-wrap">
                 {JSON.stringify(webhookResponse, null, 2)}
               </pre>
@@ -405,29 +407,29 @@ export default function WordPressSync() {
         <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <History className="w-4 h-4 text-blue-500" />
-            <span>Synchronization Ledger Audit Trail</span>
+            <span>{t('wordPressSync.ledgerHeading')}</span>
           </h3>
 
           <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">
-            {logs.length} Sync records
+            {t('wordPressSync.syncRecords', { count: logs.length })}
           </span>
         </div>
 
         {logs.length === 0 ? (
           <div className="p-8 text-center text-slate-500 text-xs">
-            No synchronization logs recorded yet. Click 'Trigger Manual Sync' above to start content mapping.
+            {t('wordPressSync.emptyLedger')}
           </div>
         ) : (
           <div className="overflow-x-auto max-h-96">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-800 text-[10px] uppercase font-mono tracking-wider text-slate-500">
-                  <th className="py-2.5 px-4 font-normal">Sync ID</th>
-                  <th className="py-2.5 px-4 font-normal">Reference</th>
-                  <th className="py-2.5 px-4 font-normal">Entity Title</th>
-                  <th className="py-2.5 px-4 font-normal">Direction</th>
-                  <th className="py-2.5 px-4 font-normal">Status</th>
-                  <th className="py-2.5 px-4 font-normal">Synchronized Time</th>
+                  <th className="py-2.5 px-4 font-normal">{t('wordPressSync.syncIdHeader')}</th>
+                  <th className="py-2.5 px-4 font-normal">{t('wordPressSync.referenceHeader')}</th>
+                  <th className="py-2.5 px-4 font-normal">{t('wordPressSync.entityTitleHeader')}</th>
+                  <th className="py-2.5 px-4 font-normal">{t('wordPressSync.directionHeader')}</th>
+                  <th className="py-2.5 px-4 font-normal">{t('wordPressSync.statusHeader')}</th>
+                  <th className="py-2.5 px-4 font-normal">{t('wordPressSync.syncTimeHeader')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
@@ -435,7 +437,7 @@ export default function WordPressSync() {
                   <tr key={log.id} className="hover:bg-slate-900/40 text-xs transition duration-150">
                     <td className="py-3 px-4 font-mono text-[10px] text-slate-500">#{log.id}</td>
                     <td className="py-3 px-4 font-mono text-[10px] text-slate-300">
-                      {log.wpId ? `WP_ID:${log.wpId}` : 'N/A'} 
+                      {log.wpId ? `WP_ID:${log.wpId}` : t('wordPressSync.na')} 
                       <span className="text-[9px] px-1.5 py-0.5 bg-slate-800 text-slate-400 ml-1.5 rounded uppercase font-bold text-[8px] tracking-wide">
                         {log.wpType}
                       </span>
@@ -444,7 +446,7 @@ export default function WordPressSync() {
                       {log.title}
                       {log.errorMessage && (
                         <span className="block text-[10px] text-red-400 m-0.5 font-mono italic">
-                          Err: {log.errorMessage}
+                          {t('wordPressSync.err')}: {log.errorMessage}
                         </span>
                       )}
                     </td>
@@ -452,23 +454,23 @@ export default function WordPressSync() {
                       {log.direction === 'wp_to_local' ? (
                         <span className="text-emerald-400 flex items-center gap-1 font-mono text-[10px]">
                           <ArrowRightLeft className="w-3 h-3 animate-pulse text-emerald-400" />
-                          <span>WP &rarr; Local</span>
+                          <span>{t('wordPressSync.directionWpToLocal')}</span>
                         </span>
                       ) : (
                         <span className="text-blue-400 flex items-center gap-1 font-mono text-[10px]">
                           <ArrowRightLeft className="w-3 h-3 text-blue-400" />
-                          <span>Local &rarr; WP</span>
+                          <span>{t('wordPressSync.directionLocalToWp')}</span>
                         </span>
                       )}
                     </td>
                     <td className="py-3 px-4">
                       {log.status === 'synced' ? (
                         <span className="px-2 py-0.5 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 text-[10px] rounded inline-flex items-center gap-1">
-                          <Check className="w-3 h-3" /> SYNCED
+                          <Check className="w-3 h-3" /> {t('wordPressSync.badgeSynced')}
                         </span>
                       ) : (
                         <span className="px-2 py-0.5 bg-red-950/40 border border-red-500/20 text-red-400 text-[10px] rounded inline-flex items-center gap-1">
-                          <AlertTriangle className="w-3 h-3" /> FAILED
+                          <AlertTriangle className="w-3 h-3" /> {t('wordPressSync.badgeFailed')}
                         </span>
                       )}
                     </td>

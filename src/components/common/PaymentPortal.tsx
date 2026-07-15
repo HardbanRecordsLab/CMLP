@@ -84,7 +84,7 @@ export default function PaymentPortal() {
           }
         }, 1500);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Checkout failed');
       console.error(err);
     } finally {
@@ -101,7 +101,7 @@ export default function PaymentPortal() {
       if (res.ok) {
         loadPayments();
       }
-    } catch (err) {
+    } catch (err: unknown) {
       toast.error('Refund failed');
       console.error(err);
     }

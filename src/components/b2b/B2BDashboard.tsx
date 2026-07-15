@@ -7,22 +7,22 @@ import Pagination from '@/components/common/Pagination.tsx';
 
 function B2BOverview() {
   const { t } = useTranslation();
-  const [stats, setStats] = useState<Record<string, any> | null>(null);
-  const [payments, setPayments] = useState<Record<string, any>[]>([]);
+  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
+  const [payments, setPayments] = useState<Record<string, unknown>[]>([]);
   const { fetchWithAuth } = useApi();
 
   useEffect(() => {
     fetchWithAuth(getApiUrl('/api/licenses'))
       .then(res => res.json())
-      .then(data => setStats({ licenses: data as Record<string, any> }))
+      .then(data => setStats({ licenses: data as Record<string, unknown> }))
       .catch(() => {});
     fetchWithAuth(getApiUrl('/api/payments'))
       .then(res => res.json())
-      .then(data => setPayments(Array.isArray(data) ? data as Record<string, any>[] : []))
+      .then(data => setPayments(Array.isArray(data) ? data as Record<string, unknown>[] : []))
       .catch(() => {});
   }, [fetchWithAuth]);
 
-  const activeLicenses = Array.isArray(stats?.licenses) ? (stats.licenses as Array<Record<string, any>>).filter(l => (l as Record<string, any>).status === 'active') : [];
+  const activeLicenses = Array.isArray(stats?.licenses) ? (stats.licenses as Array<Record<string, unknown>>).filter(l => (l as Record<string, unknown>).status === 'active') : [];
   const totalPaid = payments.filter(p => p.status === 'completed').reduce((s, p) => s + (p.amount as number), 0);
 
   return (
@@ -66,18 +66,18 @@ function B2BOverview() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800 bg-slate-900">
-              {payments.slice(0, 5).map((p: Record<string, any>) => (
+              {payments.slice(0, 5).map((p: Record<string, unknown>) => (
                 <tr key={p.id as React.Key} className="hover:bg-slate-800/50">
-                  <td className="px-6 py-4 font-mono text-sm text-white">{((p.amount as number) / 100).toFixed(2)} {p.currency}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-white">{((p.amount as number) / 100).toFixed(2)} {p.currency as string}</td>
                   <td className="px-6 py-4 text-xs text-slate-400 uppercase">{p.gateway as string}</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${
                       p.status === 'completed' ? 'text-emerald-400 bg-emerald-500/10' :
                       p.status === 'failed' ? 'text-red-400 bg-red-500/10' :
                       'text-amber-400 bg-amber-500/10'
-                    }`}>{p.status}</span>
+                    }`}>{p.status as string}</span>
                   </td>
-                  <td className="px-6 py-4 text-right text-xs text-slate-500">{new Date(p.createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 text-right text-xs text-slate-500">{new Date(p.createdAt as string).toLocaleDateString()}</td>
                 </tr>
               ))}
               {payments.length === 0 && (
@@ -93,13 +93,13 @@ function B2BOverview() {
 
 function B2BLicenses() {
   const { t } = useTranslation();
-  const [licenses, setLicenses] = useState<Record<string, any>[]>([]);
+  const [licenses, setLicenses] = useState<Record<string, unknown>[]>([]);
   const { fetchWithAuth } = useApi();
 
   useEffect(() => {
     fetchWithAuth(getApiUrl('/api/licenses'))
       .then(res => res.json())
-      .then(data => setLicenses(Array.isArray(data) ? data as Record<string, any>[] : []))
+      .then(data => setLicenses(Array.isArray(data) ? data as Record<string, unknown>[] : []))
       .catch(() => {});
   }, [fetchWithAuth]);
 
@@ -122,7 +122,7 @@ function B2BLicenses() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 bg-slate-900">
-            {licenses.map((lic: Record<string, any>) => (
+            {licenses.map((lic: Record<string, unknown>) => (
               <tr key={lic.id as React.Key} className="hover:bg-slate-800/50">
                 <td className="px-6 py-4 font-mono text-[11px] text-slate-300">{lic.certificateNumber as string}</td>
                 <td className="px-6 py-4 text-xs text-slate-400 capitalize">{lic.licenseType as string}</td>
@@ -131,10 +131,10 @@ function B2BLicenses() {
                     lic.status === 'active' ? 'text-emerald-400 bg-emerald-500/10' :
                     lic.status === 'expired' ? 'text-red-400 bg-red-500/10' :
                     'text-amber-400 bg-amber-500/10'
-                  }`}>{lic.status}</span>
+                  }`}>{lic.status as string}</span>
                 </td>
-                <td className="px-6 py-4 text-xs text-slate-500">{new Date(lic.issuedAt).toLocaleDateString()}</td>
-                <td className="px-6 py-4 text-xs text-slate-500">{new Date(lic.expiresAt).toLocaleDateString()}</td>
+                <td className="px-6 py-4 text-xs text-slate-500">{new Date(lic.issuedAt as string).toLocaleDateString()}</td>
+                <td className="px-6 py-4 text-xs text-slate-500">{new Date(lic.expiresAt as string).toLocaleDateString()}</td>
                 <td className="px-6 py-4 text-right">
                   <a href={`/cmlp/verify/${lic.certificateNumber}`} className="text-[10px] font-bold text-blue-500 hover:text-blue-400 uppercase tracking-wider">
                     {t('b2bDashboard.viewCertificate')}
@@ -154,13 +154,13 @@ function B2BLicenses() {
 
 function B2BPayments() {
   const { t } = useTranslation();
-  const [payments, setPayments] = useState<Record<string, any>[]>([]);
+  const [payments, setPayments] = useState<Record<string, unknown>[]>([]);
   const { fetchWithAuth } = useApi();
 
   useEffect(() => {
     fetchWithAuth(getApiUrl('/api/payments'))
       .then(res => res.json())
-      .then(data => setPayments(Array.isArray(data) ? data as Record<string, any>[] : []))
+      .then(data => setPayments(Array.isArray(data) ? data as Record<string, unknown>[] : []))
       .catch(() => {});
   }, [fetchWithAuth]);
 
@@ -182,7 +182,7 @@ function B2BPayments() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 bg-slate-900">
-            {payments.map((p: Record<string, any>) => (
+            {payments.map((p: Record<string, unknown>) => (
               <tr key={p.id as React.Key} className="hover:bg-slate-800/50">
                 <td className="px-6 py-4 font-mono text-sm text-white">{((p.amount as number) / 100).toFixed(2)} {p.currency as string}</td>
                 <td className="px-6 py-4 text-xs text-slate-400 uppercase">{p.gateway as string}</td>
@@ -193,9 +193,9 @@ function B2BPayments() {
                     p.status === 'failed' ? 'text-red-400 bg-red-500/10' :
                     p.status === 'refunded' ? 'text-purple-400 bg-purple-500/10' :
                     'text-amber-400 bg-amber-500/10'
-                  }`}>{p.status}</span>
+                  }`}>{p.status as string}</span>
                 </td>
-                <td className="px-6 py-4 text-right text-xs text-slate-500">{new Date(p.createdAt).toLocaleDateString()}</td>
+                <td className="px-6 py-4 text-right text-xs text-slate-500">{new Date(p.createdAt as string).toLocaleDateString()}</td>
               </tr>
             ))}
             {payments.length === 0 && (
@@ -311,9 +311,9 @@ function BuyLicense() {
   );
 }
 
-function MusicBrowser({ onTrackSelect, currentTrack }: { onTrackSelect: (track: Record<string, any>) => void; currentTrack: Record<string, any> | null }) {
+function MusicBrowser({ onTrackSelect, currentTrack }: { onTrackSelect: (track: Record<string, unknown>) => void; currentTrack: Record<string, unknown> | null }) {
   const { t } = useTranslation();
-  const [tracks, setTracks] = useState<Record<string, any>[]>([]);
+  const [tracks, setTracks] = useState<Record<string, unknown>[]>([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -362,9 +362,9 @@ function MusicBrowser({ onTrackSelect, currentTrack }: { onTrackSelect: (track: 
       ) : (
         <>
           <div className="grid grid-cols-1 gap-2">
-            {tracks.map((track: Record<string, any>) => (
+            {tracks.map((track: Record<string, unknown>) => (
               <div
-                key={track.id}
+                key={track.id as React.Key}
                 className={`flex items-center gap-4 p-3 rounded-lg border transition cursor-pointer ${
                   currentTrack?.id === track.id
                     ? 'bg-emerald-900/20 border-emerald-500/30'
@@ -378,11 +378,11 @@ function MusicBrowser({ onTrackSelect, currentTrack }: { onTrackSelect: (track: 
                   {currentTrack?.id === track.id ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
                 </button>
                 <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium truncate">{track.title}</p>
-                  <p className="text-slate-500 text-xs truncate">{track.artist}{track.genre ? ` • ${track.genre}` : ''}{track.bpm ? ` • ${track.bpm} BPM` : ''}</p>
+                  <p className="text-white text-sm font-medium truncate">{track.title as string}</p>
+                  <p className="text-slate-500 text-xs truncate">{track.artist as string}{track.genre ? ` • ${track.genre as string}` : ''}{track.bpm ? ` • ${track.bpm as number} BPM` : ''}</p>
                 </div>
                 {track.durationMs && (
-                  <span className="text-[10px] text-slate-600 font-mono">{Math.floor(track.durationMs / 60000)}:{String(Math.floor((track.durationMs % 60000) / 1000)).padStart(2, '0')}</span>
+                  <span className="text-[10px] text-slate-600 font-mono">{Math.floor((track.durationMs as number) / 60000)}:{String(Math.floor(((track.durationMs as number) % 60000) / 1000)).padStart(2, '0')}</span>
                 )}
               </div>
             ))}
@@ -394,7 +394,7 @@ function MusicBrowser({ onTrackSelect, currentTrack }: { onTrackSelect: (track: 
   );
 }
 
-function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: Record<string, any> | null; onNext: () => void; onPrev: () => void }) {
+function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: Record<string, unknown> | null; onNext: () => void; onPrev: () => void }) {
   const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -450,8 +450,8 @@ function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: Record<stri
         <div className="w-24 h-24 bg-slate-800 rounded-xl flex items-center justify-center mx-auto mb-6 ring-1 ring-slate-700">
           <Music className="w-10 h-10 text-emerald-400" />
         </div>
-        <h2 className="text-xl font-medium text-white mb-1">{currentTrack.title}</h2>
-        <p className="text-sm text-slate-400 mb-6">{currentTrack.artist}</p>
+        <h2 className="text-xl font-medium text-white mb-1">{currentTrack.title as string}</h2>
+        <p className="text-sm text-slate-400 mb-6">{currentTrack.artist as string}</p>
 
         <div className="flex items-center justify-center gap-4 mb-4">
           <button onClick={onPrev} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-white transition">
@@ -492,12 +492,12 @@ function PlayerBar({ currentTrack, onNext, onPrev }: { currentTrack: Record<stri
 export default function B2BDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
-  const [trackList, setTrackList] = useState<Record<string, any>[]>([]);
+  const [trackList, setTrackList] = useState<Record<string, unknown>[]>([]);
   const userData = JSON.parse(localStorage.getItem('auth_user') || '{}');
 
   const currentTrack = trackList[currentTrackIndex] || null;
 
-  const handleTrackSelect = (track: Record<string, any>) => {
+  const handleTrackSelect = (track: Record<string, unknown>) => {
     const idx = trackList.findIndex(t => t.id === track.id);
     if (idx === currentTrackIndex) {
       setCurrentTrackIndex(-1);
@@ -527,7 +527,7 @@ export default function B2BDashboard() {
 
   useEffect(() => {
     if (!currentTrack?.filename) return;
-    const raw = currentTrack.filename;
+    const raw = currentTrack.filename as string;
     const match = raw.match(/\.(mp3|wav|flac|ogg|aac|m4a)$/i);
     if (!match) return;
     const base = raw.slice(0, -(match[0].length));
@@ -537,7 +537,7 @@ export default function B2BDashboard() {
 
     fetch(getApiUrl(`/api/audio/token/${encodeURIComponent(raw)}`), { credentials: 'include' })
       .then(r => r.ok ? r.json() : Promise.reject())
-      .then((data: Record<string, any>) => setAudioSrc(getApiUrl(`/api/audio/${encodeURIComponent(base)}${ext}?uid=${data.uid}&hrl_token=${data.token}`)))
+      .then((data: Record<string, unknown>) => setAudioSrc(getApiUrl(`/api/audio/${encodeURIComponent(base)}${ext}?uid=${data.uid as string}&hrl_token=${data.token as string}`)))
       .catch(() => setAudioSrc(''));
   }, [currentTrack?.filename, userData?.uid]);
 
