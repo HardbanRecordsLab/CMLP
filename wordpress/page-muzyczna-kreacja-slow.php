@@ -9,7 +9,7 @@ get_header();
 ?>
 <style>
 /* ═══════════════════════════════════════════════════════════
-   MKS ENCAPSULATED STYLES — Isolated from theme cascade
+    Muzyczna Kreacja Słów ENCAPSULATED STYLES — Isolated from theme cascade
    Uses design tokens from 00-design-tokens.css
    ═══════════════════════════════════════════════════════════ */
 #mks-page-root {
@@ -649,8 +649,8 @@ jesteś dalej tu. I zawsze tak zostanie.</div>
   if (!root) return;
 
   // ═══════════════════════════════════════════════════════
-  // ZAMÓWIENIA MKS — ładowane dynamicznie z panelu WP
-  // Dodawaj przez WP Admin → MKS Orders → Dodaj zamówienie
+   // ZAMÓWIENIA Muzyczna Kreacja Słów — ładowane dynamicznie z panelu WP
+   // Dodawaj przez WP Admin → Muzyczna Kreacja Słów Orders → Dodaj zamówienie
   // ═══════════════════════════════════════════════════════
   const tracks = <?php
 $orders = HRL_MKS_Orders::get_orders();
@@ -786,9 +786,9 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="wprowadzenie" style="background:rgba(18,15,12,0.15);">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Wprowadzenie do Usługi MKS', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Wprowadzenie do Usługi Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Muzyczna Kreacja Słów (MKS) to autorska usługa HardbanRecords Lab polegająca na tworzeniu spersonalizowanych utworów muzycznych na zamówienie. W przeciwieństwie do generatorów AI, które produkują szablony na podstawie algorytmów, każdy utwór MKS powstaje od podstaw — od wywiadu z klientem, przez ręczne napisanie tekstu, aż po profesjonalne nagranie w studiu.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyczna Kreacja Słów to autorska usługa HardbanRecords Lab polegająca na tworzeniu spersonalizowanych utworów muzycznych na zamówienie. W przeciwieństwie do generatorów AI, które produkują szablony na podstawie algorytmów, każdy utwór Muzyczna Kreacja Słów powstaje od podstaw — od wywiadu z klientem, przez ręczne napisanie tekstu, aż po profesjonalne nagranie w studiu.', 'hrl-theme' ); ?>
         </p>
         <p class="section-desc" style="margin-top:-32px;">
             <?php esc_html_e( 'Usługa łączy w sobie kompetencje z trzech obszarów: poezji użytkowej (pisanie tekstów piosenek na konkretną okazję), kompozycji muzycznej (dobór gatunku, tempa, instrumentarium do zamówionego nastroju) oraz produkcji audio (nagranie, miks, mastering w standardzie -14 LUFS). Rezultatem jest unikalny utwór, który nie istnieje nigdzie indziej na świecie — stworzony specjalnie dla jednej osoby, pary, rodziny lub firmy.', 'hrl-theme' ); ?>
@@ -802,7 +802,7 @@ if ( ! empty( $orders ) ) {
         <p class="section-label"><?php esc_html_e( 'Definicja i Zakres', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Czym Jest Muzyczna Kreacja Słów?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'MKS to usługa typu "utwór na zamówienie" (custom songwriting), realizowana w pełni przez zespół HardbanRecords Lab. Obejmuje wszystkie etapy powstawania utworu: od briefu i wywiadu z klientem, przez autorski tekst i kompozycję, po nagranie, produkcję i mastering w standardzie studyjnym.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyczna Kreacja Słów to usługa typu "utwór na zamówienie" (custom songwriting), realizowana w pełni przez zespół HardbanRecords Lab. Obejmuje wszystkie etapy powstawania utworu: od briefu i wywiadu z klientem, przez autorski tekst i kompozycję, po nagranie, produkcję i mastering w standardzie studyjnym.', 'hrl-theme' ); ?>
         </p>
         <p class="section-desc" style="margin-top:-32px;">
             <?php esc_html_e( 'Zakres usługi obejmuje: piosenki na wesele i pierwszy taniec, urodziny i rocznice, powitanie dziecka, pożegnania i pamiątki, hymny firmowe, dżingle reklamowe, audio logo, muzykę do kampanii marketingowych oraz utwory okolicznościowe na każdą inną wyjątkową okazję. W pakietach Premium i Firmowy klient otrzymuje pełne prawa majątkowe do utworu.', 'hrl-theme' ); ?>
@@ -814,12 +814,12 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="dlaczego" style="background:rgba(18,15,12,0.15);">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Problem Rynku', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Dlaczego Warto Wybrać MKS zamiast AI?', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Dlaczego Warto Wybrać Muzyczną Kreację Słów zamiast AI?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
             <?php esc_html_e( 'Rynek personalizowanych piosenek został zalany przez generatory AI, które obiecują utwór w 5 minut za kilka złotych. Niestety, jakość tych utworów jest niska: teksty są bezosobowe, melodie powtarzalne, wykonanie brzmi sztucznie. Klient dostaje produkt identyczny jak tysiące innych.', 'hrl-theme' ); ?>
         </p>
         <p class="section-desc" style="margin-top:-32px;">
-            <?php esc_html_e( 'MKS rozwiązuje ten problem przez: indywidualny wywiad (pytamy o konkretne wspomnienia, wewnętrzne żarty, miejsca i daty), ręczne pisanie tekstu (każde słowo jest celowe), profesjonalną aranżację (dobór instrumentów i gatunku do historii) oraz studyjne nagranie z realnymi wokalami. Rezultat: utwór, który brzmi jak prawdziwa piosenka.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyczna Kreacja Słów rozwiązuje ten problem przez: indywidualny wywiad (pytamy o konkretne wspomnienia, wewnętrzne żarty, miejsca i daty), ręczne pisanie tekstu (każde słowo jest celowe), profesjonalną aranżację (dobór instrumentów i gatunku do historii) oraz studyjne nagranie z realnymi wokalami. Rezultat: utwór, który brzmi jak prawdziwa piosenka.', 'hrl-theme' ); ?>
         </p>
     </div>
 </section>
@@ -828,9 +828,9 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="jak-dziala">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Mechanizm Działania', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Jak Działa MKS?', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Jak Działa Muzyczna Kreacja Słów?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Proces tworzenia utworu w MKS składa się z czterech faz: Brief (klient wypełnia formularz lub odbywa rozmowę, zbieramy informacje o okazji, osobie, wspomnieniach i preferencjach), Kompozycja (piszemy tekst i komponujemy melodię, klient otrzymuje demo do akceptacji), Produkcja (po akceptacji tekstu nagrywamy utwór w studiu — wokal, instrumenty, miks i mastering), Dostawa (klient otrzymuje gotowy utwór w MP3 i WAV z pełnymi prawami majątkowymi).', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Proces tworzenia utworu w Muzyczna Kreacja Słów składa się z czterech faz: Brief (klient wypełnia formularz lub odbywa rozmowę, zbieramy informacje o okazji, osobie, wspomnieniach i preferencjach), Kompozycja (piszemy tekst i komponujemy melodię, klient otrzymuje demo do akceptacji), Produkcja (po akceptacji tekstu nagrywamy utwór w studiu — wokal, instrumenty, miks i mastering), Dostawa (klient otrzymuje gotowy utwór w MP3 i WAV z pełnymi prawami majątkowymi).', 'hrl-theme' ); ?>
         </p>
     </div>
 </section>
@@ -839,9 +839,9 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="funkcje" style="background:rgba(18,15,12,0.15);">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Oferta', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Kluczowe Funkcje MKS', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Kluczowe Funkcje Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'MKS oferuje funkcjonalności niedostępne w masowych generatorach online.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyczna Kreacja Słów oferuje funkcjonalności niedostępne w masowych generatorach online.', 'hrl-theme' ); ?>
         </p>
         <div class="product-grid">
             <div class="product-card"><div class="product-card-icon">✍️</div><h3><?php esc_html_e( 'Ręcznie Pisany Tekst', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Każde słowo pisane przez człowieka. Twoje wspomnienia, wewnętrzne żarty, konkretne daty i miejsca. Zero losowych fraz z bazy AI.', 'hrl-theme' ); ?></p></div>
@@ -858,9 +858,9 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="technologie">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Zaplecze Techniczne', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Technologie w MKS', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Technologie w Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Mimo że MKS stawia na ludzką kreatywność, wspieramy się nowoczesnymi technologiami studyjnymi, aby zapewnić najwyższą jakość produkcji.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyczna Kreacja Słów stawia na ludzką kreatywność, wspieramy się nowoczesnymi technologiami studyjnymi, aby zapewnić najwyższą jakość produkcji.', 'hrl-theme' ); ?>
         </p>
         <div class="product-grid">
             <div class="product-card"><div class="product-card-icon">🎚️</div><h3><?php esc_html_e( 'DAW: Pro Tools + Logic Pro', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Nagrania w Pro Tools Ultimate i Logic Pro. Edycja, korekcja wysokości (Melodyne), timing, komp editing.', 'hrl-theme' ); ?></p></div>
@@ -874,8 +874,8 @@ if ( ! empty( $orders ) ) {
 <!-- ════════════════════════ SEKCJA 7: KORZYŚCI ════════════════════════ -->
 <section class="section" id="korzysci" style="background:rgba(18,15,12,0.15);">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Dlaczego MKS', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Korzyści z Zakupu Utworu MKS', 'hrl-theme' ); ?></h2>
+        <p class="section-label"><?php esc_html_e( 'Dlaczego Muzyczna Kreacja Słów', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Korzyści z Zakupu Utworu Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
             <?php esc_html_e( 'Zamawiając utwór w Muzycznej Kreacji Słów, otrzymujesz coś więcej niż plik audio.', 'hrl-theme' ); ?>
         </p>
@@ -892,12 +892,12 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="zastosowania">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Zastosowania', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Zastosowania MKS', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Zastosowania Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'MKS znajduje zastosowanie w wielu sytuacjach — od prywatnych po korporacyjne.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyczna Kreacja Słów znajduje zastosowanie w wielu sytuacjach — od prywatnych po korporacyjne.', 'hrl-theme' ); ?>
         </p>
         <div class="product-grid">
-            <div class="product-card"><div class="product-card-icon">💍</div><h3><?php esc_html_e( 'Śluby i Rocznice', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Piosenka na pierwszy taniec, prezent dla małżonka. Utwór opowiadający historię związku. Najpopularniejsza kategoria MKS.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><div class="product-card-icon">💍</div><h3><?php esc_html_e( 'Śluby i Rocznice', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Piosenka na pierwszy taniec, prezent dla małżonka. Utwór opowiadający historię związku. Najpopularniejsza kategoria Muzyczna Kreacja Słów.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">🎂</div><h3><?php esc_html_e( 'Urodziny i Imieniny', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Prezent na 18, 30, 50 urodziny. Żartobliwy lub wzruszający utwór. Możliwość zaskoczenia jubilata.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">👶</div><h3><?php esc_html_e( 'Narodziny i Chrzciny', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Kołysanka dla dziecka z imieniem w tekście. Pamiątka na całe życie.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">💫</div><h3><?php esc_html_e( 'Pożegnania i Pamiątki', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utrwalenie wspomnień o bliskiej osobie w formie piosenki. Pełna ciepła, bez nadmiernego patosu.', 'hrl-theme' ); ?></p></div>
@@ -927,7 +927,7 @@ if ( ! empty( $orders ) ) {
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Ochrona i Prawa', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Bezpieczeństwo i Prawa Autorskie', 'hrl-theme' ); ?></h2>
-        <p class="section-desc"><?php esc_html_e( 'MKS przykłada ogromną wagę do kwestii prawnych związanych z prawami autorskimi i poufnością.', 'hrl-theme' ); ?></p>
+        <p class="section-desc">            <?php esc_html_e( 'Muzyczna Kreacja Słów przykłada ogromną wagę do kwestii prawnych związanych z prawami autorskimi i poufnością.', 'hrl-theme' ); ?></p>
         <div class="product-grid">
             <div class="product-card"><div class="product-card-icon">📜</div><h3><?php esc_html_e( 'Przeniesienie Praw', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'W pakietach Premium i Firmowy prawa majątkowe przechodzą na klienta. Umowa pisemna w formie elektronicznej.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">🔒</div><h3><?php esc_html_e( 'Poufność', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Wszystkie informacje z briefu są poufne. Nie publikujemy utworów bez zgody klienta.', 'hrl-theme' ); ?></p></div>
@@ -942,11 +942,11 @@ if ( ! empty( $orders ) ) {
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Platformy i Media', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Integracje i Platformy', 'hrl-theme' ); ?></h2>
-        <p class="section-desc"><?php esc_html_e( 'MKS współpracuje z platformami dystrybucyjnymi i streamingowymi.', 'hrl-theme' ); ?></p>
+        <p class="section-desc">            <?php esc_html_e( 'Muzyczna Kreacja Słów współpracuje z platformami dystrybucyjnymi i streamingowymi.', 'hrl-theme' ); ?></p>
         <div class="product-grid">
             <div class="product-card"><div class="product-card-icon">🎵</div><h3><?php esc_html_e( 'Dystrybucja Streamingowa', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Publikujemy utwór na Spotify, Apple Music, Tidal przez dystrybutora. Klient zachowuje 100% tantiem.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">📺</div><h3><?php esc_html_e( 'Reklama i Synchronizacja', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory Firmowe mogą być użyte w reklamie TV, radio, social media. Wystawiamy licencję synch.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><div class="product-card-icon">📱</div><h3><?php esc_html_e( 'Social Media', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory MKS sprawdzają się jako muzyka do rolek, stories, filmów na Instagramie, TikToku i YouTube bez blokad.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><div class="product-card-icon">📱</div><h3><?php esc_html_e( 'Social Media', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory Muzyczna Kreacja Słów sprawdzają się jako muzyka do rolek, stories, filmów na Instagramie, TikToku i YouTube bez blokad.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">📻</div><h3><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Wybrane utwory (za zgodą klienta) emitowane w Radiu HRL Live jako przykład możliwości twórczych.', 'hrl-theme' ); ?></p></div>
         </div>
     </div>
@@ -971,7 +971,7 @@ if ( ! empty( $orders ) ) {
 <section class="section" id="slownik" style="background:rgba(18,15,12,0.15);">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Definicje', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Słownik Pojęć MKS', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Słownik Pojęć Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h2>
         <p class="section-desc"><?php esc_html_e( 'Kluczowe terminy używane w kontekście usługi Muzyczna Kreacja Słów.', 'hrl-theme' ); ?></p>
         <div class="product-grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
             <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'Songwriting (pisanie piosenek)', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Proces twórczy polegający na napisaniu tekstu i melodii utworu muzycznego. Obejmuje dobór słów, rymów, struktury zwrotek i refrenu.', 'hrl-theme' ); ?></p></div>

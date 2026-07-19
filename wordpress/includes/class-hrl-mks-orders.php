@@ -28,16 +28,16 @@ class HRL_MKS_Orders {
     public static function register_post_type() {
         register_post_type( self::POST_TYPE, array(
             'labels' => array(
-                'name'               => 'Zamówienia MKS',
-                'singular_name'      => 'Zamówienie MKS',
+                'name'               => 'Zamówienia Muzyczna Kreacja Słów',
+                'singular_name'      => 'Zamówienie Muzyczna Kreacja Słów',
                 'add_new'            => 'Dodaj zamówienie',
-                'add_new_item'       => 'Dodaj nowe zamówienie MKS',
+                'add_new_item'       => 'Dodaj nowe zamówienie Muzyczna Kreacja Słów',
                 'edit_item'          => 'Edytuj zamówienie',
                 'new_item'           => 'Nowe zamówienie',
                 'view_item'          => 'Zobacz zamówienie',
                 'search_items'       => 'Szukaj zamówień',
                 'not_found'          => 'Nie znaleziono zamówień',
-                'menu_name'          => 'MKS Orders',
+                'menu_name'          => 'Muzyczna Kreacja Słów',
             ),
             'public'              => true,
             'publicly_queryable'  => false,

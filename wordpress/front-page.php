@@ -68,7 +68,7 @@ get_header();
             <div class="product-showcase-visual">
                 <div class="product-showcase-card product-showcase-card-accent">
                     <div class="product-showcase-icon">
-                        <span style="font-size:2.5rem;font-weight:800;color:var(--gold);font-family:var(--font-accents);">MKS</span>
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/muzyczna-kreacja-slow-logo.svg" alt="Muzyczna Kreacja Słów" class="product-logo" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=font-size:1.8rem;font-weight:700;color:var(--gold);font-family:var(--font-accents);white-space:nowrap;>Muzyczna Kreacja Słów</span>'">
                     </div>
                     <p class="product-showcase-tag"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></p>
                     <h2 class="product-showcase-title"><?php esc_html_e( 'Tworzymy muzykę, która opowiada Twoją historię', 'hrl-theme' ); ?></h2>
