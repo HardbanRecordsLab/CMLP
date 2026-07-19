@@ -3,12 +3,8 @@
  * Commercial Music Licensing Platform — Strona Produktowa
  * Profesjonalna strona produktu B2B SaaS klasy premium.
  *
- * Hero → Zaufanie → Problem → Rozwiązanie → Funkcjonalności
- * → Korzyści → Dla kogo → Bezpieczeństwo → Technologia
- * → Wdrożenie → Pakiety → FAQ → Kontakt
- *
  * @package HRL_Theme
- * @version 5.0.0
+ * @version 6.0.0
  */
 
 get_header();
@@ -17,126 +13,92 @@ get_header();
 <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
 <section class="hero">
     <div class="hero-content">
-        <p class="hero-eyebrow"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></p>
+        <p class="hero-eyebrow"><?php esc_html_e( 'COMMERCIAL MUSIC LICENSING PLATFORM (CMLP)', 'hrl-theme' ); ?></p>
         <h1>
-            <?php esc_html_e( 'Muzyka komercyjna', 'hrl-theme' ); ?>
-            <span class="gold-text"><?php esc_html_e( 'dla biznesu.', 'hrl-theme' ); ?></span>
-            <br><?php esc_html_e( 'Jedna platforma. Jedno zarządzanie. Jedna licencja.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Muzyka komercyjna dla nowoczesnego biznesu', 'hrl-theme' ); ?>
         </h1>
         <p class="hero-desc">
-            <?php esc_html_e( 'Profesjonalne rozwiązanie dla firm, które chcą zarządzać muzyką w swoich lokalach w sposób prosty, bezpieczny i zgodny z warunkami współpracy. Autorska biblioteka muzyczna, panel zarządzania, streaming i narzędzia wspierające codzienną pracę — w jednym systemie.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Profesjonalna platforma do zarządzania autorską muzyką komercyjną w firmach. Commercial Music Licensing Platform (CMLP) umożliwia centralne zarządzanie biblioteką muzyczną, odtwarzaniem, lokalizacjami i użytkownikami z jednego panelu administracyjnego.', 'hrl-theme' ); ?>
+        </p>
+        <p class="text-secondary" style="max-width:700px;margin:1.5rem auto 0;line-height:1.8;">
+            <?php esc_html_e( 'Platforma została zaprojektowana z myślą o przedsiębiorcach, którzy oczekują wygodnego, skalowalnego i profesjonalnego rozwiązania wspierającego codzienną działalność.', 'hrl-theme' ); ?>
         </p>
         <div class="hero-actions">
-            <a href="#pakiety" class="btn btn-primary"><?php esc_html_e( 'Poznaj Platformę', 'hrl-theme' ); ?></a>
+            <a href="#funkcjonalnosci" class="btn btn-primary"><?php esc_html_e( 'Poznaj możliwości platformy', 'hrl-theme' ); ?></a>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-secondary"><?php esc_html_e( 'Umów konsultację', 'hrl-theme' ); ?></a>
-        </div>
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <div class="hero-stat-number" data-count="100">0</div>
-                <div class="hero-stat-label"><?php esc_html_e( '% autorskiej muzyki', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-number" data-count="0">0</div>
-                <div class="hero-stat-label"><?php esc_html_e( 'Opłat OZZ', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-number" data-count="24">0</div>
-                <div class="hero-stat-label"><?php esc_html_e( '/ 7 streaming', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-number" data-count="5">0</div>
-                <div class="hero-stat-label"><?php esc_html_e( 'Pakietów do wyboru', 'hrl-theme' ); ?></div>
-            </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════════ PASEK ZAUFANIA ════════════════════════════ -->
-<section class="section section-sm section-dark">
+<!-- ════════════════════════════ CZYM JEST CMLP ════════════════════════════ -->
+<section class="section section-dark">
     <div class="container">
-        <div class="trust-grid flex flex-wrap justify-center gap-6 text-center">
-            <div class="trust-item"><span class="text-2xl text-accent block">🎼</span><span class="text-sm text-secondary"><?php esc_html_e( 'Autorska biblioteka muzyczna', 'hrl-theme' ); ?></span></div>
-            <div class="trust-item"><span class="text-2xl text-accent block">🎵</span><span class="text-sm text-secondary"><?php esc_html_e( 'Streaming Premium Audio', 'hrl-theme' ); ?></span></div>
-            <div class="trust-item"><span class="text-2xl text-accent block">📜</span><span class="text-sm text-secondary"><?php esc_html_e( 'Direct Licensing', 'hrl-theme' ); ?></span></div>
-            <div class="trust-item"><span class="text-2xl text-accent block">💻</span><span class="text-sm text-secondary"><?php esc_html_e( 'Panel B2B', 'hrl-theme' ); ?></span></div>
-            <div class="trust-item"><span class="text-2xl text-accent block">🏢</span><span class="text-sm text-secondary"><?php esc_html_e( 'White Label', 'hrl-theme' ); ?></span></div>
-            <div class="trust-item"><span class="text-2xl text-accent block">🛡️</span><span class="text-sm text-secondary"><?php esc_html_e( 'Bezpieczne zarządzanie', 'hrl-theme' ); ?></span></div>
+        <p class="section-label"><?php esc_html_e( 'Czym jest CMLP', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></h2>
+        <div class="container-sm text-center">
+            <p class="text-secondary text-lg" style="line-height:1.8;max-width:800px;margin:0 auto;">
+                <?php esc_html_e( 'Commercial Music Licensing Platform to autorska platforma B2B rozwijana przez HardbanRecords Lab. Łączy bibliotekę muzyczną, streaming, zarządzanie playlistami oraz narzędzia administracyjne w jednym, spójnym systemie.', 'hrl-theme' ); ?>
+            </p>
+            <p class="text-secondary" style="line-height:1.8;max-width:800px;margin:1.5rem auto 0;">
+                <?php esc_html_e( 'Zamiast korzystać z wielu niezależnych narzędzi, przedsiębiorca otrzymuje jedno środowisko umożliwiające zarządzanie muzyką we wszystkich lokalizacjach z poziomu jednego panelu administracyjnego.', 'hrl-theme' ); ?>
+            </p>
+            <p class="text-secondary" style="line-height:1.8;max-width:800px;margin:1.5rem auto 0;">
+                <?php esc_html_e( 'Platforma została zaprojektowana z myślą o prostocie obsługi, bezpieczeństwie oraz łatwej rozbudowie wraz z rozwojem firmy.', 'hrl-theme' ); ?>
+            </p>
         </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════ DLA KOGO ════════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Dla kogo', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Dla kogo powstała platforma?', 'hrl-theme' ); ?></h2>
+        <p class="section-desc">
+            <?php esc_html_e( 'Commercial Music Licensing Platform została przygotowana dla firm, które wykorzystują muzykę jako element budowania doświadczeń swoich klientów.', 'hrl-theme' ); ?>
+        </p>
+        <p class="text-secondary text-center" style="max-width:700px;margin:0 auto 2rem;">
+            <?php esc_html_e( 'Platforma sprawdzi się między innymi w:', 'hrl-theme' ); ?>
+        </p>
+        <div class="audience-grid">
+            <div class="audience-card reveal-up"><div class="audience-icon">🍽️</div><h4><?php esc_html_e( 'Restauracjach', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">☕</div><h4><?php esc_html_e( 'Kawiarniach', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🏨</div><h4><?php esc_html_e( 'Hotelach', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">💆</div><h4><?php esc_html_e( 'Salonach beauty', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">💅</div><h4><?php esc_html_e( 'Gabinetach kosmetycznych', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">💪</div><h4><?php esc_html_e( 'Klubach fitness', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🛒</div><h4><?php esc_html_e( 'Sklepach', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🏪</div><h4><?php esc_html_e( 'Showroomach', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🏢</div><h4><?php esc_html_e( 'Biurach', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🤝</div><h4><?php esc_html_e( 'Przestrzeniach coworkingowych', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🔗</div><h4><?php esc_html_e( 'Sieciach franczyzowych', 'hrl-theme' ); ?></h4></div>
+            <div class="audience-card reveal-up"><div class="audience-icon">🛎️</div><h4><?php esc_html_e( 'Obiektach usługowych', 'hrl-theme' ); ?></h4></div>
+        </div>
+        <p class="text-secondary text-center" style="max-width:700px;margin:2rem auto 0;">
+            <?php esc_html_e( 'Niezależnie od liczby lokalizacji całą infrastrukturą muzyczną można zarządzać z jednego miejsca.', 'hrl-theme' ); ?>
+        </p>
     </div>
 </section>
 
 <!-- ════════════════════════════ DLACZEGO CMLP ════════════════════════════ -->
 <section class="section section-dark">
-    <div class="container-sm text-center">
-        <p class="section-label"><?php esc_html_e( 'Dlaczego CMLP', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Profesjonalna platforma do zarządzania muzyką komercyjną', 'hrl-theme' ); ?></h2>
-        <p class="text-secondary text-lg max-w-2xl mx-auto">
-            <?php esc_html_e( 'Commercial Music Licensing Platform została zaprojektowana z myślą o przedsiębiorcach, którzy oczekują wygodnego i nowoczesnego sposobu zarządzania muzyką w swoich lokalach. Łączy autorską bibliotekę muzyczną, panel administracyjny, streaming oraz narzędzia wspierające codzienną pracę w jednym systemie.', 'hrl-theme' ); ?>
-        </p>
-    </div>
-</section>
-
-<!-- ════════════════════════════ PROBLEM ════════════════════════════ -->
-<section class="section">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Problem', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Zarządzanie muzyką nie powinno być skomplikowane', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Przedsiębiorcy każdego dnia mierzą się z koniecznością zarządzania wieloma lokalami, różnymi urządzeniami, playlistami oraz dostępami pracowników. CMLP porządkuje wszystkie te elementy w jednym miejscu.', 'hrl-theme' ); ?>
+        <p class="section-label"><?php esc_html_e( 'Dlaczego CMLP', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Dlaczego Commercial Music Licensing Platform?', 'hrl-theme' ); ?></h2>
+        <p class="text-secondary text-center" style="max-width:700px;margin:0 auto 2rem;">
+            <?php esc_html_e( 'Platforma została zaprojektowana tak, aby uprościć codzienne zarządzanie muzyką w firmie.', 'hrl-theme' ); ?>
         </p>
-        <div class="benefits-grid" style="grid-template-columns: repeat(4, 1fr);">
-            <div class="benefit-card" style="text-align:left;">
-                <span style="font-size:1.5rem;">🔀</span>
-                <h4 style="margin-top:0.8rem;"><?php esc_html_e( 'Niespójna muzyka', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Różne playlisty w różnych lokalach, brak jednolitego standardu.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card" style="text-align:left;">
-                <span style="font-size:1.5rem;">⏱️</span>
-                <h4 style="margin-top:0.8rem;"><?php esc_html_e( 'Ręczne aktualizacje', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Każda zmiana playlisty wymaga fizycznej obecności przy urządzeniu.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card" style="text-align:left;">
-                <span style="font-size:1.5rem;">❓</span>
-                <h4 style="margin-top:0.8rem;"><?php esc_html_e( 'Nieczytelna administracja', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Brak centralnego wglądu w to, jaka muzyka gra w którym lokalu.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card" style="text-align:left;">
-                <span style="font-size:1.5rem;">🔓</span>
-                <h4 style="margin-top:0.8rem;"><?php esc_html_e( 'Brak kontroli', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Pracownicy samodzielnie wybierają muzykę, co prowadzi do chaosu.', 'hrl-theme' ); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════════ ROZWIĄZANIE ════════════════════════════ -->
-<section class="section section-dark">
-    <div class="container" style="max-width:800px;text-align:center;">
-        <p class="section-label"><?php esc_html_e( 'Rozwiązanie', 'hrl-theme' ); ?></p>
-        <h2 class="section-title" style="font-size:2.2rem;"><?php esc_html_e( 'Jedna platforma. Wszystkie narzędzia.', 'hrl-theme' ); ?></h2>
-        <p style="color:var(--text-secondary);line-height:1.8;max-width:650px;margin:0 auto 3rem;">
-            <?php esc_html_e( 'Z jednego panelu zarządzasz całą infrastrukturą muzyczną swojej firmy. Bez przełączania się między systemami. Bez ręcznych aktualizacji. Bez martwienia się o zgodność prawną.', 'hrl-theme' ); ?>
-        </p>
-        <div class="ecosystem-grid" style="margin-top:0;">
-            <div class="eco-card reveal-up">
-                <div class="eco-icon">🎵</div>
-                <h3><?php esc_html_e( 'Streaming Premium Audio', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Autorska biblioteka muzyczna dostępna online z możliwością tworzenia własnych playlist i harmonogramów.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="eco-card reveal-up">
-                <div class="eco-icon">💻</div>
-                <h3><?php esc_html_e( 'Panel B2B', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Zarządzaj lokalami, użytkownikami, playlistami i urządzeniami z jednego miejsca.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="eco-card reveal-up">
-                <div class="eco-icon">🏢</div>
-                <h3><?php esc_html_e( 'White Label', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Udostępniaj własny odtwarzacz z logo i identyfikacją wizualną swojej firmy.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="eco-card reveal-up">
-                <div class="eco-icon">📜</div>
-                <h3><?php esc_html_e( 'Certyfikaty', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Automatycznie generowane dokumenty potwierdzające korzystanie z autorskiej biblioteki.', 'hrl-theme' ); ?></p>
+        <div style="max-width:700px;margin:0 auto;">
+            <p class="text-primary" style="font-weight:600;margin-bottom:1rem;"><?php esc_html_e( 'Najważniejsze korzyści:', 'hrl-theme' ); ?></p>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.8rem;">
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'jedna platforma do zarządzania', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'jedna biblioteka muzyczna', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'centralne zarządzanie lokalizacjami', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'wygodne tworzenie playlist', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'szybkie przypisywanie muzyki do wybranych obiektów', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'zarządzanie użytkownikami', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'dostęp online z dowolnego miejsca', 'hrl-theme' ); ?></div>
+                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);"><span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php esc_html_e( 'możliwość dalszej rozbudowy', 'hrl-theme' ); ?></div>
             </div>
         </div>
     </div>
@@ -145,198 +107,58 @@ get_header();
 <!-- ════════════════════════════ FUNKCJONALNOŚCI ════════════════════════════ -->
 <section class="section" id="funkcjonalnosci">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Funkcjonalności', 'hrl-theme' ); ?></p>
+        <p class="section-label"><?php esc_html_e( 'Główne funkcjonalności', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Wszystko czego potrzebujesz do zarządzania muzyką', 'hrl-theme' ); ?></h2>
         <div class="benefits-grid">
             <div class="benefit-card reveal-fade">
                 <div class="benefit-icon">📡</div>
-                <h4><?php esc_html_e( 'Streaming FLAC 24-bit', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Bezstratna jakość dźwięku. Profesjonalny mastering studyjny. Pasmo 20Hz–22kHz, dynamika 120dB.', 'hrl-theme' ); ?></p>
+                <h4><?php esc_html_e( 'Biblioteka muzyczna', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Przeglądaj i organizuj autorską bibliotekę muzyczną w jednym miejscu. Wyszukuj utwory według kategorii, nastroju, gatunku lub przeznaczenia.', 'hrl-theme' ); ?></p>
             </div>
             <div class="benefit-card reveal-fade">
                 <div class="benefit-icon">🎼</div>
                 <h4><?php esc_html_e( 'Zarządzanie playlistami', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Twórz playlisty, definiuj harmonogramy dzienne i przypisuj je do konkretnych lokalizacji.', 'hrl-theme' ); ?></p>
+                <p><?php esc_html_e( 'Twórz playlisty dopasowane do różnych lokalizacji, godzin pracy, wydarzeń lub sezonów. Zmiany wprowadzane są centralnie i dostępne dla wszystkich przypisanych urządzeń.', 'hrl-theme' ); ?></p>
             </div>
             <div class="benefit-card reveal-fade">
                 <div class="benefit-icon">🕒</div>
-                <h4><?php esc_html_e( 'Harmonogram dzienny', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Automatyczne przełączanie nastrojów muzycznych w zależności od pory dnia. Poranek, popołudnie, wieczór.', 'hrl-theme' ); ?></p>
+                <h4><?php esc_html_e( 'Streaming', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Odtwarzaj muzykę w sposób wygodny i stabilny z wykorzystaniem dedykowanego odtwarzacza dostępnego z poziomu platformy.', 'hrl-theme' ); ?></p>
             </div>
             <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">📊</div>
-                <h4><?php esc_html_e( 'Dashboard analityczny', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Dane w czasie rzeczywistym: liczba odtworzeń, czas słuchania, preferencje per lokal. Eksport CSV i PDF.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🔄</div>
-                <h4><?php esc_html_e( 'API REST', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Integracja z systemami POS, aplikacjami mobilnymi i panelami zarządzania. Autoryzacja JWT.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">📱</div>
-                <h4><?php esc_html_e( 'Multi-Device', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Odtwarzacz na tabletach, laptopach i smartfonach. Synchronizacja playlist w chmurze.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">✅</div>
-                <h4><?php esc_html_e( 'Automatyczne certyfikaty', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Certyfikat generowany przy aktywacji subskrypcji. Kod QR do natychmiastowej weryfikacji.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🧠</div>
-                <h4><?php esc_html_e( 'AI Playlist Generator', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Algorytm analizuje profil lokalu, godzinę i preferencje, automatycznie dobierając utwory.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🔒</div>
-                <h4><?php esc_html_e( 'Bezpieczeństwo', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Wielowarstwowe zabezpieczenia, X-Accel-Redirect, szyfrowanie TLS 1.3, autoryzacja JWT.', 'hrl-theme' ); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════════ NAJWAŻNIEJSZE KORZYŚCI ════════════════════════════ -->
-<section class="section section-dark">
-    <div class="container" style="max-width:800px;text-align:center;">
-        <p class="section-label"><?php esc_html_e( 'Korzyści', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Dlaczego przedsiębiorcy wybierają CMLP', 'hrl-theme' ); ?></h2>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem;text-align:left;">
-            <?php
-            $benefits_list = array(
-                __( 'Jedno konto — wszystkie lokalizacje', 'hrl-theme' ),
-                __( 'Centralne zarządzanie muzyką', 'hrl-theme' ),
-                __( 'Autorska biblioteka audio', 'hrl-theme' ),
-                __( 'Streaming bez dodatkowego sprzętu', 'hrl-theme' ),
-                __( 'Własny odtwarzacz z brandingiem', 'hrl-theme' ),
-                __( 'Raportowanie w czasie rzeczywistym', 'hrl-theme' ),
-                __( 'Obsługa wielu lokalizacji', 'hrl-theme' ),
-                __( 'Bezpieczny dostęp dla personelu', 'hrl-theme' ),
-            );
-            foreach ( $benefits_list as $benefit ) : ?>
-                <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;font-size:0.95rem;color:var(--text-secondary);">
-                    <span style="color:var(--gold);font-size:1.1rem;">✓</span> <?php echo esc_html( $benefit ); ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div style="margin-top:2rem;">
-            <a href="#pakiety" class="btn btn-primary"><?php esc_html_e( 'Porównaj pakiety →', 'hrl-theme' ); ?></a>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════════ DLA KOGO ════════════════════════════ -->
-<section class="section" id="dla-kogo">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Dla kogo', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Platforma zaprojektowana dla biznesu', 'hrl-theme' ); ?></h2>
-        <div class="audience-grid">
-            <div class="audience-card reveal-up">
-                <div class="audience-icon">🍽️</div>
-                <h4><?php esc_html_e( 'Restauracje', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Zarządzaj muzyką we wszystkich salach z jednego miejsca. Stwórz odpowiedni nastrój dla gości.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="audience-card reveal-up">
-                <div class="audience-icon">☕</div>
-                <h4><?php esc_html_e( 'Kawiarnie', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Spokojna muzyka akustyczna, jazz i bossa nova. Buduj klimat, który zatrzymuje klientów na dłużej.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="audience-card reveal-up">
-                <div class="audience-icon">🏨</div>
-                <h4><?php esc_html_e( 'Hotele', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Steruj muzyką dla wielu stref jednocześnie — lobby, restauracja, spa, basen.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="audience-card reveal-up">
-                <div class="audience-icon">💪</div>
-                <h4><?php esc_html_e( 'Fitness', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Dynamiczne playlisty dopasowane do rodzaju treningów. Muzyka, która motywuje.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="audience-card reveal-up">
-                <div class="audience-icon">🛒</div>
-                <h4><?php esc_html_e( 'Retail', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Buduj doświadczenie zakupowe poprzez odpowiednio dobraną muzykę w całej sieci sklepów.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="audience-card reveal-up">
-                <div class="audience-icon">🏢</div>
-                <h4><?php esc_html_e( 'Franczyzy', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Jednolita muzyka we wszystkich lokalizacjach. Centralne zarządzanie z jednego panelu.', 'hrl-theme' ); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════════ BEZPIECZEŃSTWO ════════════════════════════ -->
-<section class="section section-dark" id="bezpieczenstwo">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Bezpieczeństwo', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Dane i muzyka pod pełną kontrolą', 'hrl-theme' ); ?></h2>
-        <p class="section-desc"><?php esc_html_e( 'Platforma została zaprojektowana z myślą o bezpiecznym udostępnianiu muzyki oraz zarządzaniu dostępami użytkowników.', 'hrl-theme' ); ?></p>
-        <div class="benefits-grid">
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🔐</div>
-                <h4><?php esc_html_e( 'Bezpieczna autoryzacja', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Dostęp przez token JWT z opcjonalnym uwierzytelnianiem dwuskładnikowym.', 'hrl-theme' ); ?></p>
+                <div class="benefit-icon">📍</div>
+                <h4><?php esc_html_e( 'Zarządzanie lokalizacjami', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Obsługuj jedną lub wiele lokalizacji z jednego panelu administracyjnego. Każdy obiekt może posiadać własne ustawienia, playlisty i użytkowników.', 'hrl-theme' ); ?></p>
             </div>
             <div class="benefit-card reveal-fade">
                 <div class="benefit-icon">👥</div>
-                <h4><?php esc_html_e( 'Kontrola dostępu', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Różne poziomy uprawnień dla managerów, pracowników i administratorów.', 'hrl-theme' ); ?></p>
+                <h4><?php esc_html_e( 'Zarządzanie użytkownikami', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Twórz konta pracowników, nadawaj role oraz kontroluj zakres dostępu do poszczególnych funkcji systemu.', 'hrl-theme' ); ?></p>
             </div>
             <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🛡️</div>
-                <h4><?php esc_html_e( 'Chronione pliki', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'X-Accel-Redirect — bezpośrednie URLe do plików audio nie są publicznie dostępne.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">📦</div>
-                <h4><?php esc_html_e( 'Kopie zapasowe', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Backup co 6 godzin przechowywany w dwóch geograficznie oddalonych lokalizacjach.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🔍</div>
-                <h4><?php esc_html_e( 'Stały monitoring', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'Monitoring 24/7 z alertami w czasie rzeczywistym. Szybka reakcja na incydenty.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="benefit-card reveal-fade">
-                <div class="benefit-icon">🔒</div>
-                <h4><?php esc_html_e( 'Szyfrowanie', 'hrl-theme' ); ?></h4>
-                <p><?php esc_html_e( 'TLS 1.3 na wszystkich połączeniach. Zgodność z RODO i standardami bezpieczeństwa.', 'hrl-theme' ); ?></p>
+                <div class="benefit-icon">📊</div>
+                <h4><?php esc_html_e( 'Raporty', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Monitoruj aktywność platformy oraz zarządzaj informacjami dotyczącymi przypisanych lokalizacji i konfiguracji systemu.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════════ TECHNOLOGIA ════════════════════════════ -->
-<section class="section">
-    <div class="container" style="max-width:800px;text-align:center;">
-        <p class="section-label"><?php esc_html_e( 'Technologia', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Nowoczesna infrastruktura dla biznesu', 'hrl-theme' ); ?></h2>
-        <p style="color:var(--text-secondary);line-height:1.8;max-width:650px;margin:0 auto;"><?php esc_html_e( 'Platforma wykorzystuje współczesne rozwiązania umożliwiające stabilną pracę, skalowalność oraz integrację z systemami zewnętrznymi. Zaprojektowana z myślą o niezawodności i bezpieczeństwie.', 'hrl-theme' ); ?></p>
-        <div class="benefits-grid" style="margin-top:2.5rem;">
-            <div class="benefit-card reveal-fade"><div class="benefit-icon">⚡</div><h4><?php esc_html_e( 'Wydajność', 'hrl-theme' ); ?></h4><p><?php esc_html_e( 'Zoptymalizowana infrastruktura zapewniająca płynny streaming nawet przy setkach równoczesnych odtworzeń.', 'hrl-theme' ); ?></p></div>
-            <div class="benefit-card reveal-fade"><div class="benefit-icon">📈</div><h4><?php esc_html_e( 'Skalowalność', 'hrl-theme' ); ?></h4><p><?php esc_html_e( 'Architektura gotowa na wzrost — od jednego lokalu do sieci franczyzowej.', 'hrl-theme' ); ?></p></div>
-            <div class="benefit-card reveal-fade"><div class="benefit-icon">🔄</div><h4><?php esc_html_e( 'Integracje', 'hrl-theme' ); ?></h4><p><?php esc_html_e( 'API REST umożliwia łączenie platformy z własnymi systemami i aplikacjami.', 'hrl-theme' ); ?></p></div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════════ PROCES WDROŻENIA ════════════════════════════ -->
-<section class="section section-dark" id="wdrozenie">
+<!-- ════════════════════════════ PROCES WSPÓŁPRACY ════════════════════════════ -->
+<section class="section section-dark" id="wspolpraca">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Wdrożenie', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Od pierwszego kontaktu do uruchomienia', 'hrl-theme' ); ?></h2>
-        <p class="section-desc"><?php esc_html_e( 'Prosty, przejrzysty proces — od konsultacji po stałe wsparcie techniczne.', 'hrl-theme' ); ?></p>
+        <p class="section-label"><?php esc_html_e( 'Współpraca', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Jak wygląda współpraca?', 'hrl-theme' ); ?></h2>
+        <p class="section-desc"><?php esc_html_e( 'Przejrzysty proces od pierwszego kontaktu po stałe wsparcie.', 'hrl-theme' ); ?></p>
 
         <div class="timeline" style="max-width:700px;margin:3rem auto 0;">
             <?php
             $steps = array(
-                array( '01', __( 'Kontakt', 'hrl-theme' ), __( 'Poznajemy Twoje potrzeby i profile lokali. Określamy oczekiwania muzyczne i budżet.', 'hrl-theme' ) ),
-                array( '02', __( 'Analiza potrzeb', 'hrl-theme' ), __( 'Dobieramy odpowiednie rozwiązanie — liczba lokalizacji, funkcje, poziom wsparcia.', 'hrl-theme' ) ),
-                array( '03', __( 'Konfiguracja', 'hrl-theme' ), __( 'Przygotowujemy platformę, playlisty i odtwarzacz zgodnie z Twoimi wymaganiami.', 'hrl-theme' ) ),
-                array( '04', __( 'Uruchomienie', 'hrl-theme' ), __( 'Aktywujemy dostęp i uruchamiamy platformę w Twoich lokalach.', 'hrl-theme' ) ),
-                array( '05', __( 'Szkolenie', 'hrl-theme' ), __( 'Przekazujemy platformę i szkolimy personel z obsługi panelu oraz odtwarzacza.', 'hrl-theme' ) ),
-                array( '06', __( 'Stałe wsparcie', 'hrl-theme' ), __( 'Zapewniamy opiekę techniczną, aktualizacje i pomoc w każdej chwili.', 'hrl-theme' ) ),
+                array( '01', __( 'Kontakt', 'hrl-theme' ), __( 'Rozmawiamy o potrzebach Twojej firmy oraz sposobie wykorzystania muzyki.', 'hrl-theme' ) ),
+                array( '02', __( 'Analiza', 'hrl-theme' ), __( 'Dobieramy odpowiedni model współpracy oraz zakres wdrożenia.', 'hrl-theme' ) ),
+                array( '03', __( 'Konfiguracja', 'hrl-theme' ), __( 'Przygotowujemy platformę zgodnie z wymaganiami Twojej organizacji.', 'hrl-theme' ) ),
+                array( '04', __( 'Uruchomienie', 'hrl-theme' ), __( 'Udostępniamy dostęp do platformy oraz konfigurujemy środowisko pracy.', 'hrl-theme' ) ),
+                array( '05', __( 'Wsparcie', 'hrl-theme' ), __( 'Zapewniamy pomoc techniczną oraz rozwój platformy wraz z potrzebami Twojego biznesu.', 'hrl-theme' ) ),
             );
             foreach ( $steps as $i => $step ) :
             ?>
@@ -355,15 +177,33 @@ get_header();
     </div>
 </section>
 
+<!-- ════════════════════════════ DLACZEGO HRL ════════════════════════════ -->
+<section class="section">
+    <div class="container" style="max-width:800px;text-align:center;">
+        <p class="section-label"><?php esc_html_e( 'O marce', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Dlaczego HardbanRecords Lab?', 'hrl-theme' ); ?></h2>
+        <p class="text-secondary" style="line-height:1.8;max-width:650px;margin:0 auto 2rem;">
+            <?php esc_html_e( 'Commercial Music Licensing Platform jest rozwijana jako autorskie rozwiązanie HardbanRecords Lab. Skupiamy się na tworzeniu narzędzi, które ułatwiają przedsiębiorcom codzienną pracę oraz pozwalają zarządzać muzyką w sposób uporządkowany i profesjonalny.', 'hrl-theme' ); ?>
+        </p>
+        <p class="text-secondary" style="line-height:1.8;max-width:650px;margin:0 auto;">
+            <?php esc_html_e( 'Naszym celem jest rozwój platformy odpowiadającej na rzeczywiste potrzeby firm, a nie dostarczanie zbędnych funkcji.', 'hrl-theme' ); ?>
+        </p>
+    </div>
+</section>
+
 <!-- ════════════════════════════ PAKIETY ════════════════════════════ -->
-<section class="section" id="pakiety">
+<section class="section section-dark" id="pakiety">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Pakiety', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Wybierz rozwiązanie dopasowane do swojej firmy', 'hrl-theme' ); ?></h2>
-        <p class="section-desc"><?php esc_html_e( 'Niezależnie od wielkości działalności możesz wybrać plan odpowiadający liczbie lokalizacji oraz wymaganym funkcjom. Każdy pakiet obejmuje dostęp do autorskiej biblioteki muzycznej, panelu zarządzania i certyfikatów.', 'hrl-theme' ); ?></p>
+        <p class="section-desc">
+            <?php esc_html_e( 'Oferujemy kilka wariantów współpracy dopasowanych do wielkości przedsiębiorstwa oraz liczby obsługiwanych lokalizacji. Każdy pakiet zapewnia dostęp do podstawowych funkcji platformy, a wyższe plany rozszerzają możliwości zarządzania, raportowania i personalizacji.', 'hrl-theme' ); ?>
+        </p>
+        <p class="text-secondary text-center" style="max-width:600px;margin:1rem auto 2rem;">
+            <?php esc_html_e( 'Szczegółowe informacje dotyczące dostępnych planów znajdują się w sekcji cennika.', 'hrl-theme' ); ?>
+        </p>
 
         <div class="pricing-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:2rem;">
-            <!-- STARTER -->
             <div class="pricing-card reveal-up" style="background:rgba(18,15,12,0.7);border:1px solid rgba(200,169,110,0.12);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;">
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Starter', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Dla małych lokali', 'hrl-theme' ); ?></p>
@@ -378,8 +218,6 @@ get_header();
                 <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:1rem;"><?php esc_html_e( 'Idealny dla: kawiarni, salonów, małych restauracji.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-outline" style="width:100%;text-align:center;"><?php esc_html_e( 'Rozpocznij', 'hrl-theme' ); ?></a>
             </div>
-
-            <!-- BUSINESS -->
             <div class="pricing-card reveal-up" style="background:rgba(18,15,12,0.7);border:1px solid rgba(200,169,110,0.12);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;">
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Business', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Dla rozwijających się firm', 'hrl-theme' ); ?></p>
@@ -394,8 +232,6 @@ get_header();
                 <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:1rem;"><?php esc_html_e( 'Idealny dla: kilku lokali, małych sieci, franczyz.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-outline" style="width:100%;text-align:center;"><?php esc_html_e( 'Wybierz Business', 'hrl-theme' ); ?></a>
             </div>
-
-            <!-- PREMIUM -->
             <div class="pricing-card reveal-up" style="background:rgba(200,169,110,0.05);border:2px solid var(--gold);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;position:relative;">
                 <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;padding:3px 16px;border-radius:12px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;"><?php esc_html_e( 'POLECANY', 'hrl-theme' ); ?></div>
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Premium', 'hrl-theme' ); ?></h3>
@@ -411,8 +247,6 @@ get_header();
                 <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:1rem;"><?php esc_html_e( 'Idealny dla: większych sieci, hoteli, korporacji.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary" style="width:100%;text-align:center;"><?php esc_html_e( 'Poznaj Premium', 'hrl-theme' ); ?></a>
             </div>
-
-            <!-- CUSTOM -->
             <div class="pricing-card reveal-up" style="background:rgba(18,15,12,0.7);border:1px solid rgba(200,169,110,0.12);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;">
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Custom', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Rozwiązanie szyte na miarę', 'hrl-theme' ); ?></p>
@@ -427,8 +261,6 @@ get_header();
                 <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:1rem;"><?php esc_html_e( 'Dla sieci handlowych, korporacji i franczyz.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-outline" style="width:100%;text-align:center;"><?php esc_html_e( 'Skontaktuj się', 'hrl-theme' ); ?></a>
             </div>
-
-            <!-- EVENT -->
             <div class="pricing-card reveal-up" style="background:rgba(18,15,12,0.7);border:1px solid rgba(200,169,110,0.12);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;">
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Event', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Licencja na pojedyncze wydarzenie', 'hrl-theme' ); ?></p>
@@ -440,7 +272,7 @@ get_header();
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'Natychmiastowa aktywacja', 'hrl-theme' ); ?></li>
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'Certyfikat', 'hrl-theme' ); ?></li>
                 </ul>
-                <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:1rem;"><?php esc_html_e( 'Idealny na: gale firmowe, targi, konferencje, bankiety, imprezy okolicznościowe. Jedna opłata — zero formalności.', 'hrl-theme' ); ?></p>
+                <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:1rem;"><?php esc_html_e( 'Idealny na: gale firmowe, targi, konferencje, bankiety. Jedna opłata — zero formalności.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-outline" style="width:100%;text-align:center;"><?php esc_html_e( 'Zamów licencję Event', 'hrl-theme' ); ?></a>
             </div>
         </div>
@@ -452,7 +284,7 @@ get_header();
     <div class="container" style="max-width:900px;">
         <p class="section-label"><?php esc_html_e( 'FAQ', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Najczęściej zadawane pytania', 'hrl-theme' ); ?></h2>
-        <p class="section-desc"><?php esc_html_e( 'Przygotowaliśmy odpowiedzi na pytania dotyczące działania platformy, wdrożenia oraz współpracy.', 'hrl-theme' ); ?></p>
+        <p class="section-desc"><?php esc_html_e( 'Na stronie znajduje się rozbudowana sekcja FAQ odpowiadająca na najczęściej pojawiające się pytania dotyczące działania platformy, wdrożenia, współpracy oraz dostępnych funkcji.', 'hrl-theme' ); ?></p>
 
         <?php
         $faq_groups = array(
@@ -471,21 +303,10 @@ get_header();
             ),
             __( 'Licencjonowanie', 'hrl-theme' ) => array(
                 array( __( 'Jak działa model Direct Licensing?', 'hrl-theme' ), __( 'Direct Licensing to model oparty na bezpośredniej umowie między twórcą (HardbanRecords Lab) a przedsiębiorcą. Ponieważ posiadamy 100% praw do wszystkich utworów, nie ma potrzeby angażowania organizacji zbiorowego zarządzania.', 'hrl-theme' ) ),
-                array( __( 'Czy otrzymuję potwierdzenie współpracy?', 'hrl-theme' ), __( 'Tak. Każda subskrypcja generuje automatyczny certyfikat z kodem QR, który potwierdza legalne źródło muzyki i jest dokumentem do okazania podczas ewentualnej kontroli.', 'hrl-theme' ) ),
-            ),
-            __( 'Bezpieczeństwo', 'hrl-theme' ) => array(
-                array( __( 'Jak chronione są pliki audio?', 'hrl-theme' ), __( 'Pliki chronione są przez mechanizm X-Accel-Redirect. Bezpośrednie URLe do plików nie są publicznie dostępne — każde żądanie przechodzi walidację tokena JWT.', 'hrl-theme' ) ),
-                array( __( 'Czy użytkownicy mają różne poziomy dostępu?', 'hrl-theme' ), __( 'Tak. Panel umożliwia definiowanie ról — administrator, manager, pracownik — każda z odpowiednim zakresem uprawnień.', 'hrl-theme' ) ),
             ),
             __( 'Wdrożenie i wsparcie', 'hrl-theme' ) => array(
                 array( __( 'Ile trwa wdrożenie?', 'hrl-theme' ), __( 'Standardowe wdrożenie trwa od 1 do 3 dni roboczych, w zależności od liczby lokalizacji i stopnia konfiguracji. Pakiet Custom obejmuje indywidualny harmonogram wdrożenia.', 'hrl-theme' ) ),
-                array( __( 'Czy otrzymam pomoc podczas konfiguracji?', 'hrl-theme' ), __( 'Tak. Każdy klient otrzymuje wsparcie podczas konfiguracji platformy, a pakiety Premium i Custom obejmują dedykowane szkolenie personelu.', 'hrl-theme' ) ),
                 array( __( 'Jak wygląda wsparcie techniczne?', 'hrl-theme' ), __( 'Wsparcie jest dostępne przez e-mail i telefon. Pakiety Premium i Custom obejmują priorytetowe wsparcie z krótszym czasem reakcji.', 'hrl-theme' ) ),
-            ),
-            __( 'Płatności', 'hrl-theme' ) => array(
-                array( __( 'Jak rozliczana jest usługa?', 'hrl-theme' ), __( 'Usługa rozliczana jest miesięcznie. Dostępne metody płatności to karta, przelew oraz faktura pro forma dla firm.', 'hrl-theme' ) ),
-                array( __( 'Czy mogę zmienić pakiet?', 'hrl-theme' ), __( 'Tak. Pakiet można zmienić w dowolnym momencie — przy przejściu na wyższy pakiet dodatkowe funkcje aktywowane są natychmiast.', 'hrl-theme' ) ),
-                array( __( 'Czy otrzymuję fakturę VAT?', 'hrl-theme' ), __( 'Tak. Do każdej płatności wystawiana jest faktura VAT.', 'hrl-theme' ) ),
             ),
         );
         ?>
@@ -506,22 +327,16 @@ get_header();
     </div>
 </section>
 
-<!-- ════════════════════════════ KONTAKT ════════════════════════════ -->
+<!-- ════════════════════════════ WEZWANIE DO DZIAŁANIA ════════════════════════════ -->
 <section class="section" id="kontakt-cmlp">
     <div class="container" style="max-width:700px;text-align:center;">
-        <p class="section-label"><?php esc_html_e( 'Kontakt', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Porozmawiajmy o Twoim biznesie', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Gotowy poznać możliwości Commercial Music Licensing Platform?', 'hrl-theme' ); ?></h2>
         <p style="color:var(--text-secondary);line-height:1.8;max-width:550px;margin:0 auto 2rem;">
-            <?php esc_html_e( 'Skontaktuj się z nami. Pokażemy możliwości platformy, odpowiemy na pytania i przygotujemy propozycję współpracy dopasowaną do Twoich potrzeb.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Skontaktuj się z nami, aby dowiedzieć się, jak CMLP może usprawnić zarządzanie muzyką w Twojej firmie. Chętnie przedstawimy platformę, odpowiemy na pytania i pomożemy dobrać rozwiązanie dopasowane do potrzeb Twojego biznesu.', 'hrl-theme' ); ?>
         </p>
         <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;">
-            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Formularz kontaktowy →', 'hrl-theme' ); ?></a>
-            <a href="mailto:contact@hardbanrecordslab.online" class="btn btn-outline"><?php esc_html_e( 'Napisz e-mail →', 'hrl-theme' ); ?></a>
-        </div>
-        <div style="margin-top:3rem;padding:1.5rem;background:rgba(18,15,12,0.5);border:1px solid rgba(200,169,110,0.1);border-radius:8px;text-align:center;">
-            <p style="font-size:1.05rem;color:var(--text-primary);margin-bottom:0.5rem;"><?php esc_html_e( 'Gotowy uporządkować zarządzanie muzyką w swojej firmie?', 'hrl-theme' ); ?></p>
-            <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.2rem;"><?php esc_html_e( 'Umów bezpłatną konsultację i poznaj Commercial Music Licensing Platform.', 'hrl-theme' ); ?></p>
-            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Umów konsultację →', 'hrl-theme' ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Umów konsultację', 'hrl-theme' ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Skontaktuj się z nami', 'hrl-theme' ); ?></a>
         </div>
     </div>
 </section>
