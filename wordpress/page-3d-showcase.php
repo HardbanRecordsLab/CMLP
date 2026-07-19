@@ -5,7 +5,7 @@
  * Optional: requires Three.js (loaded via CDN).
  *
  * @package HRL_Theme
- * @version 3.0.0
+ * @version 4.0.0
  */
 
 get_header();
@@ -16,8 +16,8 @@ $three_js = get_post_meta( get_the_ID(), 'hrl_3d_enable_three', true );
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <?php endif; ?>
 
-<section class="hero" style="min-height:100vh;position:relative;overflow:hidden;">
-    <div class="hero-content" style="position:relative;z-index:2;">
+<section class="hero relative overflow-hidden">
+    <div class="hero-content relative z-10">
         <p class="hero-eyebrow"><?php esc_html_e( 'Immersive Experience', 'hrl-theme' ); ?></p>
         <h1><?php the_title(); ?></h1>
         <?php if ( get_post_meta( get_the_ID(), 'hrl_3d_subtitle', true ) ) : ?>
@@ -26,9 +26,9 @@ $three_js = get_post_meta( get_the_ID(), 'hrl_3d_enable_three', true );
     </div>
 
     <?php if ( $three_js ) : ?>
-        <div id="three-canvas" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.3;"></div>
+        <div id="three-canvas" class="absolute inset-0 z-0 pointer-events-none opacity-30"></div>
     <?php else : ?>
-        <div id="fallback-3d-bg" style="position:absolute;inset:0;z-index:1;background:radial-gradient(circle at 50% 35%, rgba(200,169,110,0.06) 0%, transparent 70%);"></div>
+        <div id="fallback-3d-bg" class="absolute inset-0 z-0 bg-radial-gold"></div>
     <?php endif; ?>
 </section>
 
@@ -48,8 +48,8 @@ $three_js = get_post_meta( get_the_ID(), 'hrl_3d_enable_three', true );
             if ( $children->have_posts() ) :
                 while ( $children->have_posts() ) : $children->the_post();
             ?>
-                <div class="product-card" data-tilt style="cursor:default;">
-                    <div class="product-card-icon">✨</div>
+                <div class="card cursor-default">
+                    <div class="card-icon">✨</div>
                     <h3><?php the_title(); ?></h3>
                     <p><?php echo wp_trim_words( get_the_excerpt(), 20, '...' ); ?></p>
                 </div>

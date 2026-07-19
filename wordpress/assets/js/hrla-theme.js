@@ -1,206 +1,394 @@
 /**
- * HRL Amoled Premium — Theme JavaScript
- * Radio player, ticker simulation, nav toggle, accordion, tabs, progress bar
+ * HRL Theme — Main JavaScript Module
+ * Particles, 3D tilt, scroll reveal, counters, radio player, mobile nav, back-to-top.
+ *
+ * @package HRL_Theme
+ * @version 3.1.0
  */
+
 (function () {
   'use strict';
 
   // ═══════════════════════════════════════════════════════
-  // MOBILE NAV TOGGLE
+  // CONFIG
   // ═══════════════════════════════════════════════════════
-  var navToggle = document.querySelector('.nav-toggle');
-  var navMenu = document.querySelector('.nav-menu');
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function () {
-      var expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', !expanded);
-      navMenu.classList.toggle('open');
-    });
-  }
+  const CONFIG = {
+    particles: { count: 100, maxDist: 120, colors: ['#C8A96E', '#38bdf8'] },
+    tilt: { max: 8, perspective: 1000 },
+    reveal: { threshold: 0.15, rootMargin: '0px 0px -50px 0px' },
+    counters: { duration: 2000, easing: 'easeOutCubic' },
+  };
+
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ═══════════════════════════════════════════════════════
-  // READING PROGRESS BAR
+  // UTILS
   // ═══════════════════════════════════════════════════════
-  var progressBar = document.getElementById('progressBar');
-  if (progressBar) {
-    window.addEventListener('scroll', function () {
-      var winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      var scrolled = (winScroll / height) * 100;
-      progressBar.style.width = scrolled + '%';
-    });
-  }
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const lerp = (start, end, t) => start + (end - start) * t;
 
   // ═══════════════════════════════════════════════════════
-  // RADIO PLAYER (Stream: AzuraCast)
+  // 1. STICKY HEADER
   // ═══════════════════════════════════════════════════════
-  var radioBtn = document.getElementById('radioPlayBtn');
-  var radioStatus = document.getElementById('radioStatus');
-  var radioAudio = document.getElementById('radioAudio');
-  var radioPlaying = false;
+  function initStickyHeader() {
+    const header = $('#siteHeader');
+    if (!header) return;
 
-  if (radioBtn && radioAudio && radioStatus) {
-    radioBtn.addEventListener('click', function () {
-      if (radioPlaying) {
-        radioAudio.pause();
-        radioPlaying = false;
-        radioBtn.textContent = '\u25B6';
-        radioBtn.classList.remove('playing');
-        radioStatus.textContent = 'Wstrzymano';
+    const onScroll = () => {
+      if (window.scrollY > 80) {
+        header.classList.add('scrolled');
       } else {
-        radioAudio.src = radioAudio.querySelector('source') ? radioAudio.querySelector('source').src : (typeof hrlRadioConfig !== 'undefined' ? hrlRadioConfig.streamUrl : '');
-        radioAudio.load();
-        radioAudio.play().then(function () {
-          radioPlaying = true;
-          radioBtn.textContent = '\u23F8';
-          radioBtn.classList.add('playing');
-          radioStatus.textContent = 'Odtwarzanie...';
-        }).catch(function () {
-          radioStatus.textContent = 'Blad strumienia';
+        header.classList.remove('scrolled');
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 2. MOBILE NAV
+  // ═══════════════════════════════════════════════════════
+  function initMobileNav() {
+    const toggle = $('.nav-toggle');
+    const menu = $('.nav-menu');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close on link click
+    $$('.nav-menu a', menu).forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 3. BACK TO TOP
+  // ═══════════════════════════════════════════════════════
+  function initBackToTop() {
+    const btn = $('#backToTop');
+    if (!btn) return;
+
+    const onScroll = () => {
+      if (window.scrollY > 400) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    };
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 4. PARTICLE SYSTEM (REMOVED - Performance optimization)
+  // Particle animation removed to improve Core Web Vitals
+  // ═══════════════════════════════════════════════════════
+  function initParticles() {
+    // Removed for performance optimization
+    // Particles caused significant CPU/GPU load and poor LCP scores
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 5. 3D TILT CARDS (REMOVED - Performance optimization)
+  // 3D tilt effects removed to improve Core Web Vitals
+  // ═══════════════════════════════════════════════════════
+  function initTiltCards() {
+    // Removed for performance optimization
+    // 3D tilt effects caused layout shifts and poor performance
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 6. SCROLL REVEAL
+  // ═══════════════════════════════════════════════════════
+  function initScrollReveal() {
+    if (prefersReducedMotion) {
+      $$('.reveal-up, .reveal-fade').forEach(el => el.classList.add('revealed'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
         });
+      },
+      {
+        threshold: CONFIG.reveal.threshold,
+        rootMargin: CONFIG.reveal.rootMargin,
+      }
+    );
+
+    $$('.reveal-up, .reveal-fade').forEach(el => observer.observe(el));
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 7. NUMBER COUNTERS
+  // ═══════════════════════════════════════════════════════
+  function initCounters() {
+    if (prefersReducedMotion) return;
+
+    const counters = $$('[data-count]');
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.getAttribute('data-count'), 10);
+            const duration = CONFIG.counters.duration;
+            const start = performance.now();
+
+            const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+            const update = (now) => {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const value = Math.floor(easeOutCubic(progress) * target);
+              el.textContent = value;
+
+              if (progress < 1) {
+                requestAnimationFrame(update);
+              } else {
+                el.textContent = target;
+              }
+            };
+
+            requestAnimationFrame(update);
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -20px 0px' }
+    );
+
+    counters.forEach(el => observer.observe(el));
+
+    // Fallback: trigger counters already in viewport on load
+    setTimeout(() => {
+      counters.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const event = new Event('intersect');
+          observer.observe(el);
+        }
+      });
+    }, 300);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // 8. RADIO PLAYER
+  // ═══════════════════════════════════════════════════════
+  function initRadioPlayer() {
+    const playBtn = $('#radioPlayBtn');
+    const audio = $('#radioAudio');
+    const status = $('#radioStatus');
+    const viz = $('#radioVisualizer');
+    const volume = $('#radioVolume');
+    if (!playBtn || !audio) return;
+
+    audio.volume = 0.8;
+    if (volume) {
+      volume.addEventListener('input', () => { audio.volume = volume.value / 100; });
+    }
+
+    // Fetch now playing track from AzuraCast API
+    const fetchNowPlaying = async () => {
+      try {
+        const res = await fetch('https://radio.hardbanrecordslab.online/api/nowplaying/1');
+        const data = await res.json();
+        if (data && data.now_playing && data.now_playing.song) {
+          const song = data.now_playing.song;
+          return song.artist ? song.artist + ' — ' + song.title : song.title;
+        }
+      } catch(e) { /* silently fail */ }
+      return null;
+    };
+
+    const updateNowPlaying = async () => {
+      const title = await fetchNowPlaying();
+      if (title && !audio.paused) {
+        status.textContent = title;
+        const titleEl = document.querySelector('.radio-title');
+        if (titleEl) titleEl.textContent = title;
+      }
+    };
+
+    // Poll every 10s while playing
+    let npInterval = null;
+    const startNPPoll = () => {
+      updateNowPlaying();
+      npInterval = setInterval(updateNowPlaying, 15000);
+    };
+    const stopNPPoll = () => {
+      if (npInterval) { clearInterval(npInterval); npInterval = null; }
+    };
+
+    let retries = 0;
+    const maxRetries = 3;
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play()
+          .then(() => {
+            playBtn.textContent = '⏸';
+            status.textContent = 'Łączenie...';
+            if (viz) viz.classList.add('playing');
+            startNPPoll();
+            retries = 0;
+          })
+          .catch(() => {
+            status.textContent = 'Błąd połączenia. Ponawiam...';
+            retries++;
+            if (retries <= maxRetries) {
+              setTimeout(() => playBtn.click(), 3000);
+            } else {
+              status.textContent = 'Nie udało się połączyć.';
+            }
+          });
+      } else {
+        audio.pause();
+        playBtn.textContent = '▶';
+        status.textContent = 'Zatrzymano';
+        if (viz) viz.classList.remove('playing');
+        stopNPPoll();
       }
     });
 
-    radioAudio.addEventListener('pause', function () {
-      radioPlaying = false;
-      radioBtn.textContent = '\u25B6';
-      radioBtn.classList.remove('playing');
-      radioStatus.textContent = 'Wstrzymano';
+    audio.addEventListener('ended', () => {
+      playBtn.textContent = '▶';
+      status.textContent = 'Gotowy do odtwarzania';
+      if (viz) viz.classList.remove('playing');
     });
 
-    radioAudio.addEventListener('playing', function () {
-      radioPlaying = true;
-      radioBtn.textContent = '\u23F8';
-      radioBtn.classList.add('playing');
-      radioStatus.textContent = 'Odtwarzanie...';
+    audio.addEventListener('error', () => {
+      status.textContent = 'Błąd streamu. Spróbuj później.';
+      if (viz) viz.classList.remove('playing');
     });
   }
 
   // ═══════════════════════════════════════════════════════
-  // SONG TABS (Muzyczna Kreacja Slow)
+  // 9. FLIP CARDS (pakiety cenowe)
   // ═══════════════════════════════════════════════════════
-  var songTabs = document.querySelectorAll('.song-tab');
-  var songPanels = document.querySelectorAll('.song-panel');
+  function initFlipCards() {
+    const cards = $$('.pakiet-card');
+    if (!cards.length) return;
 
-  songTabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      var targetId = 'panel-' + tab.getAttribute('data-tab');
-      songTabs.forEach(function (t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      songPanels.forEach(function (panel) {
-        panel.classList.remove('active');
-        if (panel.id === targetId) panel.classList.add('active');
+    cards.forEach(card => {
+      const toggle = () => {
+        if (isTouch) {
+          card.classList.toggle('is-flipped');
+        } else {
+          // Hover handled by CSS :hover
+        }
+      };
+
+      card.addEventListener('click', toggle);
+      card.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        toggle();
       });
     });
-  });
+  }
 
   // ═══════════════════════════════════════════════════════
-  // FAQ ACCORDION
+  // 10. SMOOTH SCROLL FOR ANCHOR LINKS
   // ═══════════════════════════════════════════════════════
-  var faqQuestions = document.querySelectorAll('.faq-question');
-  faqQuestions.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var faqItem = btn.parentElement;
-      var isOpen = faqItem.classList.contains('open');
-      // Close all
-      document.querySelectorAll('.faq-item.open').forEach(function (item) {
-        item.classList.remove('open');
+  function initSmoothScroll() {
+    $$('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        if (href === '#') return;
+
+        const target = $(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
-      if (!isOpen) faqItem.classList.add('open');
     });
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // PACKAGE CARD SELECTION (Radio button cards for MKS)
-  // ═══════════════════════════════════════════════════════
-  var pakietCards = document.querySelectorAll('.pakiet-card');
-  pakietCards.forEach(function (card) {
-    card.addEventListener('click', function () {
-      pakietCards.forEach(function (c) { c.classList.remove('selected'); });
-      card.classList.add('selected');
-      var radio = card.querySelector('input[type="radio"]');
-      if (radio) radio.checked = true;
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // CURRENT DATE DISPLAY
-  // ═══════════════════════════════════════════════════════
-  var dateEl = document.getElementById('currentDate');
-  if (dateEl) {
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    dateEl.innerText = new Date().toLocaleDateString('pl-PL', options);
   }
 
   // ═══════════════════════════════════════════════════════
-  // SIDEBAR AUDIO PLAYER TOGGLE
+  // INIT
   // ═══════════════════════════════════════════════════════
-  window.toggleSidebarAudio = function () {
-    var btn = document.getElementById('sidebarPlayBtn');
-    if (!btn) return;
-    var isPlaying = btn.textContent === '\u23F8';
-    btn.textContent = isPlaying ? '\u25B6' : '\u23F8';
-  };
-
-  // ═══════════════════════════════════════════════════════
-  // LIVE TICKER AJAX POLLING (60s refresh, no page reload)
-  // ═══════════════════════════════════════════════════════
-  var tickerNewsContainer = document.querySelector('.ticker-move:not(.reverse)');
-  var tickerFinContainer  = document.querySelector('.ticker-move.reverse');
-
-  if (tickerNewsContainer || tickerFinContainer) {
-    var tickerVars = window.hrlTickerVars || {};
-    var ajaxUrl    = tickerVars.ajaxUrl || '/wp-admin/admin-ajax.php';
-    var nonce      = tickerVars.nonce || '';
-    var pollMs     = tickerVars.pollIntervalMs || 60000;
-    var polling    = false;
-
-    function hrlTickerFetch(action, container) {
-      if (!container) return;
-      var fd = new FormData();
-      fd.append('action', action);
-      fd.append('nonce', nonce);
-      fetch(ajaxUrl, { method: 'POST', body: fd })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data.success && data.data && data.data.html) {
-            container.innerHTML = data.data.html;
-          }
-        })
-        .catch(function () {});
-    }
-
-    function hrlTickerPoll() {
-      if (polling) return;
-      polling = true;
-      hrlTickerFetch('hrl_ticker_news', tickerNewsContainer);
-      hrlTickerFetch('hrl_ticker_financial', tickerFinContainer);
-      polling = false;
-    }
-
-    setTimeout(function () {
-      hrlTickerPoll();
-      setInterval(hrlTickerPoll, pollMs);
-    }, 1000);
+  function init() {
+    initStickyHeader();
+    initMobileNav();
+    initBackToTop();
+    initParticles();
+    initTiltCards();
+    initScrollReveal();
+    initCounters();
+    initRadioPlayer();
+    initFlipCards();
+    initSmoothScroll();
+    initFAQ();
   }
 
   // ═══════════════════════════════════════════════════════
-  // WIDGET RADIO PLAYERS (compact sidebar Radio HRL)
+  // 9. FAQ ACCORDION
   // ═══════════════════════════════════════════════════════
-  document.querySelectorAll('.hrl-widget-play-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var url = btn.getAttribute('data-stream');
-      if (!url) return;
-      var existing = document.getElementById('hrl-widget-audio');
-      if (existing) existing.pause();
-      var a = document.createElement('audio');
-      a.id = 'hrl-widget-audio';
-      a.src = url;
-      a.play().catch(function(){});
-      btn.textContent = '⏸';
-      a.addEventListener('pause', function(){ btn.textContent = '▶'; });
-      a.addEventListener('playing', function(){ btn.textContent = '⏸'; });
-    });
-  });
+  function initFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    if (!faqItems.length) return;
 
+    faqItems.forEach(item => {
+      const q = item.querySelector('.faq-q');
+      const a = item.querySelector('.faq-a');
+      if (!q || !a) return;
+
+      q.addEventListener('click', () => {
+        const isOpen = a.classList.contains('open');
+        // Close all
+        faqItems.forEach(i => {
+          const aq = i.querySelector('.faq-q');
+          const aa = i.querySelector('.faq-a');
+          if (aq) aq.classList.remove('active');
+          if (aa) aa.classList.remove('open');
+        });
+        if (!isOpen) {
+          q.classList.add('active');
+          a.classList.add('open');
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

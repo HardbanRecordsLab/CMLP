@@ -2,7 +2,7 @@
 /**
  * Template Name: Contact
  * @package HRL_Theme
- *Last updated: 2026-07-12
+ * @version 4.0.0
  */
 get_header();
 ?>
@@ -10,49 +10,93 @@ get_header();
     <div class="hero-content">
         <p class="hero-eyebrow"><?php esc_html_e( 'Kontakt', 'hrl-theme' ); ?></p>
         <h1><?php esc_html_e( 'Skontaktuj się z HardbanRecords Lab', 'hrl-theme' ); ?></h1>
-        <p class="hero-desc"><?php esc_html_e( 'Masz pytania dotyczące licencjonowania muzyki komercyjnej B2B, współpracy biznesowej, zamówień indywidualnych utworów na zamówienie, integracji API z systemami POS i aplikacjami mobilnymi, problemów technicznych z platformą CMLP, White-Label Player, trybu offline lub reklamacji dotyczących świadczonych usług? Wypełnij formularz kontaktowy lub skorzystaj z innych metod kontaktu wymienionych poniżej. Nasz zespół obsługi klienta składa się z doświadczonych specjalistów od branży muzycznej i licencjonowania, którzy udzielą Ci szczegółowej odpowiedzi w ciągu 24 godzin roboczych w dni robocze od poniedziałku do piątku w godzinach 8-16 czasu polskiego standardowego. Dla klientów Enterprise, którzy mają aktywną umowę SLA, czas odpowiedzi na zapytania priorytetowe wynosi do 8 godzin roboczych, a w przypadku incydentów krytycznych do 1 godziny roboczej. W sprawach pilnych prosimy o oznaczenie tematu jako Pilne w formularzu kontaktowym.', 'hrl-theme' ); ?></p>
+        <p class="hero-desc"><?php esc_html_e( 'Masz pytania dotyczące licencjonowania muzyki komercyjnej B2B, współpracy biznesowej, zamówień indywidualnych utworów na zamówienie, integracji API z systemami POS i aplikacjami mobilnymi, problemów technicznych z platformą CMLP, White-Label Player, trybu offline lub reklamacji dotyczących świadczonych usług? Wypełnij formularz kontaktowy lub skorzystaj z innych metod kontaktu wymienionych poniżej.', 'hrl-theme' ); ?></p>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
-        <div class="product-grid" style="max-width:1100px;margin:0 auto;">
-            <div style="grid-column:span 1;">
-                <h2 style="margin-bottom:24px;"><?php esc_html_e( 'Formularz kontaktowy', 'hrl-theme' ); ?></h2>
-                <?php esc_html_e( 'Wypełnij poniższy formularz, aby skontaktować się z zespołem HardbanRecords Lab. Wszystkie pola oznaczone gwiazdką są wymagane. Postaraj się podać jak najwięcej szczegółów, abyśmy mogli Ci pomóc w sposób najskuteczniejszy. W przypadku zapytań o konfigurację techniczną, prosimy o podanie informacji dotyczących systemu operacyjnego urządzeń, rozmiaru lokalu oraz wybranego pakietu licencyjnego.', 'hrl-theme' ); ?>
-                <p style="margin-top:32px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'HardbanRecords Lab jest otwarta na współpracę z przedsiębiorcami, właścicielami lokali gastronomicznych, sieciami handlowymi, hotelarstwem, organizatorami wydarzeń oraz każdym podmiotem zainteresowanym legalnym licencjonowaniem muzyki komercyjnej. Nasz zespół oferuje pełne wsparcie od momentu zapoznania się z ofertą, przez wybór odpowiedniego pakietu licencyjnego, onboarding i konfigurację platformy w lokalu, aż po stałą obsługę w trakcie trwania umowy. Jesteśmy do dyspozycji w godzinach 8-16 czasu polskiego w dni robocze od poniedziałku do piątku. W sprawach priorytetowych klientów Enterprise, opiekun konta dostępny jest również po godzinach pracy po wcześniejszym umówieniu. Odpowiadamy na wszystkie zapytania w ciągu 24 godzin roboczych, a sprawy priorytetowe w ciągu 8 godzin roboczych. Jeśli potrzebujesz pomocy z konfiguracją odtwarzacza, wyborem playlisty dla swojego lokalu lub masz pytania dotyczące integracji API, napisz do nas. Nasz zespół składa się z doświadczonych specjalistów od branży muzycznej i technologii, którzy pomogą Ci w każdej kwestii.', 'hrl-theme' ); ?></p>
-<form class="contact-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:20px;">
+        <div class="grid grid-2 gap-8 max-w-5xl mx-auto">
+            <div>
+                <h2 class="text-2xl font-bold mb-6"><?php esc_html_e( 'Formularz kontaktowy', 'hrl-theme' ); ?></h2>
+                <p class="text-secondary mb-8"><?php esc_html_e( 'Wypełnij poniższy formularz, aby skontaktować się z zespołem HardbanRecords Lab. Wszystkie pola oznaczone gwiazdką są wymagane.', 'hrl-theme' ); ?></p>
+                
+                <form class="contact-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" novalidate>
                     <input type="hidden" name="action" value="hrl_contact_form">
                     <?php wp_nonce_field( 'hrl_contact_action', 'hrl_contact_nonce' ); ?>
-                    <div class="form-group"><label class="form-label" for="contact_name"><?php esc_html_e( 'Imię i Nazwisko', 'hrl-theme' ); ?></label><input type="text" id="contact_name" name="contact_name" class="form-input" required placeholder="np. Jan Kowalski"></div>
-                    <div class="form-group"><label class="form-label" for="contact_email"><?php esc_html_e( 'Adres e-mail', 'hrl-theme' ); ?></label><input type="email" id="contact_email" name="contact_email" class="form-input" required placeholder="np. jan@firma.pl"></div>
-                    <div class="form-group"><label class="form-label" for="contact_company"><?php esc_html_e( 'Nazwa firmy', 'hrl-theme' ); ?></label><input type="text" id="contact_company" name="contact_company" class="form-input" placeholder="np. Twoja Firma Sp. z o.o."></div>
-                    <div class="form-group"><label class="form-label" for="contact_subject"><?php esc_html_e( 'Temat', 'hrl-theme' ); ?></label><input type="text" id="contact_subject" name="contact_subject" class="form-input" required placeholder="np. Zapytanie o pakiet Business, licencja dla 3 lokali"></div>
-                    <div class="form-group"><label class="form-label" for="contact_message"><?php esc_html_e( 'Wiadomość', 'hrl-theme' ); ?></label><textarea id="contact_message" name="contact_message" class="form-textarea" required rows="8" placeholder="Opisz swoje pytanie lub zapytanie w jak najwięcej szczegółów. W przypadku problemów technicznych prosimy o podanie: nazwy urządzenia, systemu operacyjnego, numeru wersji aplikacji CMLP Player, opisu problemu oraz kroków, które prowadzą do wystąpienia błędu. Im więcej szczegółów podasz, tym szybciej nasz zespól będzie mógł Ci pomóc."></textarea></div>
-                    <div class="form-group" style="font-size:0.85rem;color:var(--text-secondary);margin-top:16px;"><?php esc_html_e( 'Wysyłając formularz, wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z naszą Polityką Prywatności dostępną pod adresem /privacy/. Dane nie są przekazywane podmiotom trzecim bez Twojej wyraźnej zgody, z wyjątkiem podmiotów świadczących usługi na rzecz administratora zgodnie z umowami powierzenia przetwarzania. Masz prawo do dostępu do swoich danych, ich sprostowania lub usunięcia w dowolnym momencie, kontaktując się z nami pod adresem contact@hardbanrecordslab.online.', 'hrl-theme' ); ?></div>
-                    <button type="submit" class="btn btn-primary" style="width:100%;"><?php esc_html_e( 'Wyślij wiadomość →', 'hrl-theme' ); ?></button>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact_name"><?php esc_html_e( 'Imię i Nazwisko', 'hrl-theme' ); ?> <span class="text-accent">*</span></label>
+                        <input type="text" id="contact_name" name="contact_name" class="form-input" required placeholder="np. Jan Kowalski">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact_email"><?php esc_html_e( 'Adres e-mail', 'hrl-theme' ); ?> <span class="text-accent">*</span></label>
+                        <input type="email" id="contact_email" name="contact_email" class="form-input" required placeholder="np. jan@firma.pl">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact_company"><?php esc_html_e( 'Nazwa firmy', 'hrl-theme' ); ?></label>
+                        <input type="text" id="contact_company" name="contact_company" class="form-input" placeholder="np. Twoja Firma Sp. z o.o.">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact_subject"><?php esc_html_e( 'Temat', 'hrl-theme' ); ?> <span class="text-accent">*</span></label>
+                        <input type="text" id="contact_subject" name="contact_subject" class="form-input" required placeholder="np. Zapytanie o pakiet Business">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact_message"><?php esc_html_e( 'Wiadomość', 'hrl-theme' ); ?> <span class="text-accent">*</span></label>
+                        <textarea id="contact_message" name="contact_message" class="form-textarea" required rows="8" placeholder="Opisz swoje pytanie lub zapytanie"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <p class="text-xs text-tertiary"><?php esc_html_e( 'Wysyłając formularz, wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z naszą Polityką Prywatności.', 'hrl-theme' ); ?></p>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full"><?php esc_html_e( 'Wyślij wiadomość', 'hrl-theme' ); ?></button>
                 </form>
+                
                 <?php if ( isset( $_GET['contact'] ) && 'success' === $_GET['contact'] ) : ?>
-                    <p style="color:var(--market-up);font-size:0.95rem;margin-top:20px;font-weight:600;">✓ <?php esc_html_e( 'Dziękujemy! Wiadomość wysłana pomyślnie. Odpowiemy w ciągu 24 godzin roboczych. Sprawdź swoją skrzynkę e-mail w tym czasie, a także folder spamowy, jeśli nie znajdziesz wiadomości w skrzynce głównej.', 'hrl-theme' ); ?></p>
+                    <div class="alert alert-success mt-6">
+                        <p class="text-success font-semibold">✓ <?php esc_html_e( 'Dziękujemy! Wiadomość wysłana pomyślnie.', 'hrl-theme' ); ?></p>
+                    </div>
                 <?php elseif ( isset( $_GET['contact'] ) && 'error' === $_GET['contact'] ) : ?>
-                    <p style="color:var(--market-down);font-size:0.95rem;margin-top:20px;font-weight:600;">✕ <?php esc_html_e( 'Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie lub skontaktuj się z nami bezpośrednio pod adresem e-mail contact@hardbanrecordslab.online lub telefonicznie pod numerem +48 726 651 384, aby uzyskać natychmiastową pomoc.', 'hrl-theme' ); ?></p>
+                    <div class="alert alert-error mt-6">
+                        <p class="text-error font-semibold">✕ <?php esc_html_e( 'Wystąpił błąd podczas wysyłania wiadomości.', 'hrl-theme' ); ?></p>
+                    </div>
                 <?php endif; ?>
             </div>
-            <div>
-                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">📧</div><h3><?php esc_html_e( 'Email', 'hrl-theme' ); ?></h3><p><a href="mailto:contact@hardbanrecordslab.online">contact@hardbanrecordslab.online</a></p><p style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px;"><?php esc_html_e( 'Adres e-mail do spraw ogólnych i obsługi klienta. Możesz wysyłać zapytania dotyczące licencjonowania, współpracy biznesowej, zamówień indywidualnych, integracji API, White-Label Player, raportów technicznych, reklamacji i wszystkich innych spraw związanych z działalnością HardbanRecords Lab.', 'hrl-theme' ); ?></p></div>
-                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">📞</div><h3><?php esc_html_e( 'Telefon', 'hrl-theme' ); ?></h3><p><a href="tel:+48726651384">+48 726 651 384</a></p><p style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px;"><?php esc_html_e( 'Dostępny po wcześniejszym umówieniu w godzinach 8-16 czasu polskiego w dni robocze. Nasz zespół obsługi klienta mówi po polsku i angielsku. W przypadku spraw priorytetowych klientów Enterprise, możliwość kontaktu po standardowych godzinach pracy po wcześniejszym uzgodnieniu z opiekunem konta. Prosimy o wcześniejsze wysłanie e-maila z zapytaniem o rozmowę telefoniczną, aby opiekun mógł przygotować się do spotkania, w tym sprawdzić historię współpracy i dane konfiguracyjne.', 'hrl-theme' ); ?></p></div>
-                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">⏱️</div><h3><?php esc_html_e( 'Czas Odpowiedzi', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Standardowy czas odpowiedzi wynosi do 24 godzin roboczych na zapytania wysłane przez formularz kontaktowy lub e-mail. Klienci z pakietu Enterprise mają przypisanego opiekuna konta z priorytetowym dostępem i czasem odpowiedzi do 8 godzin roboczych. Incydenty krytyczne blokujące działanie platformy w lokalu rozpatrywane są w pierwszej kolejności, czas odpowiedzi wynosi do 1 godziny roboczej zgodnie z umową SLA.', 'hrl-theme' ); ?></p></div>
-                <div class="product-card" style="margin-bottom:20px;"><div class="product-card-icon">💼</div><h3><?php esc_html_e( 'Kariera i Spółka', 'hrl-theme' ); ?></h3><p><a href="<?php echo esc_url( home_url( '/careers/' ) ); ?>"><?php esc_html_e( 'Zobacz oferty pracy', 'hrl-theme' ); ?></a></p><p style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px;"><?php esc_html_e( 'HardbanRecords Lab stale poszukuje talentów w obszarze kompozycji muzyki, inżynierii audio, rozwoju oprogramowania, obsługi klienta biznesowego, marketingu i sprzedaży B2B. Zapraszamy do zapoznania się z aktualnymi ofertami pracy na stronie /careers/. Świadczymy elastyczne godziny pracy, możliwość pracy zdalnej, budżet szkoleniowy oraz rozwojowy, prywatne ubezpieczenie medyczne oraz karta sportowa. W sprawach współpracy biznesowej, dystrybucji, programów partnerskich i re sellerskich prosimy o kontakt na adres partnerships@hardbanrecordslab.online.', 'hrl-theme' ); ?></p></div>
+            
+            <div class="flex flex-col gap-6">
+                <div class="card">
+                    <div class="card-icon">📧</div>
+                    <h3 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Email', 'hrl-theme' ); ?></h3>
+                    <p class="text-secondary mb-2"><a href="mailto:contact@hardbanrecordslab.online">contact@hardbanrecordslab.online</a></p>
+                    <p class="text-xs text-tertiary"><?php esc_html_e( 'Adres e-mail do spraw ogólnych i obsługi klienta.', 'hrl-theme' ); ?></p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">📞</div>
+                    <h3 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Telefon', 'hrl-theme' ); ?></h3>
+                    <p class="text-secondary mb-2"><a href="tel:+48726651384">+48 726 651 384</a></p>
+                    <p class="text-xs text-tertiary"><?php esc_html_e( 'Dostępny po wcześniejszym umówieniu (Pn-Pt 8-16).', 'hrl-theme' ); ?></p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">⏱️</div>
+                    <h3 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Czas Odpowiedzi', 'hrl-theme' ); ?></h3>
+                    <p class="text-secondary"><?php esc_html_e( 'Standardowo do 24h. Enterprise: do 8h. Krytyczne: do 1h.', 'hrl-theme' ); ?></p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">💼</div>
+                    <h3 class="text-lg font-semibold mb-2"><?php esc_html_e( 'Kariera', 'hrl-theme' ); ?></h3>
+                    <p class="text-secondary mb-2"><a href="<?php echo esc_url( home_url( '/careers/' ) ); ?>"><?php esc_html_e( 'Zobacz oferty pracy', 'hrl-theme' ); ?></a></p>
+                    <p class="text-xs text-tertiary"><?php esc_html_e( 'Dołącz do naszego zespołu.', 'hrl-theme' ); ?></p>
+                </div>
             </div>
         </div>
     </div>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Dlaczego warto skorzystać z licencjonowania muzyki B2B przez HardbanRecords Lab? Nasza platforma oferuje największą w Europie bibliotekę w 100% autorskich utworów wolnych od opłat OZZ, które mogą być legalnie odtwarzane w każdym lokalu bez dodatkowych kosztów tantiemalnych. Oferujemy różnorodne pakiety dostosowane do potrzeb małych kawiarni, sieci restauracji, hoteli, siłowni, spa i korporacji. Każdy klient otrzymuje automatyczny certyfikat zwolnienia z OZZ do przedstawienia podczas kontroli organizacji zbiorowych. Platforma CMLP umożliwia łatwe zarządzanie playlistami z Panelu B2B, dostępnego z każdego urządzenia z przeglądarką internetową. Oferujemy integracje API dla klientów Enterprise, tryb offline, White-Label Player z własnym brandingiem oraz priorytetowe wsparcie techniczne 24/7. Skontaktuj się z nami, aby omówić, który pakiet licencyjny najlepiej odpowiada potrzebom Twojego biznesu.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Często zadawane pytania przed kontaktem: Czy moja firma musi rejestrować się w ZAiKS? Nie, ponieważ wszystkie utwory w katalogu HRL są autorskie i nie podlegają organizacjom zbiorowym. Czy mogę używać muzyki HRL w mojej aplikacji mobilnej? Tak, dla klientów Enterprise oferujemy API REST v3 do integracji z aplikacjami mobilnymi. Czy platforma działa na wszystkich urządzeniach? Tak, Panel B2B i odtwarzacz CMLP działają na wszystkich urządzeniach z dostępem do internetu, w tym tabletach, laptopach i smartfonach. Czy mogę testować platformę przed zakupem? Tak, oferujemy 7-dniowy okres próbny dla nowych klientów, umożliwiający przetestowanie funkcji platformy przed podjęciem decyzji o zakupie. W tym czasie możesz odtwarzać muzykę w swoim lokalu z pełną funkcjonalnością. Jeśli masz dodatkowe pytania, wypełnij formularz kontaktowy powyżej.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Dla obecnych klientów: Jeśli masz już aktywną licencję i potrzebujesz pomocy technicznej, zmiany konfiguracji, dodania nowych lokalizacji, zmiany pakietu lub jakichkolwiek innych zmian w swoim koncie, skorzystaj z Panelu B2B dostępnego pod adresem cmlp.hardbanrecordslab.online gdzie znajdziesz zakładkę Wsparcie umożliwiającą kontakt z zespołem technicznym. Możesz również wysłać zapytanie do dedykowanego opiekuna konta jeśli posiadasz pakiet Enterprise lub Premium. W przypadku problemów krytycznych blokujących odtwarzanie muzyki w lokalu, prosimy o natychmiastowy kontakt telefoniczny lub oznaczenie tematu jako Pilne w formularzu kontaktowym. Gwarantujemy czas odpowiedzi na zapytania priorytetowe do 1 godziny roboczej dla klientów z aktywną umową SLA Enterprise.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Obszar tematyczny wiadomości: Przy wysyłaniu formularza prosimy o wybranie odpowiedniej kategorii tematycznej, co pozwoli nam przekierować Twoje zapytanie do odpowiedniego specjalisty. Kategorie obejmują: zapytania ogólne o platformę CMLP i pakiety licencyjne, konsultacje techniczne dotyczące konfiguracji Panelu B2B, problemy z odtwarzaczem muzycznym, integrację API i White-Label Player, rozliczenia i płatności, reklamacje dotyczące świadczenia usług, współpracę biznesową i dystrybucję, medię i press, kariera i rekrutacja oraz inne sprawy. Dzięki temu nasz zespół będzie mógł odpowiedzieć na Twoje pytanie szybciej i bardziej kompetentnie. W przypadku zapytań biznesowych i współpracy, prosimy o podanie nazwy firmy, branży oraz skali działalności, abyśmy mogli przygotować odpowiednią ofertę.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Nasz zespół obsługi klienta składa się z specjalistów z branży muzycznej, technologii informacyjnych, prawa autorskiego i obsługi klienta biznesowego. Każdy członek zespołu przechodzi regularne szkolenia z zakresu produktów platformy CMLP, aktualnych regulacji prawnych w zakresie licencjonowania muzyki oraz najlepszych praktyk obsługi klienta B2B. Dział obsługi klienta współpracuje ściśle z działami technicznym, prawnym i sprzedażowym, aby zapewnić kompleksową obsługę na najwyższym poziomie. W przypadku klientów z pakietem Enterprise, przydzielany jest dedykowany opiekun konta, który znaje specyfikę działalności klienta, jego preferencje muzyczne oraz historię współpracy. Opiekun konta jest dostępny pod bezpośrednim numerem telefonu oraz adresem e-mail, co pozwala na szybkie rozwiązywanie problemów i efektywną komunikację. Współpracujemy z klientami z całej Polski oraz z rynków międzynarodowych, w tym z Austrii, Niemiec, Czech, Słowacji i krajów Beneluksu.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Współpraca z HardbanRecords Lab to proces prosty i transparentny. Po pierwszym kontakcie, nasz zespół przygotuje dla Ciebie spersonalizowaną ofertę dostosowaną do potrzeb Twojego biznesu. Oferujemy bezpłatną konsultację, podczas której omówimy profil Twojego lokalu, preferencje muzyczne, wymagania techniczne oraz budżet. Na podstawie tych informacji, przygotujemy propozycję pakietu licencyjnego wraz z przykładowymi playlistami. W przypadku klientów biznesowych, przygotujemy również analizę ROI pokazującą, ile można zaoszczędzić dzięki rozwiązaniu HRL w porównaniu do płatności organizacjom zbiorowym. Po akceptacji oferty, proces wdrożenia trwa zwykle od 24 do 48 godzin. Zespół onboardingowy pomoże Ci skonfigurować Panel B2B, założyć konto, wybrać playlistę startową oraz skonfigurować odtwarzacze w lokalu. W przypadku pakietów Enterprise, proces wdrożenia może trwać dłużej ze względu na integrację z systemami POS, konfigurację API i szkolenia personelu. Nasz zespół pozostaje w stałym kontakcie z klientem przez cały okres trwania umowy, zapewniając nie tylko wsparcie techniczne, ale również porady dotyczące optymalizacji muzyki w lokalu.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'HardbanRecords Lab dąży do budowy długotrwałych relacji z klientami opartych na zaufaniu, transparentności i wysokiej jakości usług. Dlatego oferujemy elastyczne warunki współpracy, przejrzyste cenniki bez ukrytych kosztów oraz możliwość dostosowania usług do indywidualnych potrzeb każdego klienta. Naszym celem jest ułatwienie prowadzenia działalności gastronomicznej, hotelarskiej i handlowej poprzez dostarczenie stabilnego, prawnego i wysokiej jakości rozwiązania muzycznego. Jeśli masz pytania dotyczące specyfiki branży, regulacji prawnych, integracji technicznej lub po prostu chcesz omówić możliwości współpracy, skontaktuj się z nami. Jesteśmy do dyspozycji i pomożemy Ci wybrać rozwiązanie najlepsze dla Twojego biznesu.', 'hrl-theme' ); ?></p>
-<p style="margin-top:40px;padding:28px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Dziękujemy za zainteresowanie współpracą z HardbanRecords Lab. Nasz zespół jest gotów odpowiedzieć na wszystkie pytania i pomóc Ci wdrożyć platformę CMLP w Twoim lokalu. Skorzystaj z formularza kontaktowego, napisz na adres e-mail contact@hardbanrecordslab.online lub zadzwoń pod numer +48 726 651 384. Do zobaczenia!', 'hrl-theme' ); ?></p>
 </section>
 <?php get_footer(); ?>

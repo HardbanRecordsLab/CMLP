@@ -1,8 +1,9 @@
 ﻿<?php
 /**
  * Template Name: FAQ
+ * Rozbudowane: 50 pytań w 8 kategoriach
  * @package HRL_Theme
- *Last updated: 2026-07-12
+ * @version 4.0.0
  */
 get_header();
 ?>
@@ -10,61 +11,308 @@ get_header();
     <div class="hero-content">
         <p class="hero-eyebrow"><?php esc_html_e( 'Pytania i Odpowiedzi', 'hrl-theme' ); ?></p>
         <h1><?php esc_html_e( 'Najczęściej Zadawane Pytania', 'hrl-theme' ); ?></h1>
-        <p class="hero-desc"><?php esc_html_e( 'Znajdź odpowiedzi na pytania dotyczące licencjonowania muzyki komercyjnej, platformy CMLP, subskrypcji B2B, obsługi technicznej, polityki bezpieczeństwa oraz warunków współpracy z HardbanRecords Lab. Jeśli nie znajdziesz odpowiedzi na swoje pytanie w poniższym zakres, skontaktuj się z nami bezpośrednio przez formularz kontaktowy, e-mail lub telefon.', 'hrl-theme' ); ?></p>
+        <p class="hero-desc"><?php esc_html_e( 'Znajdź odpowiedzi dotyczące licencjonowania muzyki komercyjnej, platformy CMLP, subskrypcji B2B, obsługi technicznej, bezpieczeństwa oraz warunków współpracy z HardbanRecords Lab.', 'hrl-theme' ); ?></p>
+    </div>
+</section>
+
+<!-- ════════════════════════ SEKCJA INTRO ════════════════════════ -->
+<section class="section section-dark">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'FAQ', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Wszystko co musisz wiedzieć o CMLP i HRL', 'hrl-theme' ); ?></h2>
+        <p class="section-desc">
+            <?php esc_html_e( '50 pytań i odpowiedzi przygotowanych na podstawie realnych zapytań klientów. Od kwestii prawnych po techniczne, od płatności po wdrożenie.', 'hrl-theme' ); ?>
+        </p>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: PŁATNOŚCI ════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 1', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Płatności i Rozliczenia', 'hrl-theme' ); ?></h2>
+        <div class="faq-list max-w-3xl mx-auto">
+            <div class="faq-item border-b border-default py-4">
+                <button class="faq-question w-full text-left bg-transparent border-none p-4 text-base font-semibold cursor-pointer text-primary flex justify-between items-center" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '1. Jakie są metody płatności?', 'hrl-theme' ); ?><span class="text-accent text-2xl">+</span></button>
+                <div class="faq-answer hidden p-4 text-secondary text-sm leading-relaxed"><?php esc_html_e( 'Akceptujemy płatności kartą (Visa, Mastercard, AmEx) przez Stripe, PayPal, przelew BLIK oraz tradycyjny przelew bankowy przez PayU. Dla klientów Enterprise oferujemy również płatności na fakturę z terminem 14 dni. Wszystkie transakcje są przetwarzane zgodnie z PCI DSS. Nie przechowujemy danych kart na własnych serwerach.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item border-b border-default py-4">
+                <button class="faq-question w-full text-left bg-transparent border-none p-4 text-base font-semibold cursor-pointer text-primary flex justify-between items-center" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '2. Jak długo trwa ważność licencji?', 'hrl-theme' ); ?><span class="text-accent text-2xl">+</span></button>
+                <div class="faq-answer hidden p-4 text-secondary text-sm leading-relaxed"><?php esc_html_e( 'Licencja udzielana jest na 12 miesięcy kalendarzowych od daty aktywacji płatności. Odnawia się automatycznie na kolejne okresy, chyba że wypiszesz umowę z 30-dniowym wyprzedzeniem. Certyfikat Zwolnienia z OZZ jest ważny przez cały okres licencji.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item border-b border-default py-4">
+                <button class="faq-question w-full text-left bg-transparent border-none p-4 text-base font-semibold cursor-pointer text-primary flex justify-between items-center" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '3. Czy mogę płacić z góry za cały rok?', 'hrl-theme' ); ?><span class="text-accent text-2xl">+</span></button>
+                <div class="faq-answer hidden p-4 text-secondary text-sm leading-relaxed"><?php esc_html_e( 'Tak. Oferujemy zniżki przy płatności rocznej: Starter 1 999 zł (oszczędzasz 389 zł), Business 3 999 zł (oszczędzasz 789 zł), Premium 7 999 zł (oszczędzasz 1 589 zł). Płatność roczna blokuje cenę na 12 miesięcy i eliminuje comiesięczne formalności.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: LICENCJE I UMYOWY ════════════════════════ -->
+<section class="section" style="background:rgba(18,15,12,0.15);">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 2', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Licencjonowanie i Umowy', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '4. Czy naprawdę nie muszę płacić ZAiKS, STOART, ZPAV ani SAWP?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Wszystkie utwory w katalogu HRL są w 100% autorskie, stworzone przez naszych kompozytorów na podstawie umów z przeniesieniem pełnych praw autorskich. Nie podlegają jurysdykcji żadnej OZZ. Otrzymujesz Certyfikat Zwolnienia z OZZ jako dowód legalności.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '5. Czy mogę zmienić pakiet licencyjny?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Zmiana na wyższy pakiet wchodzi w życie natychmiast po dopłacie różnicy. Zmiana na niższy pakiet wchodzi w życie od następnego okresu rozliczeniowego. Bez dodatkowych opłat administracyjnych.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '6. Czy mogę przenieść licencję na inny lokal?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. W Panelu B2B możesz zmieniać adres lokalu. Licencja pozostaje aktywna — nie tracisz dni subskrypcji. Możesz też tymczasowo zawiesić licencję dla konkretnego lokalu.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '7. Co się stanie, jeśli opóźnię płatność?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Przed terminem płatności system wysyła powiadomienie e-mail. Jeśli płatność opóźni się o 7 dni, dostęp do katalogu jest automatycznie zablokowany. Po uregulowaniu zaległej kwoty dostęp jest przywracany natychmiast. Nie nakładamy odsetek za opóźnienia do 7 dni.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '8. Czy mogę wziąć okres próbny?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Oferujemy 7-dniowy okres próbny z dostępem do 10 utworów i pełnymi funkcjami Panelu B2B. Nie wymagamy danych płatniczych do aktywacji próbki. Po zakończeniu okresu próby konto jest automatycznie zawieszane — bez żadnych kosztów.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: TECHNICZNE I INTEGRACJE ════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 3', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Aspekty Techniczne i Integracje', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '9. Jakie są minimalne wymagania sprzętowe?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Minimalne: dowolny tablet, laptop lub PC z Chrome/Firefox/Safari/Edge, stabilne łącze internetowe min. 2 Mbps. Rekomendowane: tablet Samsung Galaxy Tab A9+ lub iPad 10. generacji. Dla lokali powyżej 100m² rekomendujemy system nagłośnienia Denon Professional lub Bose z obsługą Bluetooth 5.0.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '10. Czy mogę zintegrować CMLP z moim systemem POS?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak, ale tylko w pakiecie Enterprise. API REST v3 z autoryzacją JWT umożliwia integrację z dowolnym systemem POS (Posnet, Elzab, Novitus) oraz systemami BMS, BI, aplikacjami mobilnymi i CMS. Dokumentacja OpenAPI 3.0 dostępna po zalogowaniu. Limit: 1000 zapytań/h.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '11. Czy platforma działa offline?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Premium i Enterprise: tak. Możesz pobrać playlisty na urządzenie w zaszyfrowanej formie. Do 5 urządzeń offline dla Premium, do 20 dla Enterprise. Synchronizacja automatyczna po przywróceniu łącza.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '12. Jaka jakość dźwięku oferujecie?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Starter/Business: MP3 320kbps. Premium/Enterprise: FLAC 24-bit/48kHz (120dB dynamiki, pasmo 20Hz-22kHz). Wszystkie utwory masteringowane do -14 LUFS, zgodnie z normami Spotify i Apple Music.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '13. Czy mogę tworzyć własne playlisty?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Panel B2B oferuje nieograniczoną liczbę playlist. Filtrujesz po gatunku, nastroju, BPM. Każda playlista ma własny harmonogram. Możesz tworzyć playlisty na poranny lunch, wieczorne dni tygodnia lub sezonowe okazje.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '14. Czy mogę ustawić automatyczne przełączanie playlist?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Harmonogram dzienny pozwala zdefiniować playlisty poranne, popołudniowe i wieczorne z automatycznym przełączaniem o zadanych godzinach. Dla Enterprise: harmonogram sezonowy z wyprzedzeniem (święta, promocje).', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '15. Czy mogę dodawać własne utwory?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Nie. Platforma udostępnia wyłącznie katalog HRL. Jeśli potrzebujesz utworu stworzonego specjalnie dla Twojej marki, zamów usługę Muzyczna Kreacja Słów. Otrzymujesz pełne prawa majątkowe do utworu.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: BEZPIECZEŃSTWO ════════════════════════ -->
+<section class="section" style="background:rgba(18,15,12,0.15);">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 4', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Bezpieczeństwo i Zgodność', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '16. Jakie zabezpieczenia chronią pliki audio?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Pliki audio są przechowywane poza publicznym katalogiem. Nginx serwuje je przez X-Accel-Redirect z walidacją JWT. Bez ważnego tokena — brak dostępu. Szyfrowanie TLS 1.3, hashowanie bcrypt, MFA.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '17. Czy dane klientów są bezpieczne?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Szyfrowanie TLS 1.3, hashowanie haseł bcrypt (koszt 12), autoryzacja MFA/TOTP. Backup bazy co 6h w 2 lokalizacjach geograficznych. RTO 4h, RPO 6h. Pełna zgodność z RODO.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '18. Czy platforma spełnia wymagania RODO?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Minimalizacja danych, prawo do bycia zapomnianym, prawo do przenoszenia danych, rejestr czynności przetwarzania. Pełna polityka prywatności dostępna na /privacy/. DPO (Inspektor Ochrony Danych) dostępny pod request.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '19. Czy mogę korzystać z VPN podczas streamowania?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Nasza infrastruktura nie blokuje połączeń VPN. Zalecamy VPN dla klientów z siedzibą za granicą lub przy łączeniach przez publiczne WiFi. Wszystkie połączenia pozostają szyfrowane TLS 1.3.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '20. Jak często wykonujecie backupy?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Backup bazy danych co 6 godzin. Przechowywane w 2 geograficznie oddalonych lokalizacjach (Finlandia, Niemcy). Szyfrowanie AES-256. RTO 4 godziny, RPO 6 godzin. Testy odzyskiwania co kwartał.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: FUNKCJE ════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 5', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Funkcjonalności Platformy', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '21. Czym jest White-Label Player?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Dedykowany odtwarzacz z brandingiem klienta (logo, kolory, subdomena). Bez oznaczeń HRL. PIN dostępu. Integracja API. Dostępny w Premium i Enterprise.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '22. Czy mogę używać CMLP w streamach live?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Standardowa licencja obejmuje odtwarzanie w lokalu. Wykorzystanie w transmisjach live, filmach, reklamach wymaga dodatkowej umowy. Skontaktuj się z nami w celu wyceny.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '23. Czy oferujecie licencje na eventy?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Licencja Event: dostęp do 50 utworów przez 24h za 999 zł. Idealna na gale, targi, konferencje i wydarzenia firmowe. Natychmiastowa aktywacja online.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '24. Czy licencja obejmuje wszystkie strefy lokalu?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Licencja obejmuje wszystkie strefy w obiekcie — w tym windy, hole, korytarze i toalety. Nie płacisz za punkty odtwarzania, tylko za lokale (budynki).', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '25. Czy mogę używać CMLP w samochodach firmowych?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Standardowa licencja obejmuje stacjonarne lokalizacje. Odtwarzanie w pojazdach wymaga osobnej licencji mobilnej. Skontaktuj się z nami w celu omówienia warunków.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '26. Czy mogę eksportować statystyki odtworzeń?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Panel B2B oferuje eksport do CSV i PDF. Enterprise: eksport JSON do integracji z Power BI, Tableau, Google Data Studio. Statystyki per lokal, porównania okresowe, top utwory.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '27. Czy mogę zamówić dedykowaną playlistę?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Dla Premium i Enterprise: dedykowana playlista dopasowana do profilu lokalu, grupy docelowej, pory dnia. W pakiecie Enterprise comiesięczna aktualizacja playlisty.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '28. Czy utwory są w języku polskim?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Katalog obejmuje głównie utwory instrumentalne jako muzyka tła. Część ma wokale angielskie. Na zamówienie tworzymy utwory z tekstem polskim (usługa Muzyczna Kreacja Słów).', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: INTEGRACJE ════════════════════════ -->
+<section class="section" style="background:rgba(18,15,12,0.15);">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 6', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Integracje i Automatyzacja', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '29. Czy mogę zintegrować CMLP z systemem BMS?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. API REST v3 umożliwia integrację z systemami zarządzania budynkiem. Automatyczne wyciszanie podczas alarmów, dostosowanie głośności do pory dnia, wyłączanie po zamknięciu lokalu.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '30. Czy mogę eksportować dane do Power BI lub Tableau?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Eksport JSON/CSV przez API. Wspierane narzędzia: Power BI, Tableau, Google Data Studio, Looker. Dla klientów Enterprise przygotowujemy customowe dashboardy.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '31. Czy macie SDK do aplikacji mobilnych?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. SDK dla iOS i Android umożliwia wbudowanie odtwarzacza CMLP bezpośrednio w aplikację Twojej marki. Pełna kontrola nad playlistami i harmonogramem. Dostępne w Enterprise.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '32. Czy oferujecie integrację z systemami bookingowymi?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Integracja z systemami bookingowymi (Booking.com, Airbnb, Hotelbeds) przez API. Automatyczne zmiany muzyki w zależności od stopnia zapełnienia hotelu — więcej gości = bardziej energiczna playlista.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '33. Czy mogę zintegrować CMLP z moim CMS-em?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. API REST v3 umożliwia integrację z WordPress, Shopify, Magento lub dowolnym CMS-em. Webhooki powiadamiają o zmianach w katalogu lub statusie licencji.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ KATEGORIA: OBSŁUGA I ROZWÓJ ════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 7', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Wsparcie, Rozwój i Plany', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '34. Jak skontaktować się z działem obsługi klienta?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Formularz kontaktowy /contact/, e-mail: contact@hardbanrecordslab.online, telefon: +48 726 651 384 (8-16,Pn-Pt), ticket w Panelu B2B. Czas odpowiedzi: 24h (standard), 8h (Enterprise).', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '35. Jakie są godziny pracy wsparcia technicznego?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Dla wszystkich klientów: dni robocze 8-16. Enterprise: dedykowany opiekun z priorytetem 1h na krytyczne incydenty, SLA 99.9%.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '36. Czy oferujecie szkolenia dla personelu?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Dla Enterprise: sesja onboardingowa zdalna (PL/EN) w ciągu 3 dni roboczych od aktywacji. Standardowe pakiety: dokumentacja online i materiały wideo. Dodatkowe szkolenia płatne.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '37. Jakie są plany rozwoju platformy?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Plany: rozszerzenie katalogu do 1000+ utworów do końca 2026, integracja z systemami bookingowymi, AI do automatycznego miksowania playlist, aplikacja natywna iOS/Android, wejście na rynek DE/CZ.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ SEKCJA 38-50 ════════════════════════ -->
+<section class="section" style="background:rgba(18,15,12,0.15);">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Kategoria 8', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Dodatkowe Pytania', 'hrl-theme' ); ?></h2>
+        <div class="faq-list" style="max-width:800px;margin:0 auto;">
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '38. Czy mogę używać CMLP w tle rozmów telefonicznych?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Standardowa licencja obejmuje lokale. Wykorzystanie w systemach telefonicznych (IVR, muzyka na czekanie) wymaga dodatkowej umowy.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '39. Czy mogę dodać wielu użytkowników?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Panel B2B umożliwia dodawanie użytkowników z różnymi uprawnieniami: administrator, menedżer, operator (tylko odtwarzanie).', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '40. Czy platforma działa na słabym łączu?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'MP3 320kbps wymaga ~1 Mbps. FLAC 24-bit ~4 Mbps. Dla słabego łącza zalecamy MP3. Tryb offline (Premium/Enterprise) eliminuje problem całkowicie.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '41. Czy mogę anulować subskrypcję bez kary?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Wypowiadasz umowę z 30-dniowym wyprzedzeniem przez Panel B2B. Żadnych kar finansowych. Dostęp do platformy do końca opłaconego okresu.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '42. Czy dostanę fakturę VAT?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Faktura VAT wystawiana automatycznie w formie elektronicznej (PDF) po każdej płatności. Wysyłana na adres e-mail z danymi firmowymi z Panelu B2B.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '43. Jakie są koszty ukryte?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Zero kosztów ukrytych. Cena subskrypcji obejmuje wszystko: dokumentację prawną, Certyfikat Wolności QR, Panel B2B, automatyczne raporty, podstawowe wsparcie. Opcjonalne: dedykowane playlisty, integracje Enterprise.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '44. Czy mogę kupić licencję na jednorazowe wydarzenie?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Licencja Event: 50 utworów przez 24h za 999 zł. Idealna na gale firmowe, targi, konferencje. Aktywacja natychmiastowa.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '45. Czy platforma jest dostępna za granicą?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Standard: tylko Polska. Dla UE: licencja EEA (dodatkowe +50% ceny). Poza UE: wycena indywidualna. Infrastruktura w Finlandii — niskie opóźnienia dla całej Europy.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '46. Jakie są plany rozwoju CMLP?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Do końca 2026: katalog 1000+ utworów, integracje bookingowe, AI Playlist, aplikacja natywna. W 2027: wejście na rynek DE/CZ/SK, wersja angielska.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '47. Jak często dodajecie nowe utwory?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Nowe utwory dodawane co tydzień. Powiadomienia dla Premium/Enterprise. Aktualizacja całego katalogu co kwartał.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '48. Czy planujecie rozszerzenie katalogu o nowe gatunki?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. W planach: lo-fi hip-hop, reggae, afrobeat, soundtracki filmowe. Reakcja na zapotrzebowanie klientów.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '49. Czy oferujecie staże lub współprace?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Płatne staże w produkcji muzycznej (NestJS, TypeScript), marketingu B2B i obsłudze klienta. Szczegóły na /careers/.', 'hrl-theme' ); ?></div>
+            </div>
+            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
+                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '50. Czy Certyfikat Wolności przejdzie kontrolę OZZ?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
+                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Certyfikat z kodem QR potwierdza legalne źródło muzyki. Podczas kontroli skanujesz QR — kontroler widzi ważność licencji. Aktywny 24/7. To Twój dowód ochronny.', 'hrl-theme' ); ?></div>
+            </div>
+        </div>
     </div>
 </section>
 
 <section class="section">
-    <div class="container">
-        <p style="margin-bottom:30px;padding:24px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Poniższe pytania i odpowiedzi zostały przygotowane na podstawie najczęstszych zapytań otrzymywanych przez dział obsługi klienta HardbanRecords Lab. Zakres pytania obejmuje kategorie: płatności i rozliczenia, licencjonowanie i umowy, integracje techniczne, obsługa klienta, bezpieczeństwo danych oraz funkcjonalności platformy. Jeśli Twoje pytanie nie zostało poruszone poniżej, skontaktuj się z nami bezpośrednio.', 'hrl-theme' ); ?></p>
-<div class="faq-list">
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Jakie są metody płatności?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Akceptujemy płatności kartą kredytową debitową Visa Mastercard American Express przez platformę Stripe Payments Europe Limited, bezpieczne płatności PayPal dla klientów międzynarodowych oraz przelewem online BLIK lub tradycyjnym przez PayU S.A. Dla klientów korporacyjnych z regularnymi transakcjami i osobistymi relacjami biznesowymi oferujemy również płatności na podstawie faktury pro forma z 14-dniowym terminem płatności oraz płatności prolongatowe dla klientów Enterprise. Wszystkie płatności są przetwarzane na bezpiecznych serwerach operatorów płatności spełniających wymagania PCI DSS. HardbanRecords Lab nie przechowuje danych kart płatniczych na własnych serwerach. Płatności są rozliczane w czasie rzeczywistym, a faktura VAT wystawiana automatycznie po zaksięgowaniu płatności w formie elektronicznej na adres e-mail wskazany w Panelu B2B.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Jak długo trwa ważność licencji?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Licencja B2B udzielana jest na okres 12 miesięcy kalendarzowych od daty aktywacji płatności w systemie operatora płatności. Okres obowiązywania licencji jest oznaczony w potwierdzeniu płatności, fakturze oraz w Panelu B2B w zakładce Ustawienia licencja. Licencja odnawia się automatycznie na kolejne okresy 12-miesięczne, chyba że Klient wyraźnie wypowie umowę z 30-dniowym wyprzedzeniem przed końcem okresu rozliczeniowego. Certyfikat Zwolnienia z OZZ generowany jest automatycznie przy każdej aktywacji subskrypcji i dostępny do pobrania przez cały okres świadczenia usług. W przypadku przerwania płatności o więcej niż 7 dni od terminu wymagalności, dostęp do katalogu utworów może zostać tymczasowo zablokowany przez automatyczny system do momentu uregulowania zaległej kwoty. Klient otrzymuje automatyczne powiadomienia o zbliżającym się terminie płatności oraz o ewentualnym opóźnieniu na adres e-mail powiązany z kontem.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Czy naprawdę nie muszę płacić ZAiKS, STOART, ZPAV lub SAWP?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Tak. Wszystkie utwory w katalogu HardbanRecords Lab są w 100% autorskie i stworzone wyłącznie przez zespół compositorów zatrudnionych lub współpracujących z HardbanRecords Lab na podstawie umowy z przeniesieniem pełnych praw autorskich na administratora. Ponieważ utwory nie podlegają jurysdykcji organizacji zbiorowego zarządzania prawami autorskimi, Klient nie ma obowiązku płacenia dodatkowych opłat tantiemalnych za publiczne odtwarzanie muzyki w ramach licencji CMLP. Otrzymujesz Certyfikat Zwolnienia z Opłat Zbiorowych wygenerowany automatycznie przez system z unikalnym kodem QR, który stanowi dowód legalnego źródła muzyki podczas ewentualnej kontroli organów nadzorczych lub przedstawicieli organizacji zbiorowych. Certyfikat może być dowolnie wielokrotnie pobierany z Panelu B2B.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Czy mogę zintegrować odtwarzacz przez API z moim systemem POS?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Tak. Dla klientów pakietu Enterprise oferujemy pełny dostęp do interfejsu API REST w wersji 3 umożliwiającego integrację odtwarzacza CMLP z dowolnymi systemami POS, aplikacjami mobilnymi, panelami zarządzania, systemami automatyki budynku oraz innymi narzędziami biznesowymi Klienta. API obsługuje wszystkie operacje CRUD, zapisywanie playlisty, zarządzanie urządzeniami odtwarzającymi oraz pobieranie analityki odtworzeń w formacie JSON. Dokumentacja API dostępna jest pod adresem docs.cmlp.hardbanrecordslab.online po zalogowaniu się do Panelu B2B. Dostęp do API wymaga tokenu autoryzacyjnego JWT, który można wygenerować w Panelu B2B w zakładce Ustawienia integracje. Domyślny limit dla planów Enterprise wynosi 1000 zapytań na godzinę na konto.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Czym jest White-Label Player i dla kogo jest przeznaczony?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'White-Label Player to dedykowana wersja odtwarzacza muzycznego CMLP dostosowana do brandingu Klienta, umożliwiająca odtwarzanie muzyki pod własną subdomeną np. muzyka.twojafirma.pl z własnym logo, nazwą handlową i paletą kolorów dostosowaną do identyfikacji wizualnej marki. Usługa dostępna jest dla klientów pakietów Premium i Enterprise. Klient otrzymuje pełną kontrolę nad interfejsem użytkownika, może dodawać własne playlisty, ustawiać harmonogramy odtwarzania według pory dnia oraz zarządzać wieloma urządzeniami odtwarzającymi z jednego Panelu B2B. Klient nie ma prawa do modyfikacji rdzenia odtwarzacza, dekompilacji ani wykorzystania go do celów konkurencyjnych. Konfiguracja subdomeny, certyfikatu SSL oraz dostosowanie DNS pozostaje w gestii Klienta i może wymagać współpracy z administratorem systemu DNS firmy. HardbanRecords Lab zastrzega sobie prawo do wycofania subdomeny w przypadku naruszenia warunków licencji.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Jak skontaktować się z działem obsługi klienta?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Skontaktować się z nami można na kilka sposobów: pisemnie przez formularz kontaktowy dostępny na stronie hardbanrecordslab.online /contact/, wysyłając wiadomość e-mail na adres contact@hardbanrecordslab.online, dzwoniąc pod numer +48 726 651 384 dostępny w godzinach 8-16 czasu polskiego standardowego w dni robocze od poniedziałku do piątku, lub wysyłając zapytanie przez ticket system dostępny w Panelu B2B w zakładce Wsparcie. Czas odpowiedzi na zapytania wysłane przez formularz lub e-mail wynosi do 24 godzin roboczych. Klienci z pakietu Enterprise mają przypisanego dedykowanego opiekuna konta z priorytetowym dostępem, czas odpowiedzi na zapytania priorytetowe wynosi do 8 godzin roboczych. W przypadku pilnych spraw technicznych blokujących działanie platformy lub muzyki w lokalu, prosimy o wskazanie tematu jako Pilne w formularzu kontaktowym aby priorytetyzować Twoje zapytanie.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Czy oferujecie muzykę dla konkretnych branż?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Tak. Nasz katalog obejmuje utwory specjalnie przygotowane lub dopasowane do profilu akustycznego różnych branż. Oferujemy playlisty i sugestie dla: hoteli i apartamentów kommercyjnych, restauracji i lokali gastronomicznych w tym funkcjonujących przy drogach ekspresowych i autostradach, kawiarni i cukierni, siłowni i klubów fitness centrów wellness i spa, galerii sztuki i muzeów, korporacji i przestrzeni biurowych, eventów firmowych i konferencji, sklepów i galerii handlowych, szpitali i przychodni zdrowotnych, szkół i uczelni oraz domestycznych przestrzeni coworkingowych. Każda playlista dostosowana jest do profilu lokalu, rozmiaru przestrzeni, charakteru ruchu, godziny dnia oraz preferencji docelowej grupy odbiorców. W przypadku wymagań specyficznych, możemy przygotować spersonalizowaną playlistę na zamówienie w ramach usługi Muzyczna Kreacja Słów, gdzie kompozytorzy tworzą utwory dostosowane do marki i charakteru lokalu.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Jak uruchomić platformę w moim lokalu?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Proces uruchomienia platformy w lokalu odbywa się w kilku prostych krokach. Po zakupie licencji i zaksięgowaniu płatności, Klient otrzymuje automatycznie powiadomienie e-mail z linkiem do Panelu B2B oraz danymi dostępowymi. W Panelu B2B Klient konfiguruje konto, dodaje lokalizacje, wybiera playlistę startową z katalogu oraz generuje kod QR lub link django startowy do uruchomienia odtwarzacza. Następnie pobiera aplikację CMLP Player dostępną na urządzeniach z systemem Android lub iOS, lub uruchamia odtwarzacz w dowolnej przeglądarce internetowej na tablecie, laptopie lub komputerze stacjonarnym. Logując się za pomocą danych dostarczonych przez administratora, Klient wybiera playlistę, ustawia poziom głośności i rozpocznas odtwarzanie muzyki. W przypadku pakietów Enterprise, zespół HRL oferuje pomoc przy konfiguracji za pomocą sesji onboardingowej zdalnej dostępnej w języku polskim i angielskim, zawsze w ciągu 3 dni roboczych od aktywacji licencji. Klient otrzymuje również szkolenie z obsługi Panelu B2B oraz wskazówki dotyczące optymalizacji odtwarzania w lokalu pod kątem jakości dźwięku i komfortu gości.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Czy mogę zmienić pakiet licencyjny?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Tak. Klient może zmienić pakiet licencyjny w dowolnym momencie na wyższy lub niższy pakiet. Zmiana na pakiet wyższy wchodzi w życie natychmiast po zaksięgowaniu opłaty różnicy, z proporcjonalnym rozliczeniem różnicy kwoty za pozostały okres rozliczeniowy. Zmiana na pakiet niższy wchodzi w życie od początku następnego okresu rozliczeniowego, chyba że klient wyraźnie zażąda wcześniejszej zmiany, w przypadku czego administrator rozliczy różnicę proporcjonalnie i zwróci klientowi odpowiednią kwotę w ciągu 14 dni roboczych. W przypadku zwiększenia liczby lokalizacji lub rozmiaru katalogu, rozliczenie następuje zgodnie z aktualnym cennikiem. Administrator nie pobiera dodatkowych opłat administracyjnych za zmianę pakietu. Wszelkie zmiany pakietu muszą być potwierdzone przez administratora w Systemie B2B w ciągu 3 dni roboczych.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Jakie dane są zbierane przez platformę i czy są bezpieczne?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'HardbanRecords Lab zbiera wyłącznie dane niezbędne do świadczenia usług zgodnie z zasadą minimalizacji danych: dane identyfikacyjne firmy, dane kontaktowe osoby upoważnionej, dane do faktur, dane logowania do Panelu B2B, dane dotyczące odtworzeń, playlist, aktywności w platformie, dane płatności przetwarzane wyłącznie przez zewnętrznych operatorów płatności. Dane te są przetwarzane zgodnie z RODO i przechowywane przez okres nie dłuższy, niż jest to niezbędne do celów, dla których są przetwarzane. Pełna informacja dotycząca przetwarzania danych osobowych dostępna jest w Polityce Prywatności dostępnej pod adresem /privacy/. HardbanRecords Lab nie sprzedaje ani nie udostępnia danych osobowych klientów podmiotom trzecim bez wyraźnej zgody, z wyjątkiem podmiotów świadczących usługi na rzecz administratora zgodnie z umowami powierzenia przetwarzania. Dane są zabezpieczane za pomocą szyfrowania TLS 1,3, hashowania bcrypt haseł oraz regularnych kopii zapasowych. W przypadku stwierdzenia naruszenia bezpieczeństwa danych, administrator niezwłocznie powiadomi użytkowników i organ nadzorczy.', 'hrl-theme' ); ?></p></div>
-            </div>
-            <p style="margin-top:20px;padding:24px;background:rgba(255,255,255,0.04);border-left:4px solid var(--accent-primary);border-radius:0 8px 8px 0;"><?php esc_html_e( 'Jeśli nadal nie znalazłeś odpowiedzi na swoje pytanie dotyczące procesu rejestracji, wymagań systemowych, synchronizacji playlisty między urządzeniami, trybu offline czy możliwości personalizacji playlisty dla swojego lokalu, skontaktuj się z zespołem obsługi klienta HardbanRecords Lab. Jesteśmy dostępni pod adresem contact@hardbanrecordslab.online oraz numerem telefonu +48 726 651 384. Staramy się odpowiadać na wszystkie zapytania w ciągu 24 godzin roboczych, a sprawy priorytetowe dla klientów Enterprise w ciągu 8 godzin roboczych. Nasz zespół obsługi klienta składa się z doświadczonych specjalistów od obsługi klienta biznesowego, którzy znają specyfikę branży muzycznej i licencjonowania na najwyższym poziomie. Jesteśmy do dyspozycji w godzinach 8-16 czasu polskiego w dni robocze od poniedziałku do piątku.', 'hrl-theme' ); ?></p>
-            <div class="faq-item">
-                <button class="faq-question"><?php esc_html_e( 'Czy platforma działa offline?', 'hrl-theme' ); ?></button>
-                <div class="faq-answer"><p><?php esc_html_e( 'Dla klientów z pakietu Premium i Enterprise oferujemy tryb offline, który umożliwia pobranie playlisty na urządzenia mobilne i odtwarzanie muzyki bez stałego połączenia z internetem. Utwory przechowywane są w zaszyfrowanej formie na urządzeniu, co zapobiega nieautoryzowanemu kopiowaniu. Tryb offline jest szczególnie przydatny w lokacjach z słabym zasięgiem internetowym lub podczas awarii infrastruktury sieciowej. Po odzyskaniu połączenia, aplikacja automatycznie synchronizuje historię odtworzeń i aktualizuje playlisty. Urządzenia muszą być zarejestrowane w Panelu B2B, a liczba równoległych urządzeń offline jest ograniczona do 5 na pakiet Premium i 20 na pakiet Enterprise. Wszystkie urządzenia offline są monitorowane pod kątem zgodności z zakresem licencji.', 'hrl-theme' ); ?></p></div>
-            </div>
-
-</div>
+    <div class="container" style="text-align:center;">
+        <p class="section-label"><?php esc_html_e( 'Więcej', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Nie znalazłeś odpowiedzi?', 'hrl-theme' ); ?></h2>
+        <p class="section-desc" style="margin-bottom:20px;"><?php esc_html_e( 'Skontaktuj się z nami. Odpowiadamy w ciągu 24 godzin.', 'hrl-theme' ); ?></p>
+        <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Kontakt →', 'hrl-theme' ); ?></a>
     </div>
 </section>
+
 <?php get_footer(); ?>

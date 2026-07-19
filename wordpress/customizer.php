@@ -448,16 +448,11 @@ add_action( 'wp_head', function () {
 }, 1 );
 
 // ═══════════════════════════════════════════════════════
-// HELPER: get_theme_mod with fallback
+// HELPER: get_theme_mod with fallback (defined in functions.php)
 // ═══════════════════════════════════════════════════════
-function hrl_mod( $key, $fallback = '' ) {
-    $val = get_theme_mod( $key );
-    return ( '' !== $val ) ? $val : $fallback;
-}
+// function hrl_mod() is declared in functions.php — do not redeclare.
 
 // ═══════════════════════════════════════════════════════
 // HIDE SHOW SHORTCUTS (used in templates)
 // ═══════════════════════════════════════════════════════
-function hrl_is_visible( $setting ) {
-    return (bool) get_theme_mod( $setting, true );
-}
+// function hrl_is_visible() is declared in functions.php — do not redeclare.

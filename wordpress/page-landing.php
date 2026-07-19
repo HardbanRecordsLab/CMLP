@@ -4,13 +4,13 @@
  * Reusable landing page with hero, sections grid, and CTA.
  *
  * @package HRL_Theme
- * @version 3.0.0
+ * @version 4.0.0
  */
 
 get_header();
 ?>
 
-<section class="hero" style="min-height:80vh;">
+<section class="hero">
     <div class="hero-content hrl-stagger">
         <p class="hero-eyebrow"><?php esc_html_e( 'HardbanRecords Lab', 'hrl-theme' ); ?></p>
         <h1><?php the_title(); ?></h1>
@@ -27,7 +27,7 @@ get_header();
                 </a>
             <?php endif; ?>
             <?php if ( get_post_meta( get_the_ID(), 'hrl_hero_cta2_text', true ) ) : ?>
-                <a href="<?php echo esc_url( get_post_meta( get_the_ID(), 'hrl_hero_cta2_link', true ) ?: '#' ); ?>" class="btn btn-outline">
+                <a href="<?php echo esc_url( get_post_meta( get_the_ID(), 'hrl_hero_cta2_link', true ) ?: '#' ); ?>" class="btn btn-secondary">
                     <?php echo esc_html( get_post_meta( get_the_ID(), 'hrl_hero_cta2_text', true ) ); ?>
                 </a>
             <?php endif; ?>

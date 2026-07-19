@@ -1,40 +1,85 @@
 /* ═══════════════════════════════════════════════════════
-   01-RESET.CSS
+   01-RESET.CSS — Modern CSS Reset
    ═══════════════════════════════════════════════════════ */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
 }
+
 body {
-  background-color: var(--bg-main);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  min-height: 100vh;
 }
-img {
+
+img, picture, video, canvas, svg {
+  display: block;
   max-width: 100%;
   height: auto;
-  display: block;
 }
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  color: var(--accent-gold);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+a:hover {
+  color: var(--accent-gold-light);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 ul, ol {
   list-style: none;
 }
-a {
-  color: var(--gold);
-  text-decoration: none;
-  transition: var(--transition-smooth);
-}
-a:hover {
-  color: var(--gold-light);
-}
+
 ::selection {
-  background: var(--gold);
-  color: #000;
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+}
+
+/* Remove default button styles */
+button, input[type="submit"], input[type="button"], input[type="reset"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Improve text rendering */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, li, figcaption {
+  text-wrap: pretty;
+  max-width: 65ch;
 }

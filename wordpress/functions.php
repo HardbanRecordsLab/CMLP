@@ -18,6 +18,7 @@ require_once get_template_directory() . '/widgets/class-hrl-radio-player.php';
 require_once get_template_directory() . '/widgets/class-hrl-tagcloud.php';
 require_once get_template_directory() . '/widgets/class-hrl-live-counter.php';
 require_once get_template_directory() . '/widgets/class-hrl-social-links.php';
+require_once get_template_directory() . '/includes/class-hrl-mks-orders.php';
 
 // ═══════════════════════════════════════════════════════
 // THEME SETUP
@@ -108,16 +109,41 @@ add_action( 'widgets_init', 'hrl_register_sidebars' );
 // ═══════════════════════════════════════════════════════
 function hrl_enqueue_assets() {
     $theme_version = wp_get_theme()->get( 'Version' );
-
+    $css_dir = get_template_directory_uri() . '/assets/css';
+    
+    // Google Fonts - optimized with display=swap
     wp_enqueue_style(
         'hrl-google-fonts',
-        'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;700&display=swap',
-        array(), null
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap',
+        array(),
+        null
     );
 
-    wp_enqueue_style( 'hrl-theme-style', get_template_directory_uri() . '/assets/css/style.css', array( 'hrl-google-fonts' ), $theme_version );
+    // Enqueue modular CSS files in correct order
+    wp_enqueue_style( 'hrl-design-tokens', $css_dir . '/00-design-tokens.css', array(), $theme_version );
+    wp_enqueue_style( 'hrl-reset', $css_dir . '/01-reset.css', array( 'hrl-design-tokens' ), $theme_version );
+    wp_enqueue_style( 'hrl-typography', $css_dir . '/02-typography.css', array( 'hrl-reset' ), $theme_version );
+    wp_enqueue_style( 'hrl-layout', $css_dir . '/03-layout.css', array( 'hrl-typography' ), $theme_version );
+    wp_enqueue_style( 'hrl-components', $css_dir . '/04-components.css', array( 'hrl-layout' ), $theme_version );
+    wp_enqueue_style( 'hrl-animations', $css_dir . '/05-animations.css', array( 'hrl-components' ), $theme_version );
+    wp_enqueue_style( 'hrl-3d-effects', $css_dir . '/06-3d-effects.css', array( 'hrl-animations' ), $theme_version );
+    wp_enqueue_style( 'hrl-header', $css_dir . '/07-header.css', array( 'hrl-3d-effects' ), $theme_version );
+    wp_enqueue_style( 'hrl-footer', $css_dir . '/08-footer.css', array( 'hrl-header' ), $theme_version );
+    wp_enqueue_style( 'hrl-mks', $css_dir . '/09-mks-encapsulated.css', array( 'hrl-footer' ), $theme_version );
+    wp_enqueue_style( 'hrl-responsive', $css_dir . '/10-responsive.css', array( 'hrl-mks' ), $theme_version );
+    
+    // Main theme stylesheet (contains hero and additional styles)
+    wp_enqueue_style( 'hrl-theme-style', get_stylesheet_uri(), array( 'hrl-responsive' ), $theme_version );
 
+    // JavaScript
     wp_enqueue_script( 'hrl-theme-js', get_template_directory_uri() . '/assets/js/hrla-theme.js', array(), $theme_version, true );
+    wp_script_add_data( 'hrl-theme-js', 'defer', true );
+
+    // Form validation (only on pages with forms)
+    if ( is_page( array( 'contact', 'newsletter', 'muzyczna-kreacja-slow' ) ) || is_singular( 'post' ) ) {
+        wp_enqueue_script( 'hrl-form-validation', get_template_directory_uri() . '/assets/js/hrl-form-validation.js', array(), $theme_version, true );
+        wp_script_add_data( 'hrl-form-validation', 'defer', true );
+    }
 
     wp_localize_script( 'hrl-theme-js', 'hrlRadioConfig', array(
         'streamUrl'     => 'https://radio.hardbanrecordslab.online/radio/8000/radio.mp3',
@@ -278,15 +304,110 @@ add_filter( 'admin_body_class', 'hrl_admin_body_class' );
 // THEME MODE BODY CLASSES (for targeted CSS)
 // ═══════════════════════════════════════════════════════
 function hrl_body_classes( $classes ) {
-    if ( hrl_mod( 'hrl_3d_tilt_toggle', true ) ) {
-        $classes[] = 'hrl-3d-enabled';
-    }
-    if ( get_theme_mod( 'hrl_3d_cursor_toggle', false ) ) {
-        $classes[] = 'hrl-cursor-enabled';
-    }
     if ( ! get_theme_mod( 'hrl_animations_toggle', true ) ) {
         $classes[] = 'hrl-animations-disabled';
     }
     return $classes;
 }
 add_filter( 'body_class', 'hrl_body_classes' );
+
+// ═══════════════════════════════════════════════════════
+// STRUCTURED DATA (JSON-LD Schema.org)
+// ═══════════════════════════════════════════════════════
+function hrl_add_structured_data() {
+    if ( is_front_page() ) {
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => get_bloginfo( 'name' ),
+            'url' => home_url(),
+            'logo' => get_template_directory_uri() . '/images/logo.png',
+            'description' => get_bloginfo( 'description' ),
+            'contactPoint' => array(
+                '@type' => 'ContactPoint',
+                'telephone' => '+48-726-651-384',
+                'contactType' => 'customer service',
+                'email' => 'contact@hardbanrecordslab.online',
+                'availableLanguage' => array( 'Polish', 'English' )
+            ),
+            'sameAs' => array(
+                get_theme_mod( 'hrl_social_facebook', '' ),
+                get_theme_mod( 'hrl_social_twitter', '' ),
+                get_theme_mod( 'hrl_social_instagram', '' ),
+                get_theme_mod( 'hrl_social_linkedin', '' )
+            )
+        );
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+    }
+    
+    if ( is_single() ) {
+        global $post;
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'headline' => get_the_title(),
+            'datePublished' => get_the_date( 'c' ),
+            'dateModified' => get_the_modified_date( 'c' ),
+            'author' => array(
+                '@type' => 'Person',
+                'name' => get_the_author()
+            ),
+            'publisher' => array(
+                '@type' => 'Organization',
+                'name' => get_bloginfo( 'name' ),
+                'logo' => array(
+                    '@type' => 'ImageObject',
+                    'url' => get_template_directory_uri() . '/images/logo.png'
+                )
+            ),
+            'description' => wp_trim_words( get_the_excerpt(), 30 )
+        );
+        
+        if ( has_post_thumbnail() ) {
+            $schema['image'] = get_the_post_thumbnail_url( $post, 'large' );
+        }
+        
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+    }
+    
+    if ( is_page( 'faq' ) ) {
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => array()
+        );
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+    }
+}
+add_action( 'wp_head', 'hrl_add_structured_data' );
+
+// ═══════════════════════════════════════════════════════
+// OPENGRAPH & TWITTER CARDS
+// ═══════════════════════════════════════════════════════
+function hrl_add_opengraph_tags() {
+    if ( is_single() || is_page() ) {
+        global $post;
+        $title = get_the_title();
+        $description = wp_trim_words( get_the_excerpt(), 30 );
+        $url = get_permalink();
+        $image = has_post_thumbnail() ? get_the_post_thumbnail_url( $post, 'large' ) : get_template_directory_uri() . '/images/logo.png';
+    } else {
+        $title = get_bloginfo( 'name' );
+        $description = get_bloginfo( 'description' );
+        $url = home_url();
+        $image = get_template_directory_uri() . '/images/logo.png';
+    }
+    
+    echo '<meta property="og:title" content="' . esc_attr( $title ) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr( $description ) . '">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url( $url ) . '">' . "\n";
+    echo '<meta property="og:image" content="' . esc_url( $image ) . '">' . "\n";
+    echo '<meta property="og:type" content="' . ( is_single() ? 'article' : 'website' ) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr( get_bloginfo( 'name' ) ) . '">' . "\n";
+    
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr( $title ) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr( $description ) . '">' . "\n";
+    echo '<meta name="twitter:image" content="' . esc_url( $image ) . '">' . "\n";
+}
+add_action( 'wp_head', 'hrl_add_opengraph_tags', 1 );
