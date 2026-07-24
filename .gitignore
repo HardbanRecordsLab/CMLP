@@ -70,6 +70,8 @@ src/uploads/
 *.dump
 backup*.sql
 *_backup*.sql
+*_backup*.sql.gz
+*.sql.gz
 database/backups/
 database/dumps/
 backups/
