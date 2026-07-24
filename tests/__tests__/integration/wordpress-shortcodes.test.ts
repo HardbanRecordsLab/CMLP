@@ -1,6 +1,69 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import { app } from '../../../server.ts';
+import { wordpress_settings, wordpress_sync_logs } from '../../../src/db/schema.ts';
+import { withCsrf } from '../../helpers/csrf.ts';
+
+vi.mock('../../../src/middleware/auth.ts', () => ({
+  requireAuth: (req: any, _res: any, next: any) => {
+    req.user = { uid: 'mock_admin_uid', role: 'admin' };
+    next();
+  },
+  requireRole: (_role: string) => (_req: any, _res: any, next: any) => next(),
+}));
+
+const mockSettings = [
+  {
+    id: 1,
+    wpUrl: 'https://demo.hrl.pl/wp-json',
+    appUsername: 'licensing_admin',
+    appPassword: 'wp_app_password_demo',
+    bidirectional: true,
+    lastSyncTime: null,
+  },
+];
+
+const mockLogs = [
+  {
+    id: 45,
+    wpId: 101,
+    wpType: 'post',
+    title: 'New Music Clearance Release Q2 2026',
+    status: 'synced',
+    direction: 'wp_to_local',
+    errorMessage: null,
+    syncTime: new Date(),
+  },
+];
+
+vi.mock('../../../src/db/index.ts', () => ({
+  db: {
+    select: vi.fn().mockImplementation(() => ({
+      from: vi.fn().mockImplementation((table) => {
+        let resolvedValue: any[] = mockLogs;
+        if (table === wordpress_settings) resolvedValue = mockSettings;
+        else if (table === wordpress_sync_logs) resolvedValue = mockLogs;
+        const chainable = Promise.resolve(resolvedValue) as any;
+        chainable.orderBy = vi.fn().mockReturnThis();
+        chainable.limit = vi.fn().mockResolvedValue(resolvedValue);
+        return chainable;
+      }),
+    })),
+    insert: vi.fn().mockReturnValue({
+      values: vi.fn().mockImplementation((val) => ({
+        returning: vi.fn().mockResolvedValue([{ ...val, id: 99 }]),
+      })),
+    }),
+    update: vi.fn().mockReturnValue({
+      set: vi.fn().mockImplementation((val) => ({
+        where: vi.fn().mockImplementation(() => ({
+          returning: vi.fn().mockResolvedValue([{ ...mockSettings[0], ...val }]),
+        })),
+      })),
+    }),
+    execute: vi.fn().mockResolvedValue([{ '?column?': 1 }]),
+  },
+}));
 
 describe('WordPress Shortcodes Integration Tests', () => {
   describe('/api/wordpress/settings endpoints', () => {
@@ -12,34 +75,38 @@ describe('WordPress Shortcodes Integration Tests', () => {
     });
 
     it('POST /api/wordpress/settings should validate and save settings', async () => {
-      const res = await request(app).post('/api/wordpress/settings').send({
-        wpUrl: 'https://cms.hrl.pl/wp-json',
-        appUsername: 'api_user',
-        appPassword: 'secure_password',
-        bidirectional: true
-      });
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent
+        .post('/api/wordpress/settings')
+        .set('x-csrf-token', csrfToken)
+        .send({
+          wpUrl: 'https://cms.hrl.pl/wp-json',
+          appUsername: 'api_user',
+          appPassword: 'secure_password',
+          bidirectional: true,
+        });
       expect(res.status).toBe(200);
     });
   });
 
   describe('/api/wordpress/sync endpoints', () => {
     it('POST /api/wordpress/sync should trigger bidirectional sync', async () => {
-      const res = await request(app).post('/api/wordpress/sync');
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/wordpress/sync').set('x-csrf-token', csrfToken);
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('success');
       expect(res.body).toHaveProperty('syncedCount');
     });
 
     it('POST /api/wordpress/webhook should process webhook events', async () => {
+      const { agent, csrfToken } = await withCsrf(app);
       const webhookPayload = {
         event: 'post_published',
         id: 123,
         type: 'track',
-        title: 'Test Track Sync'
+        title: 'Test Track Sync',
       };
-      const res = await request(app)
-        .post('/api/wordpress/webhook')
-        .send(webhookPayload);
+      const res = await agent.post('/api/wordpress/webhook').set('x-csrf-token', csrfToken).send(webhookPayload);
       expect(res.status).toBe(200);
       expect(res.body.status).toBe('processed');
     });
@@ -50,7 +117,7 @@ describe('WordPress Shortcodes Integration Tests', () => {
       const shortcodeSchema = {
         client_id: { required: true, type: 'string' },
         skin: { required: false, type: 'string', default: 'dark' },
-        autoplay: { required: false, type: 'boolean', default: false }
+        autoplay: { required: false, type: 'boolean', default: false },
       };
       expect(shortcodeSchema.client_id.required).toBe(true);
       expect(shortcodeSchema.skin.default).toBe('dark');
@@ -72,7 +139,7 @@ describe('WordPress Shortcodes Integration Tests', () => {
       const catalogSchema = {
         genre: { required: false, type: 'string' },
         limit: { required: false, type: 'number', default: 20, max: 100 },
-        show_search: { required: false, type: 'boolean', default: true }
+        show_search: { required: false, type: 'boolean', default: true },
       };
       expect(catalogSchema.limit.default).toBe(20);
       expect(catalogSchema.limit.max).toBe(100);
@@ -82,9 +149,9 @@ describe('WordPress Shortcodes Integration Tests', () => {
       const tracks = [
         { id: 1, title: 'Track A', genre: 'House' },
         { id: 2, title: 'Track B', genre: 'Techno' },
-        { id: 3, title: 'Track C', genre: 'House' }
+        { id: 3, title: 'Track C', genre: 'House' },
       ];
-      const filtered = tracks.filter(t => t.genre === 'House');
+      const filtered = tracks.filter((t) => t.genre === 'House');
       expect(filtered).toHaveLength(2);
     });
   });

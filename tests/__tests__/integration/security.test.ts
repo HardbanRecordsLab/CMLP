@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest';
 import request from 'supertest';
 import { app } from '../../../server.ts';
 import { blockedIps } from '../../../src/middleware/rateLimiter.ts';
 import { users, licenses, contracts, payments, audit_logs } from '../../../src/db/schema.ts';
 import { generateMFASecret, getTOTP, verifyTOTP, sanitizeString, sanitizeRequestPayload } from '../../../src/utils/security.ts';
+import { withCsrf } from '../../helpers/csrf.ts';
 
 // Mock auth middleware to return a safe authenticated session context
 vi.mock('../../../src/middleware/auth.ts', () => ({
@@ -74,7 +75,8 @@ vi.mock('../../../src/db/index.ts', () => ({
       set: vi.fn().mockImplementation(() => ({
         where: vi.fn().mockResolvedValue({ success: true })
       }))
-    }))
+    })),
+    execute: vi.fn().mockResolvedValue([{ '?column?': 1 }]),
   }
 }));
 
@@ -83,12 +85,26 @@ describe('Phase 10: Security Hardening & GDPR Compliance Tests', () => {
     blockedIps.clear();
   });
 
+  // /api/security/blocklist/block writes a real blocked_expiry:* key to
+  // Redis (this test doesn't mock db.execute's Redis client) - without this,
+  // the key outlives the test run and the "should track manual active
+  // blocklisted IPs" test flakes on its "starts empty" assertion the next
+  // time this file runs.
+  afterAll(async () => {
+    const { unblockIp } = await import('../../../src/lib/redis.ts');
+    await unblockIp('8.8.8.8');
+  });
+
   describe('Unit Tests: Encryption & Anti-XSS String Sanitizers', () => {
     it('should sanitize dangerous HTML tags completely', () => {
+      // sanitizeString strips every tag (src/utils/security.ts uses a blanket
+      // /<[^>]*>/g replace, not a tag allow-list), so "safe" tags don't
+      // survive either - only the tag-free text content remains, HTML-escaped.
       const malicious = '<script>alert("hack")</script><b>Good</b><iframe src="x"></iframe>';
       const clean = sanitizeString(malicious);
       expect(clean).not.toContain('<script>');
-      expect(clean).toContain('<b>Good</b>');
+      expect(clean).not.toContain('<iframe');
+      expect(clean).toContain('Good');
     });
 
     it('should recursively sanitize requests payloads objects', () => {
@@ -134,7 +150,8 @@ describe('Phase 10: Security Hardening & GDPR Compliance Tests', () => {
     });
 
     it('should successfully setup MFA secret config payload', async () => {
-      const res = await request(app).post('/api/auth/mfa/setup');
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/auth/mfa/setup').set('x-csrf-token', csrfToken);
       expect(res.status).toBe(200);
       expect(res.body.secret).toBeDefined();
       expect(res.body.issuer).toBe('Hardban Records Lab');
@@ -143,23 +160,28 @@ describe('Phase 10: Security Hardening & GDPR Compliance Tests', () => {
     it('should test confirm TOTP setting up matching expectations', async () => {
       const secret = 'f87a8b9c235de6fd';
       const token = getTOTP(secret, Math.floor(Date.now() / 1000 / 30));
-      const res = await request(app)
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent
         .post('/api/auth/mfa/confirm')
+        .set('x-csrf-token', csrfToken)
         .send({ secret, code: token });
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
     });
 
     it('should block incorrect confirmation tokens', async () => {
-      const res = await request(app)
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent
         .post('/api/auth/mfa/confirm')
+        .set('x-csrf-token', csrfToken)
         .send({ secret: 'f87a8b9c235de6fd', code: '000000' });
       expect(res.status).toBe(400);
       expect(res.body.error).toContain('Błędny kod weryfikacyjny');
     });
 
     it('should handle MFA disable endpoint correctly', async () => {
-      const res = await request(app).post('/api/auth/mfa/disable');
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/auth/mfa/disable').set('x-csrf-token', csrfToken);
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
     });
@@ -169,19 +191,23 @@ describe('Phase 10: Security Hardening & GDPR Compliance Tests', () => {
       expect(listRes1.status).toBe(200);
       expect(listRes1.body.blockedIps).toHaveLength(0);
 
-      const blockAction = await request(app)
+      const { agent, csrfToken } = await withCsrf(app);
+      const blockAction = await agent
         .post('/api/security/blocklist/block')
+        .set('x-csrf-token', csrfToken)
         .send({ ip: '8.8.8.8' });
       expect(blockAction.status).toBe(200);
 
       const listRes2 = await request(app).get('/api/security/blocklist');
-      expect(listRes2.body.blockedIps).toContain('8.8.8.8');
+      expect(listRes2.body.blockedIps.some((entry: { ip: string }) => entry.ip === '8.8.8.8')).toBe(true);
     });
 
     it('should allow unblocking restricted blacklisted IPs', async () => {
       blockedIps.add('1.1.1.1');
-      const unblockAction = await request(app)
+      const { agent, csrfToken } = await withCsrf(app);
+      const unblockAction = await agent
         .post('/api/security/blocklist/unblock')
+        .set('x-csrf-token', csrfToken)
         .send({ ip: '1.1.1.1' });
       expect(unblockAction.status).toBe(200);
 
@@ -198,13 +224,15 @@ describe('Phase 10: Security Hardening & GDPR Compliance Tests', () => {
     });
 
     it('should wipe personal identifiable credentials on request of Right to Be Forgotten', async () => {
-      const res = await request(app).post('/api/gdpr/delete');
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/gdpr/delete').set('x-csrf-token', csrfToken);
       expect(res.status).toBe(200);
       expect(res.body.message).toContain('compliance redactions complete');
     });
 
     it('should execute automated security scan triggering simulated OWASP checks', async () => {
-      const res = await request(app).post('/api/security/owasp-scan');
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/security/owasp-scan').set('x-csrf-token', csrfToken);
       expect(res.status).toBe(200);
       expect(res.body.overallStatus).toBe('SECURE / OUTSTANDING');
       expect(res.body.scans).toHaveLength(5);

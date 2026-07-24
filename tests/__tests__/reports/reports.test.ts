@@ -43,9 +43,21 @@ const mockAuditLogs = [
   { id: 99, userId: 'admin', action: 'track_upload', resource: 'tracks', details: 'Uploaded Morning Jazz Suite', ipAddress: '127.0.0.1', createdAt: new Date() }
 ];
 
+function makeChain(resolvedValue: unknown) {
+  const chain: any = {
+    where: vi.fn(() => chain),
+    orderBy: vi.fn(() => chain),
+    limit: vi.fn(() => chain),
+    offset: vi.fn(() => chain),
+    then: (resolve: any, reject?: any) => Promise.resolve(resolvedValue).then(resolve, reject),
+  };
+  return chain;
+}
+
 vi.mock('../../../src/db/index.ts', () => ({
   db: {
-    select: vi.fn().mockImplementation(() => {
+    select: vi.fn().mockImplementation((selection?: Record<string, unknown>) => {
+      const isCount = !!selection && Object.prototype.hasOwnProperty.call(selection, 'count');
       return {
         from: vi.fn().mockImplementation((table) => {
           let resolvedValue: any[] = [];
@@ -62,11 +74,7 @@ vi.mock('../../../src/db/index.ts', () => ({
           } else if (table === audit_logs) {
              resolvedValue = mockAuditLogs;
           }
-          const chainable = Promise.resolve(resolvedValue) as any;
-          chainable.where = vi.fn().mockImplementation(() => {
-            return Promise.resolve(resolvedValue);
-          });
-          return chainable;
+          return makeChain(isCount ? [{ count: resolvedValue.length }] : resolvedValue);
         })
       };
     }),
@@ -106,7 +114,7 @@ describe('Phase 9: Admin Dashboard & Reporting APIs', () => {
   it('GET /api/audit-logs should fetch timeline events logs list', async () => {
     const res = await request(app).get('/api/audit-logs');
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBeTruthy();
-    expect(res.body[0].action).toBe('track_upload');
+    expect(Array.isArray(res.body.data)).toBeTruthy();
+    expect(res.body.data[0].action).toBe('track_upload');
   });
 });

@@ -2,6 +2,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import { app } from '../../../server.ts';
 import { notification_settings, notification_logs } from '../../../src/db/schema.ts';
+import { withCsrf } from '../../helpers/csrf.ts';
+
+vi.mock('../../../src/middleware/auth.ts', () => ({
+  requireAuth: (req: any, _res: any, next: any) => {
+    req.user = { uid: 'mock_admin_uid', role: 'admin' };
+    next();
+  },
+  requireRole: (_role: string) => (_req: any, _res: any, next: any) => next(),
+}));
 
 // Web mock values
 let mockSettings = [
@@ -20,8 +29,8 @@ let mockSettings = [
     templateExpirySubject: 'Expiry: {{certificateNumber}}',
     templateExpiryBody: 'Expires on {{expiresAt}}',
     templatePaymentSubject: 'Receipt {{amount}}',
-    templatePaymentBody: 'Processed {{amount}}'
-  }
+    templatePaymentBody: 'Processed {{amount}}',
+  },
 ];
 
 let mockLogs = [
@@ -34,13 +43,25 @@ let mockLogs = [
     body: 'Hello Alice, welcomes (test@example.com)!',
     status: 'sent',
     errorMessage: null,
-    createdAt: new Date()
-  }
+    createdAt: new Date(),
+  },
 ];
+
+function makeChain(resolvedValue: unknown) {
+  const chain: any = {
+    where: vi.fn(() => chain),
+    orderBy: vi.fn(() => chain),
+    limit: vi.fn(() => chain),
+    offset: vi.fn(() => chain),
+    then: (resolve: any, reject?: any) => Promise.resolve(resolvedValue).then(resolve, reject),
+  };
+  return chain;
+}
 
 vi.mock('../../../src/db/index.ts', () => ({
   db: {
-    select: vi.fn().mockImplementation(() => {
+    select: vi.fn().mockImplementation((selection?: Record<string, unknown>) => {
+      const isCount = !!selection && Object.prototype.hasOwnProperty.call(selection, 'count');
       return {
         from: vi.fn().mockImplementation((table) => {
           let resolvedValue: any[] = mockLogs;
@@ -49,28 +70,26 @@ vi.mock('../../../src/db/index.ts', () => ({
           } else if (table === notification_logs) {
             resolvedValue = mockLogs;
           }
-          const chainable = Promise.resolve(resolvedValue) as any;
-          chainable.orderBy = vi.fn().mockReturnThis();
-          chainable.limit = vi.fn().mockResolvedValue(resolvedValue);
-          return chainable;
-        })
+          return makeChain(isCount ? [{ count: resolvedValue.length }] : resolvedValue);
+        }),
       };
     }),
     insert: vi.fn().mockReturnValue({
       values: vi.fn().mockImplementation((val) => ({
-        returning: vi.fn().mockResolvedValue([{ ...val, id: 18 }])
-      }))
+        returning: vi.fn().mockResolvedValue([{ ...val, id: 18 }]),
+      })),
     }),
     update: vi.fn().mockReturnValue({
       set: vi.fn().mockImplementation((val) => ({
         where: vi.fn().mockImplementation(() => {
           return {
-            returning: vi.fn().mockResolvedValue([{ ...mockSettings[0], ...val }])
+            returning: vi.fn().mockResolvedValue([{ ...mockSettings[0], ...val }]),
           };
-        })
-      }))
-    })
-  }
+        }),
+      })),
+    }),
+    execute: vi.fn().mockResolvedValue([{ '?column?': 1 }]),
+  },
 }));
 
 describe('Phase 8: Email Notifications & Alert Modules unit testing', () => {
@@ -89,9 +108,9 @@ describe('Phase 8: Email Notifications & Alert Modules unit testing', () => {
     const { triggerEmailNotification } = await import('../../../src/lib/notifications.ts');
     const result = await triggerEmailNotification('user@customer.com', 'user_registration', {
       name: 'John Customer',
-      email: 'user@customer.com'
+      email: 'user@customer.com',
     });
-    
+
     expect(result.success).toBe(true);
     expect(result.logId).toBe(18);
   });
@@ -101,9 +120,9 @@ describe('Phase 8: Email Notifications & Alert Modules unit testing', () => {
     const count = await triggerWSNotificationBroadcast({
       type: 'broadcast_alert',
       subject: 'System Maintenance',
-      body: 'Our music stream servers will refresh in 10 minutes.'
+      body: 'Our music stream servers will refresh in 10 minutes.',
     });
-    
+
     // In unit state with active sockets default to empty structure, returns 0 clients synced
     expect(typeof count).toBe('number');
   });
@@ -118,13 +137,17 @@ describe('Phase 8: Email & Real-Time Alert REST Endpoint integrations', () => {
   });
 
   it('POST /api/notifications/settings should update templates and settings', async () => {
-    const res = await request(app).post('/api/notifications/settings').send({
-      provider: 'sendgrid',
-      sendgridApiKey: 'SG.testKey_123',
-      fromEmail: 'alerts@hrl.pl',
-      fromName: 'Compliance Team',
-      templateWelcomeSubject: 'Hi {{name}}!'
-    });
+    const { agent, csrfToken } = await withCsrf(app);
+    const res = await agent
+      .post('/api/notifications/settings')
+      .set('x-csrf-token', csrfToken)
+      .send({
+        provider: 'sendgrid',
+        sendgridApiKey: 'SG.testKey_123',
+        fromEmail: 'alerts@hrl.pl',
+        fromName: 'Compliance Team',
+        templateWelcomeSubject: 'Hi {{name}}!',
+      });
     expect(res.status).toBe(200);
     expect(res.body.provider).toBe('sendgrid');
     expect(res.body.fromEmail).toBe('alerts@hrl.pl');
@@ -133,30 +156,38 @@ describe('Phase 8: Email & Real-Time Alert REST Endpoint integrations', () => {
   it('GET /api/notifications/logs should return a list of messages logs', async () => {
     const res = await request(app).get('/api/notifications/logs');
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body[0].recipient).toBe('test@example.com');
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.data[0].recipient).toBe('test@example.com');
   });
 
   it('POST /api/notifications/broadcast should dispatch WebSocket parameters and notify connected nodes', async () => {
-    const res = await request(app).post('/api/notifications/broadcast').send({
-      type: 'broadcast_alert',
-      subject: 'New Release Uploaded',
-      body: 'Boutique Chill House vol 1 available now.'
-    });
+    const { agent, csrfToken } = await withCsrf(app);
+    const res = await agent
+      .post('/api/notifications/broadcast')
+      .set('x-csrf-token', csrfToken)
+      .send({
+        type: 'broadcast_alert',
+        subject: 'New Release Uploaded',
+        body: 'Boutique Chill House vol 1 available now.',
+      });
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(typeof res.body.broadcastedClients).toBe('number');
   });
 
   it('POST /api/notifications/test-email should return send summary states for sandbox verification', async () => {
-    const res = await request(app).post('/api/notifications/test-email').send({
-      toEmail: 'tester@host.com',
-      type: 'user_registration',
-      variables: {
-        name: 'Unit Tester',
-        email: 'tester@host.com'
-      }
-    });
+    const { agent, csrfToken } = await withCsrf(app);
+    const res = await agent
+      .post('/api/notifications/test-email')
+      .set('x-csrf-token', csrfToken)
+      .send({
+        toEmail: 'tester@host.com',
+        type: 'user_registration',
+        variables: {
+          name: 'Unit Tester',
+          email: 'tester@host.com',
+        },
+      });
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
   });

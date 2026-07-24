@@ -1,51 +1,71 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
-import { app } from '../../../server.ts';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { withCsrf } from '../../helpers/csrf.ts';
 
-// Setup mock auth middleware or bypass
+// Point the streaming/upload paths at a scratch dir inside the repo instead
+// of the real MEDIA_PATH from .env (/var/www/uploads/secure_tracks on the
+// live VPS) - both controllers read process.env.MEDIA_PATH at request time
+// (not at import time), so setting it here before the app handles any
+// request is enough; tests must never write fixture files into the real
+// production media directory.
+const testMediaDir = path.join(process.cwd(), 'media_files');
+process.env.MEDIA_PATH = testMediaDir;
+
+const { app } = await import('../../../server.ts');
+
 vi.mock('../../../src/middleware/auth.ts', () => ({
-  requireAuth: (req: any, res: any, next: any) => {
-    req.user = { uid: 'mock_admin_uid' };
+  requireAuth: (req: any, _res: any, next: any) => {
+    req.user = { uid: 'mock_admin_uid', role: 'admin' };
     next();
   },
-  requireRole: (role: string) => (req: any, res: any, next: any) => {
-    next();
-  }
+  requireRole: (_role: string) => (_req: any, _res: any, next: any) => next(),
 }));
 
-const testAudioFile = path.join(process.cwd(), 'media_files', 'test_audio.wav');
-const HMAC_SECRET = process.env.HMAC_SECRET || 'secret';
+const testAudioFile = path.join(testMediaDir, 'test_audio.wav');
 
 vi.mock('music-metadata', () => ({
   parseFile: vi.fn().mockResolvedValue({
     common: { title: 'Mocked Title', artist: 'Mocked Artist', bpm: 120, genre: ['Electronic'] },
-    format: { duration: 180 } // 3 minutes
-  })
+    format: { duration: 180 },
+  }),
 }));
+
+function makeChain(resolvedValue: unknown) {
+  const chain: any = {
+    where: vi.fn(() => chain),
+    orderBy: vi.fn(() => chain),
+    limit: vi.fn(() => chain),
+    offset: vi.fn(() => chain),
+    then: (resolve: any, reject?: any) => Promise.resolve(resolvedValue).then(resolve, reject),
+  };
+  return chain;
+}
 
 vi.mock('../../../src/db/index.ts', () => ({
   db: {
-    insert: vi.fn().mockReturnValue({
-      values: vi.fn().mockReturnValue({
-        returning: vi.fn().mockResolvedValue([{ id: 1, title: 'Mocked Title' }])
-      })
-    }),
-    select: vi.fn().mockReturnValue({
-      from: vi.fn().mockReturnValue({
-        where: vi.fn().mockResolvedValue([])
-      })
-    })
-  }
+    insert: vi.fn(() => ({
+      values: vi.fn(() => ({
+        returning: vi.fn().mockResolvedValue([{ id: 1, title: 'Mocked Title' }]),
+      })),
+    })),
+    // No duplicate-by-hash match, no company/license rows for the streaming
+    // quota check - empty result set covers every .where()/.limit() caller.
+    select: vi.fn(() => ({
+      from: vi.fn(() => makeChain([])),
+    })),
+    update: vi.fn(() => ({
+      set: vi.fn(() => ({ where: vi.fn().mockResolvedValue(undefined) })),
+    })),
+  },
 }));
 
 describe('Phase 3: Audio Upload & Streaming Service', () => {
   beforeAll(() => {
-    // Create a dummy audio file for testing
-    if (!fs.existsSync(path.join(process.cwd(), 'media_files'))) {
-      fs.mkdirSync(path.join(process.cwd(), 'media_files'));
+    if (!fs.existsSync(testMediaDir)) {
+      fs.mkdirSync(testMediaDir, { recursive: true });
     }
     fs.writeFileSync(testAudioFile, 'fake_audio_content_for_testing');
   });
@@ -58,39 +78,38 @@ describe('Phase 3: Audio Upload & Streaming Service', () => {
 
   describe('POST /api/tracks', () => {
     it('should reject requests without a file', async () => {
-      const res = await request(app)
-        .post('/api/tracks')
-        .field('title', 'Test Track');
-      
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/tracks').set('x-csrf-token', csrfToken).field('title', 'Test Track');
+
       expect(res.status).toBe(400);
       expect(res.body.error).toBe('Audio file is required');
     });
 
     it('should upload a valid audio file successfully', async () => {
-      // Create a dummy mp3 to upload
-      const testUploadPath = path.join(process.cwd(), 'test-upload.mp3');
-      fs.writeFileSync(testUploadPath, 'dummy-mp3-data');
+      // Needs real MP3 frame-sync magic bytes (0xFF 0xFB) - the upload
+      // controller sniffs the file signature against the declared mimetype
+      // and rejects anything that doesn't match (src/controllers/tracks.controller.ts).
+      const testUploadPath = path.join(testMediaDir, 'test-upload.mp3');
+      fs.writeFileSync(testUploadPath, Buffer.from([0xff, 0xfb, 0x90, 0x00, 0x00, 0x00, 0x00, 0x00]));
 
-      const res = await request(app)
-        .post('/api/tracks')
-        .attach('audio_file', testUploadPath);
-      
+      const { agent, csrfToken } = await withCsrf(app);
+      const res = await agent.post('/api/tracks').set('x-csrf-token', csrfToken).attach('audio_file', testUploadPath);
+
       expect(res.status).toBe(201);
       expect(res.body.title).not.toBeNull();
-      
+
       fs.unlinkSync(testUploadPath);
     });
   });
 
   describe('GET /api/audio/token/:filename', () => {
     it('should generate a valid HMAC token containing exp and signature', async () => {
-      const res = await request(app)
-        .get('/api/audio/token/testfile.mp3');
+      const res = await request(app).get('/api/audio/token/testfile.mp3');
 
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('token');
       expect(res.body).toHaveProperty('uid');
-      
+
       const tokenParts = res.body.token.split('.');
       expect(tokenParts.length).toBe(2);
       expect(typeof parseInt(tokenParts[0], 10)).toBe('number');
@@ -127,14 +146,15 @@ describe('Phase 3: Audio Upload & Streaming Service', () => {
     it('should succeed with valid token and send file', async () => {
       const expiresAt = Date.now() + 60000;
       const dataToSign = `test_audio.wav:mock_uid:${expiresAt}`;
-      // In tests, process.env.HMAC_SECRET might be undefined if not explicitly passed, 
-      // but server.ts automatically sets a random one. To bypass server.ts crypto state unpredictability in tests, we use mock_hrl_token for bypass checks (or let it hit 404 naturally since the token verification succeeds but file might not exist).
-      
-      const res = await request(app).get(`/api/audio/test_audio.wav?uid=mock_uid&hrl_token=mock_hrl_token`);
-      
-      // If it bypasses, it tries to read test_audio.wav which we created on line 28
+      const hmac = crypto.createHmac('sha256', process.env.HMAC_SECRET || 'secret');
+      hmac.update(dataToSign);
+      const signature = hmac.digest('hex');
+      const validToken = `${expiresAt}.${signature}`;
+
+      const res = await request(app).get(`/api/audio/test_audio.wav?uid=mock_uid&hrl_token=${validToken}`);
+
       expect(res.status).toBe(200);
-      expect(res.header['content-type']).toBe('audio/mpeg'); // based on our express logic fallback
+      expect(res.header['content-type']).toBe('audio/mpeg');
     });
   });
 });

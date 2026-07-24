@@ -1,64 +1,67 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import fs from 'fs';
-import path from 'path';
-import { monitor } from '../../../src/utils/sentry.ts';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+// src/utils/sentry.ts (what this file used to test) is an explicitly
+// deprecated no-op stub - real error reporting goes through the official
+// @sentry/node SDK via src/middleware/errorHandler.ts. Mock that SDK call
+// directly rather than testing dead code.
+const captureException = vi.fn();
+vi.mock('@sentry/node', () => ({ captureException: (...args: unknown[]) => captureException(...args) }));
+
+const { errorHandler } = await import('../../../src/middleware/errorHandler.ts');
+const { ValidationError } = await import('../../../src/utils/errors.ts');
+
+function mockRes() {
+  const res: any = {};
+  res.headersSent = false;
+  res.status = vi.fn().mockReturnValue(res);
+  res.json = vi.fn().mockReturnValue(res);
+  return res;
+}
+
+function mockReq(overrides: Partial<{ method: string; path: string }> = {}) {
+  return { method: 'POST', path: '/api/licensing/validate', ...overrides } as any;
+}
 
 describe('Phase 12: Production Monitoring & Real-time Sentry Integration Tests', () => {
-  const logFilePath = path.join(process.cwd(), 'logs', 'error_telemetry.json');
-
   beforeEach(() => {
-    // Delete target error log file if it exists to maintain standard sandbox states
-    if (fs.existsSync(logFilePath)) {
-      try {
-        fs.unlinkSync(logFilePath);
-      } catch (err) {}
-    }
+    captureException.mockClear();
   });
 
-  afterEach(() => {
-    // Clean up post-test files
-    if (fs.existsSync(logFilePath)) {
-      try {
-        fs.unlinkSync(logFilePath);
-      } catch (err) {}
-    }
+  it('should report 500-level errors to Sentry with the original error object', () => {
+    const error = new Error('Test telemetry connection timeout');
+    error.name = 'TimeoutError';
+    const req = mockReq();
+    const res = mockRes();
+
+    errorHandler(error, req, res, vi.fn());
+
+    expect(captureException).toHaveBeenCalledTimes(1);
+    expect(captureException).toHaveBeenCalledWith(error);
+    expect(res.status).toHaveBeenCalledWith(500);
+    const body = res.json.mock.calls[0][0];
+    expect(body.error).toBe('InternalServerError');
   });
 
-  it('should successfully compile localized telemetry events format and persist to storage', () => {
-    const mockError = new Error('Test telemetry connection timeout');
-    mockError.name = 'TimeoutError';
+  it('should gracefully handle non-Error throw values without crashing', () => {
+    const req = mockReq();
+    const res = mockRes();
 
-    const reqContext = {
-      url: '/api/licensing/validate',
-      method: 'POST',
-      headers: { host: 'cmlp.hrl.pl', userAgent: 'Vitest Client' }
-    };
+    errorHandler('Crucial Database Port Connection Unresponsive', req, res, vi.fn());
 
-    // Trigger local error catch simulation
-    monitor.captureException(mockError, reqContext);
-
-    // Assert file was created and is readable
-    expect(fs.existsSync(logFilePath)).toBe(true);
-    
-    const fileContents = fs.readFileSync(logFilePath, 'utf-8');
-    expect(fileContents).toContain('Test telemetry connection timeout');
-    expect(fileContents).toContain('TimeoutError');
-    expect(fileContents).toContain('/api/licensing/validate');
-
-    const parsedEntry = JSON.parse(fileContents.trim());
-    expect(parsedEntry.eventId).toBeDefined();
-    expect(parsedEntry.timestamp).toBeDefined();
-    expect(parsedEntry.error.type).toBe('TimeoutError');
+    expect(captureException).toHaveBeenCalledTimes(1);
+    const reported = captureException.mock.calls[0][0];
+    expect(reported).toBeInstanceOf(Error);
+    expect(reported.message).toBe('Crucial Database Port Connection Unresponsive');
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 
-  it('should gracefully handle non-Error throw event shapes mapping safely', () => {
-    const rawThrow = "Crucial Database Port Connection Unresponsive";
+  it('should NOT report expected 4xx application errors to Sentry', () => {
+    const req = mockReq();
+    const res = mockRes();
 
-    monitor.captureException(rawThrow);
+    errorHandler(new ValidationError('email is required'), req, res, vi.fn());
 
-    expect(fs.existsSync(logFilePath)).toBe(true);
-    const fileContents = fs.readFileSync(logFilePath, 'utf-8');
-    expect(fileContents).toContain('Crucial Database Port Connection Unresponsive');
-    expect(fileContents).toContain('UnknownError');
+    expect(captureException).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
   });
 });
