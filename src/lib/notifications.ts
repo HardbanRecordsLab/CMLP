@@ -277,6 +277,7 @@ export async function triggerEmailNotification(
 
       await transporter.sendMail({
         from: `"${settings.fromName}" <${settings.fromEmail}>`,
+        replyTo: 'info@hardbanrecordslab.online',
         to: toEmail,
         subject: subject,
         text: body,

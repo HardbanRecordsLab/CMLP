@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { signToken, signRefreshToken, refreshAccessToken, JWT_SECRET } from '../lib/jwt.ts';
 import { db } from '../db/index.ts';
-import { users } from '../db/schema.ts';
+import { users, companies } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { triggerEmailNotification } from '../lib/notifications.ts';
@@ -124,6 +124,13 @@ export async function register(req: Request, res: Response) {
       emailVerified: false
     });
 
+    // Kazde nowe konto potrzebuje wlasnej firmy - bez tego nie dziala
+    // zarzadzanie lokalizacjami, przypisywanie licencji ani weryfikacja certyfikatow.
+    await db.insert(companies).values({
+      name: `Firma ${email.split('@')[0]}`,
+      ownerId: uid,
+    });
+
     triggerEmailNotification(email, 'email_verification', {
       name: email.split('@')[0],
       email,
@@ -153,6 +160,11 @@ export async function register(req: Request, res: Response) {
       refreshToken
     });
   } catch (error) {
+    if ((error as { code?: string })?.code === '23505') {
+      // Wyscig dwoch rownoleglych rejestracji tym samym mailem - constraint
+      // UNIQUE na users.email zlapal to, czego nie zlapal check wyzej.
+      return res.status(409).json({ error: 'User already exists' });
+    }
     console.error('Register error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -191,7 +203,7 @@ export async function registerSync(req: Request, res: Response) {
     const { email, uid } = req.body;
     if (!email || !uid) { res.status(400).json({ error: 'Missing fields' }); return; }
 
-    const adminEmails = ['hardbanrecordslab.pl@gmail.com', 'familydreamshop.pl@gmail.com'];
+    const adminEmails = ['hardbanrecordslab.pl@gmail.com'];
     const role = adminEmails.includes(email.toLowerCase()) ? 'admin' : 'client';
     const name = role === 'admin' ? 'HRL Admin' : 'HRL Client';
 
@@ -204,11 +216,24 @@ export async function registerSync(req: Request, res: Response) {
         role,
         appName: 'Hardban Records Outlet',
       });
+
+      // Jak w register() - bez wlasnej firmy konto nie moze zarzadzac
+      // lokalizacjami ani miec przypisanych licencji.
+      await db.insert(companies).values({
+        name: `Firma ${email.split('@')[0]}`,
+        ownerId: uid,
+      });
     } else {
       await db.update(users).set({ uid }).where(eq(users.email, email));
     }
     res.json({ success: true, role });
   } catch (e: unknown) {
+    if ((e as { code?: string })?.code === '23505') {
+      // Rownolegle wywolania sync dla tego samego maila (np. WordPress
+      // odpalajacy bridge kilka razy naraz) - constraint na email juz
+      // to obsluzyl, traktuj jako powodzenie zamiast 500.
+      res.json({ success: true }); return;
+    }
     console.error(e);
     res.status(500).json({ error: 'Failed to sync user' });
   }

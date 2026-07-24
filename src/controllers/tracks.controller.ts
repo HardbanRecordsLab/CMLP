@@ -8,6 +8,7 @@ import path from 'path';
 import crypto from 'node:crypto';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { enqueueTranscodeJob } from '../services/transcoding-queue.service.ts';
+import { dispatchAITagging } from '../workers/ai-tagging.worker.ts';
 import { clearCache } from '../lib/redis.ts';
 import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 
@@ -110,6 +111,10 @@ export async function create(req: any, res: Response) {
     } catch (transcodeErr) {
       console.error('[Transcode] Failed to enqueue for track', newTrack.id, transcodeErr);
     }
+
+    // Fire-and-forget: AI tagging takes 30-60s, don't make the upload
+    // request wait for it. Updates the track row once analysis completes.
+    dispatchAITagging(newTrack.id, filePath).catch(() => {});
 
     await clearCache('tracks:*');
 
