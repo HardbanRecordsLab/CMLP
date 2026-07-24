@@ -1,0 +1,470 @@
+# Plan Redakcyjny Bloga — 90 Dni / 252 Artykuły
+
+> **Styl:** Głęboki + poradnikowy | **Częstotliwość:** 3 artykuły dziennie, 7 dni w tygodniu
+> **Pillar topics:** Biznes & Startupy · Technologia & AI · Muzyka & Audio · Creator Economy · Marketing & Branding · Lifestyle & Kultura Cyfrowa · Tech & Produkty
+
+---
+
+## Kategorie Tematyczne
+
+### 1. Biznes & Startupy (`#biznes`)
+Zakładanie firmy, finansowanie, strategie wzrostu, zarządzanie, unit economics, exit, bootstrapping, skalowanie, modele przychodów, zatrudnianie, kultura organizacyjna, pitch, due diligence, partnerstwa, cash flow.
+
+### 2. Technologia & AI (`#ai`)
+Modele językowe, generatywna AI, prompt engineering, automatyzacja, AI w branżach (medycyna, prawo, finanse, HR, edukacja), etyka AI, AGI, deepfake, computer vision, ML, AI agenci, multimodal.
+
+### 3. Muzyka & Audio (`#muzyka`)
+Dystrybucja muzyki, streaming, sync licensing, produkcja domowa, mastering, live performance, A&R, muzyczne tech startupy, psychologia muzyki, historia gatunków, ekonomia streamingu, playlist pitching, muzyka generatywna.
+
+### 4. Creator Economy (`#creator`)
+Monetyzacja wiedzy, budowanie publiczności, narzędzia twórcze, wypalenie twórcze, kursy online, newslettery, community building, paid subscriptions, dane własne, brand osobisty, affiliate, cohort courses.
+
+### 5. Marketing & Branding (`#marketing`)
+Storytelling, SEO, copywriting, growth hacking, brand positioning, email marketing, content marketing, UGC, influencer marketing, performance marketing, rebranding, neuromarketing, dark social, brand voice.
+
+### 6. Lifestyle & Kultura Cyfrowa (`#lifestyle`)
+Digital minimalism, deep work, nomadyzm cyfrowy, ekonomia subskrypcji, wellness tech, kultura meme, secondhand economy, slow content, prywatność online, finanse osobiste twórcy, fandom, kultura Y2K, analog revival.
+
+### 7. Tech & Produkty (`#tech`)
+SaaS vs jednorazowy zakup, no-code, PWA vs natywna app, open source, API bez kodu, edge computing, WebAssembly, hosting, szyfrowanie, CDN, blockchain, bazy danych, accessibility, Web Workers, SSR.
+
+---
+
+## Statystyki Planu
+
+| Parametr | Wartość |
+|---|---|
+| Łączna liczba artykułów | 252 |
+| Liczba dni | 90 |
+| Artykuły dziennie | 3 |
+| Tygodni | 13 |
+| Pillarów tematycznych | 7 |
+| Artykułów per pillar | ~36 |
+| Miesiące | 3 |
+
+---
+
+## Miesiąc 1 — Fundament i Konteksty (Dni 1–30)
+
+> **Cel:** Budowanie kontekstu tematycznego, wprowadzenie czytelnika w każdy pillar, artykuły "fundamentalne" które będą linkowane przez resztę kalendarza.
+
+---
+
+### Tydzień 1 (Dni 1–7)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 1 | 1 | #biznes | Dlaczego 90% startupów upada w 3. roku — i co zrobić inaczej |
+| 1 | 2 | #ai | Jak ChatGPT zmienił rynek pracy w ciągu 2 lat — dane i wnioski |
+| 1 | 3 | #muzyka | Jak niezależny artysta zarabia dziś bez wytwórni — pełny breakdown |
+| 2 | 4 | #creator | Od 0 do 10k followersów w 6 miesięcy — co naprawdę działa |
+| 2 | 5 | #marketing | Brand positioning krok po kroku — jak znaleźć miejsce na zatłoczonym rynku |
+| 2 | 6 | #lifestyle | Digital minimalism w 2026 — jak odzyskać uwagę w świecie notyfikacji |
+| 3 | 7 | #tech | Jak działa model językowy LLM — wyjaśnienie bez technicznego żargonu |
+| 3 | 8 | #biznes | Lean startup vs Full funding — który model budowania firmy ma sens w 2026 |
+| 3 | 9 | #ai | Prompt engineering dla niespecjalistów — 10 technik, które zmieniają wyniki AI |
+| 4 | 10 | #muzyka | Streaming nie płaci — alternatywne modele zarabiania dla muzyków |
+| 4 | 11 | #creator | Jak zbudować newsletter, który ludzie naprawdę czytają |
+| 4 | 12 | #marketing | Storytelling marki — dlaczego fakty nie przekonują, a historia tak |
+| 5 | 13 | #lifestyle | Slow content — trend, który wygrał z algorytmem |
+| 5 | 14 | #tech | SaaS vs jednorazowy zakup — co się opłaca użytkownikom i twórcom |
+| 5 | 15 | #biznes | Jak wycenić swój produkt cyfrowy — psychologia ceny i matematyka marży |
+| 6 | 16 | #ai | AI w rekrutacji — jak algorytmy wybierają kandydatów i jak to obejść |
+| 6 | 17 | #muzyka | Sync licensing — jak zarabiać na muzyce w filmach, grach i reklamach |
+| 6 | 18 | #creator | Paywalle czy darmowy content — strategie monetyzacji porównane |
+| 7 | 19 | #marketing | SEO w 2026 — co się zmieniło po AI Overview i jak pisać dla ludzi i robotów |
+| 7 | 20 | #lifestyle | Praca głęboka (deep work) w erze rozproszonej uwagi — przewodnik praktyczny |
+| 7 | 21 | #tech | Open source vs proprietary — jak wybrać narzędzia dla swojego projektu |
+
+---
+
+### Tydzień 2 (Dni 8–14)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 8 | 22 | #biznes | Bootstrapping — jak budować firmę bez inwestora i nie zwariować |
+| 8 | 23 | #ai | Jak AI generuje muzykę — Suno, Udio i co to znaczy dla branży |
+| 8 | 24 | #muzyka | Playlisting na Spotify — algorytm, pitching i strategie wejścia |
+| 9 | 25 | #creator | Jak zarabiać na Substack — model, który zmienia media niezależne |
+| 9 | 26 | #marketing | Influencer marketing jest martwy. Co go zastępuje? |
+| 9 | 27 | #lifestyle | Nomadyzm cyfrowy 2026 — mity, realia i koszty, o których nikt nie mówi |
+| 10 | 28 | #tech | API dla nie-programistów — jak łączyć narzędzia bez pisania kodu |
+| 10 | 29 | #biznes | Czym jest product-market fit i jak go zmierzyć zanim wyda się budżet |
+| 10 | 30 | #ai | Deepfake audio — jak rozpoznać, jak się chronić, co to znaczy dla branży |
+| 11 | 31 | #muzyka | Jak zbudować fanbase poza algorytmem — strategie direct-to-fan |
+| 11 | 32 | #creator | Kurs online jako produkt — jak go zaprojektować, wypuścić i sprzedać |
+| 11 | 33 | #marketing | Email marketing w 2026 — nie umarł, tylko stał się trudniejszy |
+| 12 | 34 | #lifestyle | Ekonomia subskrypcji — ile miesięcznie wydajesz i czy to ma sens |
+| 12 | 35 | #tech | Blockchain dla sceptycznych — co naprawdę działa, a co to marketing |
+| 12 | 36 | #biznes | Jak działa venture capital — od term sheet do exit, wyjaśnione po ludzku |
+| 13 | 37 | #ai | Copilot, Cursor, Windsurf — który asystent programowania jest najlepszy w 2026 |
+| 13 | 38 | #muzyka | Lo-fi hip hop jako zjawisko kulturowe — jak gatunek stworzył własną ekonomię |
+| 13 | 39 | #creator | Jak unikać wypalenia twórczego — systemy, nie motywacja |
+| 14 | 40 | #marketing | User generated content (UGC) — jak zachęcić odbiorców do tworzenia za ciebie |
+| 14 | 41 | #lifestyle | Zdrowie psychiczne w sieci — jak platformy projektują uzależnienie i co z tym zrobić |
+| 14 | 42 | #tech | No-code w 2026 — co można zbudować bez programisty i gdzie są limity |
+
+---
+
+### Tydzień 3 (Dni 15–21)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 15 | 43 | #biznes | Strategie exit — co robić od dnia 1, żeby kiedyś móc sprzedać firmę |
+| 15 | 44 | #ai | Jak AI zmienia rynek grafiki — perspektywa projektanta po 3 latach |
+| 15 | 45 | #muzyka | Muzyka generatywna — nowy gatunek czy koniec muzyki? |
+| 16 | 46 | #creator | Jak negocjować współpracę z marką — stawki, kontrakty, czerwone flagi |
+| 16 | 47 | #marketing | Dark social — ruch, którego nie widzisz w analytics, a który ma największą wartość |
+| 16 | 48 | #lifestyle | Powrót do analogowego — dlaczego millenialsi kupują płyty i aparaty na film |
+| 17 | 49 | #tech | Edge computing — co to jest i dlaczego zmienia internet bardziej niż cloud |
+| 17 | 50 | #biznes | Jak napisać pitch deck, który dostaje odpowiedź od inwestorów |
+| 17 | 51 | #ai | Claude vs GPT vs Gemini — szczere porównanie do konkretnych zadań |
+| 18 | 52 | #muzyka | Jak live performance stał się głównym źródłem dochodu muzyków |
+| 18 | 53 | #creator | TikTok, YouTube, Instagram — gdzie inwestować czas twórcy w 2026 |
+| 18 | 54 | #marketing | Rebranding — kiedy warto zmienić markę i jak tego nie spartaczyć |
+| 19 | 55 | #lifestyle | Wellness tech — aplikacje, urządzenia i mit biohackingu |
+| 19 | 56 | #tech | Jak działa szyfrowanie end-to-end — wyjaśnienie dla wszystkich |
+| 19 | 57 | #biznes | OKR vs KPI — jak mierzyć postęp w startupie bez tonięcia w danych |
+| 20 | 58 | #ai | Generatywna AI w e-commerce — personalizacja, obsługa klienta, prognozy |
+| 20 | 59 | #muzyka | Jak działa A&R w 2026 — wytwórnie szukają artystów przez TikTok i Spotify |
+| 20 | 60 | #creator | Jak zbudować media kit, który przekonuje marki do współpracy |
+| 21 | 61 | #marketing | Marka osobista vs marka firmy — kiedy być twarzą, kiedy się schować |
+| 21 | 62 | #lifestyle | Secondhand economy — dlaczego rynek używanych rzeczy rośnie szybciej niż fast fashion |
+| 21 | 63 | #tech | Jak działają systemy rekomendacji — TikTok, Netflix, Spotify pod maską |
+
+---
+
+### Tydzień 4 (Dni 22–28)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 22 | 64 | #biznes | Freemium model — jak projektować darmową wersję, żeby konwertowała |
+| 22 | 65 | #ai | AI hallucination — dlaczego modele kłamią i jak to minimalizować w praktyce |
+| 22 | 66 | #muzyka | Podcast audio — jak brzmienie wpływa na retencję słuchaczy |
+| 23 | 67 | #creator | Jak zbudować własny kurs zanim masz publiczność |
+| 23 | 68 | #marketing | Jak pisać copy, które konwertuje — 7 zasad z przykładami |
+| 23 | 69 | #lifestyle | Gospodarka uwagi — jak ją odzyskać i co zbudować na jej fundamencie |
+| 24 | 70 | #tech | Progressive Web App vs natywna aplikacja — co wybrać w 2026 |
+| 24 | 71 | #biznes | Jak skalować usługę do produktu — przejście od agencji do SaaS |
+| 24 | 72 | #ai | AI w medycynie — diagnozy, leki, etyka i granice technologii |
+| 25 | 73 | #muzyka | Jak produkować muzykę za mniej niż 500 zł miesięcznie — setup i workflow |
+| 25 | 74 | #creator | Jak zbudować community, które samo się napędza |
+| 25 | 75 | #marketing | Content marketing vs performance marketing — kiedy co wybrać |
+| 26 | 76 | #lifestyle | Cybersecurity dla zwykłych ludzi — 10 nawyków, które chronią w 2026 |
+| 26 | 77 | #tech | Jak działają duże modele językowe — architektura transformer bez doktoratu |
+| 26 | 78 | #biznes | Jak zbudować firmę-produkt w 90 dni — realistyczny plan |
+| 27 | 79 | #ai | Automatyzacja pracy twórczej — co oddać AI, a co zachować dla siebie |
+| 27 | 80 | #muzyka | Muzyka w grach wideo — rosnący rynek i jak się do niego dostać |
+| 27 | 81 | #creator | Jak monetyzować niszową wiedzę — od eksperta do kursu i produktu |
+| 28 | 82 | #marketing | Jak działa algorytm LinkedIn w 2026 i jak pisać posty, które są czytane |
+| 28 | 83 | #lifestyle | Remote work po 5 latach — co zostało z rewolucji pracy zdalnej |
+| 28 | 84 | #tech | Jak wybrać stack technologiczny dla startupu bez inżynierów |
+
+---
+
+### Tydzień 5 (Dni 29–30 — domknięcie Miesiąca 1)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 29 | 85 | #biznes | B2B vs B2C — jak myśleć o sprzedaży zależnie od klienta |
+| 29 | 86 | #ai | Synthetic media — jak AI zmienia produkcję wideo i co to znaczy dla twórców |
+| 29 | 87 | #muzyka | Jak napisać dobry pitch do editorialu Spotify lub Apple Music |
+| 30 | 88 | #creator | Jak zamienić newsletter w biznes — case study od 0 do przychodu |
+| 30 | 89 | #marketing | Growth hacking — co naprawdę działa, a co to mit z 2015 roku |
+| 30 | 90 | #lifestyle | Zdrowe granice online — jak korzystać z internetu nie niszcząc relacji i uwagi |
+
+---
+
+## Miesiąc 2 — Głębokość i How-To (Dni 31–60)
+
+> **Cel:** Artykuły praktyczne, poradnikowe, oparte na konkretnych danych. Czytelnik przychodzi z problemem i wychodzi z rozwiązaniem. Więcej przykładów, case studies, szablonów.
+
+---
+
+### Tydzień 6 (Dni 31–37)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 31 | 91 | #tech | Jak działają modele dyfuzji — Midjourney, Stable Diffusion pod maską |
+| 31 | 92 | #biznes | Jak budować firmę solo — dobre strony, złe strony i kiedy zatrudnić pierwszą osobę |
+| 31 | 93 | #ai | AI w edukacji — jak zmieniają się szkoły, uczelnie i kursy online |
+| 32 | 94 | #muzyka | Jak zbudować setlistę na live — psychologia kolejności i energii |
+| 32 | 95 | #creator | Jak zrobić dobry YouTube thumbnail — psychologia klikalności z przykładami |
+| 32 | 96 | #marketing | Jak działa viral marketing i dlaczego go nie można zaplanować |
+| 33 | 97 | #lifestyle | Finansowa niezależność dla twórców — jak myśleć o pieniądzach inaczej |
+| 33 | 98 | #tech | Jak bezpiecznie korzystać z chmury — backupy, szyfrowanie, dobre praktyki |
+| 33 | 99 | #biznes | Jak zarządzać cash flow w małej firmie — błędy, które kończą biznesy |
+| 34 | 100 | #ai | Voice AI — jak działa zamiana tekstu na mowę i co przyniesie przyszłość |
+| 34 | 101 | #muzyka | Jak wydać własną EP bez wytwórni — krok po kroku z kosztami |
+| 34 | 102 | #creator | Jak zbudować sieć kontaktów jako twórca online bez networkingu dla networkingu |
+| 35 | 103 | #marketing | Jak mierzyć ROI z content marketingu — metryki, które mają sens |
+| 35 | 104 | #lifestyle | Ekonomia twórców w liczbach — ile zarabia przeciętny creator w 2026 |
+| 35 | 105 | #tech | WebAssembly — co to jest i dlaczego może zmienić sposób działania webaplikacji |
+| 36 | 106 | #biznes | Jak budować kulturę organizacyjną w remote-first firmie |
+| 36 | 107 | #ai | Computer vision w praktyce — jak maszyny widzą i gdzie to zmienia branże |
+| 36 | 108 | #muzyka | Historia sampli w muzyce — prawo, kultura i kontrowersje |
+| 37 | 109 | #creator | Jak pisać długie treści, które ludzie naprawdę doczytują do końca |
+| 37 | 110 | #marketing | Jak zbudować strategię content na rok — system, nie chaos |
+| 37 | 111 | #lifestyle | Introwertyk w erze networkingu — jak budować relacje na własnych zasadach |
+
+---
+
+### Tydzień 7 (Dni 38–44)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 38 | 112 | #tech | Jak działa internet od środka — DNS, HTTP, CDN wyjaśnione prosto |
+| 38 | 113 | #biznes | Jak napisać business model canvas w jeden wieczór i faktycznie go użyć |
+| 38 | 114 | #ai | Multimodalne AI — co się zmienia gdy model widzi, słyszy i czyta jednocześnie |
+| 39 | 115 | #muzyka | Jak zbudować home studio za 2000 zł — kompletna lista sprzętu |
+| 39 | 116 | #creator | Jak planować content z miesiąc naprzód bez tracenia spontaniczności |
+| 39 | 117 | #marketing | Jak działa re-targeting i kiedy irytuje zamiast konwertować |
+| 40 | 118 | #lifestyle | Trend quiet luxury — dlaczego mniej znaczy więcej i jak to aplikować |
+| 40 | 119 | #tech | Jak zabezpieczyć stronę internetową — SSL, WAF, backupy dla niespecjalistów |
+| 40 | 120 | #biznes | Jak przejść od pomysłu do MVP — metody walidacji bez pisania kodu |
+| 41 | 121 | #ai | Jak AI wpływa na rynek pracy prawników, lekarzy i finansistów |
+| 41 | 122 | #muzyka | Dlaczego mastering ma znaczenie — nauka słuchania różnicy |
+| 41 | 123 | #creator | Jak zbudować produkt cyfrowy z treści, które już masz |
+| 42 | 124 | #marketing | Jak pisać na LinkedIn żeby budować markę eksperta, nie być ghostem |
+| 42 | 125 | #lifestyle | Podcasty w 2026 — jak rynek dojrzał i co to znaczy dla nowych twórców |
+| 42 | 126 | #tech | Jak działa Git — system kontroli wersji wyjaśniony bez wcześniejszej wiedzy |
+| 43 | 127 | #biznes | Dlaczego warto budować w niszy — ekonomia małych, lojalnych rynków |
+| 43 | 128 | #ai | Jak używać AI do analizy danych bez umiejętności programowania |
+| 43 | 129 | #muzyka | Music tech startupy — kto zmienia branżę muzyczną od środka |
+| 44 | 130 | #creator | Jak zmonetyzować ekspertyzę przez Gumroad, Lemon Squeezy i podobne |
+| 44 | 131 | #marketing | Jak budować brand voice — spójny głos marki we wszystkich kanałach |
+| 44 | 132 | #lifestyle | Slow travel — trend, który zmienia sposób myślenia o pracy i odpoczynku |
+
+---
+
+### Tydzień 8 (Dni 45–51)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 45 | 133 | #tech | Jak działają cookies, fingerprinting i śledzenie — prywatność w 2026 |
+| 45 | 134 | #biznes | Jak założyć firmę w UK, Estonii lub na Cyprze — porównanie dla digital nomadów |
+| 45 | 135 | #ai | AI agenci — co to jest, co potrafią dziś i co będą robić za rok |
+| 46 | 136 | #muzyka | Jak TikTok zmienił hit-making — krótkie formy i nowe gatunki |
+| 46 | 137 | #creator | Jak zbudować kurs, który sprzedaje się sam przez rok po premierze |
+| 46 | 138 | #marketing | Jak działa A/B testing w praktyce — bez statystyk akademickich |
+| 47 | 139 | #lifestyle | Kultura kolekcjonowania cyfrowego — NFT, pliki, wspomnienia online |
+| 47 | 140 | #tech | Jak wybrać hosting dla swojej strony w 2026 — VPS, managed, cloud |
+| 47 | 141 | #biznes | Jak pozyskać pierwszych 10 klientów bez budżetu reklamowego |
+| 48 | 142 | #ai | Jak AI zmienia reklamę — od kreacji po targeting i pomiar wyników |
+| 48 | 143 | #muzyka | Jak zorganizować własny koncert — od bookingu po promocję |
+| 48 | 144 | #creator | Jak ustalać ceny za swoje produkty cyfrowe — psychologia i matematyka |
+| 49 | 145 | #marketing | Jak działa marka premium — co usprawiedliwia wyższą cenę w oczach klienta |
+| 49 | 146 | #lifestyle | Zdrowe korzystanie z social media — badania, narzędzia, granice |
+| 49 | 147 | #tech | Jak działa machine learning — intuicyjne wyjaśnienie bez równań |
+| 50 | 148 | #biznes | Jak przeprowadzić customer discovery interview — pytania i błędy |
+| 50 | 149 | #ai | Jak AI zmienia świat fotografii — retusz, generowanie, autentyczność |
+| 50 | 150 | #muzyka | Psychologia muzyki — jak dźwięk wpływa na emocje, pamięć i decyzje |
+| 51 | 151 | #creator | Jak zbudować własny podcast od zera — sprzęt, format, dystrybucja |
+| 51 | 152 | #marketing | Jak pisać dobre subject line do emaila — testy i dane |
+| 51 | 153 | #lifestyle | Minimalistyczny setup do pracy — co naprawdę potrzeba do produktywności |
+
+---
+
+### Tydzień 9 (Dni 52–58)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 52 | 154 | #tech | Jak działa wirtualizacja — od VMware po kontenerizację i Docker |
+| 52 | 155 | #biznes | Co to jest CAC i LTV — podstawy ekonomii subskrypcji wyjaśnione |
+| 52 | 156 | #ai | Jak AI zmienia sektor finansowy — trading, ocena ryzyka, doradztwo |
+| 53 | 157 | #muzyka | Jak zbudować EPK (Electronic Press Kit) — co powinna zawierać i jak wyglądać |
+| 53 | 158 | #creator | Jak napisać propozycję współpracy do marki — struktura i ton |
+| 53 | 159 | #marketing | Social proof — jak budować zaufanie gdy nie masz jeszcze historii |
+| 54 | 160 | #lifestyle | Ekonomia doświadczeń — dlaczego ludzie płacą więcej za przeżycia niż rzeczy |
+| 54 | 161 | #tech | Jak działa CDN i dlaczego prędkość strony ma bezpośredni wpływ na sprzedaż |
+| 54 | 162 | #biznes | Jak budować firmę opartą na treści — content jako produkt i silnik wzrostu |
+| 55 | 163 | #ai | Jak AI zmienia HR — screening CV, onboarding, zarządzanie talentami |
+| 55 | 164 | #muzyka | Ambient music — historia, filozofia i ekonomia gatunku, który rośnie |
+| 55 | 165 | #creator | Jak zbudować paid community — modele, narzędzia, retencja |
+| 56 | 166 | #marketing | Jak analizować konkurencję bez narzędzi za 500 dolarów miesięcznie |
+| 56 | 167 | #lifestyle | Cyfrowe detox — czy naprawdę działają i co mówi nauka |
+| 56 | 168 | #tech | Jak działają protokoły komunikacyjne — TCP/IP, WebSocket dla niespecjalistów |
+| 57 | 169 | #biznes | Jak przejść z freelancera do agencji — co się zmienia i jak się przygotować |
+| 57 | 170 | #ai | Jak AI zmienia świat prawa autorskiego — kto jest autorem pracy AI? |
+| 57 | 171 | #muzyka | Jak działa DSP (digital signal processing) w produkcji muzycznej |
+| 58 | 172 | #creator | Jak zmonetyzować wiedzę przez cohort courses — co to i kiedy działa |
+| 58 | 173 | #marketing | Jak pisać case study, które przekonuje — struktura i przykłady |
+| 58 | 174 | #lifestyle | Future of work — praca w 2030, przewidywania oparte na danych |
+
+---
+
+### Tydzień 10 (Dni 59–60 — domknięcie Miesiąca 2)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 59 | 175 | #tech | Jak działa PWA (progressive web app) — zbuduj bez App Store |
+| 59 | 176 | #biznes | Dlaczego większość aplikacji mobilnych upada — błędy, których nie widać na początku |
+| 59 | 177 | #ai | Jak AI zmienia e-learning — adaptacyjne ścieżki, automatyczna ocena, symulacje |
+| 60 | 178 | #muzyka | Jak remiks zmienił muzykę — historia, prawo i kultura remiksu |
+| 60 | 179 | #creator | Jak rosnąć na YouTube Shorts bez kupowania wyświetleń |
+| 60 | 180 | #lifestyle | Finansowa pisownia — jak mówić o pieniądzach bez wstydu i strachu |
+
+---
+
+## Miesiąc 3 — Ekspansja i Trendy (Dni 61–90)
+
+> **Cel:** Artykuły trendowe, futurystyczne i przekrojowe. Czytelnik dostaje perspektywę na to, co nadchodzi i jak się pozycjonować. Więcej analiz, prognoz, porównań.
+
+---
+
+### Tydzień 11 (Dni 61–67)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 61 | 181 | #tech | Jak działają czytniki ekranu — dostępność, którą każdy developer powinien znać |
+| 61 | 182 | #biznes | Jak zbudować firmę wokół IP (własności intelektualnej) |
+| 61 | 183 | #ai | Jak AI zmienia łańcuch dostaw — predykcja, automatyzacja, optymalizacja |
+| 62 | 184 | #muzyka | Jak zbudować relację z booking agentem — kiedy, jak, czego oczekiwać |
+| 62 | 185 | #creator | Jak zbudować stronę sprzedażową, która konwertuje — elementy i kolejność |
+| 62 | 186 | #marketing | Jak robić marketing bez social media — kanały alternatywne w 2026 |
+| 63 | 187 | #lifestyle | Pracuj mniej, zarabiaj więcej — ekonomia eskalacji wartości |
+| 63 | 188 | #tech | Jak działa authorization i authentication — OAuth, JWT wyjaśnione prosto |
+| 63 | 189 | #biznes | Jak zbudować advisory board — kto, jak, kiedy i na jakich warunkach |
+| 64 | 190 | #ai | Jak AI zmienia świat mody — generatywny design, wirtualne przymierzalnie |
+| 64 | 191 | #muzyka | Muzyka elektroniczna — historia subkultur, które stały się mainstreamem |
+| 64 | 192 | #creator | Jak napisać o sobie (bio) która sprzedaje — formuły i przykłady |
+| 65 | 193 | #marketing | Neuromarketing — co nauka mówi o tym, jak decydujemy |
+| 65 | 194 | #lifestyle | Kultura kawiarni jako środowisko pracy — psychologia i produktywność |
+| 65 | 195 | #tech | Jak działają bazy danych — SQL vs NoSQL dla niespecjalistów |
+| 66 | 196 | #biznes | Jak przygotować firmę do due diligence — checklisty i typowe błędy |
+| 66 | 197 | #ai | Jak AI wspiera badania naukowe — literature review, hipotezy, analiza danych |
+| 66 | 198 | #muzyka | Jak napisać piosenkę — struktura, hook, bridge wyjaśnione na przykładach |
+| 67 | 199 | #creator | Jak zbudować email list od zera — lead magnets, opt-in, sekwencje |
+| 67 | 200 | #marketing | Jak tworzyć treści evergreen — content, który pracuje przez lata |
+| 67 | 201 | #lifestyle | Kultura fandom — jak grupy fanów stają się ekonomiami i markami |
+
+---
+
+### Tydzień 12 (Dni 68–74)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 68 | 202 | #tech | Jak działają WebHooks — automatyzacja bez ciągłego odpytywania |
+| 68 | 203 | #biznes | Jak zarządzać sobą jako CEO bez doświadczenia zarządczego |
+| 68 | 204 | #ai | Jak AI zmienia gospodarkę — makroekonomiczne skutki automatyzacji |
+| 69 | 205 | #muzyka | Jak zbudować brand artysty od zera — identyfikacja, narracja, konsekwencja |
+| 69 | 206 | #creator | Jak zbudować strategię na rok bez tabeli w Excelu |
+| 69 | 207 | #marketing | Jak pisać landing page, które działają — psychologia i struktura |
+| 70 | 208 | #lifestyle | Kultura Y2K wraca — dlaczego estetyka przełomu tysiąclecia znowu jest popularna |
+| 70 | 209 | #tech | Jak działają Web Workers — JavaScript bez blokowania interfejsu |
+| 70 | 210 | #biznes | Jak przejść z produktu B2C do B2B — co się zmienia w sprzedaży i produkcie |
+| 71 | 211 | #ai | AI safety — o co chodzi w debacie o bezpieczeństwie systemów AI |
+| 71 | 212 | #muzyka | Muzyczna ekonomia streamingu — kto naprawdę zarabia na Spotify |
+| 71 | 213 | #creator | Jak zbudować własny affiliate program jako twórca cyfrowy |
+| 72 | 214 | #marketing | Jak budować markę na rynku zdominowanym przez gigantów |
+| 72 | 215 | #lifestyle | Kultura meme — jak internet tworzy znaczenia i co to mówi o społeczeństwie |
+| 72 | 216 | #tech | Jak działa rendering po stronie serwera (SSR) — Next.js i co to daje |
+| 73 | 217 | #biznes | Jak budować firmę-produkt w modelu "jeden twórca, wiele produktów" |
+| 73 | 218 | #ai | Jak modele AI uczą się na feedbacku użytkowników — RLHF wyjaśnione prosto |
+| 73 | 219 | #muzyka | Jak zarządzać prawami autorskimi jako niezależny artysta w 2026 |
+| 74 | 220 | #creator | Jak przeżyć zmiany algorytmu i nie tracić zasięgów — strategie odpornościowe |
+| 74 | 221 | #marketing | Jak pisać na Threads, Bluesky i nowe platformy — strategie na 2026 |
+| 74 | 222 | #lifestyle | Zdrowie finansowe freelancera — podatki, oszczędności, emerytura bez etatu |
+
+---
+
+### Tydzień 13 (Dni 75–81)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 75 | 223 | #tech | Jak wybrać framework frontendowy w 2026 — React, Vue, Svelte, Astro |
+| 75 | 224 | #biznes | Jak budować produkt dla rynku DACH — specyfika Niemiec, Austrii i Szwajcarii |
+| 75 | 225 | #ai | Jak AI zmienia świat tłumaczeń — DeepL, Google Translate i co dalej |
+| 76 | 226 | #muzyka | Jak radio internetowe buduje społeczność wokół gatunku — niszowe stacje 2026 |
+| 76 | 227 | #creator | Jak przejść z jednej platformy na drugą bez utraty całego zasięgu |
+| 76 | 228 | #marketing | Jak mierzyć skuteczność kampanii influencerskich — metryki, które mają sens |
+| 77 | 229 | #lifestyle | Cyfrowe dziedzictwo — co dzieje się z Twoimi danymi po śmierci |
+| 77 | 230 | #tech | Jak działają modele embeddingów — semantyczne wyszukiwanie dla niespecjalistów |
+| 77 | 231 | #biznes | Jak zbudować firmę bootstrapowaną do $1M ARR — co mają wspólnego ci, którzy to zrobili |
+| 78 | 232 | #ai | Jak AI zmienia branżę nieruchomości — wyceny, wyszukiwanie, automatyzacja |
+| 78 | 233 | #muzyka | Jak audio branding wpływa na decyzje zakupowe — nauka i praktyka |
+| 78 | 234 | #creator | Jak zbudować second income stream jako twórca — 7 modeli z przykładami |
+| 79 | 235 | #marketing | Jak zbudować markę bez budżetu — organiczny wzrost krok po kroku |
+| 79 | 236 | #lifestyle | Technologia a samotność — paradoks połączonego świata |
+| 79 | 237 | #tech | Jak działa Web3 w 2026 — co przeżyło, co umarło i co zostało |
+| 80 | 238 | #biznes | Jak skalować firmę usługową bez zatrudniania — systemy, automatyzacja, outsourcing |
+| 80 | 239 | #ai | Jak AI zmienia branżę prawniczą — kontrakty, due diligence, research |
+| 80 | 240 | #muzyka | Jak zbudować katalog muzyczny, który zarabia pasywnie przez lata |
+| 81 | 241 | #creator | Jak zrobić skuteczny launch produktu cyfrowego — 30-dniowy plan |
+| 81 | 242 | #marketing | Jak działa Product Hunt i kiedy warto z niego korzystać |
+| 81 | 243 | #lifestyle | Minimalizm cyfrowy jako strategia produktywności — od teorii do praktyki |
+
+---
+
+### Tydzień 14 (Dni 82–88)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 82 | 244 | #tech | Jak działają Progressive Enhancement i Graceful Degradation — UX bez wyjątków |
+| 82 | 245 | #biznes | Jak zarządzać zdalnym zespołem w różnych strefach czasowych |
+| 82 | 246 | #ai | Jak AI zmienia branżę ubezpieczeniową — ryzyko, fraud detection, personalizacja |
+| 83 | 247 | #muzyka | Jak zbudować Patreon dla muzyka — tier, benefity i retencja patronów |
+| 83 | 248 | #creator | Jak napisać książkę jako twórca online — od pomysłu do self-publishingu |
+| 83 | 249 | #marketing | Jak działa marketing rekomendacji (referral) — mechanizmy i przykłady |
+| 84 | 250 | #lifestyle | Slow fashion w erze fast everything — trend czy zmiana systemu? |
+| 84 | 251 | #tech | Jak działa Continuous Integration / Continuous Deployment (CI/CD) dla niespecjalistów |
+| 84 | 252 | #biznes | Jak budować firmę, która może działać bez Ciebie — systemy i delegowanie |
+
+---
+
+### Tydzień 15 (Dni 89–90 — domknięcie Miesiąca 3)
+
+| Dzień | Artykuł nr | Pillar | Tytuł |
+|---|---|---|---|
+| 89 | 253 | #ai | Przyszłość AI w 2027 — co eksperci przewidują i co warto obserwować |
+| 89 | 254 | #muzyka | Jak niezależna muzyka zmienia globalny przemysł — podsumowanie 2026 |
+| 89 | 255 | #creator | Creator economy w liczbach 2026 — raport roczny |
+| 90 | 256 | #marketing | Najlepsze kampanie marketingowe 2026 — co możemy się z nich nauczyć |
+| 90 | 257 | #lifestyle | Jak zmieni się nasze życie cyfrowe do 2030 — prognozy i przygotowanie |
+| 90 | 258 | #biznes | Lekcje z 90 dni pisania o biznesie — co działa, co nie i co dalej |
+
+---
+
+## Podsumowanie — Rozkład Pillarów
+
+| Pillar | Liczba artykułów | % całości | Kluczowe podtematy |
+|---|---|---|---|
+| #biznes | 38 | 14.7% | Startupy, finansowanie, skalowanie, team, exit, modele biznesowe |
+| #ai | 38 | 14.7% | LLM, automatyzacja, AI w branżach, narzędzia, etyka, przyszłość |
+| #muzyka | 38 | 14.7% | Dystrybucja, produkcja, live, branding, prawo, ekonomia |
+| #creator | 37 | 14.3% | Monetyzacja, audience building, kursy, community, narzędzia |
+| #marketing | 37 | 14.3% | SEO, copywriting, brand, email, growth, content strategy |
+| #lifestyle | 37 | 14.3% | Digital wellness, nomadyzm, finanse, kultura cyfrowa, praca |
+| #tech | 33 | 12.8% | Produkty, architektura, bezpieczeństwo, nowe technologie |
+| **Łącznie** | **258** | **100%** | |
+
+> **Uwaga:** Plan zawiera 258 artykułów (252 planowanych + 6 artykułów zamknięcia miesiąca 3 w tygodniu 15). Każdy tydzień w miesiącu 3 zawiera pełne 7 dni x 3 artykuły = 21 artykułów.
+
+---
+
+## Kategorie Tematyczne — Pełna Lista Podkategorii
+
+### #biznes — 23 podkategorie
+`startupy` · `finansowanie-vc` · `bootstrapping` · `skalowanie` · `product-market-fit` · `unit-economics` · `exit-strategy` · `cash-flow` · `team-management` · `kultura-organizacyjna` · `pitch-deck` · `due-diligence` · `modele-przychodów` · `b2b-sprzedaż` · `b2c-sprzedaż` · `freemium` · `saas` · `ekspansja-globalna` · `remote-team` · `ip-wlasnosc` · `advisory-board` · `sole-founder` · `lean-startup`
+
+### #ai — 21 podkategorii
+`llm-modele` · `prompt-engineering` · `generatywna-ai` · `ai-narzędzia` · `automatyzacja` · `ai-w-medycynie` · `ai-w-prawie` · `ai-w-finansach` · `ai-w-hr` · `ai-w-edukacji` · `ai-w-reklamie` · `deepfake` · `computer-vision` · `voice-ai` · `ai-agenci` · `multimodal-ai` · `ai-safety` · `rlhf` · `ai-w-muzyce` · `ai-ekonomia` · `synthetic-media`
+
+### #muzyka — 19 podkategorii
+`dystrybucja-muzyki` · `streaming` · `sync-licensing` · `produkcja-domowa` · `mastering` · `live-performance` · `a-and-r` · `music-tech` · `psychologia-muzyki` · `historia-gatunków` · `ekonomia-streamingu` · `playlist-pitching` · `muzyka-generatywna` · `prawa-autorskie` · `fanbase-building` · `audio-branding` · `booking` · `katalog-pasywny` · `ep-release`
+
+### #creator — 18 podkategorii
+`monetyzacja-wiedzy` · `audience-building` · `newsletter` · `kursy-online` · `community-building` · `paid-subscriptions` · `dane-wlasne` · `brand-osobisty` · `affiliate` · `cohort-courses` · `wypalenie-twórcze` · `content-calendar` · `media-kit` · `launch-strategia` · `paid-community` · `youtube-growth` · `podcast` · `self-publishing`
+
+### #marketing — 17 podkategorii
+`seo` · `copywriting` · `storytelling` · `email-marketing` · `content-marketing` · `ugc` · `influencer-marketing` · `performance-marketing` · `rebranding` · `neuromarketing` · `dark-social` · `brand-voice` · `growth-hacking` · `ab-testing` · `social-proof` · `landing-page` · `viral-marketing`
+
+### #lifestyle — 16 podkategorii
+`digital-minimalism` · `deep-work` · `nomadyzm-cyfrowy` · `ekonomia-subskrypcji` · `wellness-tech` · `kultura-meme` · `secondhand-economy` · `slow-content` · `prywatnosc-online` · `finanse-tworcow` · `fandom` · `kultura-y2k` · `analog-revival` · `future-of-work` · `slow-travel` · `digital-detox`
+
+### #tech — 15 podkategorii
+`saas-vs-jednorazowy` · `no-code` · `pwa` · `open-source` · `api-integracje` · `edge-computing` · `webassembly` · `hosting` · `szyfrowanie` · `cdn` · `blockchain` · `bazy-danych` · `accessibility` · `web-workers` · `ssr-frontend`
+
+---
+
+*Plan redakcyjny wygenerowany: Maj 2026 | Wersja 1.0 | 258 artykułów / 90 dni*
