@@ -264,10 +264,9 @@ get_header();
     </p>
     <div class="hero-actions">
       <a href="#formularz" class="btn-primary">Zamów swój utwór</a>
-      <a href="#utwory" class="btn-secondary">Posłuchaj przykładów</a>
+      <a href="#realizacje" class="btn-secondary">Posłuchaj przykładów</a>
     </div>
     <div class="hero-badges">
-      <div class="hero-badge"><div class="hero-badge-num">8+</div><div class="hero-badge-label">Zrealizowanych zamówień</div></div>
       <div class="hero-badge"><div class="hero-badge-num">od 2020</div><div class="hero-badge-label">Lat doświadczenia</div></div>
       <div class="hero-badge"><div class="hero-badge-num">48h</div><div class="hero-badge-label">Czas realizacji demo</div></div>
       <div class="hero-badge"><div class="hero-badge-num">100%</div><div class="hero-badge-label">Satysfakcji gwarantowanej</div></div>
@@ -304,134 +303,6 @@ get_header();
         <div class="manifesto-icon">🤝</div>
         <h3>Partnerstwo, nie usługa</h3>
         <p>Pracujemy razem. Konsultacje, korekty, dialog — dopóki nie poczujesz, że ta piosenka jest naprawdę Twoja.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="utwory" id="utwory">
-  <div class="container">
-    <p class="section-eyebrow">Portfolio Emocji</p>
-    <h2 class="section-title">Posłuchaj historii zamienionych w dźwięk</h2>
-    <hr class="divider">
-    <div class="song-tabs">
-      <button class="song-tab active" data-tab="wesele" onclick="switchSong('wesele', this)">💍 Wesele</button>
-      <button class="song-tab" data-tab="urodziny" onclick="switchSong('urodziny', this)">🎂 Urodziny</button>
-      <button class="song-tab" data-tab="narodziny" onclick="switchSong('narodziny', this)">👶 Narodziny</button>
-      <button class="song-tab" data-tab="biznes" onclick="switchSong('biznes', this)">🏢 Firmowy</button>
-      <button class="song-tab" data-tab="pozegnanie" onclick="switchSong('pozegnanie', this)">💫 Pożegnanie</button>
-    </div>
-
-    <div class="song-panel active" id="song-wesele">
-      <div class="song-meta">
-        <span class="song-occasion">Pierwszy Taniec</span>
-        <h3 class="song-title-text">„Właśnie Ty”</h3>
-        <p class="song-artist">dla Karoliny i Macieja — Kraków</p>
-        <p class="song-desc">Małgorzata poprosiła nas o utwór, który opowie historię jej związku — od przypadkowego spotkania na Kazimierzu, przez trudne miesiące rozstania, aż po powrót i zaręczyny. Ballada pop z elementami jazzu. Realizacja: 6 dni, 2 korekty tekstu.</p>
-        <div class="song-tags"><span class="song-tag">Ballada</span><span class="song-tag">Pop</span><span class="song-tag">Pierwszy taniec</span><span class="song-tag">Studio 3 dni</span></div>
-        <div class="song-price-box"><div class="price">od 199 zł</div><div class="price-note">Pakiet Premium + dedykowane nagranie wokalne</div></div>
-      </div>
-      <div class="lyrics-card">
-        <div class="lyrics-label">Fragment utworu</div>
-        <div class="lyrics-text">Znaleźliśmy się przez przypadek na bruku między kawiarnią a snem,
-Twój śmiech rozświetlił tamten zaułek i nie pamiętam już jak żyć bez Ciebie.
-
-Właśnie Ty — przez wszystkie burze,
-Właśnie Ty — gdy świat się burzy,
-W Twoich dłoniach mam swój azyl,
-Właśnie Ty. Zawsze Ty.
-
-Przez noce, gdy milczenie krzyczało, przez mosty, które sami spaliliśmy — wróciłeś i nagle wszystko miało sens, bo bez Ciebie byłam tylko połową siebie.</div>
-      </div>
-    </div>
-
-    <div class="song-panel" id="song-urodziny">
-      <div class="song-meta">
-        <span class="song-occasion">50. Urodziny</span>
-        <h3 class="song-title-text">„Pół wieku piękna”</h3>
-        <p class="song-artist">dla Bożeny — od rodziny, Warszawa</p>
-        <p class="song-desc">Dzieci poprosiły o żartobliwy, ciepły utwór dla mamy świętującej 50. urodziny. Chciały, by nawiązywał do jej legendarnego ciasta drożdżowego, miłości do Mazur i wiecznego gubienia okularów. Dynamiczny folk-akustyczny kawałek idealny do tańca.</p>
-        <div class="song-tags"><span class="song-tag">Folk Akustyczny</span><span class="song-tag">Żartobliwy</span><span class="song-tag">Prezent</span><span class="song-tag">Gitara + skrzypce</span></div>
-        <div class="song-price-box"><div class="price">od 99 zł</div><div class="price-note">Pakiet Standard + aranżacja instrumentów</div></div>
-      </div>
-      <div class="lyrics-card">
-        <div class="lyrics-label">Fragment utworu</div>
-        <div class="lyrics-text">Gdzie są okulary? — pyta od rana,
-choć na czubku głowy nosi je sama.
-W kuchni zapach drożdży, w sercu ciągle maj,
-Bożenka na Mazurach ma swój własny raj.
-
-Pięćdziesiąt lat minęło jak jeden krótki dzień,
-lecz Ty w ogóle nie rzucasz na nas cienia,
-pół wieku piękna, uśmiechu i sił,
-chcemy, byś zawsze była tym, kim jesteś dziś!</div>
-      </div>
-    </div>
-
-    <div class="song-panel" id="song-narodziny">
-      <div class="song-meta">
-        <span class="song-occasion">Narodziny Córki</span>
-        <h3 class="song-title-text">„Małe niebo”</h3>
-        <p class="song-artist">dla małej Zosi — od taty, Gdańsk</p>
-        <p class="song-desc">Wzruszający list młodego ojca, napisany jeszcze w szpitalu na powitanie córki. Nie znał imienia — wiedział tylko, że będzie dziewczynka. Utwór nagraliśmy w 4 dni, finalna wersja z imionami — 24h po porodzie.</p>
-        <div class="song-tags"><span class="song-tag">Kołysanka</span><span class="song-tag">Akustyczna</span><span class="song-tag">Gitara + wokal</span><span class="song-tag">Ekspres 24h</span></div>
-        <div class="song-price-box"><div class="price">od 49 zł</div><div class="price-note">Pakiet Mini + ekspresowa wersja</div></div>
-      </div>
-      <div class="lyrics-card">
-        <div class="lyrics-label">Fragment kołysanki</div>
-        <div class="lyrics-text">Zosiu mała, witaj tu, czekaliśmy na Ciebie tak długo,
-świat jest wielki, pełen barw, a my — Twoi — przy Tobie zawsze.
-
-Śpij, Zosiu, śpij, gwiazdki piszą Twoje imię,
-tato trzyma Twoją dłoń — jesteś cała i piękna, i prawdziwa.
-
-Nauczymy Cię wszystkiego, jak się wstaje gdy pada deszcz, jak się śmieje przez łzy szczęścia — dziś jesteś naszym nowym niebem.</div>
-      </div>
-    </div>
-
-    <div class="song-panel" id="song-biznes">
-      <div class="song-meta">
-        <span class="song-occasion">Jubileusz Firmy</span>
-        <h3 class="song-title-text">„20 lat razem”</h3>
-        <p class="song-artist">dla TechStar Sp. z o.o. — Wrocław</p>
-        <p class="song-desc">Firma obchodziła 20-lecie i chciała czegoś więcej niż przemówienia. Utwór zaśpiewany przez pracowników na gali — tekst nawiązywał do historii firmy, jej wartości i konkretnych sukcesów. Teraz jest hymnem firmy.</p>
-        <div class="song-tags"><span class="song-tag">Rock-pop</span><span class="song-tag">Motywacyjny</span><span class="song-tag">Chóralny</span><span class="song-tag">Produkcja premium</span></div>
-        <div class="song-price-box"><div class="price">od 399 zł</div><div class="price-note">Pakiet Firmowy — pełna produkcja na miarę</div></div>
-      </div>
-      <div class="lyrics-card">
-        <div class="lyrics-label">Fragment hymnu firmowego</div>
-        <div class="lyrics-text">Dwadzieścia lat temu — biuro, komputer i sen,
-dziś nasza marka brzmi w całej Europie,
-przeszliśmy przez kryzysy, zmiany i czas,
-bo razem jesteśmy silniejsi niż każdy z nas.
-
-Raz, dwa, dwadzieścia lat!
-To nie jest liczba — to nasz wspólny dorobek,
-TechStar to ludzie, to pasja i plan,
-idziemy po więcej, otwieramy drzwi bram!</div>
-      </div>
-    </div>
-
-    <div class="song-panel" id="song-pozegnanie">
-      <div class="song-meta">
-        <span class="song-occasion">Pamiątka / Pożegnanie</span>
-        <h3 class="song-title-text">„Ślady na wodzie”</h3>
-        <p class="song-artist">Piosenka pożegnalna dla taty — Poznań</p>
-        <p class="song-desc">Najtrudniejsze, ale i najpiękniejsze zamówienie. Rodzina chciała pożegnać zmarłego tatę utworem pełnym ciepła i osobistych wspomnień, unikając patosu i nadmiernej rozpaczy. Ciepła ballada gitarowa.</p>
-        <div class="song-tags"><span class="song-tag">Nostalgiczna</span><span class="song-tag">Gitara klasyczna</span><span class="song-tag">Osobista pamiątka</span></div>
-        <div class="song-price-box"><div class="price">od 99 zł</div><div class="price-note">Pakiet Standard — dedykowany aranż akustyczny</div></div>
-      </div>
-      <div class="lyrics-card">
-        <div class="lyrics-label">Fragment piosenki</div>
-        <div class="lyrics-text">Tato, wiemy, że siedzisz gdzieś wyżej,
-pilnujesz, żebyśmy nie przeklinali przy mamie,
-sprawdzasz czy ogród podlany, czy koło naprawione —
-zawsze będziesz z nami, choć inaczej niż dawniej.
-
-Jesteś dalej tu — w zapachu kawy rano,
-w starym krześle, gdzie siadałeś co niedzielę,
-w tym śmiechu, który wszyscy po Tobie mamy —
-jesteś dalej tu. I zawsze tak zostanie.</div>
       </div>
     </div>
   </div>
@@ -657,11 +528,67 @@ $orders = HRL_MKS_Orders::get_orders();
 if ( ! empty( $orders ) ) {
     echo json_encode( $orders, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
 } else {
-    // Fallback — przykładowe dane gdy brak wpisów w CPT
+    // Fallback — używane wyłącznie gdy w WP Admin → Muzyczna Kreacja Słów nie ma
+    // jeszcze żadnego opublikowanego zamówienia. To NIE jest miejsce do zarządzania
+    // portfolio na co dzień — do tego służy panel WP (patrz komentarz nad tą tablicą).
+    //
+    // SZABLON nowego wpisu (do skopiowania, jeśli tymczasowo edytujesz fallback):
+    // array(
+    //     'id' => 10, 'label' => '✔️ ZREALIZOWANY',
+    //     'title'    => '„Tytuł utworu”',
+    //     'for'      => 'dla [odbiorcy] — od [zleceniodawcy]',
+    //     'date'     => 'Data: [miesiąc rok] · Czas realizacji: [X dni]',
+    //     'opis'     => 'Krótki opis kontekstu i charakteru utworu.',
+    //     'efekt'    => 'Jak utwór został przyjęty / efekt wręczenia.',
+    //     'pakiet'   => 'Nazwa pakietu (cena)',
+    //     'cytat'    => '„Cytat klienta.”',
+    //     'cytat_od' => 'Kto cytuje (np. Żona, Syn, Znajoma)',
+    //     'fragment' => "Fragment tekstu\nz zachowaniem podziału na linie.",
+    //     'audioSrc' => get_template_directory_uri() . '/audio/nazwa-pliku.mp3',
+    // ),
     echo json_encode( array(
         array(
             'id' => 1, 'label' => '✔️ ZREALIZOWANY',
-            'title' => '„66 Maryysia nasza Mama”',
+            'title' => '„Skarby”',
+            'for' => 'dla żony Ilony i córki Oliwii — od męża i ojca',
+            'date' => 'Data: lipiec 2026 · Czas realizacji: 4 dni',
+            'opis' => 'Pogodna i pełna ciepła dedykacja, w której autor wyraża głęboką wdzięczność za obecność ukochanej żony i wspaniałej córeczki w jego życiu. Utwór zrealizowany z okazji 16. rocznicy związku, podkreślający, że rodzina to najcenniejszy dar.',
+            'efekt' => 'Uśmiech, radość i mnóstwo przytuleń podczas wspólnego słuchania w domowym zaciszu.',
+            'pakiet' => 'Standard (99 PLN)',
+            'cytat' => '„Moje dziewczyny były zachwycone, piosenka super trafiona i bardzo ciepła!”',
+            'cytat_od' => 'Zleceniodawca',
+            'fragment' => "Ilona, moja żona kochana, i Oliwia, córeczka wspaniała,\nczasami robicie mi w głowie zamęt, ale bez was życie nie miałoby sensu.",
+            'audioSrc' => get_template_directory_uri() . '/audio/Skarby.wav',
+        ),
+        array(
+            'id' => 2, 'label' => '✔️ ZREALIZOWANY',
+            'title' => '„Hej, rodzinko, czas zabawy!”',
+            'for' => 'dla mamy Stefanii — od licznie zgromadzonej rodziny',
+            'date' => 'Data: sierpień 2026 · Czas realizacji: 4 dni',
+            'opis' => 'Skoczna, biesiadna piosenka z okazji 65. urodzin mamy Stefanii. Zamysłem było stworzenie utworu idealnego do wspólnego, głośnego śpiewania podczas wielkiego zjazdu rodzinnego dla braci, szwagrów i sióstr.',
+            'efekt' => 'Piosenka stała się hymnem całej uroczystości, integrując przy stole kilka pokoleń.',
+            'pakiet' => 'Biesiada (129 PLN) + chórki',
+            'cytat' => '„Cała rodzina śpiewała refren, doskonały klimat i cudowna pamiątka.”',
+            'cytat_od' => 'Syn',
+            'fragment' => "Dzisiaj dzionek mamy wielki, impreska się szykuje,\ncała rodzinka się zebrała, bo Stefusia dziś świętuje,\nsto lat, sto lat, niech nam żyje sto lat!",
+            'audioSrc' => get_template_directory_uri() . '/audio/Hej, rodzinko, czas zabawy!.wav',
+        ),
+        array(
+            'id' => 3, 'label' => '✔️ ZREALIZOWANY',
+            'title' => '„Ewelina, Ewelina”',
+            'for' => 'dla siostry Eweliny — od rodzeństwa',
+            'date' => 'Data: czerwiec 2026 · Czas realizacji: 5 dni',
+            'opis' => 'Energetyczna, taneczna piosenka urodzinowa napisana z okazji urodzin siostry. Tekst żartobliwie i ciepło nawiązuje do jej charakteru i wspólnych rodzinnych wspomnień, w radosnym, klubowym brzmieniu idealnym do wspólnej zabawy.',
+            'efekt' => 'Utwór szybko stał się hitem rodzinnej imprezy — wszyscy śpiewali refren na cały głos.',
+            'pakiet' => 'Club Banger (199 PLN)',
+            'cytat' => '„Ewelina była w szoku, że zrobiliśmy dla niej coś tak osobistego — łzy i śmiech jednocześnie.”',
+            'cytat_od' => 'Rodzeństwo',
+            'fragment' => "Ewelina, Ewelina, nasza siostra złota,\nzawsze pierwsza do zabawy, zawsze pełna życia i lotu,\nkochamy Cię, siostrzyczko, dziś i zawsze, na zawsze!",
+            'audioSrc' => get_template_directory_uri() . '/audio/Ewelina, Ewelina- Dla Siostry.wav',
+        ),
+        array(
+            'id' => 4, 'label' => '✔️ ZREALIZOWANY',
+            'title' => '„66, Marysia nasza Mama”',
             'for' => 'dla mamy Marysi — od rodziny',
             'date' => 'Data: lipiec 2026 · Czas realizacji: 3 dni',
             'opis' => 'Radosna i pełna humoru piosenka urodzinowa z okazji 66. urodzin. Utwór miał za zadanie podkreślić niespożytą energię, witalność i gotowość do zabawy solenizantki.',
@@ -673,33 +600,7 @@ if ( ! empty( $orders ) ) {
             'audioSrc' => get_template_directory_uri() . '/audio/66 Maryysia nasza Mama.wav',
         ),
         array(
-            'id' => 2, 'label' => '✔️ ZREALIZOWANY',
-            'title' => '„Ewelina, Ewelina (Pulsing Bass Next Summer Hit)”',
-            'for' => 'dla Eweliny — od męża Adriana i dzieci',
-            'date' => 'Data: czerwiec 2026 · Czas realizacji: 5 dni',
-            'opis' => 'Taneczny, klubowy hit na 40. urodziny z pulsującym basem. Tekst z przymrużeniem oka opisuje wszechstronność Eweliny jako żony i matki oraz jej szaloną naturę, a także żartobliwie nawiązuje do domowych obowiązków.',
-            'efekt' => 'Utwór stał się niekwestionowanym hitem domowych imprez, a goście tańczyli do niego wielokrotnie w ciągu nocy.',
-            'pakiet' => 'Club Banger (199 PLN)',
-            'cytat' => '„Bas rewelacyjny, a tekst w punkt. Żona była w szoku i od razu ruszyła na parkiet!”',
-            'cytat_od' => 'Mąż',
-            'fragment' => "Ewelina, Ewelina, pysznie, a nie lekko,\nżona, matka, córka, siostra, roztańczona jak ta miotła,\n40 już minęło, Szekspirowskie piszesz dzieło...",
-            'audioSrc' => get_template_directory_uri() . '/audio/Ewelina, Ewelina (Pulsing Bass Next Summer Hit).wav',
-        ),
-        array(
-            'id' => 3, 'label' => '✔️ ZREALIZOWANY',
-            'title' => '„Hej, rodzinko, czas zabawy!”',
-            'for' => 'dla mamy Stefanii — od licznie zgromadzonej rodziny',
-            'date' => 'Data: sierpień 2026 · Czas realizacji: 4 dni',
-            'opis' => 'Skoczna, biesiadna piosenka z okazji 65. urodzin mamy Stefanii. Zamysłem było stworzenie utworu idealnego do wspólnego, głośnego śpiewania podczas wielkiego zjazdu rodzinnego dla braci, szwagrów i sióstr.',
-            'efekt' => 'Piosenka stała się hymnem całej uroczystości, integrując przy stole kilka pokoleń.',
-            'pakiet' => 'Biesiada (129 PLN) + chórki',
-            'cytat' => '„Cała rodzina śpiewała refren, doskonały klimat i cudowna pamiątka.”',
-            'cytat_od' => 'Syn',
-            'fragment' => "Dzisiaj dzionek mamy wielki,\nimpreska się szykuje, bo nić się czujni wierci,\nianie bo Stefusia ma rozstanie, dziś skowrowej pijmy zdrowie...",
-            'audioSrc' => get_template_directory_uri() . '/audio/Hej, rodzinko, czas zabawy!.wav',
-        ),
-        array(
-            'id' => 4, 'label' => '✔️ ZREALIZOWANY',
+            'id' => 5, 'label' => '✔️ ZREALIZOWANY',
             'title' => '„Jeszcze nie koniec”',
             'for' => 'dla ukochanej — na 16. rocznicę',
             'date' => 'Data: marzec 2026 · Czas realizacji: 6 dni',
@@ -712,11 +613,11 @@ if ( ! empty( $orders ) ) {
             'audioSrc' => get_template_directory_uri() . '/audio/Jeszcze nie koniec .wav',
         ),
         array(
-            'id' => 5, 'label' => '✔️ ZREALIZOWANY',
+            'id' => 6, 'label' => '✔️ ZREALIZOWANY',
             'title' => '„Matka z Żelaza i Miłości”',
             'for' => 'dla matki Stefanii — od pięciorga dzieci',
             'date' => 'Data: styczeń 2026 · Czas realizacji: 7 dni',
-            'opis' => 'Niezwykle osobista i głęboko wzruszająca ballada dla matki, która w trudnych warunkach samotnie obroniła i wychowała pięcioro dzieci. Utwór jest hołdem dla jej determinacji i ogromnego serca.',
+            'opis' => 'Niezwykle osobista i głęboko wzruszająca ballada dla matki, która w trudnych warunkach samotnie wychowała pięcioro dzieci. Utwór jest hołdem dla jej determinacji i ogromnego serca.',
             'efekt' => 'Bardzo intymny moment wręczenia prezentu; piosenka wywołała łzy wzruszenia u wszystkich obecnych.',
             'pakiet' => 'VIP (249 PLN) + aranżacja filmowa',
             'cytat' => '„To muzyczny pomnik, który postawiliśmy mamie za jej siłę.”',
@@ -725,17 +626,43 @@ if ( ! empty( $orders ) ) {
             'audioSrc' => get_template_directory_uri() . '/audio/Matka z Żelaza i Miłości.wav',
         ),
         array(
-            'id' => 6, 'label' => '✔️ ZREALIZOWANY',
-            'title' => '„Skarby”',
-            'for' => 'dla żony Ilony i córki Oliwii — od męża i ojca',
-            'date' => 'Data: kwiecień 2026 · Czas realizacji: 5 dni',
-            'opis' => 'Pogodna i pełna ciepła dedykacja, w której autor wyraża głęboką wdzięczność za obecność ukochanej żony i wspaniałej córeczki w jego życiu. Utwór zrealizowany z okazji 16-lecia związku, podkreślający, że rodzina to najcenniejszy dar.',
-            'efekt' => 'Uśmiech, radość i mnóstwo przytuleń podczas wspólnego słuchania w domowym zaciszu.',
+            'id' => 7, 'label' => '✔️ ZREALIZOWANY',
+            'title' => '„Dla Ilonki”',
+            'for' => 'dla żony Ilony — od męża',
+            'date' => 'Data: kwiecień 2026 · Czas realizacji: 4 dni',
+            'opis' => 'Czuła, osobista dedykacja dla żony, pisana z perspektywy wdzięczności za wspólnie przebyte lata i codzienne wsparcie. Spokojna, ciepła ballada podkreślająca siłę ich relacji.',
+            'efekt' => 'Wzruszający moment przy wspólnym odsłuchaniu, pełen emocji.',
             'pakiet' => 'Standard (99 PLN)',
-            'cytat' => '„Moje dziewczyny były zachwycone, piosenka super trafiona i bardzo ciepła!”',
-            'cytat_od' => 'Zleceniodawca',
-            'fragment' => "Ilona, moja żona kochana, i Oliwia, córeczka wspaniała,\nczasami robicie mi w głowie zamęt, ale bez was życie nie miałoby sensu.",
-            'audioSrc' => get_template_directory_uri() . '/audio/Skarby.wav',
+            'cytat' => '„Nie spodziewałam się aż takiego prezentu — płakałam ze wzruszenia.”',
+            'cytat_od' => 'Żona',
+            'fragment' => "Ilonko moja, przy Tobie świat zwalnia,\nkażdy zwykły dzień z Tobą staje się wyjątkowy,\ndziękuję, że jesteś, dziękuję, że trwasz.",
+            'audioSrc' => get_template_directory_uri() . '/audio/Dla Ilonki -Dla Żony.mp3',
+        ),
+        array(
+            'id' => 8, 'label' => '✔️ ZREALIZOWANY',
+            'title' => '„Życie na farta”',
+            'for' => 'dla szwagierki — od rodziny',
+            'date' => 'Data: maj 2026 · Czas realizacji: 4 dni',
+            'opis' => 'Żartobliwa, energiczna piosenka urodzinowa dla szwagierki, nawiązująca do jej pogodnego usposobienia i szczęścia, które przyciąga w życiu. Lekki, przebojowy klimat idealny na domową imprezę.',
+            'efekt' => 'Piosenka wywołała mnóstwo śmiechu i wspólne śpiewanie przy torcie.',
+            'pakiet' => 'Standard (99 PLN) + wokal rozrywkowy',
+            'cytat' => '„Świetny prezent, wszyscy pytali, gdzie to zamówiliśmy!”',
+            'cytat_od' => 'Szwagier',
+            'fragment' => "Życie na farta, uśmiech od rana,\nTy zawsze wiesz, jak zakręcić balangę,\nsto lat, szwagierko, niech farta Ci sprzyja!",
+            'audioSrc' => get_template_directory_uri() . '/audio/Życie na farta - Dla Szwagierki urodzinowo.mp3',
+        ),
+        array(
+            'id' => 9, 'label' => '✔️ ZREALIZOWANY',
+            'title' => '„Małolata”',
+            'for' => 'dla znajomej Sylwii — od przyjaciół',
+            'date' => 'Data: lipiec 2026 · Czas realizacji: 2 dni',
+            'opis' => 'Lekka, żartobliwa piosenka dla znajomej, nawiązująca do jej pseudonimu i charakterystycznego poczucia humoru w gronie przyjaciół. Przebojowy, rozrywkowy utwór na specjalną okazję.',
+            'efekt' => 'Duża radość i zaskoczenie w gronie znajomych podczas wspólnego spotkania.',
+            'pakiet' => 'Mini (49 PLN)',
+            'cytat' => '„Nie wiedziałam, że można zrobić coś tak zabawnego i osobistego jednocześnie!”',
+            'cytat_od' => 'Znajoma',
+            'fragment' => "Małolata, Sylwia B, w każdej ekipie znasz się,\nfarta i śmiechu, energii na sto lat,\ntaka jesteś Ty — i tak zostań, Małolata!",
+            'audioSrc' => get_template_directory_uri() . '/audio/Małolata (Sylwia B)- Dla Znajomej .mp3',
         ),
     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
 }
