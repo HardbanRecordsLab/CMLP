@@ -55,7 +55,17 @@ const rateLimiter = createRateLimiter(async (userId, action, resource, details, 
 });
 
 app.use(compression());
-app.use(express.json());
+app.use(express.json({
+  verify: (req: any, _res, buf) => {
+    // Stripe webhook signature verification needs the exact bytes Stripe
+    // signed - re-serializing the parsed body via JSON.stringify() later
+    // is not guaranteed to match byte-for-byte, so capture it here before
+    // express.json() replaces req.body with the parsed object.
+    if (/^\/api\/payments\/webhook\//.test(req.path)) {
+      req.rawBody = buf;
+    }
+  },
+}));
 app.use(rateLimiter);
 app.use('/api', csrfProtection);
 app.use('/api', apiRoutes);

@@ -347,7 +347,15 @@ export async function webhook(req: any, res: Response) {
   try {
     const { gateway } = req.params;
     const signature = req.headers['stripe-signature'] as string | undefined;
-    const rawPayload = req.body instanceof Buffer ? req.body.toString('utf8') : JSON.stringify(req.body || {});
+    // req.rawBody is captured by express.json()'s verify callback in server.ts
+    // (the exact bytes Stripe signed). Re-serializing req.body via
+    // JSON.stringify is not guaranteed to match those bytes, so it's only a
+    // fallback for gateways (e.g. PayU) that don't need signature verification.
+    const rawPayload = req.rawBody
+      ? req.rawBody.toString('utf8')
+      : req.body instanceof Buffer
+        ? req.body.toString('utf8')
+        : JSON.stringify(req.body || {});
 
     const parsed = await processWithRetry(() => Promise.resolve(processWebhook(gateway, rawPayload, signature, req.body)));
     if (parsed.error) {

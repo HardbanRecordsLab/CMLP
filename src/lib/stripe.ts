@@ -1,5 +1,4 @@
 import Stripe from 'stripe';
-import { Request, Response, NextFunction } from 'express';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder';
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
@@ -15,36 +14,6 @@ function getStripe(): Stripe {
 
 export const stripe = getStripe();
 export const stripeWebhookSecretValue = stripeWebhookSecret;
-
-export const rawBodyMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const isPaymentWebhook = /^\/api\/payments\/webhook\//.test(req.path);
-  if (!isPaymentWebhook) {
-    return next();
-  }
-
-  const chunks: Buffer[] = [];
-
-  req.on('data', (chunk) => {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-  });
-
-  req.on('end', () => {
-    const rawBody = Buffer.concat(chunks);
-    (req as any).rawBody = rawBody;
-
-    if (!req.body || Object.keys(req.body).length === 0) {
-      try {
-        req.body = rawBody.length > 0 ? JSON.parse(rawBody.toString('utf8')) : {};
-      } catch {
-        req.body = {};
-      }
-    }
-
-    next();
-  });
-
-  req.on('error', next);
-};
 
 export const verifyStripeWebhook = (payload: string | Buffer, signature: string | undefined): Stripe.Event | null => {
   if (!signature || !stripeWebhookSecretValue) {
