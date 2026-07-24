@@ -188,6 +188,26 @@
   --blur-3xl: 40px;
 }
 
+/* ─── LEGACY COMPATIBILITY ALIASES ─── */
+:root {
+  --gold: var(--accent-gold);
+  --gold-light: var(--accent-gold-light);
+  --gold-dark: var(--accent-gold-dark);
+  --gold-neon: var(--accent-gold-neon);
+  --neon-blue: var(--accent-blue);
+  --neon-purple: var(--accent-purple);
+  --border-color: var(--border-default);
+  --border-glow: var(--border-active);
+  --bg-main: var(--bg-primary);
+  --bg-widget: var(--bg-card);
+  --font-headings: var(--font-serif);
+  --font-accents: var(--font-serif);
+  --transition-smooth: var(--transition-slow);
+  --shadow-premium: var(--shadow-2xl);
+  --hrl-perspective: 1000px;
+  --hrl-tilt-intensity: 15deg;
+}
+
 /* ─── DARK MODE (default) ─── */
 @media (prefers-color-scheme: dark) {
   :root {

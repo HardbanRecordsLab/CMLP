@@ -180,7 +180,7 @@ add_action( 'wp_enqueue_scripts', 'hrl_enqueue_assets' );
 // ═══════════════════════════════════════════════════════
 function hrl_register_block_patterns() {
     if ( function_exists( 'register_block_pattern' ) ) {
-        $patterns_dir = get_template_directory() . '/patterns/';
+        $patterns_dir = get_template_directory() . '/pattern-templates/';
         $patterns = array( 'hero-amoled', 'product-grid', 'pricing-table', 'contact-form' );
         foreach ( $patterns as $pattern ) {
             $file = $patterns_dir . $pattern . '.php';
@@ -294,9 +294,9 @@ add_filter( 'upload_mimes', 'hrl_allow_svg_upload' );
 // ═══════════════════════════════════════════════════════
 function hrl_admin_body_class( $classes ) {
     if ( is_admin() ) {
-        $classes[] = 'hrl-admin';
+        $classes .= ' hrl-admin';
     }
-    return $classes;
+    return trim( $classes );
 }
 add_filter( 'admin_body_class', 'hrl_admin_body_class' );
 
