@@ -26,11 +26,13 @@ if ( ! defined( 'ABSPATH' ) ) {
     } else {
     ?>
         <ul class="nav-menu">
-            <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="<?php echo ( is_front_page() ) ? 'active' : ''; ?>"><?php esc_html_e( 'Strona Główna', 'hrl-theme' ); ?></a></li>
-            <li><a href="https://cmlp.hardbanrecordslab.online" target="_blank" rel="noopener"><?php esc_html_e( 'Muzyka bez ZAiKS', 'hrl-theme' ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="<?php echo ( is_front_page() ) ? 'active' : ''; ?>"><?php esc_html_e( 'Strona główna', 'hrl-theme' ); ?></a></li>
+            <li><a href="https://cmlp.hardbanrecordslab.online" target="_blank" rel="noopener"><?php esc_html_e( 'CMLP', 'hrl-theme' ); ?></a></li>
             <li><a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></a></li>
             <li><a href="<?php echo esc_url( home_url( '/blogcast/' ) ); ?>"><?php esc_html_e( 'BlogCast', 'hrl-theme' ); ?></a></li>
-            <li><a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>" class="nav-cta"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></a></li>
+            <li><a href="#kontakt"><?php esc_html_e( 'Kontakt', 'hrl-theme' ); ?></a></li>
         </ul>
     <?php } ?>
 </nav>
+<a href="#kontakt" class="btn btn-primary nav-cta"><?php esc_html_e( 'Skontaktuj się', 'hrl-theme' ); ?></a>

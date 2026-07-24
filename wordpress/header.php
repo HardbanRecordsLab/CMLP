@@ -1,10 +1,10 @@
 <?php
 /**
- * HRL Amoled Premium — Header Template Part
- * Uses template-parts/ for modular structure.
+ * HRL Premium — Header Template Part
+ * Modern, accessible header with skip navigation
  *
  * @package HRL_Theme
- * @version 3.0.0
+ * @version 4.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,18 +32,27 @@ if ( $preloader_enabled ) {
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#000000">
+    <meta name="description" content="<?php bloginfo( 'description' ); ?>">
+    
+    <?php // Preconnect to font origins for performance ?>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<!-- HRLCORE-SYNC-CHECK :: <?php echo esc_html( date( 'Y-m-d\TH:i:s\Z' ) ); ?> :: file-is-mounted -->
+<!-- Skip Navigation for Accessibility -->
+<a href="#main-content" class="skip-nav">
+    <?php esc_html_e( 'Przejdź do treści', 'hrl-theme' ); ?>
+</a>
 
 <div id="progressBar"></div>
 
-<header class="<?php echo esc_attr( $header_classes ); ?>" role="banner">
+<header class="<?php echo esc_attr( $header_classes ); ?>" role="banner" id="siteHeader">
     <?php if ( ! empty( $announcement ) ) : ?>
-        <div class="announcement-bar">
+        <div class="announcement-bar" role="complementary" aria-label="<?php esc_attr_e( 'Announcement', 'hrl-theme' ); ?>">
             <?php echo wp_kses_post( $announcement ); ?>
         </div>
     <?php endif; ?>
@@ -61,4 +70,4 @@ if ( $preloader_enabled ) {
     ?>
 </header>
 
-<main id="content" role="main">
+<main id="main-content" role="main" tabindex="-1">

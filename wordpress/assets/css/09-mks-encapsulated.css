@@ -1,18 +1,18 @@
 /* ═══════════════════════════════════════════════════════
    09-MKS-ENCAPSULATED.CSS — Legacy MKS Isolation Layer
-   Re-exports critical MKS styles scoped to #mks-page-root.
-   Original full MKS CSS lives in page-muzyczna-kreacja-slow.php inline.
+   Minimal compatibility layer for MKS page.
    ═══════════════════════════════════════════════════════ */
+
 #mks-page-root {
-  --mks-gold: #C8A96E;
-  --mks-gold-light: #E8D5A3;
-  --mks-gold-dark: #8B6914;
-  --mks-gold-neon: #FFCA61;
-  --mks-text-primary: #F5F0E6;
-  --mks-text-secondary: #a3998a;
-  --mks-white: #FFFFFF;
-  --mks-border-glow: rgba(200,169,110,0.2);
-  --mks-shadow: 0 12px 40px 0 rgba(0,0,0,0.82);
-  --mks-font-headings: 'Playfair Display', Georgia, serif;
-  --mks-font-sans: 'DM Sans', 'Inter', sans-serif;
+  --mks-gold: var(--accent-gold);
+  --mks-gold-light: var(--accent-gold-light);
+  --mks-gold-dark: var(--accent-gold-dark);
+  --mks-gold-neon: var(--accent-gold-neon);
+  --mks-text-primary: var(--text-primary);
+  --mks-text-secondary: var(--text-secondary);
+  --mks-white: #ffffff;
+  --mks-border-glow: var(--border-default);
+  --mks-shadow: var(--shadow-xl);
+  --mks-font-headings: var(--font-serif);
+  --mks-font-sans: var(--font-sans);
 }
