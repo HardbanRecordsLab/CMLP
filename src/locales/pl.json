@@ -43,7 +43,11 @@
     "forgotPassword": "Zapomniałeś hasła?",
     "error_failed": "Logowanie nie powiodło się. Spróbuj ponownie.",
     "error_mfa": "Nieprawidłowy kod autoryzacji MFA.",
-    "error_mfa_failed": "Weryfikacja kodu MFA zawiodła."
+    "error_mfa_failed": "Weryfikacja kodu MFA zawiodła.",
+    "waitlistIntro": "Rejestracja jest tymczasowo wstrzymana do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących - jako pierwsi otrzymacie 14-dniowy darmowy okres próbny po starcie.",
+    "waitlistCompany": "Nazwa firmy (opcjonalnie)",
+    "waitlistSubmit": "ZAPISZ SIĘ NA LISTĘ",
+    "waitlistSuccess": "Dziękujemy! Dodaliśmy Cię do listy oczekujących."
   },
   "forgotPassword": {
     "heading": "Zapomniałeś Hasła",

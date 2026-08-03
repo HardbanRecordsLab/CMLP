@@ -3,12 +3,20 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { signToken, signRefreshToken, refreshAccessToken, JWT_SECRET } from '../lib/jwt.ts';
 import { db } from '../db/index.ts';
-import { users, companies } from '../db/schema.ts';
+import { users, companies, waitlist_signups } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { triggerEmailNotification } from '../lib/notifications.ts';
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+// Kill switch while CMLP's "no OZZ" licensing claim is under review: new
+// customer signups/logins pause (admin is exempt), visitors get a waitlist
+// instead. Defaults to enabled so unset env vars (local dev, tests) behave
+// as before; production sets PUBLIC_ACCESS_ENABLED=false to activate the freeze.
+export function isPublicAccessEnabled(): boolean {
+  return process.env.PUBLIC_ACCESS_ENABLED !== 'false';
+}
 
 function authCookieOptions(maxAge: number) {
   return {
@@ -53,6 +61,13 @@ export async function login(req: Request, res: Response) {
       return res.status(403).json({ error: 'Email not verified. Please check your inbox.' });
     }
 
+    if (!isPublicAccessEnabled() && user.role !== 'admin') {
+      return res.status(403).json({
+        error: 'ACCESS_PAUSED',
+        message: 'Logowanie jest tymczasowo wstrzymane do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących.',
+      });
+    }
+
     const tokenPayload = {
       uid: user.uid,
       email: user.email,
@@ -87,6 +102,13 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function register(req: Request, res: Response) {
+  if (!isPublicAccessEnabled()) {
+    return res.status(403).json({
+      error: 'REGISTRATION_CLOSED',
+      message: 'Rejestracja jest tymczasowo zamknięta do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących, aby otrzymać 14-dniowy darmowy okres próbny po starcie.',
+    });
+  }
+
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -207,6 +229,13 @@ export async function registerSync(req: Request, res: Response) {
     const role = adminEmails.includes(email.toLowerCase()) ? 'admin' : 'client';
     const name = role === 'admin' ? 'HRL Admin' : 'HRL Client';
 
+    // Admin sync (WordPress SSO bridge) must keep working during the freeze;
+    // only block this from minting new non-admin 'client' accounts.
+    if (!isPublicAccessEnabled() && role !== 'admin') {
+      res.status(403).json({ error: 'REGISTRATION_CLOSED' });
+      return;
+    }
+
     const existingUsers = await db.select().from(users).where(eq(users.email, email));
     if (existingUsers.length === 0) {
       await db.insert(users).values({
@@ -236,6 +265,48 @@ export async function registerSync(req: Request, res: Response) {
     }
     console.error(e);
     res.status(500).json({ error: 'Failed to sync user' });
+  }
+}
+
+// Lets the frontend know whether to show the register form or the waitlist
+// form, without exposing anything sensitive.
+export async function registrationStatus(_req: Request, res: Response) {
+  res.json({ registrationOpen: isPublicAccessEnabled() });
+}
+
+export async function joinWaitlist(req: Request, res: Response) {
+  const { email, companyName, message } = req.body;
+
+  if (!email || typeof email !== 'string') {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+  if (!EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+
+  try {
+    const existing = await db.select().from(waitlist_signups).where(eq(waitlist_signups.email, email));
+    if (existing.length > 0) {
+      return res.json({ message: 'Ten adres e-mail jest już na liście oczekujących.' });
+    }
+
+    await db.insert(waitlist_signups).values({
+      email,
+      companyName: typeof companyName === 'string' ? companyName.slice(0, 200) : null,
+      message: typeof message === 'string' ? message.slice(0, 1000) : null,
+    });
+
+    triggerEmailNotification(email, 'waitlist_confirmation', {
+      email,
+    }).catch((e) => console.error('[Waitlist] Confirmation email failed:', e.message));
+
+    res.status(201).json({ message: 'Dziękujemy! Dodaliśmy Cię do listy oczekujących.' });
+  } catch (error: unknown) {
+    if ((error as { code?: string })?.code === '23505') {
+      return res.json({ message: 'Ten adres e-mail jest już na liście oczekujących.' });
+    }
+    console.error('Waitlist signup error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 

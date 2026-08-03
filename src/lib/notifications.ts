@@ -210,7 +210,7 @@ export async function triggerWSNotificationBroadcast(data: {
 // Dispatches customizable email template through configured SMTP/SendGrid parameters
 export async function triggerEmailNotification(
   toEmail: string,
-  type: 'user_registration' | 'license_expiry' | 'payment_confirmation' | 'password_reset' | 'email_verification' | 'dunning',
+  type: 'user_registration' | 'license_expiry' | 'payment_confirmation' | 'password_reset' | 'email_verification' | 'dunning' | 'waitlist_confirmation',
   variables: Record<string, string>
 ): Promise<{ success: boolean; logId?: number; error?: string }> {
   try {
@@ -238,6 +238,9 @@ export async function triggerEmailNotification(
     } else if (type === 'dunning') {
       rawSubject = '{{subject}}';
       rawBody = 'Hello {{name}},\n\n{{body}}\n\nBest regards,\nHardban Records Lab Billing Team';
+    } else if (type === 'waitlist_confirmation') {
+      rawSubject = 'Jesteś na liście oczekujących - CMLP';
+      rawBody = 'Dziękujemy za zainteresowanie platformą CMLP!\n\nRejestracja jest obecnie tymczasowo wstrzymana do czasu pełnego uruchomienia usługi. Twój adres ({{email}}) jest już na liście oczekujących.\n\nGdy platforma zostanie w pełni uruchomiona, napiszemy do Ciebie jako pierwszego - z 14-dniowym darmowym okresem próbnym.\n\nBest regards,\nHardbanRecords Lab Team';
     } else {
       throw new Error(`Invalid email trigger type: ${type}`);
     }

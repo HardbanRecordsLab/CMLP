@@ -16,11 +16,26 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
   const [loading, setLoading] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
 
+  // Whether new customer registration is currently open. Defaults to true
+  // (assume open) so a failed status fetch never blocks a legit registration
+  // flow from rendering -- the backend is the real enforcement point either way.
+  const [registrationOpen, setRegistrationOpen] = useState(true);
+  const [waitlistCompany, setWaitlistCompany] = useState('');
+  const [waitlistDone, setWaitlistDone] = useState(false);
+  const [waitlistMessage, setWaitlistMessage] = useState('');
+
+  useEffect(() => {
+    fetch(getApiUrl('/api/auth/registration-status'))
+      .then((r) => r.json())
+      .then((data) => setRegistrationOpen(data.registrationOpen !== false))
+      .catch(() => {});
+  }, []);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
+
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
       const apiUrl = getApiUrl(endpoint);
@@ -29,13 +44,13 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
-        throw new Error(data.error || t('login.error_failed'));
+        throw new Error(data.message || data.error || t('login.error_failed'));
       }
-      
+
       onLogin({
         uid: data.uid,
         email: data.email,
@@ -47,6 +62,34 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
       setLoading(false);
     }
   };
+
+  const handleWaitlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(getApiUrl('/api/auth/waitlist'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, companyName: waitlistCompany }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || t('login.error_failed'));
+      }
+
+      setWaitlistMessage(data.message || t('login.waitlistSuccess'));
+      setWaitlistDone(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : t('login.error_failed'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const showWaitlist = isRegistering && !registrationOpen;
 
   if (loading) {
     return (
@@ -75,55 +118,111 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
           </p>
         )}
 
-        <form onSubmit={handleAuth} className="space-y-4">
-          <div>
-            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('login.email')}</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('login.password')}</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
-              required
-            />
-          </div>
-          
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
-          >
-            {loading ? t('common.loading') : (isRegistering ? t('login.createAccount') : t('login.submit_btn'))}
-          </button>
-          
-          <div className="flex justify-between items-center pt-1">
-            <button
-              type="button"
-              onClick={() => setIsRegistering(!isRegistering)}
-              className="text-[11px] text-slate-500 hover:text-slate-400 underline"
-            >
-              {isRegistering ? t('login.alreadyHaveAccount') : t('login.needAccount')}
-            </button>
-            {!isRegistering && onForgot && (
+        {showWaitlist ? (
+          waitlistDone ? (
+            <div className="space-y-4">
+              <p className="text-sm text-slate-300 text-center">{waitlistMessage}</p>
               <button
                 type="button"
-                onClick={onForgot}
-                className="text-[11px] text-slate-500 hover:text-blue-400 underline"
+                onClick={() => setIsRegistering(false)}
+                className="w-full py-2.5 mt-2 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
               >
-                {t('login.forgotPassword')}
+                {t('login.alreadyHaveAccount')}
               </button>
-            )}
-          </div>
-        </form>
+            </div>
+          ) : (
+            <form onSubmit={handleWaitlist} className="space-y-4">
+              <p className="text-xs text-slate-400 leading-relaxed">{t('login.waitlistIntro')}</p>
+              <div>
+                <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('login.email')}</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('login.waitlistCompany')}</label>
+                <input
+                  type="text"
+                  value={waitlistCompany}
+                  onChange={(e) => setWaitlistCompany(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
+              >
+                {loading ? t('common.loading') : t('login.waitlistSubmit')}
+              </button>
+
+              <div className="flex justify-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => setIsRegistering(false)}
+                  className="text-[11px] text-slate-500 hover:text-slate-400 underline"
+                >
+                  {t('login.alreadyHaveAccount')}
+                </button>
+              </div>
+            </form>
+          )
+        ) : (
+          <form onSubmit={handleAuth} className="space-y-4">
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('login.email')}</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-slate-500 mb-1">{t('login.password')}</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold tracking-wide transition uppercase cursor-pointer"
+            >
+              {loading ? t('common.loading') : (isRegistering ? t('login.createAccount') : t('login.submit_btn'))}
+            </button>
+
+            <div className="flex justify-between items-center pt-1">
+              <button
+                type="button"
+                onClick={() => setIsRegistering(!isRegistering)}
+                className="text-[11px] text-slate-500 hover:text-slate-400 underline"
+              >
+                {isRegistering ? t('login.alreadyHaveAccount') : t('login.needAccount')}
+              </button>
+              {!isRegistering && onForgot && (
+                <button
+                  type="button"
+                  onClick={onForgot}
+                  className="text-[11px] text-slate-500 hover:text-blue-400 underline"
+                >
+                  {t('login.forgotPassword')}
+                </button>
+              )}
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

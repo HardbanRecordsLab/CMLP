@@ -43,7 +43,11 @@
     "forgotPassword": "Forgot password?",
     "error_failed": "Login failed. Please try again.",
     "error_mfa": "Invalid MFA authorization code.",
-    "error_mfa_failed": "MFA code verification failed."
+    "error_mfa_failed": "MFA code verification failed.",
+    "waitlistIntro": "Registration is temporarily paused until the platform's full launch. Join the waitlist - you'll be first in line for a 14-day free trial once we launch.",
+    "waitlistCompany": "Company name (optional)",
+    "waitlistSubmit": "JOIN THE WAITLIST",
+    "waitlistSuccess": "Thanks! We've added you to the waitlist."
   },
   "forgotPassword": {
     "heading": "Forgot Password",

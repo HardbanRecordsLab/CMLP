@@ -204,6 +204,17 @@ export const wordpress_sync_logs = pgTable('wordpress_sync_logs', {
   syncTime: timestamp('sync_time').defaultNow().notNull(),
 });
 
+export const waitlist_signups = pgTable('waitlist_signups', {
+  id: serial('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  companyName: text('company_name'),
+  message: text('message'),
+  invitedAt: timestamp('invited_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  emailIdx: index('waitlist_signups_email_idx').on(table.email),
+}));
+
 export const notification_settings = pgTable('notification_settings', {
   id: serial('id').primaryKey(),
   provider: text('provider').default('smtp').notNull(),

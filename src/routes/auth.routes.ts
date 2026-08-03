@@ -8,6 +8,8 @@ router.post('/login', authController.login);
 router.post('/register', authController.register);
 router.post('/refresh', authController.refresh);
 router.post('/register-sync', authController.registerSync);
+router.get('/registration-status', authController.registrationStatus);
+router.post('/waitlist', authController.joinWaitlist);
 router.get('/mfa/status', requireAuth, authController.mfaStatus);
 router.post('/mfa/validate', authController.mfaValidate);
 router.post('/mfa/setup', requireAuth, authController.mfaSetup);
