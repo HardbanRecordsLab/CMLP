@@ -1,0 +1,88 @@
+Return-Path: <3Izxuag8OAK4giddcfh+bcfSdZmgcibRfOk.Qc.Xd@listserv.bounces.google.com>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id 8bmUDSY8bmoGaQAA4AkaEw
+	(envelope-from <3Izxuag8OAK4giddcfh+bcfSdZmgcibRfOk.Qc.Xd@listserv.bounces.google.com>)
+	for <contact@hardbanrecordslab.online>; Sat, 01 Aug 2026 20:34:14 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=listserv.bounces.google.com 
+   (client-ip=209.85.128.69; helo=mail-wm1-f69.google.com; 
+   envelope-from=3Izxuag8OAK4giddcfh+bcfSdZmgcibRfOk.Qc.Xd@listserv.bounces
+   .google.com; receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=none dis=none) header.from=soundraw.co.jp
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id C3C9838E021E
+	for <contact@hardbanrecordslab.online>; Sat,  1 Aug 2026 20:34:12 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=soundraw.co.jp header.i=@soundraw.co.jp header.a=rsa-sha256 header.s=google header.b=RgvhbHT3
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49571407d1dso5837795e9.0
+        for <contact@hardbanrecordslab.online>; Sat, 01 Aug 2026 11:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soundraw.co.jp; s=google; t=1785609252; x=1786214052; darn=hardbanrecordslab.online;
+        h=content-transfer-encoding:content-type:date:message-id:subject:to
+         :from:references:in-reply-to:auto-submitted:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=JHnBllLr8tD9dXuNm1GaIqPQdeCIptZyV2ZiJ+JPSdc=;
+        b=RgvhbHT3f7xLwf/MiWnMMIw+BhdlmFLZoMfVFe8S5226hIQTAs4T9fWxWgc4LxDfDO
+         31LFfFORmAD+WB71Op1SqGdDrya2fLrioYvP1Qz4mbizrs2BsGERIvUdO43tgCVuL6LT
+         43wGxCLxMl/53UUXHFAtKmhRtf1RDOeDWbgsihrRaqixTBLV7mvGKUCt4p+lE6ziYYzZ
+         gPtGZS1PGtKFGYeycwEEfW25HpUDDtxuFFT315qqo5oB4O77pQOQeGreWYxBAFWLynUK
+         WjFXW+tr6dVB2jtPzruqaRWTQAaGqLPQ67vpBbbuygeNt6/jXD9fgikgc2kXCSHeuWHs
+         uvIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785609252; x=1786214052;
+        h=content-transfer-encoding:content-type:date:message-id:subject:to
+         :from:references:in-reply-to:auto-submitted:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JHnBllLr8tD9dXuNm1GaIqPQdeCIptZyV2ZiJ+JPSdc=;
+        b=HqK6t35t0Liao/PPsqV1KU8msR9pBf7cKItzxWv+2Ekzr+nM0+hjJDTtaAWU2p6lPS
+         kofOeE5W2D26OyGngk6fcvCEUv9LEWFcmW3oOF2Q2GxUsoUuLMd01/JB1wQJ2qXfjdCR
+         QZYIIgZQRzl5hKzcTXaX71l74Cf4HiftVAkyNZCxBo0G4ntfG9wu1V0OuM49b6ry4K3p
+         Cnjd5XpObIHc4ShpyMfQJHGytbWP0a9qDOjL3VWTtL3oi09lkasYVFcY4D3+y1uPwxmy
+         mUdhbq1gBgUIo0HZsFXcOz9HG6KBZSli17Bv6T2F46TkpxUpRbu+/t8jgEpyTU1DBIQs
+         BXIw==
+X-Gm-Message-State: AOJu0YxWbXXVfngEb1liZBTuIibQhYXU9H0OZzQBpypUJYcCSBJtCCbs
+	6Q8cfyx5PxHm22fmUFBHmImKVeTqx11XVSaCLmVrtUB4NyKldkGEfVawFxVK4sHtSvUYr2Pnias
+	EzJvDmj+H93tbe5nGiwYPplLfUNshf55YBR82Uy58ArHgWCw1x3KeJ/jCcTUPWwSsbw==
+X-Received: by 2002:a05:600c:6209:b0:495:6396:8b67 with SMTP id 5b1f17b1804b1-4980c649f67mr75253495e9.4.1785609251595;
+        Sat, 01 Aug 2026 11:34:11 -0700 (PDT)
+MIME-Version: 1.0
+Auto-Submitted: auto-replied
+In-Reply-To: <1771440185.2098965.1785609218669@poczta.home.pl>
+References: <1771440185.2098965.1785609218669@poczta.home.pl>
+From: SOUNDRAW_SUPPORT <support+noreply@soundraw.co.jp>
+To: <contact@hardbanrecordslab.online>
+Subject: =?UTF-8?Q?Re=3A_CMLP_=E2=80=94_licensing_question=3A_sublicensing_=26_publ?=
+	=?UTF-8?Q?ic_performance_rights?=
+Message-ID: <000000000000261cb90658008de8@google.com>
+Date: Sat, 01 Aug 2026 18:34:11 +0000
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-CLIENT-IP: 209.85.128.69
+X-CLIENT-HOSTNAME: mail-wm1-f69.google.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTEhO0Dnu7D7Qi6ZW1q7nMpJ4choU3u9dRytLIngdkkTd4IQY/4M1sqpcPBMIS9BRxnP2UHJzBTVb6e3xXxZ5U9pHu97KWoT/fRGhvADD0jzjK+sgvBGaak8+zZgbggPqBXrrmXSWG3Cv+ZlWHZUa8iG4Ub1/jK4myJmtMEYPQIIWbTmCXMVu1X4MK2gtp5w4/CO3kqPVZ9gTBYhY+6vSTgO2y6iPXCNG0G/FrXX+WT9KOlmtR87/ZluQ0KR4idGpavm2Ah8Iw2G1engiubSKX+sSP1i6muyGi9eCyHfGbmZi/jKOQZt5MKNCZIycHcaznm15FxztT7xPv1zkNHkU0olWk/Crc0cXkWg/vccaf1MwCpxUlUuqlSdv9WB7iIpw4Ke6qxD4d+JvRc9JjTXzWSYjGipCzQofmrupQEP25zUEg42abmU0iuUOoSjmhOFKoI+iKm8ex+zbNgpNHcv0PUCxiG1PmUdqWxy39AJsu0eeuTwBEcKgn2TI54U26RkpR37n7fgqLgKPLZ2DZz4ciI1NeOwYLBNSyCeVkeUNAIoimRKAcw9wB7uUaTITTMaVj9ruSCt010xmPzurs/xVteRiQOtZgQH9gzZay2h/OjY7AfBstQXiBeAHDONninBLNuaeaJ2U6fiGORDkPlHjIw+S+W20u/+AsIAt7jj9Yc6EA
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+44GT44Gu44Oh44O844Or44Gv6Ieq5YuV6L+U5L+h44Gr44KI44Gj44Gm6YCB5L+h44GV44KM44Gm
+44GE44G+44GZ44CCIApTT1VORFJBV+OBruOCteODneODvOODiOODoeODvOODq+OBq+OBlOmAo+e1
+oeOBhOOBn+OBoOOBjeOAgeOBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAggrpoIbmrKHl
+r77lv5zjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZnjgYzjgIHnmobjgZXjgpPjgYvjgonjga7j
+gZTos6rllY/jgoTjgZTopoHmnJvjgYzlpJrjgYTloLTlkIjjgavjga/jgZTov5Tkv6Hjgb7jgafj
+gasx6YCx6ZaT44G744Gp44GK5pmC6ZaT44KS6aCC5oi044GZ44KL5Y+v6IO95oCn44GM44GU44GW
+44GE44G+44GZ44CC44GC44KJ44GL44GY44KB44GU5LqG5om/44GE44Gf44Gg44GR44KM44Gw5bm4
+44GE44Gn44GZ44CCCuOBlOS4jeS+v+OCkuOBiuOBi+OBkeOBhOOBn+OBl+OBvuOBmeOBjOOAgeS9
+leWNkuOBlOeQhuino+OBruOBu+OBqeOBiumhmOOBhOeUs+OBl+S4iuOBkuOBvuOBmeOAggrjganj
+gYbjgZ7jgojjgo3jgZfjgY/jgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBlbWFpbCBp
+cyBzZW50IGJ5IGF1dG8tcmVwbHkuIApUaGFuayB5b3UgZm9yIGNvbnRhY3RpbmcgdG8gU09VTkRS
+QVcgc3VwcG9ydC4KV2Ugd2lsbCByZXNwb25kIGluIG9yZGVyLCBidXQgaXQgbWF5IHRha2UgYSB3
+ZWVrIHRvIHJlcGx5IGlmIHdlIHJlY2VpdmUgbWFueSBxdWVzdGlvbnMgb3IgcmVxdWVzdHMgZnJv
+bSB1c2Vycy4gV2UgYXBwcmVjaWF0ZSB5b3VyIHVuZGVyc3RhbmRpbmcgaW4gYWR2YW5jZS4KV2Ug
+YXBvbG9naXplIGZvciBhbnkgaW5jb252ZW5pZW5jZSB0aGlzIG1heSBjYXVzZSBhbmQgYXBwcmVj
+aWF0ZSB5b3VyIHVuZGVyc3RhbmRpbmcuClRoYW5rIHlvdS4=

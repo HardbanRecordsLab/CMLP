@@ -1,0 +1,562 @@
+Return-Path: <support@justaddmusic.zendesk.com>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id q1GgCHN9cGoLCAAA4AkaEw
+	(envelope-from <support@justaddmusic.zendesk.com>)
+	for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 13:37:23 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=justaddmusic.zendesk.com 
+   (client-ip=188.172.138.3; helo=mta-out3.pod18.euc1.zdsys.com; 
+   envelope-from=support@justaddmusic.zendesk.com; receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=none (p=none dis=none) header.from=justaddmusic.zendesk.com
+Received: from mta-out3.pod18.euc1.zdsys.com (mta-out3.pod18.euc1.zdsys.com [188.172.138.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id 62B2E38E024B
+	for <contact@hardbanrecordslab.online>; Mon,  3 Aug 2026 13:37:22 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=zendesk.com header.i=@zendesk.com header.a=rsa-sha256 header.s=zendesk2 header.b=Ls6NaIOR
+Received: from unknown (unknown [127.0.0.6])
+	by mta-out15.pod18.euc1.zdsys.com (Zendesk) with HTTP
+	id b9f5f10c-7f17-432c-90ed-cc2cccd9552b;
+	Mon, 03 Aug 2026 11:37:21 +0000 (UTC)
+Date: Mon, 03 Aug 2026 11:37:21 +0000
+From: Loudly Support <support@justaddmusic.zendesk.com>
+Reply-To: Loudly Support <support+idJL69GL-24MDV@justaddmusic.zendesk.com>
+To: contact contact <contact@hardbanrecordslab.online>
+Cc: Help Soundtracks <help@loudly.com>
+Message-ID: <JL69GL24MDV_6a707d71498b6_e7e183a60fb936_sprut@zendesk.com>
+In-Reply-To: <573183719.2014198.1785409512844@poczta.home.pl>
+ <JL69GL24MDV_6a6c886d58b9b_8e6b127b2c179a_sprut@zendesk.com>
+References: <JL69GL24MDV@zendesk.com>
+ <573183719.2014198.1785409512844@poczta.home.pl>
+ <1595575665.2099024.1785609699251@poczta.home.pl>
+Subject: =?UTF-8?Q?[Loudly_Support]_Re:_CMLP_=E2=80=94_licensing_question:?=
+ =?UTF-8?Q?_sublicensing_&_public_performance_rights?=
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_6a707d717e6aa_1371860451920";
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Delivery-Context: rule-2-event-id-37761429080338
+X-Zendesk-From-Account-Id: bca9cb8
+Auto-Submitted: auto-generated
+X-Auto-Response-Suppress: All
+X-Mailer: Zendesk Mailer
+X-Zendesk-Email-Id: 01KZ3PM03SBHCTK2R49FJ746WS
+DKIM-Signature:  v=1; a=rsa-sha256; c=relaxed/relaxed; d=zendesk.com;
+ q=dns/txt; s=zendesk2; t=1785757041;
+ bh=YIC1Gy/G3cxGz6RoeA1YLEeGleZE6hCqtscJlp0sVFM=;
+ h=date:from:reply-to:to:cc:message-id:in-reply-to:references:subject:mime-version:content-type:content-transfer-encoding;
+ b=Ls6NaIORuKm0xp5rFpWcxBQF3T3u/rjO1a0JDvXZ0AtLfYc873HCRCKAoJf3g4+VXGCnzXnDa30CX1F17NuY1Iwgvk4x19QBXoEBZf+XP+CqcW9vUhBSaRrPjFhVHjvEiCq/a3klCsU/vBJEFSQIGQGU6rYGNHtTmYwfR4+vy/KSNCEjClAShD6b+Kq32+f5a76Ogp7gBpVXqfPeXZwFj4nrF4A6w0RrbC7vT33LvCKzDQtLt83SNWpXqcClDhNcSDoquo0i3UYfQHRs7Y6s9kqpYJawnZTUX/nX8t0BsmmKb1JePKIv/cyAlyyuIRMbNdJAjzl+v+9RA+AlVJyWgg==
+X-CLIENT-IP: 188.172.138.3
+X-CLIENT-HOSTNAME: mta-out3.pod18.euc1.zdsys.com
+X-VADE-SPAMSTATE: transactional:account
+X-VADE-SPAMCAUSE: dmFkZTFYA/wOVRj6i4mMhu4nMgKhEsZGuNa9Q4kgKQPG8VAVmjzoAEv6350WVLD7FjBshkZCML6PoKH3WHOK5oDUMN/ynTGXHQ7wXXQDTIz1inA7FurbtvYFTUlcoAKTfujOtHulnyDd/UrgBly0dVlzUOiikhSRRqiu6kxMQHsQr0v9sMIsIiVXOBVDzn/y5ubgTGaMlbZQLz7W7YHy0bxkxx7HFJnrlTQesnnlg4yTnCSASUXiWfeVsfFnhnnTboqGx4QCADcKsF10elZFz/9Ty9zXiZf3chRTReEQMNDkx/isEwn8wQkClgViB1XCEBqjRH/ioqytO32WtpNUOxeZgs6bi/JXiQWn67/zcX4+Uvgx9b1cx4vh+fZ9cbJCvqdn8VHLRzzpYRmmyIBZTbGgEfu45IVAANPrqBbWH1sfMCDKdIwe7NG9yYQ2RYZE+SHmtdQKLzg6X4piLH/J2/1Uu+dKPm9O3E+LAA77aHtK45qzYCUIT+sBG6S+4NFlJS7TNUiWulAIaM4yZnz4PYrN+kuYMT1dp+0B5oNua4YW9ehxW/5OwlHDjIamqrZGK+iNQh5QQcILRYqdN+c102M0eB4caHrNOlWTpe5a5e7lB4D2VSwj2MXBto9mG7+e2wQdTAMMgKly897LTDAWQA6omkjP1MkjCZ9hNonZlABqAX89Bg
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+
+----==_mimepart_6a707d717e6aa_1371860451920
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+##- Please type your reply above this line -##
+
+Your request (75095) has been updated. To add additional comments, reply =
+to this email.
+----------------------------------------------
+
+JAM 4, Aug 3, 2026, 13:37 GMT+2
+
+Hi,
+
+Thanks for your email and interest in Loudly!
+
+While Loudly-generated music may be used commercially in accordance with =
+the applicable subscription license, the standard Loudly license does not=
+ permit the generated tracks to be included in a commercial music library=
+ or licensed onward to third-party business customers as standalone music=
+ content.
+
+This means that the proposed CMLP model=E2=80=94where Loudly-generated tr=
+acks would form part of your catalogue and be licensed to hotels, retail =
+businesses, offices, gyms, or other customers for public playback=E2=80=94=
+is not permitted under the standard subscription license.
+
+The commercial license is intended to allow you to use the music within y=
+our own projects and productions. It does not grant the right to resell, =
+sublicense, redistribute, or make the music available as a standalone cat=
+alogue or stock/library music service.
+
+Regarding ownership and duration, your rights to use music generated and =
+downloaded under an active qualifying subscription remain subject to the =
+applicable Loudly License Agreement. However, the standard license does n=
+ot provide exclusive ownership of the generated output.
+
+Regarding collecting-society royalties and public-performance obligations=
+, Loudly does not provide legal or collecting-society advice. Any applica=
+ble licensing or royalty requirements may depend on the country, the spec=
+ific use, and the relevant collecting society. We recommend consulting th=
+e relevant organization or a qualified legal professional for guidance.
+
+If you have any further inquiries, please do not hesitate to contact us.
+
+Best regards,
+
+* * *
+
+Your Loudly Team
+
+**Music Maker JAM**
+**Loudly**
+
+----------------------------------------------
+
+contact contact, Aug 1, 2026, 20:41 GMT+2
+
+Hello,
+
+One clarification to my note y, before you spend time on it =E2=80=94 I f=
+ramed my first question poorly.
+
+We are not asking to resell Your's catalogue, and we are not looking to a=
+ct as an intermediary for your repertoire. CMLP's catalogue is our own: w=
+e produce it ourselves, and we are evaluating AI music tools for part of =
+that production.
+
+So the question that actually matters is narrower:
+
+If we generate tracks on your platform, may we include them in our own co=
+mmercial music library and license them onward to our business customers =
+=E2=80=94 hotels, retail, offices, gyms =E2=80=94 including public perfor=
+mance on their premises?
+
+Many terms permit commercial use of output while separately restricting i=
+ts redistribution as stock or library music. That second clause is the on=
+e I need to understand. A pointer to it is a complete answer.
+
+The other two points from my original note stand: whether the rights in g=
+enerated output are ours exclusively, worldwide and perpetually (includin=
+g after a subscription ends), and whether any collecting society royaltie=
+s would remain payable by us or by our customers.
+
+Apologies for the extra email =E2=80=94 I would rather correct the questi=
+on than have you answer the wrong one.
+
+Best regards,
+
+Kamil Skomra
+Founder =E2=80=94 HardbanRecordsLab
+Commercial Music Licensing Platform (CMLP)
+contact@hardbanrecordslab.online
+www.hardbanrecordslab.online
+
+> 30.07.2026 13:05 CEST contact contact <contact@hardbanrecordslab.online=
+> napisa=C5=82(a):
+> =
+
+> =
+
+> Hello,
+> I'm Kamil Skomra, founder of HardbanRecordsLab in Poland. I'm building
+> the Commercial Music Licensing Platform (CMLP) =E2=80=94 a B2B backgrou=
+nd music
+> service for businesses in hospitality, retail, offices, wellness and
+> healthcare. The platform is currently in development.
+> Before choosing catalogue sources for CMLP, I need to confirm three
+> things about Loudly licence:
+> =
+
+> 1. Sublicensing =E2=80=94 can CMLP license your content onward to our o=
+wn
+> business customers under our own agreements?
+> 2. Public performance =E2=80=94 does your licence cover playback in com=
+mercial
+> premises, and would any collecting society royalties (ZAiKS, GEMA, PRS,=
+
+> ASCAP) still be payable by us or by our customers?
+> 3. Scope =E2=80=94 is the grant worldwide and perpetual, and is this av=
+ailable
+> under your standard commercial terms or only under a custom agreement?
+> =
+
+> To be clear: CMLP is at the evaluation stage, so this is not an offer a=
+nd
+> commits neither side to anything. If sublicensing is not permitted unde=
+r
+> your licence, please just tell me =E2=80=94 it saves us both time. I'm =
+happy to
+> sign a mutual NDA before you share anything.
+> If a short call is easier than a written reply, I'm glad to arrange one=
+.
+> =
+
+> Best regards,
+> Kamil Skomra
+> Founder =E2=80=94 HardbanRecordsLab
+> Commercial Music Licensing Platform (CMLP)
+> contact@hardbanrecordslab.online
+> www.hardbanrecordslab.online
+
+----------------------------------------------
+
+JAM 4, Jul 31, 2026, 13:35 GMT+2
+
+Hi,
+
+Thank you for reaching out and for providing such a clear overview of CML=
+P and your intended business model.
+
+Based on the workflow you described, the standard Loudly commercial licen=
+se does not permit the underlying Loudly-generated music to be sublicense=
+d, redistributed, or made available as a standalone music catalogue to th=
+ird-party business customers under separate agreements.
+
+Loudly-generated music may be used as part of your own commercial project=
+s, but the music itself cannot be resold, redistributed, or sublicensed a=
+s a standalone asset or catalogue.
+
+Regarding public performance and collecting-society requirements, we are =
+unable to confirm that Loudly=E2=80=99s standard license exempts business=
+es from local public-performance licensing requirements or fees charged b=
+y organizations such as ZAiKS, GEMA, PRS, or ASCAP. These requirements ma=
+y depend on the country, the specific use, and the applicable local regul=
+ations.
+
+Therefore, the CMLP business model described would not be covered under L=
+oudly=E2=80=99s standard commercial license.
+
+Thank you again for considering Loudly and for your understanding.
+
+Best regards,
+
+* * *
+
+Your Loudly Team
+
+**Music Maker JAM**
+**Loudly**
+
+----------------------------------------------
+
+contact contact, Jul 30, 2026, 13:05 GMT+2
+
+Hello,
+I'm Kamil Skomra, founder of HardbanRecordsLab in Poland. I'm building
+the Commercial Music Licensing Platform (CMLP) =E2=80=94 a B2B background=
+ music
+service for businesses in hospitality, retail, offices, wellness and
+healthcare. The platform is currently in development.
+Before choosing catalogue sources for CMLP, I need to confirm three
+things about Loudly licence:
+
+1. Sublicensing =E2=80=94 can CMLP license your content onward to our own=
+
+business customers under our own agreements?
+2. Public performance =E2=80=94 does your licence cover playback in comme=
+rcial
+premises, and would any collecting society royalties (ZAiKS, GEMA, PRS,
+ASCAP) still be payable by us or by our customers?
+3. Scope =E2=80=94 is the grant worldwide and perpetual, and is this avai=
+lable
+under your standard commercial terms or only under a custom agreement?
+
+To be clear: CMLP is at the evaluation stage, so this is not an offer and=
+
+commits neither side to anything. If sublicensing is not permitted under
+your licence, please just tell me =E2=80=94 it saves us both time. I'm ha=
+ppy to
+sign a mutual NDA before you share anything.
+If a short call is easier than a written reply, I'm glad to arrange one.
+
+Best regards,
+Kamil Skomra
+Founder =E2=80=94 HardbanRecordsLab
+Commercial Music Licensing Platform (CMLP)
+contact@hardbanrecordslab.online
+www.hardbanrecordslab.online
+
+--------------------------------
+This email is a service from Loudly Support.
+
+
+
+
+
+
+
+
+
+[JL69GL-24MDV]=
+
+----==_mimepart_6a707d717e6aa_1371860451920
+Content-Type: text/html;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html><html><head>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+  <style type=3D"text/css">
+    table td {
+      border-collapse: collapse;
+    }
+    body[dir=3Drtl] .directional_text_wrapper { direction: rtl; unicode-b=
+idi: embed; }
+
+  </style>
+
+          <style type=3D"text/css">
+            @media only screen and (max-width: 768px) {
+              .simplified-email-footer .namecard {
+                display: block;
+                min-width: 100%;
+                padding: 0 0 16px 0; }
+
+              .simplified-email-footer .content {
+                padding: 16px; }
+            }
+          </style>
+        </head>
+<body lang=3D"en-us" style=3D"width: 100%!important; margin: 0; padding: =
+0;">
+  <div style=3D"padding: 10px ; line-height: 18px; font-family: 'Lucida G=
+rande',Verdana,Arial,sans-serif; font-size: 12px; color:#444444;">
+    <div style=3D"color: #b5b5b5;">##- Please type your reply above this =
+line -##</div>
+    <p dir=3D"ltr">Your request (75095) has been updated. To add addition=
+al comments, reply to this email.<br></p><div style=3D"margin-top: 25px" =
+data-version=3D"2"><table class=3D"zd-liquid-comment" width=3D"100%" cell=
+padding=3D"0" cellspacing=3D"0" border=3D"0" role=3D"presentation">  <tbo=
+dy><tr>    <td width=3D"100%" style=3D"padding: 15px 0; border-top: 1px d=
+otted #c5c5c5;">      <table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0" style=3D"table-layout:fixed;" role=3D"presentation"> =
+       <tbody><tr>                    <td width=3D"100%" style=3D"padding=
+: 0; margin: 0;" valign=3D"top">            <p style=3D"font-family:'Luci=
+da Grande','Lucida Sans Unicode','Lucida Sans',Verdana,Tahoma,sans-serif;=
+ font-size: 15px; line-height: 18px; margin-bottom: 0; margin-top: 0; pad=
+ding: 0; color:#1b1d1e;" dir=3D"ltr">                                    =
+            <strong>JAM 4</strong> (Loudly Support)                      =
+                    </p>            <p style=3D"font-family:'Lucida Grand=
+e','Lucida Sans Unicode','Lucida Sans',Verdana,Tahoma,sans-serif; font-si=
+ze: 13px; line-height: 25px; margin-bottom: 15px; margin-top: 0; padding:=
+ 0; color:#bbbbbb;" dir=3D"ltr">              Aug 3, 2026, 13:37 GMT+2   =
+         </p>                                    <div class=3D"zd-comment=
+" dir=3D"auto" style=3D"color: #2b2e2f; line-height: 22px; margin: 15px 0=
+;">Hi,<br>&nbsp;<br>Thanks for your email and interest in Loudly!<br>&nbs=
+p;<br>While Loudly-generated music may be used commercially in accordance=
+ with the applicable subscription license, the standard Loudly license do=
+es not permit the generated tracks to be included in a commercial music l=
+ibrary or licensed onward to third-party business customers as standalone=
+ music content.<br>&nbsp;<br>This means that the proposed CMLP model=E2=80=
+=94where Loudly-generated tracks would form part of your catalogue and be=
+ licensed to hotels, retail businesses, offices, gyms, or other customers=
+ for public playback=E2=80=94is not permitted under the standard subscrip=
+tion license.<br>&nbsp;<br>The commercial license is intended to allow yo=
+u to use the music within your own projects and productions. It does not =
+grant the right to resell, sublicense, redistribute, or make the music av=
+ailable as a standalone catalogue or stock/library music service.<br>&nbs=
+p;<br>Regarding ownership and duration, your rights to use music generate=
+d and downloaded under an active qualifying subscription remain subject t=
+o the applicable Loudly License Agreement. However, the standard license =
+does not provide exclusive ownership of the generated output.<br>&nbsp;<b=
+r>Regarding collecting-society royalties and public-performance obligatio=
+ns, Loudly does not provide legal or collecting-society advice. Any appli=
+cable licensing or royalty requirements may depend on the country, the sp=
+ecific use, and the relevant collecting society. We recommend consulting =
+the relevant organization or a qualified legal professional for guidance.=
+<br>&nbsp;<br>If you have any further inquiries, please do not hesitate t=
+o contact us.<br>&nbsp;<br>Best regards,<br><div class=3D"signature"><hr>=
+<p dir=3D"ltr" style=3D"color: #2b2e2f; line-height: 22px; margin: 15px 0=
+;">Your Loudly Team</p><p dir=3D"ltr" style=3D"color: #2b2e2f; line-heigh=
+t: 22px; margin: 15px 0;"><strong><a href=3D"https://www.musicmakerjam.ap=
+p/" rel=3D"noreferrer">Music Maker JAM</a></strong><br><strong><a href=3D=
+"http://loudly.com/" rel=3D"noreferrer">Loudly</a></strong></p></div></di=
+v><p dir=3D"ltr">                      </p></td>        </tr>      </tbod=
+y></table>    </td>  </tr></tbody></table><p dir=3D"ltr"></p><table class=
+=3D"zd-liquid-comment" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0" role=3D"presentation">  <tbody><tr>    <td width=3D"100%" s=
+tyle=3D"padding: 15px 0; border-top: 1px dotted #c5c5c5;">      <table wi=
+dth=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"ta=
+ble-layout:fixed;" role=3D"presentation">        <tbody><tr>             =
+       <td width=3D"100%" style=3D"padding: 0; margin: 0;" valign=3D"top"=
+>            <p style=3D"font-family:'Lucida Grande','Lucida Sans Unicode=
+','Lucida Sans',Verdana,Tahoma,sans-serif; font-size: 15px; line-height: =
+18px; margin-bottom: 0; margin-top: 0; padding: 0; color:#1b1d1e;" dir=3D=
+"ltr">                              <strong>contact contact</strong>     =
+                     </p>            <p style=3D"font-family:'Lucida Gran=
+de','Lucida Sans Unicode','Lucida Sans',Verdana,Tahoma,sans-serif; font-s=
+ize: 13px; line-height: 25px; margin-bottom: 15px; margin-top: 0; padding=
+: 0; color:#bbbbbb;" dir=3D"ltr">              Aug 1, 2026, 20:41 GMT+2  =
+          </p>                                    <div class=3D"zd-commen=
+t" dir=3D"auto" style=3D"color: #2b2e2f; line-height: 22px; margin: 15px =
+0;"><p style=3D"color: #2b2e2f; line-height: 22px; margin: 15px 0;" dir=3D=
+"ltr">Hello,</p><p style=3D"color: #2b2e2f; line-height: 22px; margin: 15=
+px 0;" dir=3D"ltr">One clarification to my note y, before you spend time =
+on it =E2=80=94 I framed my first question poorly.</p><p style=3D"color: =
+#2b2e2f; line-height: 22px; margin: 15px 0;" dir=3D"ltr">We are not askin=
+g to resell Your's catalogue, and we are not looking to act as an interme=
+diary for your repertoire. CMLP's catalogue is our own: we produce it our=
+selves, and we are evaluating AI music tools for part of that production.=
+</p><p style=3D"color: #2b2e2f; line-height: 22px; margin: 15px 0;" dir=3D=
+"ltr">So the question that actually matters is narrower:</p><p style=3D"c=
+olor: #2b2e2f; line-height: 22px; margin: 15px 0;" dir=3D"ltr">If we gene=
+rate tracks on your platform, may we include them in our own commercial m=
+usic library and license them onward to our business customers =E2=80=94 =
+hotels, retail, offices, gyms =E2=80=94 including public performance on t=
+heir premises?</p><p style=3D"color: #2b2e2f; line-height: 22px; margin: =
+15px 0;" dir=3D"ltr">Many terms permit commercial use of output while sep=
+arately restricting its redistribution as stock or library music. That se=
+cond clause is the one I need to understand. A pointer to it is a complet=
+e answer.</p><p style=3D"color: #2b2e2f; line-height: 22px; margin: 15px =
+0;" dir=3D"ltr">The other two points from my original note stand: whether=
+ the rights in generated output are ours exclusively, worldwide and perpe=
+tually (including after a subscription ends), and whether any collecting =
+society royalties would remain payable by us or by our customers.</p><p s=
+tyle=3D"color: #2b2e2f; line-height: 22px; margin: 15px 0;" dir=3D"ltr">A=
+pologies for the extra email =E2=80=94 I would rather correct the questio=
+n than have you answer the wrong one.</p><p style=3D"color: #2b2e2f; line=
+-height: 22px; margin: 15px 0;" dir=3D"ltr">Best regards,</p><p style=3D"=
+color: #2b2e2f; line-height: 22px; margin: 15px 0;" dir=3D"ltr">Kamil Sko=
+mra<br>Founder =E2=80=94 HardbanRecordsLab<br>Commercial Music Licensing =
+Platform (CMLP)<br><a href=3D"mailto:contact@hardbanrecordslab.online" re=
+l=3D"noreferrer">contact@hardbanrecordslab.online</a><br><a href=3D"http:=
+//www.hardbanrecordslab.online" target=3D"_blank" rel=3D"nofollow norefer=
+rer">www.hardbanrecordslab.online</a></p><p style=3D"color: #2b2e2f; line=
+-height: 22px; margin: 15px 0;" dir=3D"ltr">&gt; 30.07.2026 13:05 CEST co=
+ntact contact &lt;<a href=3D"mailto:contact@hardbanrecordslab.online" rel=
+=3D"noreferrer">contact@hardbanrecordslab.online</a>&gt; napisa=C5=82(a):=
+<br>&gt; <br>&gt; <br>&gt; Hello,<br>&gt; I'm Kamil Skomra, founder of Ha=
+rdbanRecordsLab in Poland. I'm building<br>&gt; the Commercial Music Lice=
+nsing Platform (CMLP) =E2=80=94 a B2B background music<br>&gt; service fo=
+r businesses in hospitality, retail, offices, wellness and<br>&gt; health=
+care. The platform is currently in development.<br>&gt; Before choosing c=
+atalogue sources for CMLP, I need to confirm three<br>&gt; things about L=
+oudly licence:<br>&gt; <br>&gt; 1. Sublicensing =E2=80=94 can CMLP licens=
+e your content onward to our own<br>&gt; business customers under our own=
+ agreements?<br>&gt; 2. Public performance =E2=80=94 does your licence co=
+ver playback in commercial<br>&gt; premises, and would any collecting soc=
+iety royalties (ZAiKS, GEMA, PRS,<br>&gt; ASCAP) still be payable by us o=
+r by our customers?<br>&gt; 3. Scope =E2=80=94 is the grant worldwide and=
+ perpetual, and is this available<br>&gt; under your standard commercial =
+terms or only under a custom agreement?<br>&gt; <br>&gt; To be clear: CML=
+P is at the evaluation stage, so this is not an offer and<br>&gt; commits=
+ neither side to anything. If sublicensing is not permitted under<br>&gt;=
+ your licence, please just tell me =E2=80=94 it saves us both time. I'm h=
+appy to<br>&gt; sign a mutual NDA before you share anything.<br>&gt; If a=
+ short call is easier than a written reply, I'm glad to arrange one.<br>&=
+gt; <br>&gt; Best regards,<br>&gt; Kamil Skomra<br>&gt; Founder =E2=80=94=
+ HardbanRecordsLab<br>&gt; Commercial Music Licensing Platform (CMLP)<br>=
+&gt; <a href=3D"mailto:contact@hardbanrecordslab.online" rel=3D"noreferre=
+r">contact@hardbanrecordslab.online</a><br>&gt; <a href=3D"http://www.har=
+dbanrecordslab.online" target=3D"_blank" rel=3D"nofollow noreferrer">www.=
+hardbanrecordslab.online</a></p></div>                      </td>        =
+</tr>      </tbody></table>    </td>  </tr></tbody></table><p dir=3D"ltr"=
+></p><table class=3D"zd-liquid-comment" width=3D"100%" cellpadding=3D"0" =
+cellspacing=3D"0" border=3D"0" role=3D"presentation">  <tbody><tr>    <td=
+ width=3D"100%" style=3D"padding: 15px 0; border-top: 1px dotted #c5c5c5;=
+">      <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D=
+"0" style=3D"table-layout:fixed;" role=3D"presentation">        <tbody><t=
+r>                    <td width=3D"100%" style=3D"padding: 0; margin: 0;"=
+ valign=3D"top">            <p style=3D"font-family:'Lucida Grande','Luci=
+da Sans Unicode','Lucida Sans',Verdana,Tahoma,sans-serif; font-size: 15px=
+; line-height: 18px; margin-bottom: 0; margin-top: 0; padding: 0; color:#=
+1b1d1e;" dir=3D"ltr">                                                <str=
+ong>JAM 4</strong> (Loudly Support)                                      =
+    </p>            <p style=3D"font-family:'Lucida Grande','Lucida Sans =
+Unicode','Lucida Sans',Verdana,Tahoma,sans-serif; font-size: 13px; line-h=
+eight: 25px; margin-bottom: 15px; margin-top: 0; padding: 0; color:#bbbbb=
+b;" dir=3D"ltr">              Jul 31, 2026, 13:35 GMT+2            </p>  =
+                                  <div class=3D"zd-comment" dir=3D"auto" =
+style=3D"color: #2b2e2f; line-height: 22px; margin: 15px 0;">Hi,<br>&nbsp=
+;<br>Thank you for reaching out and for providing such a clear overview o=
+f CMLP and your intended business model.<br>&nbsp;<br>Based on the workfl=
+ow you described, the standard Loudly commercial license does not permit =
+the underlying Loudly-generated music to be sublicensed, redistributed, o=
+r made available as a standalone music catalogue to third-party business =
+customers under separate agreements.<br>&nbsp;<br>Loudly-generated music =
+may be used as part of your own commercial projects, but the music itself=
+ cannot be resold, redistributed, or sublicensed as a standalone asset or=
+ catalogue.<br>&nbsp;<br>Regarding public performance and collecting-soci=
+ety requirements, we are unable to confirm that Loudly=E2=80=99s standard=
+ license exempts businesses from local public-performance licensing requi=
+rements or fees charged by organizations such as ZAiKS, GEMA, PRS, or ASC=
+AP. These requirements may depend on the country, the specific use, and t=
+he applicable local regulations.<br>&nbsp;<br>Therefore, the CMLP busines=
+s model described would not be covered under Loudly=E2=80=99s standard co=
+mmercial license.<br>&nbsp;<br>Thank you again for considering Loudly and=
+ for your understanding.<br>&nbsp;<br>Best regards,<br><div class=3D"sign=
+ature"><hr><p dir=3D"ltr" style=3D"color: #2b2e2f; line-height: 22px; mar=
+gin: 15px 0;">Your Loudly Team</p><p dir=3D"ltr" style=3D"color: #2b2e2f;=
+ line-height: 22px; margin: 15px 0;"><strong><a href=3D"https://www.music=
+makerjam.app/" rel=3D"noreferrer">Music Maker JAM</a></strong><br><strong=
+><a href=3D"http://loudly.com/" rel=3D"noreferrer">Loudly</a></strong></p=
+></div></div><p dir=3D"ltr">                      </p></td>        </tr> =
+     </tbody></table>    </td>  </tr></tbody></table><p dir=3D"ltr"></p><=
+table class=3D"zd-liquid-comment" width=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" border=3D"0" role=3D"presentation">  <tbody><tr>    <td width=
+=3D"100%" style=3D"padding: 15px 0; border-top: 1px dotted #c5c5c5;">    =
+  <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" =
+style=3D"table-layout:fixed;" role=3D"presentation">        <tbody><tr>  =
+                  <td width=3D"100%" style=3D"padding: 0; margin: 0;" val=
+ign=3D"top">            <p style=3D"font-family:'Lucida Grande','Lucida S=
+ans Unicode','Lucida Sans',Verdana,Tahoma,sans-serif; font-size: 15px; li=
+ne-height: 18px; margin-bottom: 0; margin-top: 0; padding: 0; color:#1b1d=
+1e;" dir=3D"ltr">                              <strong>contact contact</s=
+trong>                          </p>            <p style=3D"font-family:'=
+Lucida Grande','Lucida Sans Unicode','Lucida Sans',Verdana,Tahoma,sans-se=
+rif; font-size: 13px; line-height: 25px; margin-bottom: 15px; margin-top:=
+ 0; padding: 0; color:#bbbbbb;" dir=3D"ltr">              Jul 30, 2026, 1=
+3:05 GMT+2            </p>                                    <div class=3D=
+"zd-comment" dir=3D"auto" style=3D"color: #2b2e2f; line-height: 22px; mar=
+gin: 15px 0;"><p style=3D"color: #2b2e2f; line-height: 22px; margin: 15px=
+ 0;" dir=3D"ltr">Hello,<br>I'm Kamil Skomra, founder of HardbanRecordsLab=
+ in Poland. I'm building<br>the Commercial Music Licensing Platform (CMLP=
+) =E2=80=94 a B2B background music<br>service for businesses in hospitali=
+ty, retail, offices, wellness and<br>healthcare. The platform is currentl=
+y in development.<br>Before choosing catalogue sources for CMLP, I need t=
+o confirm three<br>things about Loudly licence:</p><p style=3D"color: #2b=
+2e2f; line-height: 22px; margin: 15px 0;" dir=3D"ltr">1. Sublicensing =E2=
+=80=94 can CMLP license your content onward to our own<br>business custom=
+ers under our own agreements?<br>2. Public performance =E2=80=94 does you=
+r licence cover playback in commercial<br>premises, and would any collect=
+ing society royalties (ZAiKS, GEMA, PRS,<br>ASCAP) still be payable by us=
+ or by our customers?<br>3. Scope =E2=80=94 is the grant worldwide and pe=
+rpetual, and is this available<br>under your standard commercial terms or=
+ only under a custom agreement?</p><p style=3D"color: #2b2e2f; line-heigh=
+t: 22px; margin: 15px 0;" dir=3D"ltr">To be clear: CMLP is at the evaluat=
+ion stage, so this is not an offer and<br>commits neither side to anythin=
+g. If sublicensing is not permitted under<br>your licence, please just te=
+ll me =E2=80=94 it saves us both time. I'm happy to<br>sign a mutual NDA =
+before you share anything.<br>If a short call is easier than a written re=
+ply, I'm glad to arrange one.</p><p style=3D"color: #2b2e2f; line-height:=
+ 22px; margin: 15px 0;" dir=3D"ltr">Best regards,<br>Kamil Skomra<br>Foun=
+der =E2=80=94 HardbanRecordsLab<br>Commercial Music Licensing Platform (C=
+MLP)<br><a href=3D"mailto:contact@hardbanrecordslab.online" rel=3D"norefe=
+rrer">contact@hardbanrecordslab.online</a><br><a href=3D"http://www.hardb=
+anrecordslab.online" target=3D"_blank" rel=3D"nofollow noreferrer">www.ha=
+rdbanrecordslab.online</a></p></div>                      </td>        </=
+tr>      </tbody></table>    </td>  </tr></tbody></table></div>
+  </div>
+  <div style=3D"padding: 10px ; line-height: 18px; font-family: 'Lucida G=
+rande',Verdana,Arial,sans-serif; font-size: 12px; color: #aaaaaa;
+    margin: 10px 0 14px 0; padding-top: 10px; border-top: 1px solid #eeee=
+ee;">
+    This email is a service from Loudly Support. Delivered by <a href=3D"=
+https://www.zendesk.com/support/?utm_campaign=3Dtext&amp;utm_content=3DLo=
+udly+Support&amp;utm_medium=3Dpoweredbyzendesk&amp;utm_source=3Demail-not=
+ification" style=3D"color:black;" target=3D"_blank">Zendesk</a>
+  </div>
+<span style=3D"color:#FFFFFF" aria-hidden=3D"true" class=3D"zd_encoded_id=
+">[JL69GL-24MDV]</span>
+
+<div itemscope=3D"" itemtype=3D"http://schema.org/EmailMessage" style=3D"=
+display:none">  <div itemprop=3D"action" itemscope=3D"" itemtype=3D"http:=
+//schema.org/ViewAction">    <link itemprop=3D"url" href=3D"https://justa=
+ddmusic.zendesk.com/hc/requests/75095">    <meta itemprop=3D"name" conten=
+t=3D"View ticket">  </div></div></body></html>=
+
+----==_mimepart_6a707d717e6aa_1371860451920--

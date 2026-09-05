@@ -1,0 +1,38 @@
+Return-Path: <p.hutnik@zpav.pl>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id JzdFAVRVbmoU2QAA4AkaEw
+	(envelope-from <p.hutnik@zpav.pl>)
+	for <contact@hardbanrecordslab.online>; Sat, 01 Aug 2026 22:21:40 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=zpav.pl (client-ip=83.238.107.240; 
+   helo=postmaster.onyx.pl; envelope-from=p.hutnik@zpav.pl; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=none dis=none) header.from=zpav.pl
+Received: from postmaster.onyx.pl (postmaster.onyx.pl [83.238.107.240])
+	by cloudserver3173569-3173632.home.pl (Postfix) with SMTP id 78A3638E023A
+	for <contact@hardbanrecordslab.online>; Sat,  1 Aug 2026 22:21:39 +0200 (CEST)
+Received: (qmail 24762 invoked by uid 1297); 1 Aug 2026 20:21:32 -0000
+Date: 1 Aug 2026 20:21:32 -0000
+Message-ID: <20260801202132.24761.qmail@postmaster.onyx.pl>
+To: contact@hardbanrecordslab.online
+From: p.hutnik@zpav.pl
+Subject: Automatyczna odpowiedz o nieobecnosci | Automatic out of office response
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+X-CLIENT-IP: 83.238.107.240
+X-CLIENT-HOSTNAME: postmaster.onyx.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTFeCU57KOQwekljO9U0uJMUUgfvX3Dz4C/HgTTV8sjHDfFbCbXG1KUpk0Up5Cc8h7M3fGgCvpGatGW62Vpd8pw5/CUn0d/di9X1V11u4DknWJD/7WiGxJRsPfzt4dfoPAbVtP0gYcC/ac+zCOwBdVOCtss2N6J6yI/tFW0W7YkXSc9Lz59NaWXdj3Zup5pQbhhiO2EFAvrRBis4usguwlVj2Tj11ZY/dZSdYq5qZCgnv0o/SsPIJzRDa8L8vcPEZ7djxuvGJNmlKyhNrKUxbCWh/5f6FxDsRsvi+0ZaEaP567EvZC5B3e8jGFoK9DSfVpFLkICVBu33ex/xVZZt0is2uIWXjVfALmAivtuAEdnWQCmiOp3jAWsEGVOUSYkcaTwG7UGC1PHf9080DKA4ElRhZOxielO5CpCijytT87bQkbyfKtps6OgxW7kIDUAaiYHNyjj3zfRWKS+FLvscxwvtHVWfcCUXMQJr5/BJ7Izh8oDmHZ3klYdktC8KIleLRX/CNFsZ3rPBqBSXMw0Sy5CeNHreFT670LeK0ke5VlMilRHGNeSu50H+YpWEuOauTxJhVYVlliMv3Xyer5RsZYjsQksgEUbCchCIH+45CW2UTe1yn3BsDHWBEYSq6YUq0l2fh0mK0do4fKKt7o9l7pOnXNbgXh1/NTW4vraLOgs4SQ
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1
+
+Dziękuję za przesłaną wiadomość. Obecnie przebywam na urlopie i mogę nie mieć możliwości odebrania poczty. Odpowiem po powrocie tj. 10 sierpnia br.
+W sprawach pilnych proszę o kontakt na adres: producent@zpav.pl 
+
+
+Pozdrawiam
+Paula Hutnik
+ZPAV
+

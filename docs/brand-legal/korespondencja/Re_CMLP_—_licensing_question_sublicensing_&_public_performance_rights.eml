@@ -1,0 +1,389 @@
+Return-Path: <ashkhen@aiva.ai>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id EjHYAwVecGqXSQAA4AkaEw
+	(envelope-from <ashkhen@aiva.ai>)
+	for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 11:23:17 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=aiva.ai (client-ip=209.85.219.52; 
+   helo=mail-qv1-f52.google.com; envelope-from=ashkhen@aiva.ai; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=quarantine dis=none) header.from=aiva.ai
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id 5E95538E0243
+	for <contact@hardbanrecordslab.online>; Mon,  3 Aug 2026 11:23:16 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=aiva.ai header.i=@aiva.ai header.a=rsa-sha256 header.s=google header.b=mGsT3e8t
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8f29ec73064so20216046d6.1
+        for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 02:23:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785748995; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Qm7S88YG2C4UQDUbMSNu1SweOb2KxE2JPHvcxs+HQJKHpFakU7VFQraoVQcS6B6rBq
+         1pCaaufNiGVxWc6uEq270Byum1iD5U0AL3q0UOFzAyZ/BhvT16/A0TawoW1NwD6r4Zzb
+         EIMcC0CUdTcThR0ioVviM2AHbM+R0ZWUcrk4doMXiO1CR1n4L+Rf6PKEL8Yd/yh9fDv9
+         vihcLqBrqY+68TWDqvPsxAqLqx4H3yUD+V3tEdEkFeWNWs8stYQ+Qe6sPjic7lacLUil
+         Eiai8xzuFpPD3R81oN7IRS73+HSHu4jugZ2OXTYZecquis03qIn+jpQzwCnNoA3LQ6f3
+         A1WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=2osICB61TEL7Lp1CnkDUDyjv/AZZThJbFR3peF8x728=;
+        fh=YXJiV2WH7fj1EKoz2pDfpHv4BD9QNEnm16zDzTZZhqM=;
+        b=lvN2SyGoGs9hlfjaa5lOU8ZBdvjzjKGZFHwxv9QE9nmzjslgOL0/IbfPZ8yN01nE3q
+         u8XffQNmoDEFn1y53MhDg75zcv5blItBMe8e6cEfdYn6feJP7XUV0IkyYVLBzTFUo3so
+         hmJVqCrcJMUyu/K8HiFdOSLINE7xgL06Hj9zl4t1a04QrhgG923gRldLw47phQykqqa/
+         KVgbA0v8eUSSiBqoDfsXzDWMEJsS+FA2DyFTjTdAvZO39oYh/He3fdZYtehO7XPHdno9
+         VRH6gCtN9+xaGhbWBlDOHlgml8HzwYKa1rfAP8+5P7qfF70pQo4JaRA/ddR2zks95NlX
+         S2Fg==;
+        darn=hardbanrecordslab.online
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=aiva.ai; s=google; t=1785748995; x=1786353795; darn=hardbanrecordslab.online;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2osICB61TEL7Lp1CnkDUDyjv/AZZThJbFR3peF8x728=;
+        b=mGsT3e8tEvHH3DUFEHrfh+i8uVTxtycntcG16b48SK8CuZMQJDITojKJDWoT0xV4VT
+         MXaeKg0NXZq+bIRd53YOezLvFvyz+qBUZX9x1I7pDQXUOAzPvDUOqwI3OXvMjYHaB7MG
+         kyAlGQakMx9p+UBBBUZIpRtrDQiKM9ezgGkwB1j6ezqBmlY7qkq+7qjue6e5VbmAY6D7
+         gJDNQVXRVCgRuaoNnpUnZ6Oo0H/ZOEDTLpYoC1bbU8zHqB2SHYDXpScrdXsHIlAhe4Dn
+         Qv+otQ5669r1U5SZXUYW0oLSeoF5CMmX1oDQ5wvg63VV02sgTowPydYSAtXxJBxR9N/C
+         SSVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785748995; x=1786353795;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2osICB61TEL7Lp1CnkDUDyjv/AZZThJbFR3peF8x728=;
+        b=Qu2MJsAlyNJgRfGaQc72s0GQBptFpihHqftbp20CHVfJVQFABa9BJtOE3HRC0ldSJe
+         d7plrVNXQ/2jbaZJy7AfN4XRzbuVYzuKe13FAsgtD2E+vIziCoz8vAES861mEkhc/9xr
+         llcWXHPBJZIARIQL03h+58U5+u7zN47boND9HlC79kirXV68WL0HNQojnbFrb9Uf4mS8
+         hYydfE5BlzS+Di5d9tOSLz3kJEmmC6fKOI0BVT0g1ekAZ+PH1GOq0JmR6GI115wML+FY
+         hXNAUGJ90orqJuJDY190onHny2WukCzQXOClb4ee6mkWdCrylXgHmgppJlYR6gLroTU+
+         jruA==
+X-Gm-Message-State: AOJu0YwtP1ARiUdplTlNH3kFbWxjLpj5wKKEwnD58iJVTsFTDFeJ34j6
+	UeCFp58G2eA6GdAQIT06KNCOdSLZ79gq39OJuNwL3CSVLNzKtEzylFxLcSI1bpYoKuwbqpAv6nM
+	PMDo6BAm6NZct1Trndi+P19/gunyAoqLi5jvNB8PT/X0RgCXm0vzday7jzd7C
+X-Gm-Gg: AR+sD10w3Vr3G1qa7fnRwcEETypjwR06cVJarqjBcdZS0jRuyGQol2/Gv8dZuYXvMCx
+	5RL5zq5Ebt2yM9s5XDdto7k6P+pH5ebANOcUSeaXPQXIFDb4VzuwlQ5ljrElBuIc0QK2XG/iFki
+	XSYgNbAilu+8BfTgmIJhryuDuGzWjiGNiNaexyQEdUSwersO0b/HOvnEq/8F3/JLkPwqlFvGSNn
+	CYXqOJsv3uJ5fOvBeVoxpUEIy24tPUAqCMvWAbVP2oq2m/WmtEWYl+qEesjO3lRZItHYRWlMLPF
+	wAflMgKn8ZZ9R6I45QY4LlcUTkn24LMhCj9XMyItGMHWLxZc81cZE7gSG9KSJyT8ApTKKW4NUpQ
+	187tc2h3d7cgeBwYOOix1ctwo2qYPa+w7GXUKRswzBr/9fMpxI6u3dCqPdWikqGBpuUhYEBgRj/
+	EoLT8CHzQjlwRe2FIcZKGi2A5cxyaU
+X-Received: by 2002:a05:6214:124d:b0:8fb:7e7c:b494 with SMTP id
+ 6a1803df08f44-9084968110dmr209699206d6.26.1785748994762; Mon, 03 Aug 2026
+ 02:23:14 -0700 (PDT)
+MIME-Version: 1.0
+References: <655344374.2012632.1785408770997@poczta.home.pl> <1245672107.2099055.1785609916630@poczta.home.pl>
+In-Reply-To: <1245672107.2099055.1785609916630@poczta.home.pl>
+From: Ashkhen Zakharyan <ashkhen@aiva.ai>
+Date: Mon, 3 Aug 2026 11:23:03 +0200
+X-Gm-Features: AUfX_mzbmVMbWA4UQJGBXUenxorf8eG4Jz-MqmJTcYvj3eL7eMHGLc6zNtd5udg
+Message-ID: <CAMdGLSk25ehV-mxYxEvvs9-5MNkiOfatTubgDQJMb0ygxyis1Q@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=3A_CMLP_=E2=80=94_licensing_question=3A_sublicensing_=26_pu?=
+	=?UTF-8?Q?blic_performance_rights?=
+To: contact contact <contact@hardbanrecordslab.online>
+Cc: "contact@aiva.ai" <contact@aiva.ai>
+Content-Type: multipart/alternative; boundary="0000000000007db82c0658211605"
+X-CLIENT-IP: 209.85.219.52
+X-CLIENT-HOSTNAME: mail-qv1-f52.google.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTGCvzN0UbVKyQ7ED1/DqSp+a/yc9Ky6EmY1gCRvrvaxyWVNDKavSCJXl8zexyJ961NkArquVKTd82LBcJTVAr84vCk5yfV7+o70yc+lW0QP+yjDvf9eNoKJvbSjii5Z+uBWjgD8RJNd68UZp26yEzPMrGQjZWHyZeas3MXnFvXJO9O4iz/BbYiiOZm/phqJwbT1zyyiXk74bgOqLq2hnqQH8RPuoP/WSbPEQHiaUdgmBlce4yHHKYQgkFSFaFlF9QFW88YkFdkFjgkrhM8QoMPQ93ZsFbbzdrmEwiMmFPsDo68pW/EY0TvCM2eOw2G1HF/nLs+6fxU5ORKdumdD9xGRDXW6KeGUcTIkZ1omilAErFiu0HfqmZrOnJPsyIoZbG/T1MFDFPUlCdiypEacR9ZqlRtWy9vQLa+p8VrxhUGyaxhdkKZm51ezTaU7g6Y7wnZ9QfH4+WYriDogjX1AttB9qIXUdA2lkwJUIYDK/RKVfOkgG7Q+/7QB8D3Ama2g1CjtunhwV1TUOJbQcjzClFAM0NoTacmFqxlH2qLeA1r+EFo+WtWVcYhhPqBmbo93hbozNfs/813MlIFNLOJ+/vGJpz8NXBkXpvd+yIBUFU2or/g9cfwmgZO0whZdOpiXdW0p0HLsR9pBkhh2dg6PCiOi9Lr2yqYmNhJzza2teLpFnA
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+--0000000000007db82c0658211605
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+Thank you for your interest in AIVA!
+
+If your company generates less than $300 000 in annual revenue and has a
+team of less than 3 full-time employees, you can use our Pro plan.
+
+If your company generates more than $300 000 and has a team of more than 3
+full-time employees, you will need an Enterprise plan.
+
+As our enterprise plans are custom made, I need the following information
+to provide you more details on the Enterprise plan pricing:
+
+1. Your exact use-case
+2. The number of accounts you need (the number of staff that needs to
+access and use AVA)
+3. The number of compositions you need per month
+4. The size of your company (the number of full-time employees)
+5. The website link to your company
+
+Let's say at the moment your company is small and does not qualify for our
+enterprise plan, you can use our Pro plan.
+In the future, when your company grows and qualifies for an enterprise
+customer,
+you can contact us again, and we will create a new custom Enterprise plan
+tailored to your needs.
+Any compositions you created and downloaded in the past under the Pro plan
+will retain their original Pro license and you can continue using them
+commercially.
+Only the new tracks that you will create under the Enterprise plan, will
+have the new Enterprise licence.
+
+Please let me know if you have any questions!
+
+Regards,
+
+On Sat, Aug 1, 2026 at 8:45=E2=80=AFPM contact contact
+<contact@hardbanrecordslab.online> wrote:
+
+> Hello,
+>
+> One clarification to my note y, before you spend time on it =E2=80=94 I f=
+ramed my
+> first question poorly.
+>
+> We are not asking to resell Your's catalogue, and we are not looking to
+> act as an intermediary for your repertoire. CMLP's catalogue is our own: =
+we
+> produce it ourselves, and we are evaluating AI music tools for part of th=
+at
+> production.
+>
+> So the question that actually matters is narrower:
+>
+> If we generate tracks on your platform, may we include them in our own
+> commercial music library and license them onward to our business customer=
+s
+> =E2=80=94 hotels, retail, offices, gyms =E2=80=94 including public perfor=
+mance on their
+> premises?
+>
+> Many terms permit commercial use of output while separately restricting
+> its redistribution as stock or library music. That second clause is the o=
+ne
+> I need to understand. A pointer to it is a complete answer.
+>
+> The other two points from my original note stand: whether the rights in
+> generated output are ours exclusively, worldwide and perpetually (includi=
+ng
+> after a subscription ends), and whether any collecting society royalties
+> would remain payable by us or by our customers.
+>
+> Apologies for the extra email =E2=80=94 I would rather correct the questi=
+on than
+> have you answer the wrong one.
+>
+> Best regards,
+>
+> Kamil Skomra
+> Founder =E2=80=94 HardbanRecordsLab
+> Commercial Music Licensing Platform (CMLP)
+> contact@hardbanrecordslab.online
+> www.hardbanrecordslab.online
+>
+> > 30.07.2026 12:52 CEST contact contact <contact@hardbanrecordslab.online=
+>
+> napisa=C5=82(a):
+> >
+> >
+> > Hello,
+> > I'm Kamil Skomra, founder of HardbanRecordsLab in Poland. I'm building
+> > the Commercial Music Licensing Platform (CMLP) =E2=80=94 a B2B backgrou=
+nd music
+> > service for businesses in hospitality, retail, offices, wellness and
+> > healthcare. The platform is currently in development.
+> > Before choosing catalogue sources for CMLP, I need to confirm three
+> > things about AIVA licence:
+> >
+> >   * 1. Sublicensing =E2=80=94 can CMLP license your content onward to o=
+ur own
+> >   * business customers under our own agreements?
+> >   * 2. Public performance =E2=80=94 does your licence cover playback in
+> commercial
+> >   * premises, and would any collecting society royalties (ZAiKS, GEMA,
+> PRS,
+> >   * ASCAP) still be payable by us or by our customers?
+> >   * 3. Scope =E2=80=94 is the grant worldwide and perpetual, and is thi=
+s
+> available
+> >   * under your standard commercial terms or only under a custom
+> agreement?
+> >
+> > To be clear: CMLP is at the evaluation stage, so this is not an offer a=
+nd
+> > commits neither side to anything. If sublicensing is not permitted unde=
+r
+> > your licence, please just tell me =E2=80=94 it saves us both time. I'm =
+happy to
+> > sign a mutual NDA before you share anything.
+> > If a short call is easier than a written reply, I'm glad to arrange one=
+.
+> >
+> > Best regards,
+> > Kamil Skomra
+> > Founder =E2=80=94 HardbanRecordsLab
+> > Commercial Music Licensing Platform (CMLP)
+> > contact@hardbanrecordslab.online
+> > www.hardbanrecordslab.online
+>
+
+
+--=20
+Ashkhen Zakharyan
+www.aiva.ai
+
+--0000000000007db82c0658211605
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><font color=3D"#000000">Hello,=C2=A0<br><br><span style=3D=
+"font-family:arial,sans-serif">Thank you for your interest in=C2=A0AIVA!=C2=
+=A0</span><br style=3D"font-family:arial,sans-serif"><br style=3D"font-fami=
+ly:arial,sans-serif"><span style=3D"font-family:arial,sans-serif">If your c=
+ompany generates less than $300 000 in annual revenue and has a team of les=
+s than 3 full-time employees, you can use our Pro plan.</span><br style=3D"=
+font-family:arial,sans-serif"><br style=3D"font-family:arial,sans-serif"><s=
+pan style=3D"font-family:arial,sans-serif">If your company generates more t=
+han $300 000 and has a team of more than 3 full-time employees, you will ne=
+ed an=C2=A0</span><span class=3D"gmail-il" style=3D"font-family:arial,sans-=
+serif">Enterprise</span><span style=3D"font-family:arial,sans-serif">=C2=A0=
+plan.</span><br style=3D"font-family:arial,sans-serif"><br style=3D"font-fa=
+mily:arial,sans-serif"><span style=3D"font-family:arial,sans-serif">As our=
+=C2=A0</span><span class=3D"gmail-il" style=3D"font-family:arial,sans-serif=
+">enterprise</span><span style=3D"font-family:arial,sans-serif">=C2=A0plans=
+ are custom made, I need the following information to provide you more deta=
+ils on the=C2=A0</span><span class=3D"gmail-il" style=3D"font-family:arial,=
+sans-serif">Enterprise</span><span style=3D"font-family:arial,sans-serif">=
+=C2=A0plan pricing:</span><br style=3D"font-family:arial,sans-serif"><br st=
+yle=3D"font-family:arial,sans-serif"><span style=3D"font-family:arial,sans-=
+serif">1. Your exact use-case</span><br style=3D"font-family:arial,sans-ser=
+if"><span style=3D"font-family:arial,sans-serif">2. The number of accounts =
+you need (the number of staff that needs to access and use AVA)</span><br s=
+tyle=3D"font-family:arial,sans-serif"><span style=3D"font-family:arial,sans=
+-serif">3. The number of compositions you need per month</span><br style=3D=
+"font-family:arial,sans-serif"><span style=3D"font-family:arial,sans-serif"=
+>4. The size of your company (the number of full-time employees)</span><br =
+style=3D"font-family:arial,sans-serif"><span style=3D"font-family:arial,san=
+s-serif">5. The website link to your company</span><br style=3D"font-family=
+:arial,sans-serif"><br style=3D"font-family:arial,sans-serif"><span style=
+=3D"font-family:arial,sans-serif">Let&#39;s say at the moment your company =
+is small and does not qualify for our=C2=A0</span><span class=3D"gmail-il" =
+style=3D"font-family:arial,sans-serif">enterprise</span><span style=3D"font=
+-family:arial,sans-serif">=C2=A0plan, you can use our Pro plan.</span><br s=
+tyle=3D"font-family:arial,sans-serif"><span style=3D"font-family:arial,sans=
+-serif">In the future, when your company grows and qualifies for an=C2=A0</=
+span><span class=3D"gmail-il" style=3D"font-family:arial,sans-serif">enterp=
+rise</span><span style=3D"font-family:arial,sans-serif">=C2=A0customer, you=
+ can contact us again, and we will create a new custom=C2=A0</span><span cl=
+ass=3D"gmail-il" style=3D"font-family:arial,sans-serif">Enterprise</span><s=
+pan style=3D"font-family:arial,sans-serif">=C2=A0plan tailored to your need=
+s.</span><br style=3D"font-family:arial,sans-serif"><span style=3D"font-fam=
+ily:arial,sans-serif">Any compositions you created and downloaded in the pa=
+st under the Pro plan will retain their original Pro license and you can co=
+ntinue using them commercially.</span><br style=3D"font-family:arial,sans-s=
+erif"><span style=3D"font-family:arial,sans-serif">Only the new tracks that=
+ you will create under the=C2=A0</span><span class=3D"gmail-il" style=3D"fo=
+nt-family:arial,sans-serif">Enterprise</span><span style=3D"font-family:ari=
+al,sans-serif">=C2=A0plan, will have the new=C2=A0</span><span class=3D"gma=
+il-il" style=3D"font-family:arial,sans-serif">Enterprise</span><span style=
+=3D"font-family:arial,sans-serif">=C2=A0licence.</span><br style=3D"font-fa=
+mily:arial,sans-serif"><br style=3D"font-family:arial,sans-serif"><span sty=
+le=3D"font-family:arial,sans-serif">Please let me know if you have any ques=
+tions!</span><br style=3D"font-family:arial,sans-serif"><br style=3D"font-f=
+amily:arial,sans-serif"><span style=3D"font-family:arial,sans-serif">Regard=
+s,=C2=A0</span></font></div><br><div class=3D"gmail_quote gmail_quote_conta=
+iner"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 1, 2026 at 8:45=E2=
+=80=AFPM contact contact &lt;contact@hardbanrecordslab.online&gt; wrote:<br=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left:1px solid rgb(204,204,204);padding-left:1ex">Hello,<br>
+<br>
+One clarification to my note y, before you spend time on it =E2=80=94 I fra=
+med my first question poorly.<br>
+<br>
+We are not asking to resell Your&#39;s catalogue, and we are not looking to=
+ act as an intermediary for your repertoire. CMLP&#39;s catalogue is our ow=
+n: we produce it ourselves, and we are evaluating AI music tools for part o=
+f that production.<br>
+<br>
+So the question that actually matters is narrower:<br>
+<br>
+If we generate tracks on your platform, may we include them in our own comm=
+ercial music library and license them onward to our business customers =E2=
+=80=94 hotels, retail, offices, gyms =E2=80=94 including public performance=
+ on their premises?<br>
+<br>
+Many terms permit commercial use of output while separately restricting its=
+ redistribution as stock or library music. That second clause is the one I =
+need to understand. A pointer to it is a complete answer.<br>
+<br>
+The other two points from my original note stand: whether the rights in gen=
+erated output are ours exclusively, worldwide and perpetually (including af=
+ter a subscription ends), and whether any collecting society royalties woul=
+d remain payable by us or by our customers.<br>
+<br>
+Apologies for the extra email =E2=80=94 I would rather correct the question=
+ than have you answer the wrong one.<br>
+<br>
+Best regards,<br>
+<br>
+Kamil Skomra<br>
+Founder =E2=80=94 HardbanRecordsLab<br>
+Commercial Music Licensing Platform (CMLP)<br>
+contact@hardbanrecordslab.online<br>
+www.hardbanrecordslab.online<br>
+<br>
+&gt; 30.07.2026 12:52 CEST contact contact &lt;contact@hardbanrecordslab.on=
+line&gt; napisa=C5=82(a):<br>
+&gt; <br>
+&gt;=C2=A0 <br>
+&gt; Hello,<br>
+&gt; I&#39;m Kamil Skomra, founder of HardbanRecordsLab in Poland. I&#39;m =
+building<br>
+&gt; the Commercial Music Licensing Platform (CMLP) =E2=80=94 a B2B backgro=
+und music<br>
+&gt; service for businesses in hospitality, retail, offices, wellness and<b=
+r>
+&gt; healthcare. The platform is currently in development.<br>
+&gt; Before choosing catalogue sources for CMLP, I need to confirm three<br=
+>
+&gt; things about AIVA licence:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0* 1. Sublicensing =E2=80=94 can CMLP license your content =
+onward to our own<br>
+&gt;=C2=A0 =C2=A0* business customers under our own agreements?<br>
+&gt;=C2=A0 =C2=A0* 2. Public performance =E2=80=94 does your licence cover =
+playback in commercial<br>
+&gt;=C2=A0 =C2=A0* premises, and would any collecting society royalties (ZA=
+iKS, GEMA, PRS,<br>
+&gt;=C2=A0 =C2=A0* ASCAP) still be payable by us or by our customers?<br>
+&gt;=C2=A0 =C2=A0* 3. Scope =E2=80=94 is the grant worldwide and perpetual,=
+ and is this available<br>
+&gt;=C2=A0 =C2=A0* under your standard commercial terms or only under a cus=
+tom agreement?<br>
+&gt; <br>
+&gt; To be clear: CMLP is at the evaluation stage, so this is not an offer =
+and<br>
+&gt; commits neither side to anything. If sublicensing is not permitted und=
+er<br>
+&gt; your licence, please just tell me =E2=80=94 it saves us both time. I&#=
+39;m happy to<br>
+&gt; sign a mutual NDA before you share anything.<br>
+&gt; If a short call is easier than a written reply, I&#39;m glad to arrang=
+e one.<br>
+&gt; <br>
+&gt; Best regards,<br>
+&gt; Kamil Skomra<br>
+&gt; Founder =E2=80=94 HardbanRecordsLab<br>
+&gt; Commercial Music Licensing Platform (CMLP)<br>
+&gt; contact@hardbanrecordslab.online<br>
+&gt; www.hardbanrecordslab.online<br>
+</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
+=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
+ignature"><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div dir=3D"ltr"><div=
+>Ashkhen Zakharyan</div><div><a href=3D"http://www.aiva.ai" target=3D"_blan=
+k">www.aiva.ai</a></div></div></div></div></div></div></div>
+
+--0000000000007db82c0658211605--

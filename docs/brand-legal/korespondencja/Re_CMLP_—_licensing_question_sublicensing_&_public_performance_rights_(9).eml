@@ -1,0 +1,57 @@
+Return-Path: <support@musicful.ai>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id XQEQOUxBbmqo7QAA4AkaEw
+	(envelope-from <support@musicful.ai>)
+	for <contact@hardbanrecordslab.online>; Sat, 01 Aug 2026 20:56:12 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=musicful.ai (client-ip=115.124.28.128; 
+   helo=out28-128.mail.aliyun.com; envelope-from=support@musicful.ai; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=quarantine dis=none) header.from=musicful.ai
+Received: from out28-128.mail.aliyun.com (out28-128.mail.aliyun.com [115.124.28.128])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id 4911138E021E
+	for <contact@hardbanrecordslab.online>; Sat,  1 Aug 2026 20:56:11 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=temperror header.d=musicful.ai header.i=@musicful.ai header.a=rsa-sha256 header.s=default header.b=NKMS+fYe
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=musicful.ai; s=default;
+	t=1785610567; h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=EkT2IxtUaW30FiCqWyjur4l2jsUL9v90a8SOJC7TaH0=;
+	b=NKMS+fYeWaZDAZi1BZUJ1Xmbb95svH7I57unIAvmExowanyM6rTZUM19bqiPHgaa6cblX60DRpLQMBKqHePwruGN2G1xi4ts9zI24DNh0nvnpG7242AXS4WYfpprN3nUC+KPOhNRLsBqFIsDCbHpsFOv4WMa+fY4TOCmYFY9QGDcDQ2bKZX6popZfipKt0Ff6MOWTpJ7GwRhkY1eyfU+8PnDz3sGOqvj9oZJDwaRKsKdB/zXWEwLIOifB9372pPipGIb5r13Gxkr9cOOIu9te/BmeURD5rqffU3Ako2IWMnijEuoadW/o0whRbjMhXayiD4czdKGeSBMFWYtU9RvSg==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.3165308|-1;CH=blue;DM=|OVERLOAD|false|;DS=CONTINUE|ham_system_inform|0.05685-0.0208085-0.922341;FP=1732540938871923857|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=support@musicful.ai;NM=1;PH=DS;RN=1;RT=1;SR=0;TI=SMTPD_---.ibODE2Z_1785610565;
+Received: from musicful.ai(mailfrom:support@musicful.ai fp:SMTPD_---.ibODE2Z_1785610565 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sun, 02 Aug 2026 02:56:05 +0800
+Date: Sun, 2 Aug 2026 02:56:05 +0800
+To: contact@hardbanrecordslab.online
+From: support@musicful.ai
+Reply-To: support@musicful.ai
+Subject: =?utf-8?Q?Re:_CMLP_=E2=80=94_licensing_question:_sublicensing_&_public_performance_rights?=
+Message-ID: <6SD72NHQngZZgIO8XdWpA0ETOuOtclr5LtWXyYaDKs@musicful.ai>
+X-Mailer: PHPMailer 6.4.1 (https://github.com/PHPMailer/PHPMailer)
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
+X-CLIENT-IP: 115.124.28.128
+X-CLIENT-HOSTNAME: out28-128.mail.aliyun.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTGAC4r5hIx1qOluWscMufU+pl/zHui2nVD1Z2jFWZLKDoaSKk2DPucq2z+j+C7S6aU5TgA4811Urpt5tCsa14nBXT1auwdgR0mZBXKTK1RGUdgsSYESJW4mywBLy5ul2g31dh+gNxFZ0LR6rThMJ36T7AhshisVgsz0PnnLb06uaJhb1T8WBHqkF4w2DqWDd6o5kPF11GU5I/bDbn9GGh5OZSxqWacDBYTWXT9RJmS5QO0cg9R6NPAO3iD+3J/0OLJI0/vL5hbYAliZK00cpkdH/GH+/uML8myfWoiekHLH3xMX//RBOQKSlJGhhE5QLodMYMFcn9jvPBqNSJ5KJSXMga+WdBKC7yVCRB0LzjlLVRxG1RpJx2iXRSLCOF7hHTImlcZRHcyIvCa4B3naOk7BouJG5/KE6982g4VdCQcTspeeoNLlZdUctvb5dhIpPbO89mjZb3SLf2KXX/ubNAtayoyzo6BXCJPvgAdEIiLh8lsus71hQieTVG2hJEcyoCdhN9E3XpCGSlQlF5FTt0VbOgIS/tIIkx835L6ke1FfHUagFScV1XRQ1IrAt/nt9RN5MzGExKlAI9Z8AzdVPX3iZ0m8RfzHFzJdl5bOGjXm100c+aKn/2xGW6iGqg1temY1n3+6peUTW8dYva9Iyccicr1wIQ1k75vI5IXM0DZa/w
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+PHA+RGVhciBDdXN0b21lciw8L3A+PHA+VGhhbmsgeW91IGZvciB5b3VyIGVtYWlsLjwvcD48cD5P
+dXIgdGVhbSBpcyBjdXJyZW50bHkgb3V0IG9mIHRoZSBvZmZpY2UgZm9yIHRoZSB3ZWVrZW5kLiBX
+aGlsZSBhIGxpbWl0ZWQgbnVtYmVyIG9mIHN1cHBvcnQgc3RhZmYgcmVtYWluIG9uIGR1dHksIHJl
+c3BvbnNlIHRpbWVzIG1heSBiZSBsb25nZXIgdGhhbiB1c3VhbCBkdWUgdG8gYSBoaWdoIHZvbHVt
+ZSBvZiBpbnF1aXJpZXMuPC9wPjxwPldlIGFwcHJlY2lhdGUgeW91ciBwYXRpZW5jZSBhbmQgd2ls
+bCBnZXQgYmFjayB0byB5b3UgYXMgc29vbiBhcyBwb3NzaWJsZSBvbmNlIHdlIHJldHVybiB0byBm
+dWxsIG9wZXJhdGlvbnMuPC9wPjxwPkluIHRoZSBtZWFudGltZSwgeW91IG1heSBmaW5kIGhlbHBm
+dWwgaW5mb3JtYXRpb24gaW4gb3VyIEZBUSBzZWN0aW9uOiZuYnNwOzxhIGhyZWY9Imh0dHBzOi8v
+d3d3Lm11c2ljZnVsLmFpL2ZhcS8iPmh0dHBzOi8vd3d3Lm11c2ljZnVsLmFpL2ZhcS88L2E+PGJy
+Lz48L3A+PHA+V2UgaG9wZSB5b3UgaGF2ZSBhIGdyZWF0IGRheS48L3A+PHA+U2luY2VyZWx5LDwv
+cD48aHIvPjxwPk11c2ljZnVsIFN1cHBvcnQgVGVhbTxici8+PC9wPg==
+

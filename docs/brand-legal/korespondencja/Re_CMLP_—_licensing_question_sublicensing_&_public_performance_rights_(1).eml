@@ -1,0 +1,314 @@
+Return-Path: <ceo@mubert.com>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id WLfXKHZmcGq+YwAA4AkaEw
+	(envelope-from <ceo@mubert.com>)
+	for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 11:59:18 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=mubert.com (client-ip=209.85.128.182; 
+   helo=mail-yw1-f182.google.com; envelope-from=ceo@mubert.com; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=quarantine dis=none) header.from=mubert.com
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id 0863338E0243
+	for <contact@hardbanrecordslab.online>; Mon,  3 Aug 2026 11:59:18 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (1024-bit key; unprotected) header.d=mubert.com header.i=@mubert.com header.a=rsa-sha256 header.s=google header.b=LGQqPnfV
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7ff05e5d009so37691607b3.1
+        for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 02:59:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785751156; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bb9cLMMJdGRi5g2YwLXlih909bLRM9W5+WaHBh4U173U7IC8oQcbnLtM1hGIteEgab
+         nN/M1Cfh4vIaDmiYzctDjLiKSNyMaBlDqgouR45bnsimIydb9+NDupdN1KZaPGK196Qy
+         3REgJo87qWXuXYjUOBXhyWSC89wz4hT6OYLWaCDwQZn+QIiLcrKZRGYw0ag2SOf/p83Y
+         E6JzKHFwGVVEXH0pb9EOERuHTy8BRxIFP7S3tH4bhPyBc3+nsCk4wiU3l43Awavxd4o7
+         UPDsgFISaMY8E7AggwZFa8ac5LI9F5sAoi/hkEb+n+yFjKcCWlZ8yWn3yLLVLCZ3khhs
+         Hk6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=MU78C5NKVMGnYtilKTr03R5pV6ylJysa8waY2foB7Qg=;
+        fh=lRjfvp2PqcbR2jai6KRt6BpdRwvVKx4Xs6j5G7DWUe0=;
+        b=KXfoRJT2C5gfTPsqpIWS8IpMwuU2KWVe1EXOCt/PjNEsSlCLxrVKPUwSTE/YJ+G3tL
+         uVT6CdE5hUq1uAIkIhrS6tg9XKOxwlMjqrKTTUptTGWPlTaWRr1Bnqx2YINdOjq672iI
+         4w68DM0f+EOe4bKhYF2hJFPLJoJNhW7oyhKhVaZByY0SCdlN/jSBQRbSzuGXivBgibn5
+         vChCMYfMm9Csc4Wm2lUlI+tHPv7RG1R6PjelzNlQlvxbImTLKWihmy63Q37jGqQokEqa
+         scbXrLertuGAaHzFSUYL1kgmjY4zfng9oC2KNoq97lm8MrBQzSJozC3BKOuTlO3VjBNv
+         OBEA==;
+        darn=hardbanrecordslab.online
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mubert.com; s=google; t=1785751156; x=1786355956; darn=hardbanrecordslab.online;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MU78C5NKVMGnYtilKTr03R5pV6ylJysa8waY2foB7Qg=;
+        b=LGQqPnfVRm4fzZZ4yzWoJyG+yPfipYg49oRF7Bmh494uLCCjT/Y/E/HelJcKZshzbQ
+         CteIQ78MmX9dWN7cUmZKUTBAZ7CvPEQqPjh0QgxnSk9h7/h5zAEyCC+5NRoT+HcGzZ5E
+         1fPcr0tJfUQxxtUOA3uOYtPT0zP89LaJ1pZ+8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785751156; x=1786355956;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MU78C5NKVMGnYtilKTr03R5pV6ylJysa8waY2foB7Qg=;
+        b=Y+6DVE00EX9g14aTNpujcJQu8Xx2xBuoJ2hDSTatG9AFpoKfoILlpUXU6BxugZH5lB
+         0oI3Qsm5rY++uj8fhyQLx57RPigNvy1VUArpuLGgZdUKDpwH6UgtK4gyphyvaRSBZNz1
+         JaUVkOPNas9yNnr407LnnI2DdAZazFtqpXXkahVobMICKbJFCn05fichu6GtZW4/r+/M
+         1gzqHnRnt97zyTWr+nvhPGflu2MHtmJ0IiZ2WqEtvttQdhZ5x8GWfIk4K8iemZ6nBsIu
+         9DK3Nc5h581yhSJwEBCtHtwq4ZhmMSCKM7GP5V1ou/h5ISDavhL0qxI2XZNksiwUCsqV
+         qRxA==
+X-Gm-Message-State: AOJu0YzmDoKYZ76nei8MLNhc3IqAhP0H7SWllcEdmbSOOjshluKS1s22
+	SS/tyG2JrBhG1AL9Sg/wce8fno95AwTzfUnR9MseunMhepN+P6H9QdzdtPGe8tOohoRYMqnHM8/
+	YUzAlalm1W8slVr0k0GOzeaGgoLoelmYvL6ENtINh3WpfrzAAWWkhHu4LbNCZ
+X-Gm-Gg: AR+sD12YCRQvYVJS2ohPJXf7jl2eCdSkJehST0pEn9xVeUhINnktK1Xw+K+7OUfb9Jo
+	5wNP6FVu+8me/KtSBQBFrhkPceCkmObWpQ0vclhXbNCoJuXSHxk+YDFUZhi0TfSyeknerfdb5hN
+	BSOKgyAt1A3Y/yaUVXZpkwks9nhNauuYqMRR7QAJdJzOcxSQ+g7TPMheLxRxMx+3cvXz9ehSIgw
+	8AGyLLbZy8cMmkc8M4EcIstWG+e9oCBHBJ1i8PtQOsSPYOpML9E+cIdODE8uOepNLWYglL6DLdM
+	ZKMlO+RkTIsJSgQkPwPjoJOa0czJwl8UwmY6BoFLlmumxiZcEg8FH7v7NtNDS1u+kdYRA7C//HI
+	mXz0J2Yq/IjE6zqg75zTR4EceWqXUBJjv
+X-Received: by 2002:a05:690c:ed4:b0:81e:68d3:6918 with SMTP id
+ 00721157ae682-81fd49c06b8mr104783967b3.4.1785751156355; Mon, 03 Aug 2026
+ 02:59:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <299716095.2012987.1785408963583@poczta.home.pl> <545665327.2099048.1785609905336@poczta.home.pl>
+In-Reply-To: <545665327.2099048.1785609905336@poczta.home.pl>
+From: Alex Mubert <ceo@mubert.com>
+Date: Mon, 3 Aug 2026 13:59:02 +0400
+X-Gm-Features: AUfX_myG3oQfCjolGAiBHvoJeXMLjYtmxVVbtef9Gg937A_b87nTfFA-qRUfs60
+Message-ID: <CA+uTRwjmvrQnwPLw5etZVwXJ71tL8sA+swwx7zt7yGFzvDpFUQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=3A_CMLP_=E2=80=94_licensing_question=3A_sublicensing_=26_pu?=
+	=?UTF-8?Q?blic_performance_rights?=
+To: contact contact <contact@hardbanrecordslab.online>
+Content-Type: multipart/alternative; boundary="000000000000550cd20658219795"
+X-CLIENT-IP: 209.85.128.182
+X-CLIENT-HOSTNAME: mail-yw1-f182.google.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTE5mDN1j32RwWSfJzC+rs9rZFOLuhEHZesUDuXlz0l+9ltAalkrwe6ItOG2BpypaPaKpuhnpeowXGGTedHLwZAtp+rPjx90xVwXCzFnEm5p05aBSQsPZbpLivxey5oLF5Dq7xeXIfRs2N8/P+I1dDiIhcenuW5tgUFL97+gZX+4HIZx0V9shfl8+8ycHP6jpmYltaeUVt241k1GowCkZMTuUOTIfij8Nq8EKJ/nrxiyHKHFP7JoQsRh3fPvkOqXjyHGJSBPr7JwYnFVs/5qpFNaVWY7GmQoeaztSpLMm9xWawNlGKuhxZnJ3lJDvpsqsHnHtO30cpYp99Orvm57Hkx3K9l0MgXrofRRbfFI1GGHbd89qyO95x8yTE+E8oo2tAhEXwJWuFZQ93nSvykVKOSPDjCy3RKX8oCZ3HjgKkTDjVsY27WlevSV2l/t8/Ayh1cjE4irHZK9epV8C9nvqUuRBj3Z4yctJZdTJhGWHLRGZY29uP6beK2okzsbaVU7LoCwcgM2fCOSJO7N13V/oPuo+AR/ne4pcGGRaBvFcEe3QCtvxL/5r9dReAZAtidcVvkvSIgpqUfOiif63qm5yjvmWUPaQZNxjFCVraJRhLp/FAD6ivNC/yPfzgW8ufXBQzro4QE7tsgqxF4E017NG5AYLYiGpWRwhZ5stMWSiAB5fw
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+--000000000000550cd20658219795
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello Kamil
+
+We can confirm that our music is 100% royalty-free. We can provide you with
+a special license for public performance.
+The license could be global. Based on contract duration. Usually we have
+annual-based contracts.
+
+PROs =E2=80=94 if you build your local service, you should have special ter=
+ms with
+public rights societies depending on local laws, but you can use our
+license as proof.
+
+
+Best, Alex
+*MUBERT, INC*
+mubert.com
+
+
+On Sat, Aug 1, 2026 at 10:45=E2=80=AFPM contact contact
+<contact@hardbanrecordslab.online> wrote:
+
+> Hello,
+>
+> One clarification to my note y, before you spend time on it =E2=80=94 I f=
+ramed my
+> first question poorly.
+>
+> We are not asking to resell Your's catalogue, and we are not looking to
+> act as an intermediary for your repertoire. CMLP's catalogue is our own: =
+we
+> produce it ourselves, and we are evaluating AI music tools for part of th=
+at
+> production.
+>
+> So the question that actually matters is narrower:
+>
+> If we generate tracks on your platform, may we include them in our own
+> commercial music library and license them onward to our business customer=
+s
+> =E2=80=94 hotels, retail, offices, gyms =E2=80=94 including public perfor=
+mance on their
+> premises?
+>
+> Many terms permit commercial use of output while separately restricting
+> its redistribution as stock or library music. That second clause is the o=
+ne
+> I need to understand. A pointer to it is a complete answer.
+>
+> The other two points from my original note stand: whether the rights in
+> generated output are ours exclusively, worldwide and perpetually (includi=
+ng
+> after a subscription ends), and whether any collecting society royalties
+> would remain payable by us or by our customers.
+>
+> Apologies for the extra email =E2=80=94 I would rather correct the questi=
+on than
+> have you answer the wrong one.
+>
+> Best regards,
+>
+> Kamil Skomra
+> Founder =E2=80=94 HardbanRecordsLab
+> Commercial Music Licensing Platform (CMLP)
+> contact@hardbanrecordslab.online
+> www.hardbanrecordslab.online
+>
+> > 30.07.2026 12:56 CEST contact contact <contact@hardbanrecordslab.online=
+>
+> napisa=C5=82(a):
+> >
+> >
+> > Hello,
+> > I'm Kamil Skomra, founder of HardbanRecordsLab in Poland. I'm building
+> > the Commercial Music Licensing Platform (CMLP) =E2=80=94 a B2B backgrou=
+nd music
+> > service for businesses in hospitality, retail, offices, wellness and
+> > healthcare. The platform is currently in development.
+> > Before choosing catalogue sources for CMLP, I need to confirm three
+> > things about Mubert licence:
+> >
+> > 1. Sublicensing =E2=80=94 can CMLP license your content onward to our o=
+wn
+> > business customers under our own agreements?
+> > 2. Public performance =E2=80=94 does your licence cover playback in com=
+mercial
+> > premises, and would any collecting society royalties (ZAiKS, GEMA, PRS,
+> > ASCAP) still be payable by us or by our customers?
+> > 3. Scope =E2=80=94 is the grant worldwide and perpetual, and is this av=
+ailable
+> > under your standard commercial terms or only under a custom agreement?
+> >
+> > To be clear: CMLP is at the evaluation stage, so this is not an offer a=
+nd
+> > commits neither side to anything. If sublicensing is not permitted unde=
+r
+> > your licence, please just tell me =E2=80=94 it saves us both time. I'm =
+happy to
+> > sign a mutual NDA before you share anything.
+> > If a short call is easier than a written reply, I'm glad to arrange one=
+.
+> >
+> > Best regards,
+> > Kamil Skomra
+> > Founder =E2=80=94 HardbanRecordsLab
+> > Commercial Music Licensing Platform (CMLP)
+> > contact@hardbanrecordslab.online
+> > www.hardbanrecordslab.online
+>
+>
+>
+
+--000000000000550cd20658219795
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello=C2=A0<span style=3D"background-color:transparen=
+t">Kamil<br></span><br>We can confirm that our music is 100% royalty-free. =
+We can provide you with a special license for public=C2=A0performance.</div=
+><div>The license could be global. Based on contract duration. Usually we h=
+ave annual-based contracts.<br><br>PROs =E2=80=94 if you build your local s=
+ervice, you should have special terms with public rights societies dependin=
+g on local laws, but you can use our license as proof.</div><div><br></div>=
+<div><br></div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartma=
+il=3D"gmail_signature"><div dir=3D"ltr"><span style=3D"color:rgb(34,34,34)"=
+>Best, Alex</span><div><b>MUBERT, INC</b><br><a href=3D"http://mubert.com" =
+target=3D"_blank">mubert.com</a></div></div></div></div><br></div><br><div =
+class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail=
+_attr">On Sat, Aug 1, 2026 at 10:45=E2=80=AFPM contact contact &lt;contact@=
+hardbanrecordslab.online&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">Hello,<br>
+<br>
+One clarification to my note y, before you spend time on it =E2=80=94 I fra=
+med my first question poorly.<br>
+<br>
+We are not asking to resell Your&#39;s catalogue, and we are not looking to=
+ act as an intermediary for your repertoire. CMLP&#39;s catalogue is our ow=
+n: we produce it ourselves, and we are evaluating AI music tools for part o=
+f that production.<br>
+<br>
+So the question that actually matters is narrower:<br>
+<br>
+If we generate tracks on your platform, may we include them in our own comm=
+ercial music library and license them onward to our business customers =E2=
+=80=94 hotels, retail, offices, gyms =E2=80=94 including public performance=
+ on their premises?<br>
+<br>
+Many terms permit commercial use of output while separately restricting its=
+ redistribution as stock or library music. That second clause is the one I =
+need to understand. A pointer to it is a complete answer.<br>
+<br>
+The other two points from my original note stand: whether the rights in gen=
+erated output are ours exclusively, worldwide and perpetually (including af=
+ter a subscription ends), and whether any collecting society royalties woul=
+d remain payable by us or by our customers.<br>
+<br>
+Apologies for the extra email =E2=80=94 I would rather correct the question=
+ than have you answer the wrong one.<br>
+<br>
+Best regards,<br>
+<br>
+Kamil Skomra<br>
+Founder =E2=80=94 HardbanRecordsLab<br>
+Commercial Music Licensing Platform (CMLP)<br>
+contact@hardbanrecordslab.online<br>
+www.hardbanrecordslab.online<br>
+<br>
+&gt; 30.07.2026 12:56 CEST contact contact &lt;contact@hardbanrecordslab.on=
+line&gt; napisa=C5=82(a):<br>
+&gt; <br>
+&gt;=C2=A0 <br>
+&gt; Hello,<br>
+&gt; I&#39;m Kamil Skomra, founder of HardbanRecordsLab in Poland. I&#39;m =
+building<br>
+&gt; the Commercial Music Licensing Platform (CMLP) =E2=80=94 a B2B backgro=
+und music<br>
+&gt; service for businesses in hospitality, retail, offices, wellness and<b=
+r>
+&gt; healthcare. The platform is currently in development.<br>
+&gt; Before choosing catalogue sources for CMLP, I need to confirm three<br=
+>
+&gt; things about Mubert licence:<br>
+&gt; <br>
+&gt; 1. Sublicensing =E2=80=94 can CMLP license your content onward to our =
+own<br>
+&gt; business customers under our own agreements?<br>
+&gt; 2. Public performance =E2=80=94 does your licence cover playback in co=
+mmercial<br>
+&gt; premises, and would any collecting society royalties (ZAiKS, GEMA, PRS=
+,<br>
+&gt; ASCAP) still be payable by us or by our customers?<br>
+&gt; 3. Scope =E2=80=94 is the grant worldwide and perpetual, and is this a=
+vailable<br>
+&gt; under your standard commercial terms or only under a custom agreement?=
+<br>
+&gt; <br>
+&gt; To be clear: CMLP is at the evaluation stage, so this is not an offer =
+and<br>
+&gt; commits neither side to anything. If sublicensing is not permitted und=
+er<br>
+&gt; your licence, please just tell me =E2=80=94 it saves us both time. I&#=
+39;m happy to<br>
+&gt; sign a mutual NDA before you share anything.<br>
+&gt; If a short call is easier than a written reply, I&#39;m glad to arrang=
+e one.<br>
+&gt; <br>
+&gt; Best regards,<br>
+&gt; Kamil Skomra<br>
+&gt; Founder =E2=80=94 HardbanRecordsLab<br>
+&gt; Commercial Music Licensing Platform (CMLP)<br>
+&gt; contact@hardbanrecordslab.online<br>
+&gt; www.hardbanrecordslab.online<br>
+<br>
+<br>
+</blockquote></div>
+
+--000000000000550cd20658219795--

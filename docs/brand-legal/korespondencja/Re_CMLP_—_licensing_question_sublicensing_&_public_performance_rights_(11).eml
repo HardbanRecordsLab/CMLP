@@ -1,0 +1,76 @@
+Return-Path: <support@flow-music.app>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id 5LehN5YbcGpX0wAA4AkaEw
+	(envelope-from <support@flow-music.app>)
+	for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 06:39:50 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=flow-music.app (client-ip=103.149.242.15; 
+   helo=lf-1-15.ptr.blmpb.com; envelope-from=support@flow-music.app; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=none (p=none dis=none) header.from=flow-music.app
+Received: from lf-1-15.ptr.blmpb.com (lf-1-15.ptr.blmpb.com [103.149.242.15])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id D6D7538E00A0
+	for <contact@hardbanrecordslab.online>; Mon,  3 Aug 2026 06:39:47 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=flow-music-app.20200927.dkim.feishu.cn header.i=@flow-music-app.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=lIgCyW4H
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=flow-music-app.20200927.dkim.feishu.cn; t=1785731974;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=o78WTcQ4D6SfukGYAhmNpuftcwUJO+EnOU0Ka0i45k8=;
+ b=lIgCyW4Hsf5jz/oKzjLT9ReO5Cvv0rnMEZztX5NnEYRUx9iP5g2sCc+kYeUf1aW2/9UADc
+ h81Sb+OnlqMe6zoKGHh1jTpanTs/UF3PKA3XN+CDwMpEq+YF81DKRieOVjFljn4TVHUVSF
+ LBc0FNpE+1rXR7R1s4q3ETWvsw/WaUPnbSeWahX98JDLeTooq9iuzhriH4Pi1vL2G93T8O
+ D35danlUwv0jXX3/EdIOKBPv8N4QHEUwgbADaNUHyAXs13WGGtBfuUDAvMib6cSfmjcQRr
+ rCyo7uhnMXDBVXYIrl0QfrkHHxe3NGb7axz3kaRrYgie5lcbfkrsjIynZUI02w==
+To: "contact contact" <contact@hardbanrecordslab.online>
+X-Lms-Return-Path: <lba+26a701b84+b31e6e+hardbanrecordslab.online+support@flow-music.app>
+References: <2013207182.2013581.1785409226944@poczta.home.pl> <1339391219.2099046.1785609872004@poczta.home.pl>
+In-Reply-To: <1339391219.2099046.1785609872004@poczta.home.pl>
+Received: from huashisandeMacBook-Air.local ([45.59.131.135]) by smtp.feishu.cn with ESMTPS; Mon, 03 Aug 2026 12:39:32 +0800
+Date: Mon, 03 Aug 2026 12:39:27 +0800
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Flow Music Support <support@flow-music.app>
+Content-Transfer-Encoding: quoted-printable
+From: "Flow Music Support" <support@flow-music.app>
+Subject: Re: CMLP =?utf-8?b?4oCU?= licensing question: sublicensing & public performance rights
+Message-Id: <178573196751.29774.9667200017350559554@flow-music.app>
+Mime-Version: 1.0
+X-CLIENT-IP: 103.149.242.15
+X-CLIENT-HOSTNAME: lf-1-15.ptr.blmpb.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTGvWpLwc9Ng9kusNjdfqQiY/00MRou0pqSy6il4HiZC3T77ySmW5FclWMOjz0Yldskp6LLzikKADhdmkbs6crWXkmVayKJ3kRXTy2EpT2kktZ3bvsIa4xgY1S+7b3690u+rL9c0b3tM3oj/agXuLULd9v2JejE5Z8E0DadWPQlVGKYMee/eQUjso5ACXnm6DTwBTcFSMc5aT5t2kESEPMC81WpbAH9pxFfszBzC0pRFq8ONRNZplOk85iUNPATBtgKBprueWheqIECmsmeW6elHLRWSAmezzj5qgEw/jHSFlQ/SvgMVgluXRZPJq3XgIa0wS3imv2PLnUQLkYcsWjLiTQYAqsmbQCvb+7NuhOQ5Kqy4p8mUXVMdC0uovfdhqdgjARrzVZvGRposEnkupJwLHWeG7KUSUoQvV6PEE1tvsXp8G2Q9OSWXjrBV98IFDE/GBbT89XQgb98Tx8Wd39S7yi18dWT5VHNzqaIKxjhMss82kSiRHEJMx7MsnDnzEkrVRS+GtELt2h/7D42wpCsfxkWwehKZmlTcwPp2IXmDi6nWsbLHoboI0rDanaLc73+F76EaZFR7P+rvCnrWPc1skazC12MNdxEefPBABrWH4ttOXSA+7Sh45fjvI0jOANC0uS6mGm7aN3O+kJkV93ZL0SBYUK8Tao4Ke8EZseS7mA
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+Hi Kamil,
+
+Thank you for clarifying your intended use.
+
+Yes, this type of B2B use is permitted, but only under our Enterprise Annua=
+l plan, which is our highest-tier annual plan.
+
+Under this plan, eligible tracks generated while the subscription is active=
+ may be:
+
+=E2=80=A2 Included in your own B2B commercial music library;
+=E2=80=A2 Licensed onward to business customers such as hotels, retail stor=
+es, offices, gyms, wellness centers, and similar venues;
+=E2=80=A2 Used for commercial background music and public performance;
+=E2=80=A2 Used worldwide, including after the subscription ends.
+
+Please note that the license is non-exclusive. Any local collecting-society=
+ obligations, including ZAiKS, GEMA, PRS, ASCAP, or similar organizations, =
+may vary by country, venue, and use case. These third-party obligations are=
+ not waived by our license and should be confirmed with the relevant local =
+organization.
+
+Standard monthly plans and lower-tier annual plans do not include this type=
+ of library redistribution or onward sublicensing.
+
+Best regards,
+Flow Music Support

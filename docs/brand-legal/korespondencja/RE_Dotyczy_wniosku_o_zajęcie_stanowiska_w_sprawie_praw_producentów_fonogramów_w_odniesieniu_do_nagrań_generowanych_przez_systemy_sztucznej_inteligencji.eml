@@ -1,0 +1,209 @@
+Return-Path: <m.jadczuk@zpav.pl>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id lUzaCqHecWqDVQAA4AkaEw
+	(envelope-from <m.jadczuk@zpav.pl>)
+	for <contact@hardbanrecordslab.online>; Tue, 04 Aug 2026 14:44:17 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=zpav.pl (client-ip=83.238.107.240; 
+   helo=postmaster.onyx.pl; envelope-from=m.jadczuk@zpav.pl; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=none dis=none) header.from=zpav.pl
+Received: from postmaster.onyx.pl (postmaster.onyx.pl [83.238.107.240])
+	by cloudserver3173569-3173632.home.pl (Postfix) with SMTP id 9659638E0230
+	for <contact@hardbanrecordslab.online>; Tue,  4 Aug 2026 14:44:16 +0200 (CEST)
+Received: (qmail 11523 invoked by uid 0); 4 Aug 2026 12:44:12 -0000
+Received: from unknown (HELO MonikaJ) (m.jadczuk@zpav@82.214.159.178)
+  by postmaster.onyx.pl with SMTP; 4 Aug 2026 12:44:12 -0000
+From: <m.jadczuk@zpav.pl>
+To: "'contact contact'" <contact@hardbanrecordslab.online>
+References: <1632191715.2099413.1785615698466@poczta.home.pl>
+In-Reply-To: <1632191715.2099413.1785615698466@poczta.home.pl>
+Subject: =?UTF-8?Q?RE:_Dotyczy:_wniosku_o_zaj=C4=99cie_s?=
+	=?UTF-8?Q?tanowiska_w_sprawie_praw_produce?=
+	=?UTF-8?Q?nt=C3=B3w_fonogram=C3=B3w_w_odniesieniu_do?=
+	=?UTF-8?Q?_nagra=C5=84_generowanych_przez_syste?=
+	=?UTF-8?Q?my_sztucznej_inteligencji?=
+Date: Tue, 4 Aug 2026 14:44:16 +0200
+Message-ID: <061401dd240e$f5cf5290$e16df7b0$@zpav.pl>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQJ9Onrlcg3n5NuoxqTUX+jahVefabVNplcg
+Content-Language: pl
+x-avk: (ONYX Postmaster - Antivirus Filter); ver 1.0; 04 Aug 2026 12:44:12 -0000
+x-avk-status: clean
+X-CLIENT-IP: 83.238.107.240
+X-CLIENT-HOSTNAME: postmaster.onyx.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTEdK1jUgJS7GT3g+582xdnqGlm+iKioJFOVVKW/c9h7wMwJIVJG61hFJbnWID+tauTvzoYKoatcbPfEtSxm/s9t2C+Xb80OlVHzfhS/Kui39ZoptuypYRRhwr+oCZ+cqga9kLDxcLNNJMe9O+yios5osw/7OvHxe046Nk7HXT91qPYMH00/ZUsPTB1dxIDJWWr9p02toH4wyB75PSQSRHofxNXMBtnmwZ4WcHorCh++yQ6aT0OMqVOGZ5YwT1yASVVhRldPT2cCBoIWHEXeKFaGMP8L6Px06Y5SsubLneThVspvuG/o2S8QVfS7JMlT5Iv1eDCYMjIRUuAcSlvPtZRpHERYO6J9QUEf8sQln31yobys6jXxKJCAYASe99AHZ8CLKX2P1oqAwYAZGjJmn7p6SvnRlojTAMMONZenuTVEyTZ30ixHn3W7vzQY5Ui4rqA8h2wGhkpBxEB3T0XZ3m2g3zR3ceRfQzq5l7aVMMQho/3/AJm+2rHEnfI1NBw38SHvrI1YUj5wOElLcUiUJvTgOw8+rRzfgBPQINVkcRPrUfGBNlS065I0cwL182hw2DkyKx/gliFNWliygpX/LEne0pzos8zb9JSmoKQ+HLvSQR7r77zZkGtXw/En5wwCNW4Y6uSy/7rnQwSrwx8pVNO9uTw0OigeaC6lTp0EQeVrzw
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1
+
+Szanowny Panie,
+
+Poni=C5=BCej przesy=C5=82am odpowiedzi na Pa=C5=84skie pytania.
+
+1. Czy w ocenie Zwi=C4=85zku nagranie wygenerowane w ca=C5=82o=C5=9Bci =
+przez system sztucznej inteligencji stanowi fonogram w rozumieniu =
+przepis=C3=B3w o prawach pokrewnych?
+
+W rozumieniu ustawy o prawie autorskim i prawach pokrewnych fonogramem =
+jest pierwsze utrwalenie warstwy d=C5=BAwi=C4=99kowej wykonania utworu =
+albo innych zjawisk akustycznych, niezale=C5=BCnie od tego w jaki =
+spos=C3=B3b dosz=C5=82o do powstania nagrania. W przypadku =
+produkt=C3=B3w wygenerowanych przez modele GenAI nie posiadaj=C4=85ce =
+prawa do nauki swoich modeli na obj=C4=99tym ochron=C4=85 repertuarze =
+nie ma jednak mowy o tym, by wygenerowane nagranie (b=C4=99d=C4=85ce, =
+owszem, fonogramem) mog=C5=82o by=C4=87 legalnie wprowadzone do obrotu i =
+obj=C4=99te ochron=C4=85. Deweloper GenAI dostarczaj=C4=85cy sw=C3=B3j =
+model u=C5=BCytkownikom ko=C5=84cowym nie mo=C5=BCe przenie=C5=9B=C4=87 =
+na nich praw, kt=C3=B3rych sam zgodnie z prawem nie naby=C5=82. Tylko =
+ten, komu rzeczywi=C5=9Bcie przys=C5=82uguj=C4=85 prawa autorskie (albo =
+pokrewne: producenckie, wykonawcze), mo=C5=BCe je skutecznie =
+przenie=C5=9B=C4=87 lub udzieli=C4=87 licencji =E2=80=93 nikt nie =
+mo=C5=BCe "odda=C4=87" ani "wynaj=C4=85=C4=87" wi=C4=99cej praw, =
+ni=C5=BC sam posiada.
+=20
+2. Je=C5=BCeli tak =E2=80=94 komu przys=C5=82uguj=C4=85 prawa producenta =
+takiego fonogramu: podmiotowi udost=C4=99pniaj=C4=85cemu system =
+generuj=C4=85cy, u=C5=BCytkownikowi, kt=C3=B3ry zainicjowa=C5=82 =
+utrwalenie, czy innemu podmiotowi?
+
+Prawa producenta przys=C5=82uguj=C4=85 osobie (podmiotowi), kt=C3=B3ry =
+legalnie doprowadzi=C5=82 do powstania nagrania. Dotychczas =
+oznacza=C5=82o to zwykle zainwestowanie w jego powstanie. W przypadku =
+produkt=C3=B3w wygenerowanych przez modele AI wykorzystuj=C4=85ce do =
+nauki chroniony repertuar bez zgody uprawnionych nie mo=C5=BCe by=C4=87 =
+mowy o powstaniu nagrania obj=C4=99tego ochron=C4=85, poniewa=C5=BC =
+powsta=C5=82o ono nielegalnie. Je=C5=9Bli model GenAI korzysta do nauki =
+z nagra=C5=84 udost=C4=99pnionych na podstawie umowy licencyjnej z =
+w=C5=82a=C5=9Bcicielami praw do tych nagra=C5=84, kwesti=C4=99 =
+przynale=C5=BCno=C5=9Bci praw (ew. ich podzia=C5=82u) reguluj=C4=85 te =
+umowy. Aktualnie nie znamy jednak przyk=C5=82ad=C3=B3w takich modeli =
+GenAI, kt=C3=B3re mog=C5=82yby generowa=C4=87 nagrania i wprowadza=C4=87 =
+je do obrotu legalnie wykorzystuj=C4=85c do nauki chroniony repertuar.
+=20
+3. Czy Zwi=C4=85zek zg=C5=82asza roszczenia z tytu=C5=82u odtwarzania =
+takich nagra=C5=84 w lokalach u=C5=BCytkowych, je=C5=BCeli producent =
+fonogramu nie jest reprezentowany przez Zwi=C4=85zek ani przez =
+organizacj=C4=99, z kt=C3=B3r=C4=85 Zwi=C4=85zek pozostaje w relacji =
+wzajemnej reprezentacji?
+
+Publiczne odtwarzanie nagra=C5=84 wygenerowanych przez model GenAI =
+dzia=C5=82aj=C4=85cy bez licencji na nauk=C4=99 udzielonej przez =
+posiadaczy praw z zasady jest nielegalne, poniewa=C5=BC same nagrania =
+powsta=C5=82y z pogwa=C5=82ceniem praw uprawnionych. Wykorzystanie =
+takich wytwor=C3=B3w GenAI na polu publicznego odtwarzania b=C4=99dzie =
+wi=C4=99c naruszeniem praw legalnych producent=C3=B3w fonograficznych =
+(oraz innych uprawnionych) i mo=C5=BCe rodzi=C4=87 po stronie =
+u=C5=BCytkownik=C3=B3w zar=C3=B3wno odpowiedzialno=C5=9B=C4=87 =
+deliktow=C4=85 (odszkodowawcz=C4=85), jak i karn=C4=85. W przypadku =
+nagra=C5=84, kt=C3=B3re wygenerowa=C5=82y modele GenAI posiadaj=C4=85ce =
+stosowne umowy licencyjne, zakres ochrony reguluj=C4=85 owe umowy. =
+Obecnie nieznane s=C4=85 nam jednak przyk=C5=82ady modeli GenAI =
+posiadaj=C4=85cych umowy z uprawnionymi na wykorzystanie ich nagra=C5=84 =
+do szkolenia i wprowadzania do obrotu wygenerowanych w ten spos=C3=B3b =
+fonogram=C3=B3w.
+=20
+4. Jakie dokumenty Zwi=C4=85zek uznaje za wystarczaj=C4=85ce do =
+wykazania przez przedsi=C4=99biorc=C4=99, =C5=BCe odtwarzane fonogramy =
+pozostaj=C4=85 poza zakresem zbiorowego zarz=C4=85du Zwi=C4=85zku?
+
+Jedyn=C4=85 akceptowaln=C4=85 form=C4=85 wykazania uprawnie=C5=84 i =
+legalno=C5=9Bci wytwor=C3=B3w GenAI by=C5=82oby przedstawienie =
+dokumentacji potwierdzaj=C4=85cej, =C5=BCe deweloper GenAI posiada =
+upowa=C5=BCnienie ze strony w=C5=82a=C5=9Bcicieli praw (autorskich i =
+pokrewnych) do nagra=C5=84 w zakresie ich wykorzystania do szkolenia =
+modelu GenAI, na kt=C3=B3rych to nagraniach model si=C4=99 uczy=C5=82 =
+(co obejmuje te=C5=BC zdolno=C5=9B=C4=87 do wykazania, jakie to =
+by=C5=82y utwory i nagrania). Zwracamy uwag=C4=99, =C5=BCe samo =
+o=C5=9Bwiadczenie o posiadaniu praw nie stanowi wystarczaj=C4=85cego i =
+akceptowalnego potwierdzenia tzw. =E2=80=9Echain of title=E2=80=9D.
+=20
+5. W jakim zakresie obowi=C4=85zki wobec Zwi=C4=85zku obj=C4=99te =
+s=C4=85 wsp=C3=B3lnym poborem wynagrodze=C5=84 wykonywanym na polu =
+odtwarzania przez STOART?
+
+Zgodnie z decyzj=C4=85 MKiDN, STOART jest funkcjonalnie wsp=C3=B3lnym =
+inkasentem wynagrodze=C5=84 z tytu=C5=82u praw pokrewnych =E2=80=9Ena =
+polu eksploatacji odtwarzanie=E2=80=9D i obecnie technicznie inkasuje =
+wynagrodzenia na rzecz ZPAV. STOART nie jest jednak uprawniony do =
+zbiorowego zarz=C4=85dzania prawami do fonogram=C3=B3w.
+=20
+6. Czy Zwi=C4=85zek wydaje przedsi=C4=99biorcy pisemne potwierdzenie =
+braku obowi=C4=85zku zawarcia umowy, w przypadku ustalenia, =C5=BCe =
+odtwarzane fonogramy pozostaj=C4=85 poza zbiorowym zarz=C4=85dem?
+
+Nie, ZPAV nie wydaje tego typu za=C5=9Bwiadcze=C5=84.
+
+Z powa=C5=BCaniem
+Monika Jadczuk
+
+Kierownik Dzia=C5=82u Repartycji ZPAV
+
+
+-----Original Message-----
+From: contact contact <contact@hardbanrecordslab.online>=20
+Sent: Saturday, August 1, 2026 10:22 PM
+To: producent@zpav.pl
+Subject: Dotyczy: wniosku o zaj=C4=99cie stanowiska w sprawie praw =
+producent=C3=B3w fonogram=C3=B3w w odniesieniu do nagra=C5=84 =
+generowanych przez systemy sztucznej inteligencji
+
+Szanowni Pa=C5=84stwo,
+zwracam si=C4=99 z wnioskiem o zaj=C4=99cie stanowiska w kwestii, =
+kt=C3=B3ra w mojej ocenie ma dla planowanej dzia=C5=82alno=C5=9Bci =
+znaczenie kluczowe, a bywa pomijana: statusu nagrania wygenerowanego =
+maszynowo jako fonogramu.
+Buduj=C4=99 platform=C4=99 Commercial Music Licensing Platform (CMLP), =
+kt=C3=B3ra ma dostarcza=C4=87 przedsi=C4=99biorcom muzyk=C4=99 t=C5=82a =
+do odtwarzania w lokalach u=C5=BCytkowych. Katalog ma by=C4=87 budowany =
+wy=C5=82=C4=85cznie z nagra=C5=84 o udokumentowanym pochodzeniu, w =
+przewa=C5=BCaj=C4=85cej cz=C4=99=C5=9Bci generowanych przez systemy =
+sztucznej inteligencji. Platforma pozostaje w fazie budowy.
+Zwracam uwag=C4=99, =C5=BCe nawet przy przyj=C4=99ciu, i=C5=BC nagranie =
+takie nie stanowi utworu ani artystycznego wykonania, mo=C5=BCe =
+pozostawa=C4=87 otwarte pytanie o prawa producenta fonogramu. Uprzejmie =
+prosz=C4=99 zatem o odpowied=C5=BA na nast=C4=99puj=C4=85ce pytania:
+1. Czy w ocenie Zwi=C4=85zku nagranie wygenerowane w ca=C5=82o=C5=9Bci =
+przez system sztucznej inteligencji stanowi fonogram w rozumieniu =
+przepis=C3=B3w o prawach pokrewnych?
+2. Je=C5=BCeli tak =E2=80=94 komu przys=C5=82uguj=C4=85 prawa producenta =
+takiego fonogramu: podmiotowi udost=C4=99pniaj=C4=85cemu system =
+generuj=C4=85cy, u=C5=BCytkownikowi, kt=C3=B3ry zainicjowa=C5=82 =
+utrwalenie, czy innemu podmiotowi?
+3. Czy Zwi=C4=85zek zg=C5=82asza roszczenia z tytu=C5=82u odtwarzania =
+takich nagra=C5=84 w lokalach u=C5=BCytkowych, je=C5=BCeli producent =
+fonogramu nie jest reprezentowany przez Zwi=C4=85zek ani przez =
+organizacj=C4=99, z kt=C3=B3r=C4=85 Zwi=C4=85zek pozostaje w relacji =
+wzajemnej reprezentacji?
+4. Jakie dokumenty Zwi=C4=85zek uznaje za wystarczaj=C4=85ce do =
+wykazania przez przedsi=C4=99biorc=C4=99, =C5=BCe odtwarzane fonogramy =
+pozostaj=C4=85 poza zakresem zbiorowego zarz=C4=85du Zwi=C4=85zku?
+5. W jakim zakresie obowi=C4=85zki wobec Zwi=C4=85zku obj=C4=99te =
+s=C4=85 wsp=C3=B3lnym poborem wynagrodze=C5=84 wykonywanym na polu =
+odtwarzania przez STOART?
+6. Czy Zwi=C4=85zek wydaje przedsi=C4=99biorcy pisemne potwierdzenie =
+braku obowi=C4=85zku zawarcia umowy, w przypadku ustalenia, =C5=BCe =
+odtwarzane fonogramy pozostaj=C4=85 poza zbiorowym zarz=C4=85dem?
+Odpowied=C5=BA w formie pisemnej ma dla mnie istotne znaczenie =E2=80=94 =
+zamierzam przekazywa=C4=87 j=C4=85 przysz=C5=82ym klientom jako element =
+dokumentacji potwierdzaj=C4=85cej legalno=C5=9B=C4=87 odtwarzanego =
+repertuaru.
+
+Z wyrazami szacunku,
+
+Kamil Skomra
+Founder =E2=80=94 HardbanRecordsLab
+Commercial Music Licensing Platform (CMLP) =
+contact@hardbanrecordslab.online www.hardbanrecordslab.online =
+(http://www.hardbanrecordslab.online/)
+https://hardbanrecordslab.online (https://hardbanrecordslab.online/)
+
+Za=C5=82=C4=85czniki:
+1. Wykaz =C5=BAr=C3=B3de=C5=82 rozwa=C5=BCanych w toku oceny =E2=80=94 =
+stan na dzie=C5=84 pisma
+

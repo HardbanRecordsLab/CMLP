@@ -86,13 +86,14 @@ Linki i slugi (`/cmlp/`, `cmlp.hardbanrecordslab.online`) — nietknięte.
 
 ## 5. `[HISTORYCZNE — nie zmieniano]`
 
-Raporty audytowe/analizy — zmiana byłaby fałszowaniem zapisu z danego momentu:
+- `docs/brand-legal/CMLP_AI_BUILDER_REBRAND_PROMPT.md` — cytuje stare nazwy celowo.
 
-- `docs/AUDIT_RAPORT_HRL_CMLP.md`
-- `docs/ENTERPRISE_AUDIT_REPORT.md`
-- `CMLP_ANALYSIS_REPORT.md`
-- `CMLP_WordPress_Bible_2026.md`
-- `docs/brand-legal/CMLP_AI_BUILDER_REBRAND_PROMPT.md` (cytuje stare nazwy celowo)
+Raporty audytowe/analizy ze starym nazewnictwem zostały **usunięte** w ramach
+porządków (osobny commit `chore(repo): cleanup`), nie edytowane:
+`docs/AUDIT_RAPORT_HRL_CMLP.md`, `docs/ENTERPRISE_AUDIT_REPORT.md`,
+`docs/HRL_THEME_*_REPORT.md`, `docs/CMLP_VS_MASTER_PLAN_GAP_ANALYSIS.md`,
+`CMLP_ANALYSIS_REPORT.md`, `CMLP_WordPress_Bible_2026.md` (dwa ostatnie były
+w `.gitignore` — usunięto lokalnie).
 
 ## 6. `[KOD — nie zmieniano]` (twarde wykluczenie z rebrand promptu)
 
