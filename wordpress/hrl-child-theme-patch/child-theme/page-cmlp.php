@@ -124,7 +124,7 @@ get_header();
             <div class="hrl-price-card reveal-up">
                 <h3><?php esc_html_e( 'Starter', 'hrl-theme' ); ?></h3>
                 <p class="hrl-price-for"><?php esc_html_e( 'Jeden lokal', 'hrl-theme' ); ?></p>
-                <div class="hrl-price-value">69 zł<span>/mies.</span></div>
+                <div class="hrl-price-value">39 zł<span>/mies.</span></div>
                 <ul class="hrl-price-list">
                     <li><?php esc_html_e( '1 lokalizacja', 'hrl-theme' ); ?></li>
                     <li><?php esc_html_e( 'Autorska biblioteka', 'hrl-theme' ); ?></li>

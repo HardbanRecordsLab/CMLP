@@ -129,7 +129,7 @@ wychodzących.
    decyzja „tylko branding". Jeśli status jest już potwierdzony pisemnie, to
    osobne zadanie (przywrócenie mocniejszego komunikatu + przegląd prawny).
 3. **Cennik.** Brand-legal nie zawiera tabeli kwot; strona `/cmlp/` ma własny
-   cennik (Starter 69 / Business 159 / Premium 499 / Event 600 zł + Custom).
+   cennik (Starter 39 / Business 159 / Premium 499 / Event 600 zł + Custom).
    Nie zmieniano.
 4. **Favicon / Site Icon.** `03_icon_monogram_badge.png` ma 262×269 px;
    WP Site Icon wymaga min. 512×512. Potrzebny wariant 512² (lub akceptacja

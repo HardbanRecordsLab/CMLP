@@ -211,7 +211,7 @@ get_header();
             <div class="pricing-card reveal-up" style="background:rgba(18,15,12,0.7);border:1px solid rgba(200,169,110,0.12);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;">
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Starter', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Dla małych lokali', 'hrl-theme' ); ?></p>
-                <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:1.2rem;">69 zł<span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">/mies.</span></div>
+                <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:1.2rem;">39 zł<span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">/mies.</span></div>
                 <ul style="list-style:none;padding:0;margin:0 0 1.5rem;flex:1;">
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( '1 lokalizacja', 'hrl-theme' ); ?></li>
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'Autorska biblioteka', 'hrl-theme' ); ?></li>
