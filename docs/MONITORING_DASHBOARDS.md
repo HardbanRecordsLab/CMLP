@@ -1,7 +1,7 @@
 # Hardban Records Lab (HRL) - Enterprise Grafana & Prometheus Dashboard Blueprint
 ### Version 1.0.0 | Operational Visualization Standards 2026
 
-This document presents the complete JSON dashboard configurations and Prometheus Query (PromQL) metrics recommended for monitoring the Commercial Music Licensing Platform (CMLP) in production environments.
+This document presents the complete JSON dashboard configurations and Prometheus Query (PromQL) metrics recommended for monitoring the Collective Music Licensing Project (CMLP) in production environments.
 
 ---
 

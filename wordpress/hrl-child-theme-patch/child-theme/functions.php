@@ -113,6 +113,81 @@ function hrl_child_enqueue_faq() {
 add_action( 'wp_enqueue_scripts', 'hrl_child_enqueue_faq' );
 
 /**
+ * Szablony objęte szatą graficzną CMLP (Navy / Teal / Amber).
+ *
+ * Wyłącznie strona produktowa CMLP oraz dokumenty licencji B2B. Reszta
+ * witryny HRL (strona główna, BlogCast, Radio, MKS) zostaje w motywie
+ * AMOLED-gold — patrz docs/brand-legal/CMLP_Brand_Guidelines.pdf.
+ *
+ * @return string[]
+ */
+function hrl_child_cmlp_templates() {
+    return array(
+        'page-cmlp.php',
+        'page-terms.php',
+        'page-sale-terms.php',
+        'page-license-agreement.php',
+        'page-api-terms.php',
+    );
+}
+
+/**
+ * Slugi stron sekcji CMLP — fallback, gdy szablon jest dobrany przez
+ * konwencję nazwy pliku (page-{slug}.php), a nie wybrany jawnie w edytorze;
+ * wtedy is_page_template() zwraca false.
+ *
+ * @return string[]
+ */
+function hrl_child_cmlp_slugs() {
+    return array( 'cmlp', 'terms', 'sale-terms', 'license-agreement', 'api-terms' );
+}
+
+/**
+ * Czy bieżący widok należy do sekcji CMLP?
+ */
+function hrl_child_is_cmlp_section() {
+    if ( ! is_page() ) {
+        return false;
+    }
+    foreach ( hrl_child_cmlp_templates() as $tpl ) {
+        if ( is_page_template( $tpl ) ) {
+            return true;
+        }
+    }
+    return is_page( hrl_child_cmlp_slugs() );
+}
+
+/**
+ * Szata graficzna CMLP — arkusz ładowany tylko na szablonach sekcji CMLP.
+ * Scope w samym pliku ograniczony do `body.cmlp-brand`, więc nawet
+ * przypadkowe załadowanie gdzie indziej nie zmieni wyglądu.
+ */
+function hrl_child_enqueue_cmlp_brand() {
+    if ( ! hrl_child_is_cmlp_section() ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'hrl-cmlp-brand',
+        get_stylesheet_directory_uri() . '/assets/css/12-cmlp-brand.css',
+        array( 'hrl-child-style' ),
+        wp_get_theme()->get( 'Version' )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'hrl_child_enqueue_cmlp_brand', 20 );
+
+/**
+ * Klasa `cmlp-brand` na <body> dla szablonów sekcji CMLP.
+ */
+function hrl_child_cmlp_body_class( $classes ) {
+    if ( hrl_child_is_cmlp_section() ) {
+        $classes[] = 'cmlp-brand';
+    }
+    return $classes;
+}
+add_filter( 'body_class', 'hrl_child_cmlp_body_class' );
+
+/**
  * Czas czytania w minutach.
  *
  * Motyw nadrzedny liczyl slowa przez str_word_count(), ktory nie obsluguje

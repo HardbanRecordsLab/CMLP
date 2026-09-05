@@ -365,7 +365,7 @@ Zachowaj: tabs, song panels z lyrics, formularz z sliderem budżetu, FAQ accordi
 <div id="three-canvas-container" style="width:100vw;height:100vh;"></div>
 <div class="showcase-overlay">
   <h1>HRL Audio Universe</h1>
-  <p>Commercial Music Licensing Platform</p>
+  <p>Collective Music Licensing Project</p>
 </div>
 <?php get_footer(); ?>
 ```

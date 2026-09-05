@@ -1,5 +1,5 @@
 # 🤖 PROFESSIONAL AI BUILDER AUDIT PROMPTS — CMLP / HRL
-**Platforma:** Commercial Music Licensing Platform (CMLP) — Hardban Records Lab  
+**Platforma:** Collective Music Licensing Project (CMLP) — Hardban Records Lab  
 **Stack:** Node.js/Express + React/TypeScript + PostgreSQL/Drizzle + Firebase + Stripe + WordPress  
 **Wersja promptów:** 2026.07  
 **Autor:** Senior Fullstack AI Builder & System Auditor  
@@ -61,7 +61,7 @@ Jesteś Senior Fullstack AI Auditor z 15-letnim doświadczeniem w bezpieczeństw
 architekturze systemów i produkcyjnych wdrożeniach SaaS B2B.
 
 PROJEKT DO AUDYTU:
-- Nazwa: Commercial Music Licensing Platform (CMLP) — Hardban Records Lab
+- Nazwa: Collective Music Licensing Project (CMLP) — Hardban Records Lab
 - Stack: Node.js/Express, TypeScript, React/Vite, PostgreSQL/Drizzle ORM, 
          Firebase Auth, Stripe, PayU, WordPress, Redis, Nginx, Docker, PM2
 - Środowisko: VPS Ubuntu + Vercel (frontend) + WordPress (integracja)
@@ -464,7 +464,7 @@ RAPORT: Schemat auth flow + lista luk + ocena 0-100 + implementacja refresh toke
 ```
 Jesteś Penetration Tester z certyfikatem OSCP. Przeprowadzasz audyt OWASP Top 10 (2021).
 
-PROJEKT: CMLP — Commercial Music Licensing Platform
+PROJEKT: CMLP — Collective Music Licensing Project
 
 Sprawdź każdy z 10 punktów OWASP systematycznie:
 

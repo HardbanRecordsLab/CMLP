@@ -450,7 +450,7 @@ get_header();
         <div class="product-grid">
             <div class="card"><h3><?php esc_html_e( 'Direct Licensing', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Model licencjonowania bez pośredników — twórca udziela licencji bezpośrednio użytkownikowi, z pominięciem OZZ.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( 'OZZ', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Organizacja Zbiorowego Zarządzania prawami autorskimi. W Polsce: ZAiKS, STOART, ZPAV, SAWP.', 'hrl-theme' ); ?></p></div>
-            <div class="card"><h3><?php esc_html_e( 'CMLP', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Commercial Music Licensing Platform — platforma licencjonowania muzyki B2B stworzona przez HRL.', 'hrl-theme' ); ?></p></div>
+            <div class="card"><h3><?php esc_html_e( 'CMLP', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Collective Music Licensing Project — platforma licencjonowania muzyki B2B stworzona przez HRL.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( 'Certyfikat Wolności', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Dokument z kodem QR potwierdzający legalne źródło muzyki w modelu Direct Licensing.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( 'Mastering', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Ostatni etap produkcji muzycznej. Utwór jest dopracowywany pod kątem głośności, dynamiki i charakterystyki tonalnej. W HRL: standard -14 LUFS.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( '-14 LUFS', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Standard głośności streamingowej zalecany przez ITU-R BS.1770. Zgodny z normami Spotify, Apple Music, Tidal, YouTube.', 'hrl-theme' ); ?></p></div>

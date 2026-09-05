@@ -1,6 +1,6 @@
 # Hardban Records Lab CMLP
 
-**Private B2B Music Licensing Platform** — własny katalog muzyki, licencjonowanie do biznesu, white-label, WordPress integration.
+**CMLP — Collective Music Licensing Project** (podmiot formalny: *Creative Music Licensing Partners*). Prywatny katalog muzyki B2B w pełnym prawie autorskim — licencjonowany bezpośrednio do biznesu pod marką CMLP: white-label, integracja z WordPress.
 
 **Budget:** Near-zero (własny VPS, open-source stack, free tiers)  
 **Architektura:** VPS Backend (Express + PostgreSQL) + Vercel Frontend (React/Vite) + WordPress CMS

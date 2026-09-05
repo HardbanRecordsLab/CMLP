@@ -1,7 +1,7 @@
 # Hardban Records Lab (HRL) - Operations & Incident Runbook
 ### Version 1.0.0 | Operational Status Readiness 2026
 
-This operations runbook serves as the master instructional standard for DevOps, System Administrators, and Security Teams managing the Commercial Music Licensing Platform (CMLP) and Hardban Records Lab hosting instances.
+This operations runbook serves as the master instructional standard for DevOps, System Administrators, and Security Teams managing the Collective Music Licensing Project (CMLP) and Hardban Records Lab hosting instances.
 
 ---
 

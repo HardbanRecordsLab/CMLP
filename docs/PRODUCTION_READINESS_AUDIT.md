@@ -1,6 +1,6 @@
 # CMLP Production Readiness Audit — Raport Końcowy
 
-**Platforma:** Commercial Music Licensing Platform (CMLP)
+**Platforma:** Collective Music Licensing Project (CMLP)
 **Data audytu:** 2026-07-12
 **Commit:** `6099eaf`
 **Audytor:** Automated Code Review (pełna analiza statyczna kodu)

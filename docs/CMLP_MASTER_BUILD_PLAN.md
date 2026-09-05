@@ -1,6 +1,6 @@
 # CMLP — MASTER BUILD PLAN
 
-## Hardban Records Lab | Private B2B Music Licensing Platform
+## Hardban Records Lab | Collective Music Licensing Project
 
 **Wersja:** 1.0.0  
 **Data:** 2026-07-01  
@@ -34,7 +34,7 @@
 
 ### Co to jest CMLP?
 
-CMLP (Commercial Music Licensing Platform) to **prywatna platforma licencjonowania muzyki własnego katalogu** (Hardban Records Lab) do użytku biznesowego. Platforma nie współpracuje z organizacjami zbiorczego zarządu (ZAiKS, STOART, ZPAV) — wszystkie utwory w katalogu są w pełni licencjonowane przez właściciela platformy.
+CMLP (Collective Music Licensing Project) to **prywatna platforma licencjonowania muzyki własnego katalogu** (Hardban Records Lab) do użytku biznesowego. Platforma nie współpracuje z organizacjami zbiorczego zarządu (ZAiKS, STOART, ZPAV) — wszystkie utwory w katalogu są w pełni licencjonowane przez właściciela platformy.
 
 ### Model Biznesowy
 

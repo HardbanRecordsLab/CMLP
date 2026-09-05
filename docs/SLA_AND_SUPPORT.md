@@ -1,7 +1,7 @@
 # Hardban Records Lab (HRL) - Service Level Agreement & Post-Launch Support Guide
 ### Version 1.0.0 | Operational Support Standard & Strategic Enhancements
 
-This guide defines the Service Level Agreement (SLA) matrices, Incident Management procedures, and step-by-step upgrade plans designed to maintain a high level of security, compliance, and streaming performance for the Commercial Music Licensing Platform (CMLP).
+This guide defines the Service Level Agreement (SLA) matrices, Incident Management procedures, and step-by-step upgrade plans designed to maintain a high level of security, compliance, and streaming performance for the Collective Music Licensing Project (CMLP).
 
 ---
 

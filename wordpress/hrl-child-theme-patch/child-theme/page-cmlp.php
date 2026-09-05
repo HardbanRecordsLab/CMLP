@@ -1,6 +1,6 @@
 <?php
 /**
- * Commercial Music Licensing Platform — Strona Produktowa (wersja bezpieczna 2026)
+ * Collective Music Licensing Project (CMLP) — Strona Produktowa (wersja bezpieczna 2026)
  *
  * WAZNE — zakres komunikatu:
  * Ta wersja swiadomie NIE zawiera deklaracji o braku oplat na rzecz
@@ -28,7 +28,11 @@ get_header();
 <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 <section class="hero">
     <div class="hero-content">
-        <p class="hero-eyebrow"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></p>
+        <img class="cmlp-hero-logo"
+             src="<?php echo esc_url( get_stylesheet_directory_uri() . '/images/cmlp/04_card_black_bg.png' ); ?>"
+             alt="<?php esc_attr_e( 'CMLP — Collective Music Licensing Project', 'hrl-theme' ); ?>"
+             width="646" height="269" loading="eager" decoding="async">
+        <p class="hero-eyebrow"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></p>
         <h1 class="hrl-hero-headline">
             <?php esc_html_e( 'Muzyka do lokalu,', 'hrl-theme' ); ?>
             <span class="hrl-hero-accent"><?php esc_html_e( 'której nie ma nigdzie indziej', 'hrl-theme' ); ?></span>

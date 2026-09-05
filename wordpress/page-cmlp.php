@@ -1,6 +1,6 @@
 <?php
 /**
- * Commercial Music Licensing Platform — Strona Produktowa
+ * Collective Music Licensing Project (CMLP) — Strona Produktowa
  * Profesjonalna strona produktu B2B SaaS klasy premium.
  *
  * @package HRL_Theme
@@ -13,12 +13,16 @@ get_header();
 <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
 <section class="hero">
     <div class="hero-content">
-        <p class="hero-eyebrow"><?php esc_html_e( 'COMMERCIAL MUSIC LICENSING PLATFORM (CMLP)', 'hrl-theme' ); ?></p>
+        <img class="cmlp-hero-logo"
+             src="<?php echo esc_url( get_template_directory_uri() . '/images/cmlp/04_card_black_bg.png' ); ?>"
+             alt="<?php esc_attr_e( 'CMLP — Collective Music Licensing Project', 'hrl-theme' ); ?>"
+             width="646" height="269" loading="eager" decoding="async">
+        <p class="hero-eyebrow"><?php esc_html_e( 'COLLECTIVE MUSIC LICENSING PROJECT (CMLP)', 'hrl-theme' ); ?></p>
         <h1>
             <?php esc_html_e( 'Muzyka komercyjna dla nowoczesnego biznesu', 'hrl-theme' ); ?>
         </h1>
         <p class="hero-desc">
-            <?php esc_html_e( 'Profesjonalna platforma do zarządzania autorską muzyką komercyjną w firmach. Commercial Music Licensing Platform (CMLP) umożliwia centralne zarządzanie biblioteką muzyczną, odtwarzaniem, lokalizacjami i użytkownikami z jednego panelu administracyjnego.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Profesjonalna platforma do zarządzania autorską muzyką komercyjną w firmach. Collective Music Licensing Project (CMLP) umożliwia centralne zarządzanie biblioteką muzyczną, odtwarzaniem, lokalizacjami i użytkownikami z jednego panelu administracyjnego.', 'hrl-theme' ); ?>
         </p>
         <p class="text-secondary" style="max-width:700px;margin:1.5rem auto 0;line-height:1.8;">
             <?php esc_html_e( 'Platforma została zaprojektowana z myślą o przedsiębiorcach, którzy oczekują wygodnego, skalowalnego i profesjonalnego rozwiązania wspierającego codzienną działalność.', 'hrl-theme' ); ?>
@@ -34,10 +38,10 @@ get_header();
 <section class="section section-dark">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Czym jest CMLP', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></h2>
         <div class="container-sm text-center">
             <p class="text-secondary text-lg" style="line-height:1.8;max-width:800px;margin:0 auto;">
-                <?php esc_html_e( 'Commercial Music Licensing Platform to autorska platforma B2B rozwijana przez HardbanRecords Lab. Łączy bibliotekę muzyczną, streaming, zarządzanie playlistami oraz narzędzia administracyjne w jednym, spójnym systemie.', 'hrl-theme' ); ?>
+                <?php esc_html_e( 'Collective Music Licensing Project to autorska platforma B2B rozwijana przez HardbanRecords Lab. Łączy bibliotekę muzyczną, streaming, zarządzanie playlistami oraz narzędzia administracyjne w jednym, spójnym systemie.', 'hrl-theme' ); ?>
             </p>
             <p class="text-secondary" style="line-height:1.8;max-width:800px;margin:1.5rem auto 0;">
                 <?php esc_html_e( 'Zamiast korzystać z wielu niezależnych narzędzi, przedsiębiorca otrzymuje jedno środowisko umożliwiające zarządzanie muzyką we wszystkich lokalizacjach z poziomu jednego panelu administracyjnego.', 'hrl-theme' ); ?>
@@ -55,7 +59,7 @@ get_header();
         <p class="section-label"><?php esc_html_e( 'Dla kogo', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Dla kogo powstała platforma?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Commercial Music Licensing Platform została przygotowana dla firm, które wykorzystują muzykę jako element budowania doświadczeń swoich klientów.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Collective Music Licensing Project została przygotowana dla firm, które wykorzystują muzykę jako element budowania doświadczeń swoich klientów.', 'hrl-theme' ); ?>
         </p>
         <p class="text-secondary text-center" style="max-width:700px;margin:0 auto 2rem;">
             <?php esc_html_e( 'Platforma sprawdzi się między innymi w:', 'hrl-theme' ); ?>
@@ -84,7 +88,7 @@ get_header();
 <section class="section section-dark">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Dlaczego CMLP', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Dlaczego Commercial Music Licensing Platform?', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Dlaczego Collective Music Licensing Project?', 'hrl-theme' ); ?></h2>
         <p class="text-secondary text-center" style="max-width:700px;margin:0 auto 2rem;">
             <?php esc_html_e( 'Platforma została zaprojektowana tak, aby uprościć codzienne zarządzanie muzyką w firmie.', 'hrl-theme' ); ?>
         </p>
@@ -183,7 +187,7 @@ get_header();
         <p class="section-label"><?php esc_html_e( 'O marce', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Dlaczego HardbanRecords Lab?', 'hrl-theme' ); ?></h2>
         <p class="text-secondary" style="line-height:1.8;max-width:650px;margin:0 auto 2rem;">
-            <?php esc_html_e( 'Commercial Music Licensing Platform jest rozwijana jako autorskie rozwiązanie HardbanRecords Lab. Skupiamy się na tworzeniu narzędzi, które ułatwiają przedsiębiorcom codzienną pracę oraz pozwalają zarządzać muzyką w sposób uporządkowany i profesjonalny.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Collective Music Licensing Project jest rozwijana jako autorskie rozwiązanie HardbanRecords Lab. Skupiamy się na tworzeniu narzędzi, które ułatwiają przedsiębiorcom codzienną pracę oraz pozwalają zarządzać muzyką w sposób uporządkowany i profesjonalny.', 'hrl-theme' ); ?>
         </p>
         <p class="text-secondary" style="line-height:1.8;max-width:650px;margin:0 auto;">
             <?php esc_html_e( 'Naszym celem jest rozwój platformy odpowiadającej na rzeczywiste potrzeby firm, a nie dostarczanie zbędnych funkcji.', 'hrl-theme' ); ?>
@@ -289,7 +293,7 @@ get_header();
         <?php
         $faq_groups = array(
             __( 'Ogólne', 'hrl-theme' ) => array(
-                array( __( 'Czym jest Commercial Music Licensing Platform?', 'hrl-theme' ), __( 'CMLP to profesjonalna platforma B2B umożliwiająca legalne korzystanie z autorskiej muzyki komercyjnej w lokalach usługowych. Łączy bibliotekę muzyczną, panel zarządzania, streaming i certyfikację w jednym systemie.', 'hrl-theme' ) ),
+                array( __( 'Czym jest Collective Music Licensing Project?', 'hrl-theme' ), __( 'CMLP to profesjonalna platforma B2B umożliwiająca legalne korzystanie z autorskiej muzyki komercyjnej w lokalach usługowych. Łączy bibliotekę muzyczną, panel zarządzania, streaming i certyfikację w jednym systemie.', 'hrl-theme' ) ),
                 array( __( 'Dla kogo przeznaczona jest platforma?', 'hrl-theme' ), __( 'Dla przedsiębiorców prowadzących lokale usługowe — restauracje, kawiarnie, hotele, siłownie, sklepy, salony, biura i sieci franczyzowe. Zarówno dla pojedynczych lokali, jak i rozbudowanych sieci.', 'hrl-theme' ) ),
                 array( __( 'Czy mogę korzystać z platformy mając jeden lokal?', 'hrl-theme' ), __( 'Tak. Pakiet Starter został zaprojektowany z myślą o pojedynczych lokalizacjach i oferuje pełną funkcjonalność platformy.', 'hrl-theme' ) ),
                 array( __( 'Czy platforma obsługuje wiele lokalizacji?', 'hrl-theme' ), __( 'Tak. Począwszy od pakietu Business możesz zarządzać wieloma lokalizacjami z jednego panelu — każda z własnymi playlistami i harmonogramem.', 'hrl-theme' ) ),
@@ -330,7 +334,7 @@ get_header();
 <!-- ════════════════════════════ WEZWANIE DO DZIAŁANIA ════════════════════════════ -->
 <section class="section" id="kontakt-cmlp">
     <div class="container" style="max-width:700px;text-align:center;">
-        <h2 class="section-title"><?php esc_html_e( 'Gotowy poznać możliwości Commercial Music Licensing Platform?', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Gotowy poznać możliwości Collective Music Licensing Project?', 'hrl-theme' ); ?></h2>
         <p style="color:var(--text-secondary);line-height:1.8;max-width:550px;margin:0 auto 2rem;">
             <?php esc_html_e( 'Skontaktuj się z nami, aby dowiedzieć się, jak CMLP może usprawnić zarządzanie muzyką w Twojej firmie. Chętnie przedstawimy platformę, odpowiemy na pytania i pomożemy dobrać rozwiązanie dopasowane do potrzeb Twojego biznesu.', 'hrl-theme' ); ?>
         </p>

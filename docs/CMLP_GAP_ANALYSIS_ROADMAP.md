@@ -2,7 +2,7 @@
 
 > **Uwaga:** Ten dokument stanowi archiwalny audyt z czerwca 2026. Dla aktualnego planu budowania zobacz [`CMLP_MASTER_BUILD_PLAN.md`](../CMLP_MASTER_BUILD_PLAN.md) oraz [`SPRINT_BACKLOG.md`](../SPRINT_BACKLOG.md).
 
-## PROJEKT: Commercial Music Licensing Platform (CMLP) & Hardban Records Lab (HRL)
+## PROJEKT: Collective Music Licensing Project (CMLP) & Hardban Records Lab (HRL)
 
 **Data Audytu:** 14 Czerwca 2026  
 **Status Audytu:** ARCHIWALNY — większość zaleceń została włączona do `CMLP_MASTER_BUILD_PLAN.md`  
@@ -33,7 +33,7 @@
 
 ## 1. WSTĘP I DEKLARACJA CELÓW AUDYTU
 
-Poniższy dokument stanowi rygorystyczny i kompleksowy przegląd kodu, architektury, infrastruktury oraz procesów biznesowych zaimplementowanych w ramach inicjatywy Commercial Music Licensing Platform (CMLP) połączonej z ekosystemem Hardban Records Lab (HRL). Projekt ten z założenia stawia na pełną automatyzację procesu udostępniania i licencjonowania muzyki zwolnionej z opłat OZZ (Organizacje Zbiorowego Zarządzania takie jak ZAiKS, STOART, ZPAV) z potężnym modułem VOD, płatnościami B2B, dynamiczną kompozycją certyfikatów legalności oraz granularnym systemem uprawnień (RBAC).
+Poniższy dokument stanowi rygorystyczny i kompleksowy przegląd kodu, architektury, infrastruktury oraz procesów biznesowych zaimplementowanych w ramach inicjatywy Collective Music Licensing Project (CMLP) połączonej z ekosystemem Hardban Records Lab (HRL). Projekt ten z założenia stawia na pełną automatyzację procesu udostępniania i licencjonowania muzyki zwolnionej z opłat OZZ (Organizacje Zbiorowego Zarządzania takie jak ZAiKS, STOART, ZPAV) z potężnym modułem VOD, płatnościami B2B, dynamiczną kompozycją certyfikatów legalności oraz granularnym systemem uprawnień (RBAC).
 
 Celem niniejszego audytu jest:
 
@@ -215,7 +215,7 @@ Czy mogę przejść do niezwłocznej akcji naprawczej na repozytorium wprowadzaj
 
 ## 8. PODSUMOWANIE DLA ZARZĄDU (EXECUTIVE SUMMARY)
 
-Inicjatywa Commercial Music Licensing Platform wraz z ekosystemem Hardban Records Lab stoi na solidnym i technicznie zaawansowanym fundamencie. Moduły zabezpieczające opierające uwierzytelnianie cyfrowych PDF z zaawansowanym repozytorium szyfrującym HashiCorp reprezentują warty podkreślenia prestiż klasy Enterprise. Niemniej projekt ewidentnie wymaga refaktoringu w kierunku spójności modularnej oraz głębokiej korekty i uzupełnienia krytycznych zabezpieczeń zapobiegających wektorom ataków Webhookowych, aby móc uznać go za "Production-Ready". Postuluje się wejście w dwumiesięczną trajektorię naprawczo-wdrożeniową z pełną precyzją wymaganą przy obsłudze tak wrażliwych danych operacyjnych. Zostały zidentyfikowane wszystkie tzw. "Stubs" (atrapy funkcji), dla których powstał stosowny plan inżynierski zastąpienia oprogramowaniem pełnowymiarowym. Przewidywane korzyści to skrajna niezawodność, wysokie gwarancje SLA a także potężna weryfikacja na poziomie OWASP gwarantująca pożądany pokój proceduralno-prawny między stronami (Klienci B2B - CMLP - OZZ ZAiKS).
+Inicjatywa Collective Music Licensing Project wraz z ekosystemem Hardban Records Lab stoi na solidnym i technicznie zaawansowanym fundamencie. Moduły zabezpieczające opierające uwierzytelnianie cyfrowych PDF z zaawansowanym repozytorium szyfrującym HashiCorp reprezentują warty podkreślenia prestiż klasy Enterprise. Niemniej projekt ewidentnie wymaga refaktoringu w kierunku spójności modularnej oraz głębokiej korekty i uzupełnienia krytycznych zabezpieczeń zapobiegających wektorom ataków Webhookowych, aby móc uznać go za "Production-Ready". Postuluje się wejście w dwumiesięczną trajektorię naprawczo-wdrożeniową z pełną precyzją wymaganą przy obsłudze tak wrażliwych danych operacyjnych. Zostały zidentyfikowane wszystkie tzw. "Stubs" (atrapy funkcji), dla których powstał stosowny plan inżynierski zastąpienia oprogramowaniem pełnowymiarowym. Przewidywane korzyści to skrajna niezawodność, wysokie gwarancje SLA a także potężna weryfikacja na poziomie OWASP gwarantująca pożądany pokój proceduralno-prawny między stronami (Klienci B2B - CMLP - OZZ ZAiKS).
 
 ------------------------------------------------------------------------------------------------------
 
