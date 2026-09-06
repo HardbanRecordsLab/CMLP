@@ -6,6 +6,10 @@
  * @version 4.0.0
  */
 get_header();
+// Buffer the page body so a FAQPage schema can be built from the actual
+// rendered questions/answers below (single source of truth = visible content,
+// no separately-maintained copy of 50 Q&A pairs to drift out of sync).
+ob_start();
 ?>
 <section class="hero" style="min-height:30vh;">
     <div class="hero-content">
@@ -315,4 +319,47 @@ get_header();
     </div>
 </section>
 
-<?php get_footer(); ?>
+<?php
+$hrl_faq_body = ob_get_clean();
+echo $hrl_faq_body; // phpcs:ignore WordPress.Security.EscapeOutput -- already escaped above via esc_html_e()/esc_url()
+
+// Extract Question/Answer pairs straight from the markup just rendered.
+$hrl_faq_items = array();
+libxml_use_internal_errors( true );
+$hrl_faq_dom = new DOMDocument();
+$hrl_faq_dom->loadHTML( '<?xml encoding="utf-8"?><div>' . $hrl_faq_body . '</div>' );
+libxml_clear_errors();
+
+foreach ( $hrl_faq_dom->getElementsByTagName( 'button' ) as $hrl_faq_btn ) {
+    if ( false === strpos( $hrl_faq_btn->getAttribute( 'class' ), 'faq-question' ) ) {
+        continue;
+    }
+    $hrl_faq_answer = $hrl_faq_btn->nextSibling;
+    while ( $hrl_faq_answer && XML_ELEMENT_NODE !== $hrl_faq_answer->nodeType ) {
+        $hrl_faq_answer = $hrl_faq_answer->nextSibling;
+    }
+    $hrl_faq_question_text = trim( preg_replace( '/\s*\+\s*$/', '', $hrl_faq_btn->textContent ) );
+    $hrl_faq_answer_text   = $hrl_faq_answer ? trim( $hrl_faq_answer->textContent ) : '';
+    if ( '' === $hrl_faq_question_text || '' === $hrl_faq_answer_text ) {
+        continue;
+    }
+    $hrl_faq_items[] = array(
+        '@type' => 'Question',
+        'name'  => $hrl_faq_question_text,
+        'acceptedAnswer' => array(
+            '@type' => 'Answer',
+            'text'  => $hrl_faq_answer_text,
+        ),
+    );
+}
+
+if ( ! empty( $hrl_faq_items ) ) {
+    $hrl_faq_schema = array(
+        '@context'   => 'https://schema.org',
+        '@type'      => 'FAQPage',
+        'mainEntity' => $hrl_faq_items,
+    );
+    echo '<script type="application/ld+json">' . wp_json_encode( $hrl_faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+}
+
+get_footer();

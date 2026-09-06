@@ -46,8 +46,9 @@ Aktualizacja: 2026-09-06.
 - [ ] 🔴 **Finalizacja wzorów umów z radcą prawnym** (dok. 1–5 z
   `brand-legal/CMLP_WZORY_DOKUMENTOW.md`) — przed podpisaniem z realnymi
   stronami.
-- [ ] 🔴 **DDQ narzędzi AI** użytych do produkcji własnego katalogu —
-  regulamin pozwala na cesję i komercyjne wykorzystanie? *(§4.2)*
+- [ ] 🔴 **Weryfikacja źródła i czystości praw** dla każdego utworu w katalogu
+  — produkcja własna zespołu HRL albo komplet umów cesji od twórcy.
+  **AI nie jest źródłem katalogu** — utwory AI-generowane nie wchodzą. *(§4.2)*
 - [ ] 🔴 **Podpisane umowy cesji + oświadczenia o braku członkostwa w OZZ**
   od wszystkich współtwórców istniejącego repertuaru. Jedna osoba w OZZ
   podważa model. *(§4.3)*
@@ -103,7 +104,6 @@ Aktualizacja: 2026-09-06.
 
 - [ ] 🟠 **Cennik „muzyka do produkcji"** (subskrypcja katalogowa / per-utwór
   dla agencji i twórców wideo) — benchmark Epidemic Sound / Artlist. *(§3.5)*
-- [ ] 🟠 Czy komunikować jawnie AI jako źródło katalogu, czy neutralnie.
 - [ ] 🟠 Priorytet segmentów na start: agencje / YouTube / gry.
 - [ ] 🟡 Czy/kiedy obecność na DSP (Spotify) — z separacją metadanych wydawcy.
 - [ ] 🟡 Szata Navy na stronach prawnych (`/terms/` itd.) — zostaje, czy
@@ -115,7 +115,8 @@ Aktualizacja: 2026-09-06.
   do 75% zwrotu). *(§4.1)*
 - [ ] 🟠 Uruchomić **wewnętrzny rejestr kontrybutorów** (kto / co / kiedy) —
   osobny od publicznej anonimowości. *(§16.1)*
-- [ ] 🟡 Okresowa re-weryfikacja regulaminów narzędzi AI (mogą się zmieniać).
+- [ ] 🟡 Sprawdzenie regulaminów narzędzi wspomaganych AI używanych w produkcji
+  (mastering, wtyczki DAW, separacja ścieżek) — czy nie roszczą praw do outputu.
 - [ ] 🟡 Klauzula przejęcia odpowiedzialności w umowie B2B (do konsultacji
   z prawnikiem).
 

@@ -101,13 +101,23 @@ stała cena, licencja bezpośrednio od twórcy, Certyfikat Licencyjny.
 CMLP sprzedaje **pewność prawną + gotowy dźwięk**. Różnicowanie wobec
 konkurencji (Epidemic Sound, Artlist, Soundstripe, AudioJungle, Musicbed):
 
-- katalog kuratorowany/generowany z użyciem AI — szybsze skalowanie objętości,
-- dwuwarstwowa marka (kreatywna / formalna) — spójna narracja do dwóch
+- **katalog na wyłączność** — repertuaru nie publikujemy w serwisach
+  streamingowych, więc nie usłyszysz go u konkurencji ani w bibliotekach
+  royalty-free, z których korzystają tysiące firm jednocześnie,
+- **model one-stop** — nagranie i kompozycja pochodzą z jednego miejsca,
+  jedna umowa, jeden punkt kontaktu (bez negocjacji z pojedynczymi twórcami),
+- **dwuwarstwowa marka** (kreatywna / formalna) — spójna narracja do dwóch
   odbiorców (przeglądający katalog vs dział zakupów),
-- transparentność prawna jako produkt — udokumentowana, czysta historia praw
-  każdego utworu (DDQ, oświadczenia, rejestr kontrybutorów),
-- katalog na wyłączność — repertuaru nie publikujemy w serwisach streamingowych,
-  więc nie usłyszysz go u konkurencji.
+- **transparentność prawna jako produkt** — udokumentowana, czysta historia
+  praw każdego utworu (umowy cesji, oświadczenia, wewnętrzny rejestr kontrybutorów),
+- **mastering pod odtwarzanie publiczne** i repertuar dobierany pod charakter
+  miejsca / projektu.
+
+**Źródło katalogu:** wyłącznie produkcja zespołu HRL (kompozycja, nagranie,
+mastering we własnym studiu) oraz utwory nabyte w drodze pełnej cesji od
+twórców zewnętrznych. **AI nie jest źródłem utworów w katalogu.** Narzędzia
+wspomagane AI wykorzystywane są jedynie pomocniczo — do analizy i tagowania
+istniejących nagrań (Metadata Engine), nie do tworzenia muzyki.
 
 ### 3.2 Grupa docelowa
 
@@ -143,7 +153,6 @@ po zbudowaniu pierwszych referencji.
 
 - ostateczne progi i ceny subskrypcji katalogowej (§5 opisuje obecny cennik
   „muzyka do lokalu"; cennik „muzyka do produkcji" wymaga decyzji),
-- czy komunikować jawnie AI jako źródło katalogu, czy pozostać neutralnym,
 - czy/kiedy równoległa obecność na DSP (Spotify) dla rozpoznawalności marki
   (z zachowaniem technicznej separacji metadanych wydawcy),
 - priorytet segmentów na start (agencje vs YouTube vs gry).
@@ -168,10 +177,12 @@ po zbudowaniu pierwszych referencji.
 **CMLP działa wyłącznie na podstawie pełnej cesji praw, nigdy samej licencji
 od twórcy.** Dwa źródła utworów:
 
-1. **Utwory własne (HRL, generowane AI)** — warunek: regulamin użytego
-   narzędzia AI pozwala na pełne komercyjne wykorzystanie i dalsze
-   przenoszenie praw. Weryfikacja regulaminu każdego narzędzia (DDQ) to twardy
-   warunek wstępny, nie formalność (zasada *nemo plus iuris*).
+1. **Utwory własne** — produkowane przez zespół HRL (kompozycja, nagranie,
+   mastering we własnym studiu). Prawa majątkowe i pokrewne po stronie HRL od
+   początku. Jeśli w produkcji wykorzystywane są narzędzia wspomagane AI
+   (wtyczki DAW, mastering, separacja ścieżek), ich regulaminy nie mogą
+   ograniczać ani przenosić praw do powstałego materiału — do sprawdzenia dla
+   każdego używanego narzędzia. AI nie tworzy utworów w katalogu.
 2. **Utwory od zewnętrznych twórców** — wymagana podpisana **Umowa
    przeniesienia majątkowych praw autorskich i praw pokrewnych** obejmująca:
    - pełne, wymienione explicite pola eksploatacji (polskie prawo nie akceptuje
@@ -213,15 +224,16 @@ marketingowe** (patrz §2).
 
 | Ryzyko | Mitygacja |
 |---|---|
-| Regulamin narzędzia AI nie daje pełni praw do przeniesienia | DDQ przed włączeniem narzędzia do produkcji; okresowa re-weryfikacja |
+| Zewnętrzny twórca nie ma pełni praw / kolizja z wcześniejszą umową (*nemo plus iuris*) | weryfikacja źródła i komplet oświadczeń (dok. 4) przed włączeniem utworu do katalogu; wewnętrzny rejestr kontrybutorów |
+| Narzędzie wspomagane AI użyte w produkcji ogranicza prawa do materiału | sprawdzenie regulaminu każdego używanego narzędzia; preferować narzędzia bez roszczeń do outputu |
 | Twórca ujawnia publicznie udział mimo klauzuli | kara umowna (do doprecyzowania z prawnikiem) |
 | Ktoś rejestruje znak „CMLP" pierwszy | wcześniejsza rejestracja UPRP lub udokumentowane pierwszeństwo używania |
 | Brak działalności ogranicza formalizację umów | rejestracja przed pierwszymi umowami |
-| Niejednoznaczny status prawnoautorski muzyki w pełni AI | traktować jako ryzyko strukturalne branży; opierać się na cesji + poufności jako zabezpieczeniu kontraktowym niezależnym od tego, czy formalne prawo autorskie powstaje |
 
 ### 4.6 Rekomendowana kolejność
 
-1. DDQ i weryfikacja regulaminów narzędzi AI.
+1. Weryfikacja źródła i czystości praw dla każdego utworu w katalogu
+   (produkcja własna zespołu HRL / komplet umów cesji od twórcy zewnętrznego).
 2. Rejestracja działalności gospodarczej.
 3. Finalizacja wzorów umów z prawnikiem.
 4. Podpisanie umów cesji z współpracownikami.
@@ -263,7 +275,8 @@ agencji i twórców) — **do ustalenia** (§3.5).
   hash pliku, `rights_owner_id`, `license_scope`, status,
 - rozszerzone tagi (`track_tags`): BPM, tonacja, energia, taneczność, `valence`,
   opis „vibe", tagi swobodne — pod dobór AI i wyszukiwanie,
-- integracja z **HRL Metadata Engine** (autotagging) — `METADATA_ENGINE_URL`,
+- integracja z **HRL Metadata Engine** — automatyczne tagowanie *istniejących*
+  nagrań (analiza, nie generowanie) — `METADATA_ENGINE_URL`,
 - upload przez panel (`UploadTrackModal`), transcoding FFmpeg,
 - komponent frontendu: `TrackLibrary`.
 
@@ -769,7 +782,8 @@ Wzory: `infrastructure/environment/.env.example`, `.env.vps.example`,
 
 ### 16.1 Onboarding twórcy / dostawcy utworów
 
-1. DDQ narzędzi AI użytych do produkcji (regulamin pozwala na cesję?).
+1. Weryfikacja źródła: produkcja własna zespołu HRL albo komplet umów cesji
+   od twórcy zewnętrznego. Utwory AI-generowane nie wchodzą do katalogu.
 2. Podpis kompletu: Umowa przeniesienia praw + Klauzula poufności/anonimowości
    + Zobowiązanie ws. osobistych praw + Oświadczenie o braku kolizji/OZZ
    (wzory: `brand-legal/CMLP_WZORY_DOKUMENTOW.md`).
@@ -909,7 +923,7 @@ CMLP jest jednym z produktów Hardban Records Lab na `hardbanrecordslab.online`:
 | **Cesja praw** | pełne przeniesienie majątkowych praw autorskich i praw pokrewnych na CMLP (nie licencja od twórcy) |
 | **Certyfikat Licencyjny** | dokument PDF z kodem QR potwierdzający aktywną licencję B2B, jej zakres i okres; weryfikowalny na `/verify` |
 | **Kolektyw anonimowy** | model marki — na zewnątrz widoczna wyłącznie nazwa CMLP, tożsamość producentów ukryta |
-| **DDQ** | due diligence questionnaire — weryfikacja regulaminów narzędzi AI i źródła praw do utworu |
+| **Weryfikacja źródła** | sprawdzenie pochodzenia i czystości praw każdego utworu przed włączeniem do katalogu (produkcja własna / cesja) |
 | **OZZ** | organizacja zbiorowego zarządzania (ZAiKS, STOART, ZPAV, SAWP). Utwory CMLP nie są w nich zgłoszone — fakt operacyjny, nie hasło marketingowe |
 | **White-label / Odtwarzacz w barwach marki** | odtwarzacz w kolorystyce i z logo klienta, logowanie kodem PIN |
 | **Pakiet Custom** | najwyższy pakiet — API, wyłączność, dedykowany opiekun, SLA, wycena indywidualna |
