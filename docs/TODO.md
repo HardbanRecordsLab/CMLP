@@ -21,8 +21,12 @@ Infisical na VPS, deploy, Stripe na sam koniec, sprawy właściciela (§5).
 - ✅ **Cennik** „muzyka do lokalu": Starter **39** / Business **99** /
   Premium **299** / Event **600** zł + Custom (wycena). Strona + Warunki
   Sprzedaży zsynchronizowane.
-- ✅ **„Zero OZZ" usunięte wszędzie** — treść strony, aplikacja (certyfikat →
-  „Certyfikat Licencyjny", PDF/umowa/maile/i18n/dashboard), zmyślone KRS/NIP.
+- ✅ **Framing OZZ/ZAiKS usunięty wszędzie** — treść strony (motyw nadrzędny
+  + potomny, w tym martwe szablony), aplikacja (certyfikat → „Certyfikat
+  Licencyjny", PDF/umowa/maile/i18n/dashboard), zmyślone KRS/NIP.
+  Na serwerze dodatkowo: opis SEO strony głównej w Rank Math (postmeta 696)
+  + kategoria bloga „Zwolnienia z opłat OZZ" (term 194) → przemianowane.
+  Zweryfikowane: 16 stron live, zero trafień w renderze (+ schema/meta).
 - ✅ **AI nie jest źródłem katalogu** — Handbook/regulamin; „sztuczna
   inteligencja" usunięta z listy usług.
 - ✅ **Autor/marka katalogu = grupa CMLP / HRL**; pole `artist`/`band`
