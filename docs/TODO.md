@@ -64,10 +64,17 @@ Infisical na VPS, deploy, Stripe na sam koniec, sprawy właściciela (§5).
 - [ ] 🔴 **`PUBLIC_ACCESS_ENABLED=true` w Infisical** `cmlp-app / prod`
   (na cutover): panel `vault.hardbanrecordslab.online` lub
   `infisical secrets set` z creds `/root/infisical/creds/cmlp.env`.
-- [ ] 🟠 **(opcjonalnie, po weryfikacji) cutover sekretów na Infisical:**
-  `ssh … 'bash /root/vps-scripts/infisical-golive.sh cmlp'` — przenosi CMLP
-  z `/opt/cmlp/.env` na live-pull (bootstrap.cjs), auto-rollback przy błędzie.
-  Do zrobienia dopiero gdy deploy kodu jest zdrowy.
+- [ ] 🟡 **Cutover sekretów CMLP na Infisical — WYMAGA DEBUGOWANIA.**
+  Próba 2026-09-06: `infisical-golive.sh cmlp` → health `:3000/health` nie
+  wstał w oknie (bootstrap.cjs w PM2 cluster ×4: 4× `infisical login`+`export`
+  na boot — za wolno / racy / `require(server.cjs)` w cluster mode nie bindował
+  portu). Auto-rollback zadziałał, potem twardy restart z
+  `config/ecosystem.config.cjs` → OK. **App działa na `/opt/cmlp/.env`** (30
+  kluczy, `PUBLIC_ACCESS_ENABLED=true`). Sekrety SĄ w Infisical `cmlp-app/prod`
+  (30, w tym `PUBLIC_ACCESS_ENABLED=true`) — źródło prawdy do rotacji.
+  Break-glass: `/opt/cmlp/.env.break-glass`. Do naprawy: autor bootstrap.cjs
+  (np. jeden `infisical export` w `ecosystem`'s `pre-start` do pliku tmp,
+  albo `infisical run` na wrapperze fork zamiast cluster).
 
 ## 2. 🟠 Start — konfiguracja i weryfikacja
 
