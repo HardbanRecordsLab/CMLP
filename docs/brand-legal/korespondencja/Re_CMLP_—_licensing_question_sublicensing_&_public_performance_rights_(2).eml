@@ -1,0 +1,169 @@
+Return-Path: <bounce+6a6b2878a3d0fa5a0750+6a72aef31d2ffa7b92bb@reply-bounce.mail.channel.io>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id rU87KPmucmpSwQAA4AkaEw
+	(envelope-from <bounce+6a6b2878a3d0fa5a0750+6a72aef31d2ffa7b92bb@reply-bounce.mail.channel.io>)
+	for <contact@hardbanrecordslab.online>; Wed, 05 Aug 2026 05:33:13 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=reply-bounce.mail.channel.io 
+   (client-ip=13.124.201.171; helo=mail.channel.io; 
+   envelope-from=bounce+6a6b2878a3d0fa5a0750+6a72aef31d2ffa7b92bb@reply-bou
+   nce.mail.channel.io; receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=none dis=none) header.from=soundraw.co.jp
+Received: from mail.channel.io (mail.channel.io [13.124.201.171])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id B996338E024B
+	for <contact@hardbanrecordslab.online>; Wed,  5 Aug 2026 05:33:10 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (1024-bit key; unprotected) header.d=soundraw.co.jp header.i=leo@soundraw.co.jp header.a=rsa-sha256 header.s=channel header.b=H+aC46Z1
+Authentication-Results: mail.channel.io;
+	auth=pass (login)
+Received: from mail.channel.io (ip-10-74-10-95.ap-northeast-2.compute.internal [10.74.10.95])
+	by mail.channel.io (Haraka/3.0.1) with ESMTPA id 2B531EF8-BBD9-4063-AD25-90C86A2AB266.1
+	envelope-from <bounce+6a6b2878a3d0fa5a0750+6a72aef31d2ffa7b92bb@reply-bounce.mail.channel.io> (authenticated bits=0);
+	Wed, 05 Aug 2026 03:33:07 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785900787;
+	s=channel; d=soundraw.co.jp; i=leo@soundraw.co.jp;
+	h=Content-Type:MIME-Version:Subject:References:In-Reply-To:Message-ID:To:Reply-To:From:Date;
+	bh=qm6wwTF9VFbJwqQtQedklSaV8QfvI5nGcli3wPSgKwg=;
+	b=H+aC46Z1wXxny1NJTZeC7IgfCao+e9RfykmUcN86746nDw2mHP/aN2/WXEJ+cUK8
+	DrkfvxKxr8DzjTLawLu0MyCO7qBVT8v4T/D0AEAZqijZ7PrFmSgp1YxxKSb017W29LE
+	hZr75LsTKQMdU9f8ZvAMYKy2lJjAB93cKQIVk6V0=
+Date: Wed, 5 Aug 2026 03:33:07 +0000 (UTC)
+From: Leo <leo@soundraw.co.jp>
+Reply-To: Leo <reply+6a6b2878a3d0fa5a0750@3jz3x.mail.channel.io>
+To: contact contact <contact@hardbanrecordslab.online>
+Message-ID: <j6l86iypi.tja1v7.pj.5helc0xe9sd43b8tsva@mail.channel.io>
+In-Reply-To: <95646613.2010062.1785407569349@poczta.home.pl>
+References: <95646613.2010062.1785407569349@poczta.home.pl>
+Subject: =?UTF-8?Q?Re:_CMLP_=E2=80=94_licensing_question:_subl?=
+ =?UTF-8?Q?icensing_&_public_performance_rights?=
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_2054_847604386.1785900787306"
+X-CLIENT-IP: 13.124.201.171
+X-CLIENT-HOSTNAME: mail.channel.io
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTGCkG3HOmmJ2j2b7PPrEVuM/u0ITjY91vgkeXFlSn1c57hz88uvblDXzdmskWd7KWFDhsL6y+5uZRk/h3WvZi5lecyhrjS/JPV6Ss40x5X1SZp7NaFKItE2JjGQBcTA50FqZeh9RG9x/n5oItCRdjFSLeJPUclYUVnd5TAIN+QRNE2MZnKDR1ux4nH9/dSTp3PgJQMdUluTYItbJ0/eOptluPxIUh2x7SGHPtZOfwBzIewCbja0Xrk3YiAh5L98h3VMaUs8Vn8lgHWCksF0yjMV6QWaPn7Y3wxb5YmGi+8Lf7dQiF5Q8/8Jv0W6zhD/gaGT/MwhrKvWHrOmI+em4AY1SOr863810HBYD1rDEE6V4qbu77LruzyaniuNBQ5bQWW3UdGCjsFL/9c77HtBZdE0xI76lquXpv1RYhj9djdJdUS0FQK+u8OZy/Uw7415E+JxwqeE6gPg7A6GG4HSSQ5RW0r126zA3+HJyJ4P5DGN/9GYq436AlcZAWtgMaRtcCM5TqTxZPqanWSPV6BQULuLEjhMF8WHGHzK5nLfPj3eUpk7AsraNWxuXeTI7GVUWy5nAuriB8oL4RdeOLBl3kBJGc+7sm3ihMzxWXdwHsR2NbjC82JAg6hFxqKbGzOUqNFFQ8M5sG67natBQ0EeJ+aCvywENd1KdD2KxwG9sCSbFg
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+------=_Part_2054_847604386.1785900787306
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kamil,
+
+Thank you for reaching out and for the detailed explanation of CMLP. It sou=
+nds like a very interesting project.
+
+Based on your description, I believe our API is likely the best starting po=
+int, though I'd like to understand your platform a little better before rec=
+ommending the most appropriate licensing model.
+
+Would you mind clarifying a few points?
+- Will your platform generate new music on demand for each customer, or wil=
+l you build a catalog of tracks that multiple customers can access?
+- Will your customers be able to select or customize music themselves, or w=
+ill your platform handle music selection automatically?
+- Will the music be streamed directly from your platform to the businesses,=
+ or will customers download tracks for playback?
+- Approximately how many business locations do you expect to support during=
+ your initial rollout?
+- Which countries do you plan to launch in first?
+Once I have a better understanding of your workflow, I'll be able to advise=
+ on the most suitable licensing model and answer your questions regarding s=
+ublicensing, public performance, and territorial scope more precisely.
+
+If it's easier, I'm also happy to discuss everything over a quick call. You=
+ can book a time that works for you here:
+
+https://calendar.app.google/6MpEnoaqryHb2i9U9
+Looking forward to hearing more about CMLP.
+
+Best regards,
+Leo
+------=_Part_2054_847604386.1785900787306
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml">    <head>        <meta http-equiv=3D"Content-Type" content=
+=3D"text/html; charset=3DUTF-8"/>        <meta name=3D"viewport" content=3D=
+"width=3Ddevice-width, initial-scale=3D1.0"/>    </head>    <body>        <=
+div>            <div><p style=3D"margin: 0; word-break: normal; word-wrap: =
+break-word;">Hi Kamil,<br><br>Thank you for reaching out and for the detail=
+ed explanation of CMLP. It sounds like a very interesting project.<br><br>B=
+ased on your description, I believe our API is likely the best starting poi=
+nt, though I'd like to understand your platform a little better before reco=
+mmending the most appropriate licensing model.<br><br>Would you mind clarif=
+ying a few points?</p><ul style=3D"margin: 0; padding-left: 20px;"><li><p s=
+tyle=3D"margin: 0; word-break: normal; word-wrap: break-word;">Will your pl=
+atform <b>generate new music on demand</b> for each customer, or will you b=
+uild a catalog of tracks that multiple customers can access?</p></li><li><p=
+ style=3D"margin: 0; word-break: normal; word-wrap: break-word;">Will your =
+customers be able to <b>select or customize music themselves</b>, or will y=
+our platform handle music selection automatically?</p></li><li><p style=3D"=
+margin: 0; word-break: normal; word-wrap: break-word;">Will the music be st=
+reamed directly from your platform to the businesses, or will customers dow=
+nload tracks for playback?</p></li><li><p style=3D"margin: 0; word-break: n=
+ormal; word-wrap: break-word;">Approximately how many business locations do=
+ you expect to support during your initial rollout?</p></li><li><p style=3D=
+"margin: 0; word-break: normal; word-wrap: break-word;">Which countries do =
+you plan to launch in first?</p></li></ul><p style=3D"margin: 0; word-break=
+: normal; word-wrap: break-word;">Once I have a better understanding of you=
+r workflow, I'll be able to advise on the most suitable licensing model and=
+ answer your questions regarding sublicensing, public performance, and terr=
+itorial scope more precisely.<br><br>If it's easier, I'm also happy to disc=
+uss everything over a quick call. You can book a time that works for you he=
+re:<br><br><a href=3D"https://calendar.app.google/6MpEnoaqryHb2i9U9">https:=
+//calendar.app.google/6M<wbr>pEnoaqryHb2i9U9</a><br>Looking forward to hear=
+ing more about CMLP.<br><br>Best regards,<br>Leo</p></div>            <div>=
+                <div style=3D"margin-top: 32px;">                    <a hre=
+f=3D"https://channel.io/?utm_source=3Dpowered_by_email&utm_medium=3Dchannel=
+.io&utm_channel_id=3D185166&utm_content=3Demail_integration" style=3D"text-=
+decoration: none;">                        <span style=3D"font-size: 11px; =
+color: #A7A7AA;">Sent via Channel Talk</span>                    </a>      =
+          </div>            </div>        </div>        <br/>        <div c=
+lass=3D"gmail_quote"><div class=3D"gmail_attr">On Aug 5, 2026, 12:33:07 PM =
+contact contact &lt;contact@hardbanrecordslab.online&gt; wrote:<br/></div><=
+blockquote class=3D"gmail_quote" style=3D"margin: 0px 0px 0px 0.8ex; border=
+-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;"><html>      <div c=
+lass=3D"default-style">   <div class=3D"default-style">    <div class=3D"de=
+fault-style">     <div class=3D"default-style">Hello,</div>     <div class=
+=3D"default-style">      I&#39;m Kamil Skomra, founder of HardbanRecordsLab=
+ in Poland. I&#39;m building      <br/>      the Commercial Music Licensing=
+ Platform (CMLP) =E2=80=94 a B2B background music      <br/>      service f=
+or businesses in hospitality, retail, offices, wellness and      <br/>     =
+ healthcare. The platform is currently in development.     </div>     <div =
+class=3D"default-style">      Before choosing catalogue sources for CMLP, I=
+ need to confirm three      <br/>      things about SOUNDRAW licence:     <=
+/div>     <ul>      <li class=3D"default-style">1. Sublicensing =E2=80=94 c=
+an CMLP license your content onward to our own       <br/>       business c=
+ustomers under our own agreements?</li>      <li class=3D"default-style">2.=
+ Public performance =E2=80=94 does your licence cover playback in commercia=
+l       <br/>       premises, and would any collecting society royalties (Z=
+AiKS, GEMA, PRS,       <br/>       ASCAP) still be payable by us or by our =
+customers?</li>      <li class=3D"default-style">3. Scope =E2=80=94 is the =
+grant worldwide and perpetual, and is this available       <br/>       unde=
+r your standard commercial terms or only under a custom agreement?</li>    =
+ </ul>     <div class=3D"default-style">      To be clear: CMLP is at the e=
+valuation stage, so this is not an offer and      <br/>      commits neithe=
+r side to anything. If sublicensing is not permitted under      <br/>      =
+your licence, please just tell me =E2=80=94 it saves us both time. I&#39;m =
+happy to      <br/>      sign a mutual NDA before you share anything.     <=
+/div>     <div class=3D"default-style">If a short call is easier than a wri=
+tten reply, I&#39;m glad to arrange one.</div>     <div class=3D"default-st=
+yle">=C2=A0</div>     <div class=3D"default-style">Best regards,</div>     =
+<div class=3D"default-style">      Kamil Skomra      <br/>      Founder =E2=
+=80=94 HardbanRecordsLab      <br/>      Commercial Music Licensing Platfor=
+m (CMLP)      <br/>      contact@hardbanrecordslab.online      <br/>      w=
+ww.hardbanrecordslab.online     </div>    </div>   </div>  </div> <p></p>To=
+ unsubscribe from this group and stop receiving emails from it, send an ema=
+il to <a href=3D"mailto:support+unsubscribe@soundraw.co.jp" rel=3D"nofollow=
+ noreferrer noopener" target=3D"_blank">support+unsubscribe@soundraw.co.jp<=
+/a>.<br/></html></blockquote></div>    </body></html>
+------=_Part_2054_847604386.1785900787306--

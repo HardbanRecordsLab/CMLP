@@ -226,7 +226,7 @@ export async function simulateSuccess(req: Request, res: Response) {
             </svg>
             <h1 class="text-2xl font-bold mb-2">Simulated Payment Succeeded!</h1>
             <p class="text-xs text-slate-400 font-mono mb-4">TX: ${txId}</p>
-            <p class="text-sm text-slate-300 mb-6">Your license, membership level, and exemption certificates have been dynamically updated.</p>
+            <p class="text-sm text-slate-300 mb-6">Your licence, membership level, and Licensing Certificate have been updated.</p>
             <button onclick="window.close();" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded transition">
               CLOSE PREVIEW WINDOW
             </button>

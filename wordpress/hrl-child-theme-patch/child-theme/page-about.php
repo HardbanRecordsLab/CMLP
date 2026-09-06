@@ -329,7 +329,7 @@ get_header();
         <div class="product-grid">
             <div class="card"><h3><?php esc_html_e( 'Direct licensing', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Model, w którym twórca udziela licencji bezpośrednio użytkownikowi, bez agregatorów i pośredników.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( 'Model one-stop', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Sytuacja, w której prawa do nagrania i do kompozycji są w jednym miejscu, więc wystarczy jedna umowa z jednym podmiotem.', 'hrl-theme' ); ?></p></div>
-            <div class="card"><h3>CMLP</h3><p><?php esc_html_e( 'Commercial Music Licensing Platform — nasza platforma do licencjonowania muzyki dla firm.', 'hrl-theme' ); ?></p></div>
+            <div class="card"><h3>CMLP</h3><p><?php esc_html_e( 'Collective Music Licensing Project — nasza platforma do licencjonowania muzyki dla firm.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( 'Mastering', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Ostatni etap produkcji: dopracowanie głośności, dynamiki i charakterystyki tonalnej. U nas standard -14 LUFS.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3>-14 LUFS</h3><p><?php esc_html_e( 'Poziom głośności zgodny z zaleceniem ITU-R BS.1770, stosowany przez główne serwisy streamingowe.', 'hrl-theme' ); ?></p></div>
             <div class="card"><h3><?php esc_html_e( 'Certyfikat Licencyjny', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Dokument potwierdzający aktywną licencję dla danej lokalizacji, z zakresem i okresem obowiązywania. Kod QR prowadzi do strony weryfikacji.', 'hrl-theme' ); ?></p></div>

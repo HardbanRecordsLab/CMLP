@@ -123,23 +123,23 @@ export class LicensingPredictiveService {
 
     switch (level) {
       case 'soft_reminder':
-        subject = `[HRL-CMLP] Exemption Certificate Renewal Warning - Remaining: ${days} days`;
-        body = `Urząd Dozoru Prawnego CMLP informuje: Twój certyfikat zwolnienia z opłat publicznych ${lic.certificateNumber} w wygasa za ${days} dni (${formattedDate}). Prosimy odnowić abonament.`;
+        subject = `[CMLP] Licence renewal reminder - ${days} days remaining`;
+        body = `Przypomnienie CMLP: licencja ${lic.certificateNumber} wygasa za ${days} dni (${formattedDate}). Prosimy odnowić abonament, aby zachować ciągłość dostępu do katalogu.`;
         break;
 
       case 'moderate_warning':
-        subject = `[CRITICAL WARNING] License Exemption Expiry Approaching (${days} days) - ${lic.certificateNumber}`;
-        body = `UWAGA: Twój Certyfikat Zwolnienia STOART/ZAiKS o numerze ${lic.certificateNumber} wygasa za ${days} dni. Brak przedłużenia unieważni ochronę prawną przed OZZ.`;
+        subject = `[WAŻNE] Licencja wygasa za ${days} dni - ${lic.certificateNumber}`;
+        body = `UWAGA: licencja ${lic.certificateNumber} wygasa za ${days} dni. Brak odnowienia zakończy dostęp do katalogu i unieważni Certyfikat Licencyjny.`;
         break;
 
       case 'urgent_escalation':
-        subject = `[URGENT ESCALATION] Exemption Certificate Expiration in ${days} Days! REACTION REQUIRED`;
+        subject = `[PILNE] Licencja wygasa za ${days} dni - wymagane działanie`;
         body = `ALARM KONTROLI ZGODNOŚCI: Twój certyfikat ${lic.certificateNumber} wygaśnie dokładnie za ${days} dni. Podjęto automatyczną rejestrację incydentu w dziale licencjonowania. Krok wymagany bezwłocznie!`;
         break;
 
       case 'critical_lockdown':
-        subject = `[COMPLIANCE ACTION] Exemption Revoked & Account Lockout - ${lic.certificateNumber}`;
-        body = `BLOKADA PRAWNA: Twój certyfikat zwolnienia ${lic.certificateNumber} WYGASŁ. Odtwarzanie muzyki w lokalizacji ${lic.companyName} bez uiszczenia opłat grozi sankcjami ze strony ZAiKS/ZPAV. Streaming zostaje wstrzymany do odnowienia licencji.`;
+        subject = `[BLOKADA] Licencja wygasła - ${lic.certificateNumber}`;
+        body = `Licencja ${lic.certificateNumber} WYGASŁA. Dostęp do katalogu dla lokalizacji ${lic.companyName} zostaje wstrzymany do czasu odnowienia licencji.`;
         
         // Block the license status in database
         await db.update(licenses).set({ status: 'expired' }).where(eq(licenses.id, lic.id));

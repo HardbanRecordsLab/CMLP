@@ -1,0 +1,348 @@
+Return-Path: <1axbyt6k7ouswcgyixdcw4bxe8re9e9vxwdg2b@26117460t.system.stability.ai>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id R0iQFR1wcmq01wAA4AkaEw
+	(envelope-from <1axbyt6k7ouswcgyixdcw4bxe8re9e9vxwdg2b@26117460t.system.stability.ai>)
+	for <contact@hardbanrecordslab.online>; Wed, 05 Aug 2026 01:05:01 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=26117460t.system.stability.ai 
+   (client-ip=108.179.144.23; helo=4f2nqh.26117460t.system.stability.ai; 
+   envelope-from=1axbyt6k7ouswcgyixdcw4bxe8re9e9vxwdg2b@26117460t.system.st
+   ability.ai; receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=none (p=none dis=none) header.from=26117460t.system.stability.ai
+Received: from 4f2nqh.26117460t.system.stability.ai (4f2nqh.26117460t.system.stability.ai [108.179.144.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id A21DA38E0231
+	for <contact@hardbanrecordslab.online>; Wed,  5 Aug 2026 01:05:00 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=26117460t.system.stability.ai header.i=@26117460t.system.stability.ai header.a=rsa-sha256 header.s=hs2 header.b=Wrd/3RWD
+Received: by 172.16.205.19 with SMTP id a089896hoz7454wskqy70diptqecpye0jml8n899b4;
+        Tue, 4 Aug 2026 23:05:00 GMT
+DKIM-Signature: v=1; s=hs2; d=26117460t.system.stability.ai; 
+        i=@26117460t.system.stability.ai; 
+        h=sender:from:from:reply-to:to:to:cc:cc:subject:subject:list-unsubscribe:list-id:form-sub:feedback-id:list-unsubscribe-post; 
+        a=rsa-sha256; c=relaxed/relaxed; 
+        bh=P44mBR4OJBX8VDdatdVHtZuUmKB3/a0a8q4QYAecHSw=; 
+        b=Wrd/3RWDfIpwtCfGS6EXiRg91iQCakfmj9yuSZ2nwj3y+5XBlke/qMH29IOVwL
+         Fgv2CCCPvG6FBt1iwBlyUgvIjq/wTHdHFE4KmM4OAM8XE09aQ+SLhkvbzt3jRap
+         apkVGE9JHHaliRm2ter1Auunc6CNpZDnFD8rYxDaUFtfGmBYQh4ZYrywQH9qsXP
+         A4KbRp3yTDAKan7bxhLNDLZkPNud9Fic0dpnZVoY1StlDL/bYBtFxK9HrHCRsMO
+         mzgYsTXNxojbsisi4WmJElrH4RS3MZAJ+shFKvTCFY4fZaPN10VaA82zriTICxI
+         LDB9IrlzGj9AAkNpcdMy5sJbHEXw==; q=dns/txt; t=1785884700; 
+        x=1786147500;
+X-HS-Cid: 1axe6vpvy3qpkt0toy5k1adg577gblcji1tktf
+Date: Wed, 5 Aug 2026 00:05:00 +0100
+From: Stability AI Support <support+2D3=stability.ai.eu1.r.hs-inbox.com@26117460t.system.stability.ai>
+Reply-To: support-3@stability.ai.eu1.r.hs-inbox.com
+To: contact@hardbanrecordslab.online
+Message-ID: <1785884699664.a6b17dc9-a2eb-4a1c-8df6-7421911b8553@26117460t.system.stability.ai>
+In-Reply-To: <1785788080439.64c48bf1-507a-4ce3-9322-8d0a84fcdce2@26117460m.email.stability.ai>
+References: <1785788080439.64c48bf1-507a-4ce3-9322-8d0a84fcdce2@26117460m.email.stability.ai>
+Subject: [Stability AI] - Following up on your Support Request
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1387308_1966678081.1785884699928"
+X-Report-Abuse-To: abuse@hubspot.com (see
+ https://policy.hubspot.com/abuse-complaints)
+Feedback-ID: aept2na:aib3jcr6:aib1s:HubSpot
+X-CLIENT-IP: 108.179.144.23
+X-CLIENT-HOSTNAME: 4f2nqh.26117460t.system.stability.ai
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTGfS39ZB/i+6UQudaQ6AE9IzfYBBSvQYHrIDezQLnseao0PWX3S9ictGn2Z/oviIuHXaJT8iOJMHIj+YR0na9askayKJjM7PG4FU3YlUf23Dua+YpNUy+Z5hoT5BbxG0n9GVcit/QtDu3ddnZUh/rVmpEuqvTKqRDDOpQN6mMQ3gqO7kJG+czE1RYp8aaX8OrJT3KvvDqyovFU7ZmspxPJL5ZL+Pl3zdh8sMO4zKvhb7LJ7o1T3SnflAhs68ect4rAosoqZnAX7oIUvm8M20BRTxWPN41V6q18eLREGkXUKQuNccY3GYZNhUEIsFZRO7K7ZwiN1n3YwMjhxNPcqhM9ZqP6xkSiN6gzdEaLMI8SAckj6dU1xWmsSFloUrPhvN7nDsHvy97725iTMGUVjAJOoSopWgkA+DF0F7oO4Aguojn18ZTFfJl8brYWEWF1OEONErdk+hsrH7svYnaKqfjgPs3v35T9WnLbhqZM+YhvyZlK7CRhcwQNL/jAL7yIkgF939U+rTgb7yDrh1XW5/sy/SWFIDF2wvjYjb9tLNsaTNH9fmyf4AOuaRX4qK4Fv26FJ2uwg8PaVfuePpBg31tCwPSKlk4uAeSe1OGfSZXqBzAVVreZd5KdYLm2m8EKm9mk8M58tD4VJbg4Ih5sWAfYuEk65shDcKKoNRw3dfjOu3g
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+------=_Part_1387308_1966678081.1785884699928
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+We wanted to follow up on your support request: CMLP =E2=80=94 licensing qu=
+estion: sublicensing & public performance rights
+
+We haven=E2=80=99t heard back from you in the past 24 hours, and we just wa=
+nt to make sure everything is going well.
+
+If you still need assistance, feel free to reply to this email=E2=80=94we=
+=E2=80=99re happy to help! Otherwise, your ticket will be automatically clo=
+sed in 48 hours if we don=E2=80=99t receive a response.
+
+Of course, you can always reopen the ticket or create a new one at any time=
+.
+
+Thanks again for reaching out to us!
+
+contact@hardbanrecordslab.online
+
+Stability AI, Fora House, 9 Pembridge Rd, London, Greater London W11 3JY, U=
+nited Kingdom
+------=_Part_1387308_1966678081.1785884699928
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www=
+.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3=
+.org/1999/xhtml" xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:=
+v=3D"urn:schemas-microsoft-com:vml" lang=3D"en"><head>
+    <title>[Stability AI] - Following up on your Support Request</title>
+    <meta property=3D"og:title" content=3D"[Stability AI] - Following up on=
+ your Support Request">
+    <meta name=3D"twitter:title" content=3D"[Stability AI] - Following up o=
+n your Support Request">
+   =20
+   =20
+   =20
+<meta name=3D"x-apple-disable-message-reformatting">
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
+0">
+<style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:cont=
+ent-box !important;box-sizing:content-box !important;vertical-align:middle}=
+.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px=
+ 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px=
+}.hs-breadcrumb-menu-divider:before{content:'=E2=80=BA';padding-left:10px}.=
+hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 2=
+0px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:n=
+one;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1p=
+x, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;w=
+idth:1px}
+</style>
+<!-- $$__SECOND_PASS_CSS_HEAD__$$ -->
+    <!--[if gte mso 9]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    <w:WordDocument xmlns:w=3D"urn:schemas-microsoft-com:office:word">
+      <w:DontUseAdvancedTypographyReadingMail/>
+    </w:WordDocument>
+  </xml>
+ =20
+  <style>
+    ul > li {
+      text-indent: -1em;
+    }
+  </style>
+<![endif]-->
+<!--[if mso]>
+<style type=3D"text/css">
+ body, td {font-family: Arial, Helvetica, sans-serif;}
+ .hse-body-wrapper-table {background-color: #EAF0F6;}
+</style>
+<![endif]-->
+<!--[if mso | IE]>
+  <style type=3D"text/css">
+    .hse-column-container { border: none !important; padding: 0 !important;=
+ }
+  </style>
+<![endif]-->
+   =20
+     =20
+ =20
+ =20
+   =20
+  <meta name=3D"generator" content=3D"HubSpot"><meta property=3D"og:url" co=
+ntent=3D"https://26117460.hs-sites-eu1.com/-temporary-slug-101df49a-cebc-43=
+77-a6e4-8135e2df643c"><meta name=3D"robots" content=3D"noindex,follow"><!--=
+[if !((mso)|(IE))]><!-- --><style type=3D"text/css">@media only screen and =
+(max-width:639px){img.stretch-on-mobile,.hs_rss_email_entries_table img,.hs=
+-stretch-cta .hs-cta-img{height:auto !important;width:100% !important}
+.display_block_on_small_screens{display:block}.hs_padded{padding-left:20px =
+!important;padding-right:20px !important}
+.hs-hm,table.hs-hm{display:none}.hs-hd{display:block !important}table.hs-hd=
+{display:table !important}
+}@media only screen and (max-width:639px){.hse-border-m{border-left:1px sol=
+id #eaf0f6 !important;border-right:1px solid #eaf0f6 !important;box-sizing:=
+border-box}
+.hse-border-bottom-m{border-bottom:1px solid #eaf0f6 !important}.hse-border=
+-top-m{border-top:1px solid #eaf0f6 !important}
+.hse-border-top-hm{border-top:none !important}.hse-border-bottom-hm{border-=
+bottom:none !important}
+}.moz-text-html .hse-column-container{max-width:600px !important;width:600p=
+x !important}
+.moz-text-html .hse-column{display:table-cell;vertical-align:top}.moz-text-=
+html .hse-section .hse-size-12{max-width:600px !important;width:600px !impo=
+rtant}
+@media only screen and (min-width:640px){.hse-column-container{max-width:60=
+0px !important;width:600px !important}
+.hse-column{display:table-cell;vertical-align:top}.hse-section .hse-size-12=
+{max-width:600px !important;width:600px !important}
+}@media only screen and (max-width:639px){.hse-body-wrapper-td{padding-top:=
+20px !important}
+#section-0 .hse-column-container{padding-top:30px !important;padding-bottom=
+:30px !important}
+#section-0 .hse-column-container{background-color:#fff !important} }@media =
+only screen and (max-width:639px){.hse-body-wrapper-td{padding-bottom:20px =
+!important}
+#section-1 .hse-column-container{padding-top:20px !important;padding-bottom=
+:20px !important;background-color:transparent !important}
+#section-1 .hse-column-container{background-color:transparent !important} }=
+</style><!--<![endif]--><style type=3D"text/css">#hs_body #hs_cos_wrapper_m=
+ain a[x-apple-data-detectors]{color:inherit !important;text-decoration:none=
+ !important;font-size:inherit !important;font-family:inherit !important;fon=
+t-weight:inherit !important;line-height:inherit !important}
+a{text-decoration:underline}p{margin:0}body{-ms-text-size-adjust:100%;-webk=
+it-text-size-adjust:100%;-webkit-font-smoothing:antialiased;moz-osx-font-sm=
+oothing:grayscale}
+table{border-spacing:0;mso-table-lspace:0;mso-table-rspace:0}table,td{borde=
+r-collapse:collapse}
+img{-ms-interpolation-mode:bicubic}p,a,li,td,blockquote{mso-line-height-rul=
+e:exactly}
+.ShadowHTML p,.sh-modified-inline p{margin:0}</style></head>
+  <body id=3D"hs_body" bgcolor=3D"#EAF0F6" style=3D"margin:0 !important; pa=
+dding:0 !important; font-family:Arial, sans-serif; font-size:15px; color:#2=
+3496d; word-break:break-word">
+   =20
+   =20
+<!--[if gte mso 9]>
+<v:background xmlns:v=3D"urn:schemas-microsoft-com:vml" fill=3D"t">
+    <v:fill type=3D"tile" size=3D"100%,100%" color=3D"#ffffff"/>
+</v:background>
+<![endif]-->
+    <div class=3D"hse-body-background" lang=3D"en" style=3D"background-colo=
+r:#eaf0f6" bgcolor=3D"#eaf0f6">
+      <table role=3D"presentation" class=3D"hse-body-wrapper-table" cellpad=
+ding=3D"0" cellspacing=3D"0" style=3D"margin:0; padding:0; width:100% !impo=
+rtant; min-width:320px !important; height:100% !important" width=3D"100%" h=
+eight=3D"100%">
+        <tbody><tr>
+          <td class=3D"hse-body-wrapper-td" valign=3D"top" style=3D"font-fa=
+mily:Arial, sans-serif; font-size:15px; color:#23496d; word-break:break-wor=
+d; padding-top:20px; padding-bottom:20px">
+            <div id=3D"hs_cos_wrapper_main" class=3D"hs_cos_wrapper hs_cos_=
+wrapper_widget hs_cos_wrapper_type_dnd_area" style=3D"color: inherit; font-=
+size: inherit; line-height: inherit;" data-hs-cos-general-type=3D"widget" d=
+ata-hs-cos-type=3D"dnd_area">  <div id=3D"section-0" class=3D"hse-section h=
+se-section-first" style=3D"padding-left:10px; padding-right:10px">
+   =20
+   =20
+      <div class=3D"hse-column-container" style=3D"min-width:280px; max-wid=
+th:600px; margin:0 auto; background-color:#ffffff; padding-bottom:30px; pad=
+ding-top:30px" bgcolor=3D"#ffffff">
+   =20
+    <!--[if (mso)|(IE)]>
+      <table align=3D"center" style=3D"width:600px;" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" width=3D"600" bgcolor=3D"#ffffff">
+      <tr style=3D"background-color:#ffffff;">
+    <![endif]-->
+    <!--[if (mso)|(IE)]>
+  <td valign=3D"top" style=3D"width:600px;padding-bottom:30px; padding-top:=
+30px;">
+<![endif]-->
+<!--[if gte mso 9]>
+  <table role=3D"presentation" width=3D"600" cellpadding=3D"0" cellspacing=
+=3D"0" style=3D"width:600px">
+<![endif]-->
+<div id=3D"column-0-0" class=3D"hse-column hse-size-12">
+    <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" class=3D"" style=3D""><tbody><tr><td class=3D"hs_padded" style=3D=
+"font-family:Arial, sans-serif; font-size:15px; color:#23496d; word-break:b=
+reak-word; padding:10px 20px"><div id=3D"hs_cos_wrapper_module-0-0-0" class=
+=3D"hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style=
+=3D"color: inherit; font-size: inherit; line-height: inherit;" data-hs-cos-=
+general-type=3D"widget" data-hs-cos-type=3D"module"><div id=3D"hs_cos_wrapp=
+er_module-0-0-0_" class=3D"hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrap=
+per_type_rich_text" style=3D"color: inherit; font-size: inherit; line-heigh=
+t: inherit;" data-hs-cos-general-type=3D"widget" data-hs-cos-type=3D"rich_t=
+ext"><p data-start=3D"241" data-end=3D"440" style=3D"line-height:175%"><spa=
+n style=3D"color: #000000;">We wanted to follow up on your support request:=
+ CMLP =E2=80=94 licensing question: sublicensing &amp; public performance r=
+ights</span></p>
+<p data-start=3D"241" data-end=3D"440" style=3D"line-height:175%">&nbsp;</p=
+>
+<p data-start=3D"241" data-end=3D"440" style=3D"line-height:175%"><span sty=
+le=3D"color: #000000;">We haven=E2=80=99t heard back from you in the past 2=
+4 hours, and we just want to make sure everything is going well.</span></p>
+<p data-start=3D"241" data-end=3D"440" style=3D"line-height:175%">&nbsp;</p=
+>
+<p data-start=3D"442" data-end=3D"621" style=3D"line-height:175%"><span sty=
+le=3D"color: #000000;">If you still need assistance, feel free to reply to =
+this email=E2=80=94we=E2=80=99re happy to help! Otherwise, your ticket will=
+ be automatically closed in 48 hours if we don=E2=80=99t receive a response=
+.</span></p>
+<p data-start=3D"442" data-end=3D"621" style=3D"line-height:175%">&nbsp;</p=
+>
+<p data-start=3D"623" data-end=3D"699" style=3D"line-height:175%"><span sty=
+le=3D"color: #000000;">Of course, you can always reopen the ticket or creat=
+e a new one at any time.</span></p>
+<p data-start=3D"701" data-end=3D"737" style=3D"line-height:175%"><span sty=
+le=3D"color: #000000;">Thanks again for reaching out to us!</span></p>
+<p data-start=3D"701" data-end=3D"737" style=3D"line-height:175%">&nbsp;</p=
+>
+<p data-start=3D"701" data-end=3D"737" style=3D"line-height:175%"><span sty=
+le=3D"color: #000000;">contact@hardbanrecordslab.online</span></p></div></d=
+iv></td></tr></tbody></table>
+</div>
+<!--[if gte mso 9]></table><![endif]-->
+<!--[if (mso)|(IE)]></td><![endif]-->
+    <!--[if (mso)|(IE)]></tr></table><![endif]-->
+    </div>
+  =20
+  </div>
+  <div id=3D"section-1" class=3D"hse-section hse-section-last" style=3D"pad=
+ding-left:10px; padding-right:10px">
+   =20
+   =20
+      <div class=3D"hse-column-container" style=3D"min-width:280px; max-wid=
+th:600px; margin:0 auto; padding-bottom:20px; padding-top:20px">
+   =20
+    <!--[if (mso)|(IE)]>
+      <table align=3D"center" style=3D"width:600px;" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation">
+      <tr>
+    <![endif]-->
+    <!--[if (mso)|(IE)]>
+  <td valign=3D"top" style=3D"width:600px;padding-bottom:20px; padding-top:=
+20px;">
+<![endif]-->
+<!--[if gte mso 9]>
+  <table role=3D"presentation" width=3D"600" cellpadding=3D"0" cellspacing=
+=3D"0" style=3D"width:600px">
+<![endif]-->
+<div id=3D"column-1-0" class=3D"hse-column hse-size-12">
+  <div id=3D"hs_cos_wrapper_module-1-0-0" class=3D"hs_cos_wrapper hs_cos_wr=
+apper_widget hs_cos_wrapper_type_module" style=3D"color: inherit; font-size=
+: inherit; line-height: inherit;" data-hs-cos-general-type=3D"widget" data-=
+hs-cos-type=3D"module"><table role=3D"presentation" class=3D"hse-footer hse=
+-secondary" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" style=3D"fon=
+t-family:Arial, sans-serif; font-size:12px; line-height:135%; color:#23496d=
+; margin-bottom:0; padding:0">
+  <tbody>
+    <tr>
+      <td align=3D"center" valign=3D"top" style=3D"font-family:Arial, sans-=
+serif; font-size:15px; color:#23496d; word-break:break-word; text-align:cen=
+ter; margin-bottom:0; line-height:135%; padding:10px 20px">
+        <p style=3D"font-family:Arial, sans-serif;font-size:12px;font-weigh=
+t:normal;text-decoration:none;font-style:normal;color:#23496d">
+          Stability AI, Fora House, 9 Pembridge Rd, London, Greater London =
+W11 3JY, United Kingdom
+        </p>
+       =20
+      </td>
+    </tr>
+  </tbody>
+</table></div>
+</div>
+<!--[if gte mso 9]></table><![endif]-->
+<!--[if (mso)|(IE)]></td><![endif]-->
+    <!--[if (mso)|(IE)]></tr></table><![endif]-->
+    </div>
+  =20
+  </div></div>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+ =20
+<img src=3D"https://d33TCH04.eu1.hubspotlinks.com/Cto/UC+113/d33TCH04/VWFvs=
+p7mSDLHW12lnGl1ddqSVW31NlPp5Sk1QTVBB8Ds8fYGnK316l1" alt=3D"" width=3D"1" he=
+ight=3D"1" border=3D"0" style=3D"display:none!important;min-height:1px!impo=
+rtant;width:1px!important;border-width:0!important;margin-top:0!important;m=
+argin-bottom:0!important;margin-right:0!important;margin-left:0!important;p=
+adding-top:0!important;padding-bottom:0!important;padding-right:0!important=
+;padding-left:0!important"></body></html>
+------=_Part_1387308_1966678081.1785884699928--
+

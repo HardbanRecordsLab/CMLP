@@ -49,7 +49,7 @@ get_header();
             <div class="hero-ecosystem">
                 <div class="eco-visual-card eco-cmlp">
                     <span class="eco-visual-label"><?php esc_html_e( 'Lokale i sieci', 'hrl-theme' ); ?></span>
-                    <span class="eco-visual-title"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></span>
+                    <span class="eco-visual-title"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></span>
                 </div>
                 <div class="eco-visual-card eco-mks">
                     <span class="eco-visual-label"><?php esc_html_e( 'Eventy i marki', 'hrl-theme' ); ?></span>
@@ -177,7 +177,7 @@ get_header();
                     <div class="product-showcase-icon">
                         <img src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/cmlp-logo.png" alt="CMLP" class="product-logo">
                     </div>
-                    <p class="product-showcase-tag"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></p>
+                    <p class="product-showcase-tag"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></p>
                     <h2 class="product-showcase-title"><?php esc_html_e( 'Muzyka i panel do zarządzania nią', 'hrl-theme' ); ?></h2>
                     <p class="product-showcase-desc">
                         <?php esc_html_e( 'Platforma dla sklepów, gastronomii, hoteli, siłowni i salonów usługowych. Biblioteka, odtwarzacz, harmonogramy i dokumenty w jednym panelu — także dla wielu lokalizacji naraz.', 'hrl-theme' ); ?>

@@ -142,6 +142,22 @@ $faq_sections = array(
 );
 
 $faq_counter = 0;
+
+// FAQPage schema built from the same $faq_sections array that renders the
+// visible accordion above, so it can't drift out of sync with what's on screen.
+$faq_schema_items = array();
+foreach ( $faq_sections as $faq_questions ) {
+    foreach ( $faq_questions as $faq_q ) {
+        $faq_schema_items[] = array(
+            '@type' => 'Question',
+            'name'  => $faq_q[0],
+            'acceptedAnswer' => array(
+                '@type' => 'Answer',
+                'text'  => $faq_q[1],
+            ),
+        );
+    }
+}
 ?>
 
 <section class="hero" style="min-height:45vh;">
@@ -194,4 +210,16 @@ $faq_counter = 0;
     </div>
 </section>
 
-<?php get_footer(); ?>
+<?php
+if ( ! empty( $faq_schema_items ) ) {
+    echo '<script type="application/ld+json">' . wp_json_encode(
+        array(
+            '@context'   => 'https://schema.org',
+            '@type'      => 'FAQPage',
+            'mainEntity' => $faq_schema_items,
+        ),
+        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+    ) . '</script>';
+}
+get_footer();
+?>

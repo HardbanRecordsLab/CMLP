@@ -1,0 +1,260 @@
+/* ═══════════════════════════════════════════════════════
+   12-CMLP-BRAND.CSS — Szata graficzna sekcji CMLP
+   Źródło: docs/brand-legal/CMLP_Brand_Guidelines.pdf (v1.0)
+
+   Zasada: skalibrowane WYŁĄCZNIE w obrębie `body.cmlp-brand`
+   (klasa dokładana przez functions.php tylko na szablonach CMLP).
+   Reszta witryny HRL (AMOLED black + gold) pozostaje nietknięta.
+
+   Paleta (sekcja 02 Brand Guidelines):
+     Navy   #061927  — kolor dominujący: tła, teksty na jasnym, wordmarki
+     Teal   #01728C  — AKCENT: przyciski, linki, aktywne stany
+     Amber  #D18A21  — AKCENT drugorzędny: badge, wyróżnienia, hover
+     Black  #000000
+     White  #FFFFFF
+   Teal i Amber są kolorami akcentu — nie wolno ich używać jako tła płaszczyzn.
+   ═══════════════════════════════════════════════════════ */
+
+body.cmlp-brand {
+  /* ─── Tokeny marki CMLP ─── */
+  --cmlp-navy:        #061927;
+  --cmlp-navy-800:    #0b2436;
+  --cmlp-navy-700:    #103046;
+  --cmlp-navy-600:    #17415d;
+  --cmlp-teal:        #01728C;
+  --cmlp-teal-bright: #0a90ad;
+  --cmlp-amber:       #D18A21;
+  --cmlp-amber-bright:#e8a13d;
+  --cmlp-ink:         #eef4f7;
+  --cmlp-ink-soft:    rgba(238, 244, 247, 0.68);
+  --cmlp-ink-faint:   rgba(238, 244, 247, 0.42);
+
+  /* ─── Przemapowanie tokenów motywu (globalne w obrębie scope) ─── */
+  --bg-primary:   var(--cmlp-navy);
+  --bg-secondary: #081f30;
+  --bg-tertiary:  var(--cmlp-navy-800);
+  --bg-card:      rgba(11, 36, 54, 0.82);
+  --bg-elevated:  rgba(16, 48, 70, 0.92);
+  --bg-overlay:   rgba(4, 14, 22, 0.85);
+  --bg-main:      var(--cmlp-navy);
+  --bg-widget:    var(--bg-card);
+
+  --text-primary:   var(--cmlp-ink);
+  --text-secondary: var(--cmlp-ink-soft);
+  --text-tertiary:  var(--cmlp-ink-faint);
+
+  /* Akcent podstawowy → Teal; akcent „light/neon" → jaśniejszy Teal;
+     „dark" → Amber jako druga barwa akcentowa. */
+  --accent-gold:       var(--cmlp-teal);
+  --accent-gold-light: var(--cmlp-teal-bright);
+  --accent-gold-dark:  var(--cmlp-amber);
+  --accent-gold-neon:  var(--cmlp-teal-bright);
+  --accent-blue:       var(--cmlp-teal);
+  --accent-purple:     var(--cmlp-amber);
+  --gold:              var(--cmlp-teal);
+  --gold-light:        var(--cmlp-teal-bright);
+  --gold-dark:         var(--cmlp-amber);
+  --gold-neon:         var(--cmlp-teal-bright);
+  --neon-blue:         var(--cmlp-teal);
+  --neon-purple:       var(--cmlp-amber);
+
+  --border-subtle: rgba(238, 244, 247, 0.08);
+  --border-default: rgba(238, 244, 247, 0.14);
+  --border-hover:  rgba(238, 244, 247, 0.26);
+  --border-active: rgba(1, 114, 140, 0.55);
+  --border-focus:  rgba(1, 114, 140, 0.75);
+  --border-color:  var(--border-default);
+  --border-glow:   var(--border-active);
+
+  --gradient-gold:   linear-gradient(135deg, #01728C 0%, #0a90ad 55%, #D18A21 100%);
+  --gradient-accent: linear-gradient(135deg, #01728C 0%, #D18A21 100%);
+  --shadow-gold:     0 0 22px rgba(1, 114, 140, 0.28);
+
+  /* Brand Guidelines: nie odtwarzać wordmarku innym krojem — nagłówki
+     schodzą z Playfair na Inter (spójnie z wordmarkiem CMLP). */
+  --font-serif:    var(--font-sans);
+  --font-headings: var(--font-sans);
+  --font-accents:  var(--font-sans);
+
+  background-color: var(--cmlp-navy);
+  color: var(--text-primary);
+}
+
+/* ─── Nagłówek / stopka: subtelny akcent marki, bez pełnego przemalowania ─── */
+body.cmlp-brand .site-header {
+  border-bottom: 1px solid var(--border-default);
+  background: rgba(6, 25, 39, 0.92);
+}
+body.cmlp-brand .site-footer {
+  border-top: 2px solid var(--cmlp-teal);
+}
+
+/* ─── Hero ─── */
+body.cmlp-brand .hero {
+  background:
+    radial-gradient(1100px 460px at 20% -10%, rgba(1, 114, 140, 0.22), transparent 60%),
+    radial-gradient(760px 380px at 100% 0%, rgba(209, 138, 33, 0.12), transparent 55%),
+    var(--cmlp-navy);
+}
+body.cmlp-brand .hero-eyebrow,
+body.cmlp-brand .section-label {
+  color: var(--cmlp-teal-bright);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+body.cmlp-brand .hrl-hero-accent {
+  color: var(--cmlp-amber);
+}
+body.cmlp-brand .cmlp-hero-logo {
+  display: block;
+  width: min(420px, 78vw);
+  height: auto;
+  margin: 0 auto 1.75rem;
+}
+body.cmlp-brand .hero-content > .cmlp-hero-logo {
+  margin-left: 0;
+}
+
+/* ─── Sekcje ─── */
+body.cmlp-brand .section-dark {
+  background: var(--cmlp-navy-800);
+}
+body.cmlp-brand .section-title {
+  color: var(--text-primary);
+}
+body.cmlp-brand .section-cmlp {
+  background:
+    linear-gradient(180deg, rgba(1, 114, 140, 0.08) 0%, transparent 100%),
+    var(--cmlp-navy);
+}
+
+/* ─── Przyciski ─── */
+body.cmlp-brand .btn-primary {
+  background: var(--cmlp-teal);
+  color: #ffffff;
+  border: 1px solid var(--cmlp-teal);
+}
+body.cmlp-brand .btn-primary:hover {
+  background: var(--cmlp-teal-bright);
+  border-color: var(--cmlp-teal-bright);
+  color: #ffffff;
+}
+body.cmlp-brand .btn-secondary,
+body.cmlp-brand .btn-outline {
+  border: 1px solid var(--cmlp-teal);
+  color: var(--cmlp-teal-bright);
+  background: transparent;
+}
+body.cmlp-brand .btn-secondary:hover,
+body.cmlp-brand .btn-outline:hover {
+  border-color: var(--cmlp-amber);
+  color: var(--cmlp-amber-bright);
+}
+body.cmlp-brand .nav-cta.btn-primary {
+  background: var(--cmlp-teal);
+}
+
+/* ─── Karty / cennik / FAQ / audience ─── */
+body.cmlp-brand .card,
+body.cmlp-brand .benefit-card,
+body.cmlp-brand .audience-card,
+body.cmlp-brand .hrl-price-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+}
+body.cmlp-brand .benefit-card:hover,
+body.cmlp-brand .audience-card:hover,
+body.cmlp-brand .card:hover {
+  border-color: var(--border-active);
+}
+body.cmlp-brand .benefit-icon,
+body.cmlp-brand .audience-icon,
+body.cmlp-brand .card-icon {
+  color: var(--cmlp-teal-bright);
+}
+
+body.cmlp-brand .hrl-price-featured {
+  border-color: var(--cmlp-teal);
+  box-shadow: 0 0 0 1px var(--cmlp-teal), var(--shadow-gold);
+}
+body.cmlp-brand .hrl-price-badge {
+  background: var(--cmlp-teal);
+  color: #ffffff;
+}
+body.cmlp-brand .hrl-price-badge-alt {
+  background: var(--cmlp-amber);
+  color: var(--cmlp-navy);
+}
+body.cmlp-brand .hrl-price-value {
+  color: var(--text-primary);
+}
+body.cmlp-brand .hrl-price-value span {
+  color: var(--text-secondary);
+}
+body.cmlp-brand .hrl-price-list li::before {
+  color: var(--cmlp-teal-bright);
+}
+
+body.cmlp-brand .hrl-faq-group-title {
+  color: var(--cmlp-teal-bright);
+}
+body.cmlp-brand .hrl-faq-question {
+  color: var(--text-primary);
+}
+body.cmlp-brand .hrl-faq-question[aria-expanded="true"] {
+  color: var(--cmlp-teal-bright);
+}
+body.cmlp-brand .hrl-faq-icon {
+  color: var(--cmlp-amber);
+}
+
+/* ─── Oś czasu „Współpraca" (motyw nadrzędny ma tu style inline) ─── */
+body.cmlp-brand .timeline-step > div[style*="border-radius:50%"] {
+  background: linear-gradient(135deg, var(--cmlp-teal), var(--cmlp-teal-bright)) !important;
+  color: #ffffff !important;
+}
+body.cmlp-brand .timeline-step > div[aria-hidden="true"] {
+  background: rgba(1, 114, 140, 0.28) !important;
+}
+
+/* ─── Strony prawne (legal-content) ─── */
+body.cmlp-brand .legal-page-wrapper,
+body.cmlp-brand .legal-content {
+  background: var(--cmlp-navy);
+  color: var(--text-primary);
+}
+body.cmlp-brand .legal-content h1,
+body.cmlp-brand .legal-content h2,
+body.cmlp-brand .legal-content h3 {
+  color: var(--text-primary);
+}
+body.cmlp-brand .legal-content h2 {
+  border-left: 3px solid var(--cmlp-teal);
+  padding-left: 0.65rem;
+}
+body.cmlp-brand .legal-content a {
+  color: var(--cmlp-teal-bright);
+}
+body.cmlp-brand .legal-date {
+  color: var(--cmlp-amber-bright);
+}
+body.cmlp-brand .cmlp-doc-mark {
+  display: block;
+  width: 240px;
+  max-width: 60vw;
+  height: auto;
+  margin: 0 0 1.5rem;
+}
+
+/* ─── Linki treściowe / akcenty tekstu ─── */
+body.cmlp-brand a:not(.btn):hover {
+  color: var(--cmlp-teal-bright);
+}
+body.cmlp-brand .text-accent {
+  color: var(--cmlp-amber-bright);
+}
+
+/* ─── Redukcja ruchu: nic nie dokładamy poza tym, co robi 00-design-tokens ─── */
+@media (prefers-reduced-motion: reduce) {
+  body.cmlp-brand .hero { background-attachment: scroll; }
+}

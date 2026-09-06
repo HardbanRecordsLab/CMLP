@@ -22,6 +22,10 @@ export default defineConfig(() => {
       environment: 'node',
       include: ['tests/**/*.test.ts'],
       setupFiles: [path.resolve(__dirname, '../tests/setup.ts')],
+      // Integration tests (supertest + CSRF handshake + DB/Redis) regularly
+      // exceed the 5s default on cold/slow runners. 30s per test / hook.
+      testTimeout: 30000,
+      hookTimeout: 30000,
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

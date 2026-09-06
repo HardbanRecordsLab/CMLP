@@ -28,9 +28,8 @@ return array(
             <h3 style="font-family:var(--font-headings);font-size:1.4rem;color:var(--gold);margin-bottom:24px;">Formularz Kontaktowy</h3>
             <!-- /wp:heading -->
             <!-- wp:html -->
-            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;">
+            <form method="post" action="/wp-admin/admin-post.php" style="display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;">
                 <input type="hidden" name="action" value="hrl_contact_form">
-                <?php wp_nonce_field( 'hrl_contact_action', 'hrl_contact_nonce' ); ?>
                 <div style="grid-column:1 / -1;"><label style="font-size:0.85rem;font-weight:600;letter-spacing:0.06em;color:var(--gold-light);text-transform:uppercase;display:block;margin-bottom:6px;">Imię i Nazwisko</label><input type="text" name="contact_name" style="width:100%;padding:0.95rem;border:1px solid var(--border-glow);border-radius:4px;background:#080705;color:var(--text-primary);font-family:var(--font-sans);" required></div>
                 <div style="grid-column:1 / -1;"><label style="font-size:0.85rem;font-weight:600;letter-spacing:0.06em;color:var(--gold-light);text-transform:uppercase;display:block;margin-bottom:6px;">Adres e-mail</label><input type="email" name="contact_email" style="width:100%;padding:0.95rem;border:1px solid var(--border-glow);border-radius:4px;background:#080705;color:var(--text-primary);font-family:var(--font-sans);" required></div>
                 <div style="grid-column:1 / -1;"><label style="font-size:0.85rem;font-weight:600;letter-spacing:0.06em;color:var(--gold-light);text-transform:uppercase;display:block;margin-bottom:6px;">Temat</label><input type="text" name="contact_subject" style="width:100%;padding:0.95rem;border:1px solid var(--border-glow);border-radius:4px;background:#080705;color:var(--text-primary);font-family:var(--font-sans);" required></div>

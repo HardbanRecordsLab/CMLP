@@ -1,0 +1,90 @@
+Return-Path: <support@flow-music.app>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id A9y1EmMhbGowCAAA4AkaEw
+	(envelope-from <support@flow-music.app>)
+	for <contact@hardbanrecordslab.online>; Fri, 31 Jul 2026 06:15:31 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=flow-music.app (client-ip=71.18.227.3; 
+   helo=sg-2-3.ptr.blmpb.com; envelope-from=support@flow-music.app; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=none (p=none dis=none) header.from=flow-music.app
+Received: from sg-2-3.ptr.blmpb.com (sg-2-3.ptr.blmpb.com [71.18.227.3])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id 36E0038E0232
+	for <contact@hardbanrecordslab.online>; Fri, 31 Jul 2026 06:15:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=flow-music-app.20200927.dkim.feishu.cn; t=1785471321;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=v2TxhmnsYUbF2t9hvkRr+SD6rlTjvd/lJ8vXgkx5zJY=;
+ b=VJryk/fVgvbDJRO7rfGVLAw6GxlMZ50TS3WyCd+XML2dAqnVfJKS7igZBPnlvKNhaFsLRV
+ awwKDI9tfJxoZTucXnXyQGHcnre9nhuiR0Te5wdmBWg7wJIaMkZTKd2Ayv6ZWC3Aw5tSBM
+ WU9Bb4Eb4+X8eXsOc7kfDfQ9LaOI0HQqsBQ68KiV+jCbcCBn/0tKeKb55UnrWkzelFRHe0
+ SfjJVf8OsT4JiKpKHxWAWzW3GABTdPoBkjCwODN+yrKtDjfbGDvYnls9XTyAPvlTa89Ez+
+ sf+jMKJ96b2MOsr/Iv1TTnu1tOJN6FiCzPwM6Tc9aTkjvkHks4JDE1libw7jiA==
+To: <contact@hardbanrecordslab.online>
+References: <2013207182.2013581.1785409226944@poczta.home.pl>
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: support@flow-music.app
+From: "support" <support@flow-music.app>
+In-Reply-To: <2013207182.2013581.1785409226944@poczta.home.pl>
+Received: from huashisandeMacBook-Air.local ([122.224.152.148]) by smtp.feishu.cn with ESMTPS; Fri, 31 Jul 2026 12:15:18 +0800
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: CMLP =?utf-8?b?4oCU?= licensing question: sublicensing & public performance rights
+Date: Fri, 31 Jul 2026 12:15:17 +0800
+Message-Id: <178547131726.49667.360364220966340822@flow-music.app>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a6c2157+712659+hardbanrecordslab.online+support@flow-music.app>
+X-CLIENT-IP: 71.18.227.3
+X-CLIENT-HOSTNAME: sg-2-3.ptr.blmpb.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTEJrU+AGAbRcRhwVZPCT8VF0ccjdTb4gOEw5TylhtR0/JK+xaAtv+h6aIvQe0hnIIJDBKIXoXHlB2it1+cxPK6n8YGckhSC0wUlUQGNwBd9/6Up1LZwKKy/StWmEB0LNK/eNo3ldRBmA/Kmphm4v22lmkTtxO1xxVle6Q2d2JdCmGkATPBZ1T70phv7Xd6dKJvCuGULDxWz0hBiuoYLhs/9zHZblB5H77nW7hzx9lM+JzeZI28rWomubQ1WGHZpI+dnWM0+CdQDXD31xK366uAu+SY4hbL8fvUhRz6qvk5Sl+Ox6PLL5mLnKTKEPHKPqq/J7mSl71WvJLCRvRr3HrkkgsJ0KWedxXIpg/PMhmvzLO4uIQjJ6VqEdsaEUxh/dEcdf8f8qlVjDuQ5JE9AovmpumfBHrSwddkr2Yb0jUdVF/GWN2nys8k9KH9uzLGwmeO08dBgQRYTtbz59ATv4jj7fRtkaSpIZlJ4UwaxfAHyyDbwaYlyt8T5COU8FajJbwsrvr8Ga4FDPN4hW5rnpv9dS3MO28A6KGHbjh2x3wS2wkCB9xSBOks/HptdNywLwu3Y9VoayRNa8xIPtf82HBAnKCJP/xKJWtmuDWO12o6DBK0SzmUcGhiioDoRQAjmNW5EbJFsrCjx1RrzsMpJTyZ0GrsIq20bBM8DRlNZIn2lOQ
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+Dear Kamil,
+
+Thank you for the clear and detailed introduction to CMLP.
+
+Under our standard Flow Music commercial terms, a paid subscriber may use m=
+usic generated through Flow Music in their own commercial projects. However=
+, the standard license does not include the right to sublicense, resell, re=
+distribute, or offer the generated music catalogue to third-party business =
+customers under separate agreements.
+
+Public-performance and collecting-society obligations may also vary dependi=
+ng on the country, venue and specific use. Therefore, under our standard pl=
+an, we cannot guarantee that fees to organizations such as ZAiKS, GEMA, PRS=
+ or ASCAP would never apply.
+
+For the B2B licensing model you described, we would need to discuss a separ=
+ate written enterprise agreement covering:
+
+=E2=80=A2 sublicensing rights;
+=E2=80=A2 territories and license duration;
+=E2=80=A2 customer and venue types;
+=E2=80=A2 catalogue scope and expected usage;
+=E2=80=A2 reporting and content-protection arrangements;
+=E2=80=A2 allocation of public-performance and collecting-society obligatio=
+ns.
+
+We are open to reviewing this opportunity under a mutual NDA.
+
+To help us evaluate it, could you please provide:
+
+=E2=80=A2 your initial target countries;
+=E2=80=A2 estimated number and types of business customers;
+=E2=80=A2 expected catalogue size and monthly music volume;
+=E2=80=A2 how the music would be delivered and tracked;
+=E2=80=A2 your proposed commercial model and estimated budget.
+
+Once we have this information, we can determine whether a custom worldwide =
+or long-term license is feasible and arrange a short call.
+
+Best regards,
+
+Flow Music Support
+https://flow-music.app

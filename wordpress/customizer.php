@@ -114,7 +114,7 @@ add_action( 'customize_register', function ( $wp_customize ) {
     ));
 
     $wp_customize->add_setting( 'hrl_sticky_cta_text', array(
-        'default'           => __( 'Gotowy uwolnić swój biznes od ZAiKS? <strong>Kontakt →</strong>', 'hrl-theme' ),
+        'default'           => __( 'Gotowy na autorską muzykę w swoim lokalu? <strong>Kontakt →</strong>', 'hrl-theme' ),
         'sanitize_callback' => 'wp_kses_post',
     ));
     $wp_customize->add_control( 'hrl_sticky_cta_text', array(

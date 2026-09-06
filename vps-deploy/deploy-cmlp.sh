@@ -1,66 +1,58 @@
 #!/bin/bash
 # =========================================================
-# CMLP Backend Deploy to VPS
-# Run from repo root on dev machine
+# CMLP — deploy nowej wersji na VPS 84.247.162.167
+# /opt/cmlp = checkout gita HardbanRecordsLab/CMLP, PM2 cluster
+# "hrl-licensing-platform" (×4) na :3000, baza `cmlp` w hbrl-postgres.
+#
+# Sekrety: obecnie /opt/cmlp/.env (Infisical cutover — osobno, na serwerze:
+#   /root/vps-scripts/infisical-golive.sh cmlp).
+#
+# Uruchom z maszyny dev:  VPS_HOST=root@84.247.162.167 BRANCH=main ./vps-deploy/deploy-cmlp.sh
 # =========================================================
 set -euo pipefail
 
 VPS_HOST="${VPS_HOST:-root@84.247.162.167}"
-REMOTE_DIR="/opt/cmlp"
-LOCAL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/vps_key}"
+BRANCH="${BRANCH:-main}"
 
-echo "=== CMLP Deploy → $VPS_HOST:$REMOTE_DIR ==="
+echo "=== CMLP deploy → $VPS_HOST  (/opt/cmlp, branch $BRANCH) ==="
 
-# Sync source (exclude heavy dirs)
-rsync -avz --delete \
-  --exclude node_modules \
-  --exclude dist \
-  --exclude .git \
-  --exclude media_files/hls \
-  --exclude '*.md' \
-  --exclude '*.zip' \
-  "$LOCAL_DIR/" "$VPS_HOST:$REMOTE_DIR/"
-
-echo "=== Remote build & restart ==="
-ssh "$VPS_HOST" bash -s <<'REMOTE'
+ssh -i "$SSH_KEY" "$VPS_HOST" BRANCH="$BRANCH" 'bash -s' <<'REMOTE'
 set -euo pipefail
 cd /opt/cmlp
 
-# Install FFmpeg if missing
-if ! command -v ffmpeg &>/dev/null; then
-  echo "Installing FFmpeg..."
-  apt-get update -qq && apt-get install -y -qq ffmpeg
-fi
+echo "→ backup .env + bieżący commit"
+cp -a .env "/root/decommissioned/cmlp.env.$(date +%F-%H%M)" 2>/dev/null || true
+git rev-parse --short HEAD > /root/decommissioned/cmlp.commit.prev 2>/dev/null || true
 
-# Create required directories
-mkdir -p media_files/hls media_files/certificates logs dist
+echo "→ git fetch + checkout $BRANCH"
+git fetch --all --prune
+git checkout "$BRANCH"
+git pull --ff-only origin "$BRANCH"
 
-# Install dependencies
-echo "Installing dependencies..."
+echo "→ upewnij się, że rejestracja B2B jest otwarta"
+grep -q '^PUBLIC_ACCESS_ENABLED=' .env \
+  && sed -i 's/^PUBLIC_ACCESS_ENABLED=.*/PUBLIC_ACCESS_ENABLED=true/' .env \
+  || echo 'PUBLIC_ACCESS_ENABLED=true' >> .env
+
+echo "→ deps + build"
 npm ci --omit=dev 2>/dev/null || npm install --omit=dev
+npm run build
 
-# Build
-echo "Building..."
-npm run build 2>/dev/null || {
-  echo "Alternative build..."
-  npx esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs
-}
+echo "→ migracje bazy"
+npm run db:migrate || { echo '!! migracja nie przeszła — przerwij i sprawdź'; exit 1; }
 
-# Run migrations
-echo "Running DB migrations..."
-npm run db:migrate 2>/dev/null || echo "Migration skipped (check manually)"
-
-# Restart PM2
-echo "Restarting PM2..."
-pm2 delete hrl-licensing-platform 2>/dev/null || true
-pm2 start /opt/cmlp/config/ecosystem.config.cjs
+echo "→ reload PM2 (zero-downtime)"
+pm2 reload hrl-licensing-platform --update-env
 pm2 save
 
-# Health check
-sleep 3
-echo "=== Health check ==="
-curl -sf http://127.0.0.1:3000/api/health || echo "Health check failed (port 3000)"
+sleep 4
+echo "=== health ==="
+curl -sf -o /dev/null -w 'local  :3000/api/health → %{http_code}\n' http://127.0.0.1:3000/api/health || echo 'LOCAL HEALTH FAIL'
+curl -sf -o /dev/null -w 'public api.cmlp        → %{http_code}\n' https://api.cmlp.hardbanrecordslab.online/api/health || true
+curl -sf https://api.cmlp.hardbanrecordslab.online/api/auth/registration-status || true
+echo
 REMOTE
 
-echo "=== Deploy complete ==="
-echo "Verify at: https://cmlp.hrl.pl/api/health"
+echo
+echo "=== zrobione. Rollback: ssh $VPS_HOST 'cd /opt/cmlp && git checkout \$(cat /root/decommissioned/cmlp.commit.prev) && npm ci --omit=dev && npm run build && pm2 reload hrl-licensing-platform' ==="

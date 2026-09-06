@@ -1,0 +1,1048 @@
+Return-Path: <aviv.e@artlist.io>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id MYDgHntQcGpdwgAA4AkaEw
+	(envelope-from <aviv.e@artlist.io>)
+	for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 10:25:31 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=artlist.io (client-ip=209.85.208.71; 
+   helo=mail-ed1-f71.google.com; envelope-from=aviv.e@artlist.io; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=quarantine dis=none) header.from=artlist.io
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id BCB3238E022B
+	for <contact@hardbanrecordslab.online>; Mon,  3 Aug 2026 10:25:30 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QnQdiSJl;
+	dkim=pass (1024-bit key; unprotected) header.d=artlist.io header.i=@artlist.io header.a=rsa-sha256 header.s=google header.b=V2Dw31FU
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-69841da1946so2942470a12.2
+        for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 01:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785745530; x=1786350330; darn=hardbanrecordslab.online;
+        h=content-type:to:from:subject:date:message-id:sender:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S3mLKayk9rgNea2HlM6+DCWCPiaLEc1nNda3XBRvBTo=;
+        b=QnQdiSJlTWSUxSIPw22ioJj+ET6Dcg5/ltNJWzfFcUpQLV1D3xfGzV6DfHh8aCMGQk
+         YLulzAG0r7CJDdxt6/GcFhTE7ILts6j2p3DsvssoD5VAhwYvINYaWV0KVZTQJKOgb9UH
+         etJeuK3i6TeD6QAtxznJ5CzoFp2Ri1vTAvJ5wm/vflV0hthdelRHTJC1I/NEniFicjLt
+         CSo+QKFABHAaw1ZZfYfO48Z1EZRjb2RuP9nCGRpaC5M4cLO8SHHHi/WBBJSP7PpdaSH7
+         6OCAr0yEwWEtfWatUTVWiV0C8Jo64S8FCIbtBz3+P0bB08jc/1sUEhy77bzfHngOgWRz
+         kEOw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=artlist.io; s=google; t=1785745530; x=1786350330; darn=hardbanrecordslab.online;
+        h=content-type:to:from:subject:date:message-id:sender:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S3mLKayk9rgNea2HlM6+DCWCPiaLEc1nNda3XBRvBTo=;
+        b=V2Dw31FU+w7L0R/Qr5RnyQ+0X1HXqRUMSeTPI7E8COj0+eC6icsgZZ8frUtiFr6KF5
+         Ey9jTVPy94IGKuYudYZwudw998uIgsjPkdB3cIXtzOph9wLmywNKHtPnoLMv4rfLKWsV
+         Ueollt2WG0SXCAtmduSf9bB2rxSltCEZbOtYE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785745530; x=1786350330;
+        h=content-type:to:from:subject:date:message-id:sender:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=S3mLKayk9rgNea2HlM6+DCWCPiaLEc1nNda3XBRvBTo=;
+        b=oLHV/LOlxvXX9+bK7ONw7qZrTkr7dTdfyKJ62ie6LvD+6sF+SfnrkCNSLE8COvFZZ+
+         AcZYeIdsr7t3tJPSptR33m7AJV5MjOCLW3aqrcWrJOvllnUgtdTF7FvSbh2gI+Edp8XV
+         kEBw+hanKf2386Luz+tRitr+b6dttLzDLkcr2NjxSYZ2RJ3kHAk5eYBRMNO3MFE1H9Ig
+         +7Jzzr6eA9eAKLDovbo+KjEV4areZrw/hlgWLIAnEj6pGjCG6hXPCGhZP58L3PrWN2fK
+         ez50mPVAaXJTUzipclmri8b70sGZRl5VOa10hTEeaXlJYb/jmbu1qVlfEI204lPFHgUO
+         PMgQ==
+X-Gm-Message-State: AOJu0Yyhh+5JjW+3FAYy/YV5Nqnlxosce6vQ74wjOXNCCyzFEOhpQOYV
+	kIx0QhgznyBm6qSWGyv6U+lV192PYwMrsJ0vh021DKt9doMIRG7pYag2FMXdsL/0XuikpdMncCE
+	dYn3zyy50N1ecZrOglnj3ZYxNZGbd6qPmuKMvJ5cL1V3NaNb9O+NlUQ==
+MIME-Version: 1.0
+X-Received: by 2002:a05:6402:4543:b0:69f:2c1d:d83c with SMTP id
+ 4fb4d7f45d1cf-6a0a7d098f4mr5176111a12.21.1785745527525; Mon, 03 Aug 2026
+ 01:25:27 -0700 (PDT)
+Reply-To: Aviv Eldan <aviv.e@artlist.io>
+Sender: Google Calendar <calendar-notification@google.com>
+Message-ID: <calendar-f75da9e8-641d-45bb-af4e-689a2c4b7909@google.com>
+Date: Mon, 03 Aug 2026 08:25:27 +0000
+Subject: Invitation: Kamil / Aviv -- Artlist Intro @ Mon Aug 3, 2026 5:30pm -
+ 6pm (GMT+3) (contact@hardbanrecordslab.online)
+From: Aviv Eldan <aviv.e@artlist.io>
+To: contact@hardbanrecordslab.online
+Content-Type: multipart/mixed; boundary="000000000000d40a72065820477e"
+X-CLIENT-IP: 209.85.208.71
+X-CLIENT-HOSTNAME: mail-ed1-f71.google.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTFKkoV+/l8y66H8Ud/TKIijcimvMWGc7fJUQgKTKnfVDlAv/OzIfetCmHYyDlALVAeKK16debaSAkUiKzvJQ6xOzwG3a0ilyVrsH2O/VyzGGuWlEtnXBNxpbohM8XmfLn3o4pw175PrM9A4Ye3uvM5ROYrTsiC36E2sfMGOGUnVQnRrKhRwLzH/EzBoIs79648DiZ9jNxc1TvS5tijQWVO6CygiL0h81kfCgui/5RRREwL+K6W13wQsRWdtFPKtvXCHFwT0KpA1tRtOoCMjoYO65G+fbItZL1ub2saGcuCCuviX4iHLCT7jk1BrL/EpN9dVrtdvIQ6j+oviAy7rUCLoseCv6w4cPYW20xhCwaoztTLVfpaWhuZddafLBRFy03jiKd60HytL5JK7iYOeMyycVKm+mBqxcVvpeeheQW7QU+bv4+isuVmNH2A/dwHiIDhRyzXoznX50wHTqn1AZkHVPG1CoWxKGjlJrxzQtJgx9h03ucpIOuhW8PXCcJGhOnfXM1GKgBjcPM7Re9f+MpXx+TH1Ok32ObSNAD+7DdhIcTm5G7VdtYFhO56jM0yowAvbS8NMv3qjuQ5BbDsJO85SaTURtYwMaVc+HJUFANjWq9VAx0WdEyNtT9+/SKrDnyAUfxynx+uIuMIdb9UbFMCIlbYi2ubZmvIOuj75kuLSPA
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+--000000000000d40a72065820477e
+Content-Type: multipart/alternative; boundary="000000000000d40a72065820477c"
+
+--000000000000d40a72065820477c
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+S2FtaWwgLyBBdml2IC0tIEFydGxpc3QgSW50cm8NCk1vbmRheSBBdWcgMywgMjAyNiDii4UgNToz
+MHBtIOKAkyA2cG0NCklzcmFlbCBUaW1lDQoNCkxvY2F0aW9uDQpodHRwczovL2FydGxpc3QtaW8u
+em9vbS51cy9qLzgyMzE4ODkwNjU3P2pzdD0zCQ0KaHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS91cmw/
+cT1odHRwcyUzQSUyRiUyRmFydGxpc3QtaW8uem9vbS51cyUyRmolMkY4MjMxODg5MDY1NyUzRmpz
+dCUzRDMmc2E9RCZzb3VyY2U9Y2FsZW5kYXImdXN0PTE3ODYxNzc1MDAwMDAwMDAmdXNnPUFPdlZh
+dzJJQklabEZzZUZMM1QtSmlnZHJYSEgNCg0KDQoNCuKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgEF2aXYgRWxkYW4gaXMgaW52aXRpbmcgeW91IHRvIGEgc2NoZWR1bGVkIFpvb20gbWVldGlu
+Zy5Kb2luIFpvb20gIA0KTWVldGluZ2h0dHBzOi8vYXJ0bGlzdC1pby56b29tLnVzL2ovODIzMTg4
+OTA2NTdNZWV0aW5nICANCmFnZW5kYWh0dHBzOi8vZG9jcy56b29tLnVzL2FnZW5kYS9kb2MvNTFl
+ZjA1OTgtN2RlOC00MGJjLWE0MGItZTRiNWYxMGY1ZTNjP2Zyb209Y2hleHRNZWV0aW5nICANCmNo
+YXQgbGlua2h0dHBzOi8vYXJ0bGlzdC1pby56b29tLnVzL2xhdW5jaC9qYy84MjMxODg5MDY1N01l
+ZXRpbmcgSUQ6IDgyMyAgDQoxODg5IDA2NTctLS1PbmUgdGFwIG1vYmlsZSsxNjY5OTAwNjgzMyws
+ODIzMTg4OTA2NTcjIFVTIChTYW4gIA0KSm9zZSkrMTY4OTI3ODEwMDAsLDgyMzE4ODkwNjU3IyBV
+Uy0tLUpvaW4gYnkgU0lQ4oCiICANCjgyMzE4ODkwNjU3QHpvb21jcmMuY29tSm9pbiAgDQppbnN0
+cnVjdGlvbnNodHRwczovL2FydGxpc3QtaW8uem9vbS51cy9tZWV0aW5ncy84MjMxODg5MDY1Ny9p
+bnZpdGF0aW9ucz9zaWduYXR1cmU9MzgxOEd6QS1fUnlCT2xjc0RRSFNydUpxVXFQWUJTQnc5M2hy
+TDFoZUNHa+KUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgA0KDQpPcmdhbml6ZXINCkF2aXYg
+RWxkYW4NCmF2aXYuZUBhcnRsaXN0LmlvDQoNCkd1ZXN0cw0KQXZpdiBFbGRhbiAtIG9yZ2FuaXpl
+cg0KY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmUNClZpZXcgYWxsIGd1ZXN0IGluZm8g
+IA0KaHR0cHM6Ly9jYWxlbmRhci5nb29nbGUuY29tL2NhbGVuZGFyL2V2ZW50P2FjdGlvbj1WSUVX
+JmVpZD1NbVF4TTJ0a2FtRnJjVE5zYlRWeGFtbHJibXMxYUc1aU9HNGdZMjl1ZEdGamRFQm9ZWEpr
+WW1GdWNtVmpiM0prYzJ4aFlpNXZibXhwYm1VJnRvaz1NVGNqWVhacGRpNWxRR0Z5ZEd4cGMzUXVh
+Vzh3WWpobVpUQXhPRFU1T0dGbE9HRTBOVE5tWlRVMk16QTFPVEJpTWpsbU56Qmlaams1WVdFeiZj
+dHo9QXNpYSUyRkplcnVzYWxlbSZobD1lbiZlcz0wDQoNClJlcGx5IGZvciBjb250YWN0QGhhcmRi
+YW5yZWNvcmRzbGFiLm9ubGluZSBhbmQgdmlldyBtb3JlIGRldGFpbHMgIA0KaHR0cHM6Ly9jYWxl
+bmRhci5nb29nbGUuY29tL2NhbGVuZGFyL2V2ZW50P2FjdGlvbj1WSUVXJmVpZD1NbVF4TTJ0a2Ft
+RnJjVE5zYlRWeGFtbHJibXMxYUc1aU9HNGdZMjl1ZEdGamRFQm9ZWEprWW1GdWNtVmpiM0prYzJ4
+aFlpNXZibXhwYm1VJnRvaz1NVGNqWVhacGRpNWxRR0Z5ZEd4cGMzUXVhVzh3WWpobVpUQXhPRFU1
+T0dGbE9HRTBOVE5tWlRVMk16QTFPVEJpTWpsbU56Qmlaams1WVdFeiZjdHo9QXNpYSUyRkplcnVz
+YWxlbSZobD1lbiZlcz0wDQpZb3VyIGF0dGVuZGFuY2UgaXMgb3B0aW9uYWwuDQoNCn5+Ly9+fg0K
+U2VudCBieSBHb29nbGUgQ2FsZW5kYXI6IGh0dHBzOi8vY2FsZW5kYXIuZ29vZ2xlLmNvbS9jYWxl
+bmRhci8NCg0KWW91IGFyZSByZWNlaXZpbmcgdGhpcyBlbWFpbCBiZWNhdXNlIHlvdSBhcmUgYW4g
+YXR0ZW5kZWUgb24gdGhlIGV2ZW50Lg0KDQpGb3J3YXJkaW5nIHRoaXMgaW52aXRhdGlvbiBjb3Vs
+ZCBhbGxvdyBhbnkgcmVjaXBpZW50IHRvIHNlbmQgYSByZXNwb25zZSB0byAgDQp0aGUgb3JnYW5p
+emVyLCBiZSBhZGRlZCB0byB0aGUgZ3Vlc3QgbGlzdCwgaW52aXRlIG90aGVycyByZWdhcmRsZXNz
+IG9mICANCnRoZWlyIG93biBpbnZpdGF0aW9uIHN0YXR1cywgb3IgbW9kaWZ5IHlvdXIgUlNWUC4N
+Cg0KTGVhcm4gbW9yZSBodHRwczovL3N1cHBvcnQuZ29vZ2xlLmNvbS9jYWxlbmRhci9hbnN3ZXIv
+MzcxMzUjZm9yd2FyZGluZw0K
+--000000000000d40a72065820477c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!doctype html><html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:offi=
+ce"><head><title></title><!--[if !mso]><meta http-equiv=3D"X-UA-Compatible"=
+ content=3D"IE=3Dedge"><![endif]--><meta http-equiv=3D"Content-Type" conten=
+t=3D"text/html; charset=3DUTF-8"><meta name=3D"viewport" content=3D"width=
+=3Ddevice-width,initial-scale=3D1"><meta name=3D"color-scheme" content=3D"l=
+ight dark"><meta name=3D"supported-color-schemes" content=3D"light dark">
+    <style>
+      body, html {
+        font-family: Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+
+      #outlook a {
+        padding: 0;
+      }
+
+      .ReadMsgBody {
+        width: 100%;
+      }
+
+      .ExternalClass {
+        width: 100%;
+      }
+
+      .ExternalClass * {
+        line-height: 100%;
+      }
+
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+
+      p {
+        display: block;
+        margin: 13px 0;
+      }
+    </style>
+    <!--[if !mso]><!-->
+    <style>
+      @media only screen and (max-width:580px) {
+        @-ms-viewport {
+          width: 320px;
+        }
+
+        @viewport {
+          width: 320px;
+        }
+      }
+    </style>
+    <!--<![endif]-->
+    <!--[if mso]>
+          <xml>
+          <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+          </xml>
+          <![endif]-->
+    <!--[if lte mso 11]>
+          <style>
+            .outlook-group-fix { width:100% !important; }
+          </style>
+    <![endif]-->
+
+    <!--[if !mso]><!-- -->
+  <style>body, html {font-family:Roboto,Helvetica,Arial,sans-serif;}@font-f=
+ace {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(//fonts.gstatic.com/s/roboto/v48/KFOMCnqEu92Fr1ME7kSn66aGLdTylUA=
+MQXC89YmC2DPNWubEbVmUiA8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+  src: url(//fonts.gstatic.com/s/roboto/v48/KFOMCnqEu92Fr1ME7kSn66aGLdTylUA=
+MQXC89YmC2DPNWub2bVmUiA8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(//fonts.gstatic.com/s/roboto/v48/KFOMCnqEu92Fr1ME7kSn66aGLdTylUA=
+MQXC89YmC2DPNWuYjalmUiA8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Material Icons Extended';
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/s/materialiconsextended/v154/kJEjBvgX7BgnkSr=
+UwT8UnLVc38YydejYY-oE_LvM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Google Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/s/googlematerialicons/v144/Gw6kwdfw6UnXLJCcm=
+afZyFRXb3BL9rvi0QZG3g.otf) format('opentype');
+}
+
+.google-material-icons {
+  font-family: 'Google Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+}
+@font-face {
+  font-family: 'Google Material Icons Filled';
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/s/googlematerialiconsfilled/v118/WWXFlimHYg6=
+HKI3TavMkbKdhBmDvgach8TVpeGsuueSZJH4.otf) format('opentype');
+}
+
+.google-material-icons-filled {
+  font-family: 'Google Material Icons Filled';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+}
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/s/googlesans/v14/4UaGrENHsxJlGDuGo1OIlL3Owps=
+.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: url(//fonts.gstatic.com/s/googlesans/v14/4UabrENHsxJlGDuGo1OIlLU94Yt=
+zCwM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url(//fonts.gstatic.com/s/googlesans/v14/4UabrENHsxJlGDuGo1OIlLV154t=
+zCwM.ttf) format('truetype');
+}
+</style><!--<![endif]-->
+      <style>
+        .body-container {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+      </style>
+ =20
+      <style>
+        u+.body .body-container,
+        body[data-outlook-cycle] .body-container,
+        #MessageViewBody .body-container {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      </style>
+ =20
+    <style>
+      @media only screen and (min-width:580px) {
+        .column-per-37 {
+          width: 37% !important;
+          max-width: 37%;
+        }
+
+        .column-per-63 {
+          width: 63% !important;
+          max-width: 63%;
+        }
+      }
+    </style>
+ =20
+    <style>
+      .appointment-buttons th {
+        display: block;
+        clear: both;
+        float: left;
+        margin-top: 12px;
+      }
+
+      .appointment-buttons th a {
+        float: left;
+      }
+
+      #MessageViewBody .appointment-buttons th {
+       margin-top: 24px;
+      }
+    </style>
+ =20
+    <style>
+      @media only screen and (max-width:580px) {
+        table.full-width-mobile {
+          width: 100% !important;
+        }
+
+        td.full-width-mobile {
+          width: auto !important;
+        }
+      }
+    </style>
+    <style>
+      .main-container-inner,
+      .info-bar-inner {
+        padding: 12px 16px !important;
+      }
+
+      .main-column-table-ltr {
+        padding-right: 0 !important;
+      }
+
+      .main-column-table-rtl {
+        padding-left: 0 !important;
+      }
+
+      @media only screen and (min-width:580px) {
+        .main-container-inner {
+          padding: 24px 32px !important;
+        }
+
+        .info-bar-inner {
+          padding: 12px 32px !important;
+        }
+
+        .main-column-table-ltr {
+          padding-right: 32px !important;
+        }
+
+        .main-column-table-rtl {
+          padding-left: 32px !important;
+        }
+
+        .appointment-buttons th {
+          display: table-cell;
+          clear: none;
+        }
+      }
+
+      .primary-text {
+        color: #3c4043 !important;
+      }
+
+      .secondary-text,
+      .phone-number a {
+        color: #70757a !important;
+      }
+
+      .accent-text {
+        color: #1a73e8 !important;
+      }
+
+      .accent-text-dark {
+        color: #185abc !important;
+      }
+
+      .grey-button-text,
+      .attachment-chip a {
+        color: #5f6368 !important;
+      }
+
+      .primary-button {
+        background-color: #1a73e8 !important;
+      }
+
+      .primary-button-text {
+        color: #fff !important;
+      }
+
+      .underline-on-hover:hover {
+        text-decoration: underline !important;
+      }
+
+      .grey-infobar-text {
+        color: #202124 !important;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .primary-text:not([class^=3D"x_"]) {
+          color: #e8eaed !important;
+        }
+
+        .secondary-text:not([class^=3D"x_"]),
+        .phone-number:not([class^=3D"x_"]) a {
+          color: #9aa0a6 !important;
+        }
+
+        .grey-button-text:not([class^=3D"x_"]),
+        .attachment-chip:not([class^=3D"x_"]) a {
+          color: #bdc1c6 !important;
+        }
+
+        .accent-text:not([class^=3D"x_"]),
+        .hairline-button-text:not([class^=3D"x_"]) {
+          color: #8ab4f8 !important;
+        }
+
+        .primary-button:not([class^=3D"x_"]) {
+          background-color: #8ab4f8 !important;
+        }
+
+        .primary-button-text:not([class^=3D"x_"]) {
+          color: #202124 !important;
+        }
+      }
+    </style>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        .cse-banner:not([class^=3D"x_"]) {
+          background-color: #3c4043 !important; /* Google Grey 800 */
+        }
+
+        .encryption-icon:not([class^=3D"x_"]) {
+          /* WARNING: This causes the whole style tag to get stripped in Gm=
+ail. */
+          background-image: url('https://fonts.gstatic.com/s/i/googlemateri=
+aliconsfilled/encrypted/v3/gm_grey200-24dp/2x/gm_filled_encrypted_gm_grey20=
+0_24dp.png') !important;
+        }
+      }
+    </style>
+    <!--[if !mso]><!-->
+    <style>
+      .prevent-link a {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+    </style>
+    <!--<![endif]-->
+
+    <!--[if mso | IE]>
+      <style>
+        .main-container-inner {
+          padding: 24px 32px !important;
+        }
+
+        .info-bar-inner {
+          padding: 12px 32px !important;
+        }
+
+        .cse-banner .encryption-icon {
+          /* We use the IE workaround instead. */
+          background-image: none !important;
+        }
+
+        .cse-banner .encryption-icon .ms-fallback {
+          display: block !important;
+        }
+
+        /* NB: Some MS clients ignore dark-scheme styling and apply their o=
+wn, so there's nothing we can do to help there. */
+        @media (prefers-color-scheme: dark) {
+          .cse-banner:not([class^=3D"x_"]) .encryption-icon .ms-fallback {
+            display: none !important;
+          }
+
+          .cse-banner:not([class^=3D"x_"]) .encryption-icon .ms-fallback-da=
+rk {
+            display: block !important;
+          }
+        }
+      </style>
+    <![endif]-->
+  </head><body class=3D"body"><span itemscope itemtype=3D"http://schema.org=
+/InformAction"><span style=3D"display:none" itemprop=3D"about" itemscope it=
+emtype=3D"http://schema.org/Person"><meta itemprop=3D"description" content=
+=3D"Invitation from Aviv Eldan"/></span><span itemprop=3D"object" itemscope=
+ itemtype=3D"http://schema.org/Event"><meta itemprop=3D"eventStatus" conten=
+t=3D"http://schema.org/EventScheduled"/><span itemprop=3D"publisher" itemsc=
+ope itemtype=3D"http://schema.org/Organization"><meta itemprop=3D"name" con=
+tent=3D"Google Calendar"/></span><meta itemprop=3D"eventId/googleCalendar" =
+content=3D"2d13kdjakq3lm5qjiknk5hnb8n"/><span style=3D"display: none; font-=
+size: 1px; color: #fff; line-height: 1px; height: 0; max-height: 0; width: =
+0; max-width: 0; opacity: 0; overflow: hidden;" itemprop=3D"name">Kamil / A=
+viv -- Artlist Intro</span><meta itemprop=3D"url" content=3D"https://calend=
+ar.google.com/calendar/event?action=3DVIEW&amp;eid=3DMmQxM2tkamFrcTNsbTVxam=
+lrbms1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU&amp;tok=3DMTcjYXZ=
+pdi5lQGFydGxpc3QuaW8wYjhmZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&a=
+mp;ctz=3DAsia%2FJerusalem&amp;hl=3Den&amp;es=3D0"/><span aria-hidden=3D"tru=
+e"><time itemprop=3D"startDate" datetime=3D"20260803T143000Z"></time><time =
+itemprop=3D"endDate" datetime=3D"20260803T150000Z"></time></span><div style=
+=3D"display: none; font-size: 1px; color: #fff; line-height: 1px; height: 0=
+; max-height: 0; width: 0; max-width: 0; opacity: 0; overflow: hidden;">=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80Aviv Eldan is inviting you to a scheduled Zoom meeting.Join Zoo=
+m Meetinghttps://artlist-io.zoom.us/j/82318890657Meeting agendahttps://docs=
+.zoom.us/agenda/doc/51ef0598-7de8-40bc-a40b-e4b5f10f</div><table border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" align=3D"cente=
+r" style=3D"width:100%;" class=3D"body-container"><tbody><tr><td style=3D""=
+ class=3D"" align=3D"left"><!--[if mso | IE]><table border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" role=3D"presentation"><tr><td height=3D"16" style=
+=3D"height:16px;"><![endif]--><div style=3D"height:16px;" aria-hidden=3D"tr=
+ue"> &nbsp; </div><!--[if mso | IE]></td></tr></table><![endif]--><table bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" align=
+=3D"center" style=3D"width:100%;" class=3D""><tbody><tr><td style=3D"border=
+: solid 1px #dadce0; border-radius: 8px; direction: rtl; font-size: 0; padd=
+ing: 24px 32px; text-align: left; vertical-align: top;" class=3D"main-conta=
+iner-inner"><!--[if mso | IE]><table border=3D"0" cellpadding=3D"0" cellspa=
+cing=3D"0" role=3D"presentation"><tr><![endif]--><div class=3D"" style=3D"f=
+ont-size: 13px; text-align: left; direction: ltr; display: inline-block; ve=
+rtical-align: top; width: 100%;overflow: hidden; word-wrap: break-word;"><t=
+able border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"=
+ width=3D"100%" class=3D"main-column-table-ltr" style=3D"padding-right: 32p=
+x; padding-left: 0;;table-layout: fixed;"><tbody><tr><td class=3D"main-colu=
+mn-td" style=3D"padding:0; vertical-align:top;"><table border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"100%" style=3D"=
+table-layout: fixed;"><tr><td style=3D"font-size: 0; padding: 0; text-align=
+: left; word-break: break-word;;padding-bottom:24px;"><div style=3D"font-fa=
+mily: Roboto, sans-serif;font-style: normal; font-weight: 400; font-size: 1=
+4px; line-height: 20px; letter-spacing: 0.2px;color: #3c4043; text-decorati=
+on: none;" class=3D"primary-text" role=3D"presentation"><span><p><br>=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80<br><br>Aviv Eldan is inviting you to a scheduled Zoom meeting.<br=
+>Join Zoom Meeting<br><a href=3D"https://www.google.com/url?q=3Dhttps%3A%2F=
+%2Fartlist-io.zoom.us%2Fj%2F82318890657&amp;sa=3DD&amp;source=3Dcalendar&am=
+p;ust=3D1786177500000000&amp;usg=3DAOvVaw3vzu6e4RRs-AcKtAFk1Kx5" target=3D"=
+_blank">https://artlist-io.zoom.us/j/82318890657</a><br><br>Meeting agenda<=
+br><a href=3D"https://www.google.com/url?q=3Dhttps%3A%2F%2Fdocs.zoom.us%2Fa=
+genda%2Fdoc%2F51ef0598-7de8-40bc-a40b-e4b5f10f5e3c%3Ffrom%3Dchext&amp;sa=3D=
+D&amp;source=3Dcalendar&amp;ust=3D1786177500000000&amp;usg=3DAOvVaw1XAAVPjX=
+IaI9RQqkyHKT1b" target=3D"_blank">https://docs.zoom.us/agenda/doc/51ef0598-=
+7de8-40bc-a40b-e4b5f10f5e3c?from=3Dchext</a><br><br>Meeting chat link<br><a=
+ href=3D"https://www.google.com/url?q=3Dhttps%3A%2F%2Fartlist-io.zoom.us%2F=
+launch%2Fjc%2F82318890657&amp;sa=3DD&amp;source=3Dcalendar&amp;ust=3D178617=
+7500000000&amp;usg=3DAOvVaw3BmFDc73YMdDMWmthKDnOm" target=3D"_blank">https:=
+//artlist-io.zoom.us/launch/jc/82318890657</a><br><br>Meeting ID: 823 1889 =
+0657<br><br>---<br><br>One tap mobile<br>+16699006833,,82318890657# US (San=
+ Jose)<br>+16892781000,,82318890657# US<br><br><br>---<br><br>Join by SIP<b=
+r>=E2=80=A2 <a href=3D"mailto:82318890657@zoomcrc.com" target=3D"_blank">82=
+318890657@zoomcrc.com</a><br><br>Join instructions<br><a href=3D"https://ww=
+w.google.com/url?q=3Dhttps%3A%2F%2Fartlist-io.zoom.us%2Fmeetings%2F82318890=
+657%2Finvitations%3Fsignature%3D3818GzA-_RyBOlcsDQHSruJqUqPYBSBw93hrL1heCGk=
+&amp;sa=3DD&amp;source=3Dcalendar&amp;ust=3D1786177500000000&amp;usg=3DAOvV=
+aw15hUQDKLQhoOgf6sV_YxP1" target=3D"_blank">https://artlist-io.zoom.us/meet=
+ings/82318890657/invitations?signature=3D3818GzA-_RyBOlcsDQHSruJqUqPYBSBw93=
+hrL1heCGk</a><br><br><br><br>=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80</p></span><meta itemprop=3D"d=
+escription" content=3D"=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80Aviv Eldan is inviting you to a sche=
+duled Zoom meeting.Join Zoom Meetinghttps://artlist-io.zoom.us/j/8231889065=
+7Meeting agendahttps://docs.zoom.us/agenda/doc/51ef0598-7de8-40bc-a40b-e4b5=
+f10f5e3c?from=3DchextMeeting chat linkhttps://artlist-io.zoom.us/launch/jc/=
+82318890657Meeting ID: 823 1889 0657---One tap mobile+16699006833,,82318890=
+657# US (San Jose)+16892781000,,82318890657# US---Join by SIP=E2=80=A2 8231=
+8890657@zoomcrc.comJoin instructionshttps://artlist-io.zoom.us/meetings/823=
+18890657/invitations?signature=3D3818GzA-_RyBOlcsDQHSruJqUqPYBSBw93hrL1heCG=
+k=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80"/></div></td></tr><tr><td style=3D"font-size: 0; padding=
+: 0; text-align: left; word-break: break-word;;padding-bottom:24px;"><div s=
+tyle=3D"font-family: Roboto, sans-serif;font-style: normal; font-weight: 40=
+0; font-size: 14px; line-height: 20px; letter-spacing: 0.2px;color: #3c4043=
+; text-decoration: none;" class=3D"primary-text" role=3D"presentation"><spa=
+n aria-hidden=3D"true"><time itemprop=3D"startDate" datetime=3D"20260803T14=
+3000Z"></time><time itemprop=3D"endDate" datetime=3D"20260803T150000Z"></ti=
+me></span><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"p=
+resentation" style=3D"padding-bottom: 4px;"><tr><td><h2 class=3D"primary-te=
+xt" style=3D"font-size: 14px;color: #3c4043; text-decoration: none;font-wei=
+ght: 700;-webkit-font-smoothing: antialiased;margin: 0; padding: 0;">When</=
+h2></td></tr></table><span>Monday Aug 3, 2026 =E2=8B=85 5:30pm =E2=80=93 6p=
+m (Israel Time)</span></div></td></tr><tr><td style=3D"font-size: 0; paddin=
+g: 0; text-align: left; word-break: break-word;;padding-bottom:24px;"><div =
+style=3D"font-family: Roboto, sans-serif;font-style: normal; font-weight: 4=
+00; font-size: 14px; line-height: 20px; letter-spacing: 0.2px;color: #3c404=
+3; text-decoration: none;" class=3D"primary-text" role=3D"presentation"><ta=
+ble border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"padding-bottom: 4px;"><tr><td><h2 class=3D"primary-text" style=3D"=
+font-size: 14px;color: #3c4043; text-decoration: none;font-weight: 700;-web=
+kit-font-smoothing: antialiased;margin: 0; padding: 0;">Location</h2></td><=
+/tr></table><span itemprop=3D"location" itemscope itemtype=3D"http://schema=
+.org/Place"><span itemprop=3D"name" class=3D"primary-text notranslate" styl=
+e=3D"font-family: Roboto, sans-serif;font-style: normal; font-weight: 400; =
+font-size: 14px; line-height: 20px; letter-spacing: 0.2px;color: #3c4043; t=
+ext-decoration: none;">https://artlist-io.zoom.us/j/82318890657?jst=3D3</sp=
+an><br/><a href=3D"https://www.google.com/url?q=3Dhttps%3A%2F%2Fartlist-io.=
+zoom.us%2Fj%2F82318890657%3Fjst%3D3&amp;sa=3DD&amp;source=3Dcalendar&amp;us=
+t=3D1786177500000000&amp;usg=3DAOvVaw2IBIZlFseFL3T-JigdrXHH" class=3D"accen=
+t-text underline-on-hover" style=3D"display: inline-block;;color: #1a73e8; =
+text-decoration: none;font-weight: 700;" target=3D"_blank" itemprop=3D"map"=
+>View map</a></span></div></td></tr><tr><td style=3D"font-size: 0; padding:=
+ 0; text-align: left; word-break: break-word;;padding-bottom:24px;"><div st=
+yle=3D"font-family: Roboto, sans-serif;font-style: normal; font-weight: 400=
+; font-size: 14px; line-height: 20px; letter-spacing: 0.2px;color: #3c4043;=
+ text-decoration: none;" class=3D"primary-text" role=3D"presentation"><tabl=
+e border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" st=
+yle=3D"padding-bottom: 4px;"><tr><td><h2 class=3D"primary-text" style=3D"fo=
+nt-size: 14px;color: #3c4043; text-decoration: none;font-weight: 700;-webki=
+t-font-smoothing: antialiased;margin: 0; padding: 0;">Guests</h2></td></tr>=
+</table><div style=3D"padding-bottom: 4px; text-align: left;;color: #3c4042=
+;"><div><span itemprop=3D"attendee" itemscope itemtype=3D"http://schema.org=
+/Person"><span itemprop=3D"name" class=3D"notranslate"><a class=3D"primary-=
+text underline-on-hover" style=3D"display: inline-block;;color: #3c4043; te=
+xt-decoration: none;" href=3D"mailto:aviv.e@artlist.io">Aviv Eldan</a></spa=
+n><meta itemprop=3D"email" content=3D"aviv.e@artlist.io"/></span><span item=
+prop=3D"organizer" itemscope itemtype=3D"http://schema.org/Person"><meta it=
+emprop=3D"name" content=3D"Aviv Eldan"/><meta itemprop=3D"email" content=3D=
+"aviv.e@artlist.io"/></span><span class=3D"secondary-text" style=3D"color: =
+#70757a; text-decoration: none;"> - organizer</span></div><div><span itempr=
+op=3D"attendee" itemscope itemtype=3D"http://schema.org/Person"><span itemp=
+rop=3D"name" class=3D"notranslate"><a class=3D"primary-text underline-on-ho=
+ver" style=3D"display: inline-block;;color: #3c4043; text-decoration: none;=
+" href=3D"mailto:contact@hardbanrecordslab.online">contact@hardbanrecordsla=
+b.online</a></span><meta itemprop=3D"email" content=3D"contact@hardbanrecor=
+dslab.online"/></span><span class=3D"secondary-text" style=3D"color: #70757=
+a; text-decoration: none;"></span></div></div><a href=3D"https://calendar.g=
+oogle.com/calendar/event?action=3DVIEW&amp;eid=3DMmQxM2tkamFrcTNsbTVxamlrbm=
+s1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU&amp;tok=3DMTcjYXZpdi5=
+lQGFydGxpc3QuaW8wYjhmZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;c=
+tz=3DAsia%2FJerusalem&amp;hl=3Den&amp;es=3D0" style=3D"display: inline-bloc=
+k;;color: #1a73e8; text-decoration: none;font-weight: 700;" target=3D"_blan=
+k" class=3D"accent-text underline-on-hover">View all guest info</a></div></=
+td></tr><tr><td style=3D"font-size: 0; padding: 0; text-align: left; word-b=
+reak: break-word;;padding-bottom:0px;"><div style=3D"color: #3c4043; text-d=
+ecoration: none;;font-family: Roboto, sans-serif;font-size: 14px; line-heig=
+ht: 20px; mso-line-height-rule: exactly; text-align: left;" class=3D"primar=
+y-text"><div><span style=3D"font-weight: 700;-webkit-font-smoothing: antial=
+iased;">Reply</span><span class=3D"secondary-text" style=3D"color: #70757a;=
+ text-decoration: none;"> for <a class=3D"secondary-text underline-on-hover=
+" style=3D"display: inline-block;;color: #70757a; text-decoration: none;" h=
+ref=3D"mailto:contact@hardbanrecordslab.online">contact@hardbanrecordslab.o=
+nline</a></span></div></div></td></tr><tr><td style=3D"font-size: 0; paddin=
+g: 0; text-align: left; word-break: break-word;;padding-bottom:16px;"><div =
+style=3D"font-family: Roboto, sans-serif;font-size: 14px; line-height: 20px=
+; mso-line-height-rule: exactly; text-align: left;"><table border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"border-coll=
+apse: separate;"><tr><td style=3D"padding-top: 8px; padding-left: 0; paddin=
+g-right: 12px;"><!-- RSVP buttons --><table border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" style=3D"border: solid 1px #dadce0;=
+ border-radius: 16px; border-collapse: separate;font-family: &#39;Google Sa=
+ns&#39;, Roboto, sans-serif;;display: inline-block;;margin-right: 12px; mar=
+gin-left: 0;"><tr><td align=3D"center" vertical-align=3D"middle" role=3D"pr=
+esentation"><span itemprop=3D"potentialaction" itemscope itemtype=3D"http:/=
+/schema.org/RsvpAction"><meta itemprop=3D"attendance" content=3D"http://sch=
+ema.org/RsvpAttendance/Yes"/><span itemprop=3D"handler" itemscope itemtype=
+=3D"http://schema.org/HttpActionHandler"><link itemprop=3D"method" href=3D"=
+http://schema.org/HttpRequestMethod/GET"/><span style=3D"color: #5f6367;"><=
+a href=3D"https://calendar.google.com/calendar/event?action=3DRESPOND&amp;e=
+id=3DMmQxM2tkamFrcTNsbTVxamlrbms1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi=
+5vbmxpbmU&amp;rst=3D1&amp;tok=3DMTcjYXZpdi5lQGFydGxpc3QuaW8wYjhmZTAxODU5OGF=
+lOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;ctz=3DAsia%2FJerusalem&amp;hl=3De=
+n&amp;es=3D0" style=3D"font-weight: 400;font-family: &#39;Google Sans&#39;,=
+ Roboto, sans-serif;color: #5f6368; font-size: 14px; line-height: 120%; mso=
+-line-height-rule: exactly; margin: 0; text-decoration: none; text-transfor=
+m: none;" class=3D"grey-button-text" itemprop=3D"url" target=3D"_blank"><ta=
+ble border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation">=
+<tr><td align=3D"center" role=3D"presentation" valign=3D"middle" style=3D"p=
+adding: 6px 0; padding-left: 16px; padding-right: 12px; white-space: nowrap=
+;"><!--[if mso]><a href=3D"https://calendar.google.com/calendar/event?actio=
+n=3DRESPOND&amp;eid=3DMmQxM2tkamFrcTNsbTVxamlrbms1aG5iOG4gY29udGFjdEBoYXJkY=
+mFucmVjb3Jkc2xhYi5vbmxpbmU&amp;rst=3D1&amp;tok=3DMTcjYXZpdi5lQGFydGxpc3QuaW=
+8wYjhmZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;ctz=3DAsia%2FJer=
+usalem&amp;hl=3Den&amp;es=3D0" class=3D"grey-button-text" itemprop=3D"url" =
+target=3D"_blank"><![endif]--><span class=3D"grey-button-text" style=3D"fon=
+t-weight: 400;font-family: &#39;Google Sans&#39;, Roboto, sans-serif;color:=
+ #5f6368; font-size: 14px; line-height: 120%; mso-line-height-rule: exactly=
+; margin: 0; text-decoration: none; text-transform: none;">Yes</span><!--[i=
+f mso]></a><![endif]--></td></tr></table></a></span></span></span></td><td =
+align=3D"center" vertical-align=3D"middle" role=3D"presentation" style=3D"b=
+order-left: solid 1px #dadce0; border-right: solid 1px #dadce0;"><span item=
+prop=3D"potentialaction" itemscope itemtype=3D"http://schema.org/RsvpAction=
+"><meta itemprop=3D"attendance" content=3D"http://schema.org/RsvpAttendance=
+/No"/><span itemprop=3D"handler" itemscope itemtype=3D"http://schema.org/Ht=
+tpActionHandler"><link itemprop=3D"method" href=3D"http://schema.org/HttpRe=
+questMethod/GET"/><span style=3D"color: #5f6367;"><a href=3D"https://calend=
+ar.google.com/calendar/event?action=3DRESPOND&amp;eid=3DMmQxM2tkamFrcTNsbTV=
+xamlrbms1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU&amp;rst=3D2&am=
+p;tok=3DMTcjYXZpdi5lQGFydGxpc3QuaW8wYjhmZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjl=
+mNzBiZjk5YWEz&amp;ctz=3DAsia%2FJerusalem&amp;hl=3Den&amp;es=3D0" style=3D"f=
+ont-weight: 400;font-family: &#39;Google Sans&#39;, Roboto, sans-serif;colo=
+r: #5f6368; font-size: 14px; line-height: 120%; mso-line-height-rule: exact=
+ly; margin: 0; text-decoration: none; text-transform: none;" class=3D"grey-=
+button-text" itemprop=3D"url" target=3D"_blank"><table border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" role=3D"presentation"><tr><td align=3D"center"=
+ role=3D"presentation" valign=3D"middle" style=3D"padding: 6px 12px; white-=
+space: nowrap;"><!--[if mso]><a href=3D"https://calendar.google.com/calenda=
+r/event?action=3DRESPOND&amp;eid=3DMmQxM2tkamFrcTNsbTVxamlrbms1aG5iOG4gY29u=
+dGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU&amp;rst=3D2&amp;tok=3DMTcjYXZpdi5lQ=
+GFydGxpc3QuaW8wYjhmZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;ctz=
+=3DAsia%2FJerusalem&amp;hl=3Den&amp;es=3D0" class=3D"grey-button-text" item=
+prop=3D"url" target=3D"_blank"><![endif]--><span class=3D"grey-button-text"=
+ style=3D"font-weight: 400;font-family: &#39;Google Sans&#39;, Roboto, sans=
+-serif;color: #5f6368; font-size: 14px; line-height: 120%; mso-line-height-=
+rule: exactly; margin: 0; text-decoration: none; text-transform: none;">No<=
+/span><!--[if mso]></a><![endif]--></td></tr></table></a></span></span></sp=
+an></td><td align=3D"center" vertical-align=3D"middle" role=3D"presentation=
+"><span itemprop=3D"potentialaction" itemscope itemtype=3D"http://schema.or=
+g/RsvpAction"><meta itemprop=3D"attendance" content=3D"http://schema.org/Rs=
+vpAttendance/Maybe"/><span itemprop=3D"handler" itemscope itemtype=3D"http:=
+//schema.org/HttpActionHandler"><link itemprop=3D"method" href=3D"http://sc=
+hema.org/HttpRequestMethod/GET"/><span style=3D"color: #5f6367;"><a href=3D=
+"https://calendar.google.com/calendar/event?action=3DRESPOND&amp;eid=3DMmQx=
+M2tkamFrcTNsbTVxamlrbms1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU=
+&amp;rst=3D3&amp;tok=3DMTcjYXZpdi5lQGFydGxpc3QuaW8wYjhmZTAxODU5OGFlOGE0NTNm=
+ZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;ctz=3DAsia%2FJerusalem&amp;hl=3Den&amp;es=
+=3D0" style=3D"font-weight: 400;font-family: &#39;Google Sans&#39;, Roboto,=
+ sans-serif;color: #5f6368; font-size: 14px; line-height: 120%; mso-line-he=
+ight-rule: exactly; margin: 0; text-decoration: none; text-transform: none;=
+" class=3D"grey-button-text" itemprop=3D"url" target=3D"_blank"><table bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tr><td =
+align=3D"center" role=3D"presentation" valign=3D"middle" style=3D"padding: =
+6px 0; padding-left: 12px; padding-right: 16px; white-space: nowrap;"><!--[=
+if mso]><a href=3D"https://calendar.google.com/calendar/event?action=3DRESP=
+OND&amp;eid=3DMmQxM2tkamFrcTNsbTVxamlrbms1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb=
+3Jkc2xhYi5vbmxpbmU&amp;rst=3D3&amp;tok=3DMTcjYXZpdi5lQGFydGxpc3QuaW8wYjhmZT=
+AxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;ctz=3DAsia%2FJerusalem&a=
+mp;hl=3Den&amp;es=3D0" class=3D"grey-button-text" itemprop=3D"url" target=
+=3D"_blank"><![endif]--><span class=3D"grey-button-text" style=3D"font-weig=
+ht: 400;font-family: &#39;Google Sans&#39;, Roboto, sans-serif;color: #5f63=
+68; font-size: 14px; line-height: 120%; mso-line-height-rule: exactly; marg=
+in: 0; text-decoration: none; text-transform: none;">Maybe</span><!--[if ms=
+o]></a><![endif]--></td></tr></table></a></span></span></span></td></tr></t=
+able><!-- More options --><a href=3D"https://calendar.google.com/calendar/e=
+vent?action=3DVIEW&amp;eid=3DMmQxM2tkamFrcTNsbTVxamlrbms1aG5iOG4gY29udGFjdE=
+BoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU&amp;tok=3DMTcjYXZpdi5lQGFydGxpc3QuaW8wYjh=
+mZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp;ctz=3DAsia%2FJerusale=
+m&amp;hl=3Den&amp;es=3D0" style=3D"display: inline-block;;font-weight: 400;=
+font-family: &#39;Google Sans&#39;, Roboto, sans-serif;color: #5f6368; font=
+-size: 14px; line-height: 120%; mso-line-height-rule: exactly; margin: 0; t=
+ext-decoration: none; text-transform: none;" class=3D"grey-button-text" tar=
+get=3D"_blank"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"border: solid 1px #dadce0; border-radius: 16px; =
+border-collapse: separate;font-family: &#39;Google Sans&#39;, Roboto, sans-=
+serif;"><tr><td align=3D"center" vertical-align=3D"middle" role=3D"presenta=
+tion" style=3D"padding: 6px 0; padding-left: 16px; padding-right: 12px; whi=
+te-space: nowrap;;color: #5f6367;"><!--[if mso]><a href=3D"https://calendar=
+.google.com/calendar/event?action=3DVIEW&amp;eid=3DMmQxM2tkamFrcTNsbTVxamlr=
+bms1aG5iOG4gY29udGFjdEBoYXJkYmFucmVjb3Jkc2xhYi5vbmxpbmU&amp;tok=3DMTcjYXZpd=
+i5lQGFydGxpc3QuaW8wYjhmZTAxODU5OGFlOGE0NTNmZTU2MzA1OTBiMjlmNzBiZjk5YWEz&amp=
+;ctz=3DAsia%2FJerusalem&amp;hl=3Den&amp;es=3D0" class=3D"grey-button-text" =
+target=3D"_blank"><![endif]--><span class=3D"grey-button-text" style=3D"fon=
+t-weight: 400;font-family: &#39;Google Sans&#39;, Roboto, sans-serif;color:=
+ #5f6368; font-size: 14px; line-height: 120%; mso-line-height-rule: exactly=
+; margin: 0; text-decoration: none; text-transform: none;">More options</sp=
+an><!--[if mso]></a><![endif]--></td></tr></table></a></td></tr></table></d=
+iv></td></tr></table></td></tr></tbody></table></div><!--[if mso | IE]></tr=
+></table><![endif]--></td></tr></tbody></table><table border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" role=3D"presentation" align=3D"center" style=3D=
+"width:100%;" class=3D""><tbody><tr><td style=3D"font-size: 0; padding: 0; =
+text-align: left; word-break: break-word;;padding:4px 12px;" class=3D"" ali=
+gn=3D"left"><div class=3D"secondary-text" style=3D"color: #70757a; text-dec=
+oration: none;font-family: Roboto, sans-serif;font-size: 12px; line-height:=
+ 16px; mso-line-height-rule: exactly; text-align: left;"><p>Sent by <a href=
+=3D"https://calendar.google.com/calendar/" class=3D"accent-text underline-o=
+n-hover" style=3D"font-family: Roboto, sans-serif;font-size: 12px; line-hei=
+ght: 16px; mso-line-height-rule: exactly;;color: #1a73e8; text-decoration: =
+none;" target=3D"_blank">Google Calendar</a></p><p>You are receiving this e=
+mail because you are an attendee on the event.</p><p>Forwarding this invita=
+tion could allow any recipient to send a response to the organizer, be adde=
+d to the guest list, invite others regardless of their own invitation statu=
+s, or modify your RSVP. <a class=3D"accent-text underline-on-hover" style=
+=3D"font-family: Roboto, sans-serif;font-size: 12px; line-height: 16px; mso=
+-line-height-rule: exactly;;color: #1a73e8; text-decoration: none;" href=3D=
+"https://support.google.com/calendar/answer/37135#forwarding">Learn more</a=
+></p></div></td></tr></tbody></table></td></tr></tbody></table></span></spa=
+n></body></html>
+--000000000000d40a72065820477c
+Content-Type: text/calendar; charset="UTF-8"; method=REQUEST
+Content-Transfer-Encoding: quoted-printable
+
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VTIMEZONE
+TZID:Asia/Jerusalem
+X-LIC-LOCATION:Asia/Jerusalem
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0300
+TZNAME:IDT
+DTSTART:19700327T020000
+RDATE:19700327T020000
+RDATE:19710326T020000
+RDATE:19720324T020000
+RDATE:19730323T020000
+RDATE:19740329T020000
+RDATE:19750328T020000
+RDATE:19760326T020000
+RDATE:19770325T020000
+RDATE:19780324T020000
+RDATE:19790323T020000
+RDATE:19800328T020000
+RDATE:19810327T020000
+RDATE:19820326T020000
+RDATE:19830325T020000
+RDATE:19840323T020000
+RDATE:19850329T020000
+RDATE:19860328T020000
+RDATE:19870327T020000
+RDATE:19880325T020000
+RDATE:19890324T020000
+RDATE:19900323T020000
+RDATE:19910329T020000
+RDATE:19920327T020000
+RDATE:19930326T020000
+RDATE:19940325T020000
+RDATE:19950324T020000
+RDATE:19960329T020000
+RDATE:19970328T020000
+RDATE:19980327T020000
+RDATE:19990326T020000
+RDATE:20000324T020000
+RDATE:20010323T020000
+RDATE:20020329T020000
+RDATE:20030328T020000
+RDATE:20040326T020000
+RDATE:20050325T020000
+RDATE:20060324T020000
+RDATE:20070323T020000
+RDATE:20080328T020000
+RDATE:20090327T020000
+RDATE:20100326T020000
+RDATE:20110325T020000
+RDATE:20120323T020000
+RDATE:20130329T020000
+RDATE:20140328T020000
+RDATE:20150327T020000
+RDATE:20160325T020000
+RDATE:20170324T020000
+RDATE:20180323T020000
+RDATE:20190329T020000
+RDATE:20200327T020000
+RDATE:20210326T020000
+RDATE:20220325T020000
+RDATE:20230324T020000
+RDATE:20240329T020000
+RDATE:20250328T020000
+RDATE:20260327T020000
+RDATE:20270326T020000
+RDATE:20280324T020000
+RDATE:20290323T020000
+RDATE:20300329T020000
+RDATE:20310328T020000
+RDATE:20320326T020000
+RDATE:20330325T020000
+RDATE:20340324T020000
+RDATE:20350323T020000
+RDATE:20360328T020000
+RDATE:20370327T020000
+END:DAYLIGHT
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0300
+TZNAME:IDT
+DTSTART:20380326T020000
+RRULE:FREQ=3DYEARLY;BYMONTH=3D3;BYDAY=3D4FR
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0300
+TZOFFSETTO:+0200
+TZNAME:IST
+DTSTART:19701025T020000
+RRULE:FREQ=3DYEARLY;BYMONTH=3D10;BYDAY=3D-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=3DAsia/Jerusalem:20260803T173000
+DTEND;TZID=3DAsia/Jerusalem:20260803T180000
+DTSTAMP:20260803T082527Z
+ORGANIZER;CN=3DAviv Eldan:mailto:aviv.e@artlist.io
+UID:2d13kdjakq3lm5qjiknk5hnb8n@google.com
+ATTENDEE;CUTYPE=3DINDIVIDUAL;ROLE=3DREQ-PARTICIPANT;PARTSTAT=3DACCEPTED;RSV=
+P=3DTRUE
+ ;CN=3DAviv Eldan;X-NUM-GUESTS=3D0:mailto:aviv.e@artlist.io
+ATTENDEE;CUTYPE=3DINDIVIDUAL;ROLE=3DREQ-PARTICIPANT;PARTSTAT=3DNEEDS-ACTION=
+;RSVP=3D
+ TRUE;CN=3Dcontact@hardbanrecordslab.online;X-NUM-GUESTS=3D0:mailto:contact=
+@hard
+ banrecordslab.online
+X-MICROSOFT-CDO-OWNERAPPTID:-1763990849
+CREATED:20260803T082515Z
+DESCRIPTION:<p><br>=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80<br><br>Aviv Eldan is inviting you to a=
+ schedu
+ led Zoom meeting.<br>Join Zoom Meeting<br>https://artlist-io.zoom.us/j/823=
+1
+ 8890657<br><br>Meeting agenda<br>https://docs.zoom.us/agenda/doc/51ef0598-=
+7
+ de8-40bc-a40b-e4b5f10f5e3c?from=3Dchext<br><br>Meeting chat link<br>https:=
+//a
+ rtlist-io.zoom.us/launch/jc/82318890657<br><br>Meeting ID: 823 1889 0657<b=
+r
+ ><br>---<br><br>One tap mobile<br>+16699006833\,\,82318890657# US (San Jos=
+e
+ )<br>+16892781000\,\,82318890657# US<br><br><br>---<br><br>Join by SIP<br>=
+=E2=80=A2
+  82318890657@zoomcrc.com<br><br>Join instructions<br>https://artlist-io.zo=
+o
+ m.us/meetings/82318890657/invitations?signature=3D3818GzA-_RyBOlcsDQHSruJq=
+UqP
+ YBSBw93hrL1heCGk<br><br><br><br>=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80</p>
+LAST-MODIFIED:20260803T082515Z
+LOCATION:https://artlist-io.zoom.us/j/82318890657?jst=3D3
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Kamil / Aviv -- Artlist Intro
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:This is an event reminder
+TRIGGER:-P0DT0H10M0S
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+--000000000000d40a72065820477c--
+--000000000000d40a72065820477e
+Content-Type: application/ics; name="invite.ics"
+Content-Disposition: attachment; filename="invite.ics"
+Content-Transfer-Encoding: base64
+
+QkVHSU46VkNBTEVOREFSDQpQUk9ESUQ6LS8vR29vZ2xlIEluYy8vR29vZ2xlIENhbGVuZGFyIDcw
+LjkwNTQvL0VODQpWRVJTSU9OOjIuMA0KQ0FMU0NBTEU6R1JFR09SSUFODQpNRVRIT0Q6UkVRVUVT
+VA0KQkVHSU46VlRJTUVaT05FDQpUWklEOkFzaWEvSmVydXNhbGVtDQpYLUxJQy1MT0NBVElPTjpB
+c2lhL0plcnVzYWxlbQ0KQkVHSU46REFZTElHSFQNClRaT0ZGU0VURlJPTTorMDIwMA0KVFpPRkZT
+RVRUTzorMDMwMA0KVFpOQU1FOklEVA0KRFRTVEFSVDoxOTcwMDMyN1QwMjAwMDANClJEQVRFOjE5
+NzAwMzI3VDAyMDAwMA0KUkRBVEU6MTk3MTAzMjZUMDIwMDAwDQpSREFURToxOTcyMDMyNFQwMjAw
+MDANClJEQVRFOjE5NzMwMzIzVDAyMDAwMA0KUkRBVEU6MTk3NDAzMjlUMDIwMDAwDQpSREFURTox
+OTc1MDMyOFQwMjAwMDANClJEQVRFOjE5NzYwMzI2VDAyMDAwMA0KUkRBVEU6MTk3NzAzMjVUMDIw
+MDAwDQpSREFURToxOTc4MDMyNFQwMjAwMDANClJEQVRFOjE5NzkwMzIzVDAyMDAwMA0KUkRBVEU6
+MTk4MDAzMjhUMDIwMDAwDQpSREFURToxOTgxMDMyN1QwMjAwMDANClJEQVRFOjE5ODIwMzI2VDAy
+MDAwMA0KUkRBVEU6MTk4MzAzMjVUMDIwMDAwDQpSREFURToxOTg0MDMyM1QwMjAwMDANClJEQVRF
+OjE5ODUwMzI5VDAyMDAwMA0KUkRBVEU6MTk4NjAzMjhUMDIwMDAwDQpSREFURToxOTg3MDMyN1Qw
+MjAwMDANClJEQVRFOjE5ODgwMzI1VDAyMDAwMA0KUkRBVEU6MTk4OTAzMjRUMDIwMDAwDQpSREFU
+RToxOTkwMDMyM1QwMjAwMDANClJEQVRFOjE5OTEwMzI5VDAyMDAwMA0KUkRBVEU6MTk5MjAzMjdU
+MDIwMDAwDQpSREFURToxOTkzMDMyNlQwMjAwMDANClJEQVRFOjE5OTQwMzI1VDAyMDAwMA0KUkRB
+VEU6MTk5NTAzMjRUMDIwMDAwDQpSREFURToxOTk2MDMyOVQwMjAwMDANClJEQVRFOjE5OTcwMzI4
+VDAyMDAwMA0KUkRBVEU6MTk5ODAzMjdUMDIwMDAwDQpSREFURToxOTk5MDMyNlQwMjAwMDANClJE
+QVRFOjIwMDAwMzI0VDAyMDAwMA0KUkRBVEU6MjAwMTAzMjNUMDIwMDAwDQpSREFURToyMDAyMDMy
+OVQwMjAwMDANClJEQVRFOjIwMDMwMzI4VDAyMDAwMA0KUkRBVEU6MjAwNDAzMjZUMDIwMDAwDQpS
+REFURToyMDA1MDMyNVQwMjAwMDANClJEQVRFOjIwMDYwMzI0VDAyMDAwMA0KUkRBVEU6MjAwNzAz
+MjNUMDIwMDAwDQpSREFURToyMDA4MDMyOFQwMjAwMDANClJEQVRFOjIwMDkwMzI3VDAyMDAwMA0K
+UkRBVEU6MjAxMDAzMjZUMDIwMDAwDQpSREFURToyMDExMDMyNVQwMjAwMDANClJEQVRFOjIwMTIw
+MzIzVDAyMDAwMA0KUkRBVEU6MjAxMzAzMjlUMDIwMDAwDQpSREFURToyMDE0MDMyOFQwMjAwMDAN
+ClJEQVRFOjIwMTUwMzI3VDAyMDAwMA0KUkRBVEU6MjAxNjAzMjVUMDIwMDAwDQpSREFURToyMDE3
+MDMyNFQwMjAwMDANClJEQVRFOjIwMTgwMzIzVDAyMDAwMA0KUkRBVEU6MjAxOTAzMjlUMDIwMDAw
+DQpSREFURToyMDIwMDMyN1QwMjAwMDANClJEQVRFOjIwMjEwMzI2VDAyMDAwMA0KUkRBVEU6MjAy
+MjAzMjVUMDIwMDAwDQpSREFURToyMDIzMDMyNFQwMjAwMDANClJEQVRFOjIwMjQwMzI5VDAyMDAw
+MA0KUkRBVEU6MjAyNTAzMjhUMDIwMDAwDQpSREFURToyMDI2MDMyN1QwMjAwMDANClJEQVRFOjIw
+MjcwMzI2VDAyMDAwMA0KUkRBVEU6MjAyODAzMjRUMDIwMDAwDQpSREFURToyMDI5MDMyM1QwMjAw
+MDANClJEQVRFOjIwMzAwMzI5VDAyMDAwMA0KUkRBVEU6MjAzMTAzMjhUMDIwMDAwDQpSREFURToy
+MDMyMDMyNlQwMjAwMDANClJEQVRFOjIwMzMwMzI1VDAyMDAwMA0KUkRBVEU6MjAzNDAzMjRUMDIw
+MDAwDQpSREFURToyMDM1MDMyM1QwMjAwMDANClJEQVRFOjIwMzYwMzI4VDAyMDAwMA0KUkRBVEU6
+MjAzNzAzMjdUMDIwMDAwDQpFTkQ6REFZTElHSFQNCkJFR0lOOkRBWUxJR0hUDQpUWk9GRlNFVEZS
+T006KzAyMDANClRaT0ZGU0VUVE86KzAzMDANClRaTkFNRTpJRFQNCkRUU1RBUlQ6MjAzODAzMjZU
+MDIwMDAwDQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRIPTM7QllEQVk9NEZSDQpFTkQ6REFZTElH
+SFQNCkJFR0lOOlNUQU5EQVJEDQpUWk9GRlNFVEZST006KzAzMDANClRaT0ZGU0VUVE86KzAyMDAN
+ClRaTkFNRTpJU1QNCkRUU1RBUlQ6MTk3MDEwMjVUMDIwMDAwDQpSUlVMRTpGUkVRPVlFQVJMWTtC
+WU1PTlRIPTEwO0JZREFZPS0xU1UNCkVORDpTVEFOREFSRA0KRU5EOlZUSU1FWk9ORQ0KQkVHSU46
+VkVWRU5UDQpEVFNUQVJUO1RaSUQ9QXNpYS9KZXJ1c2FsZW06MjAyNjA4MDNUMTczMDAwDQpEVEVO
+RDtUWklEPUFzaWEvSmVydXNhbGVtOjIwMjYwODAzVDE4MDAwMA0KRFRTVEFNUDoyMDI2MDgwM1Qw
+ODI1MjdaDQpPUkdBTklaRVI7Q049QXZpdiBFbGRhbjptYWlsdG86YXZpdi5lQGFydGxpc3QuaW8N
+ClVJRDoyZDEza2RqYWtxM2xtNXFqaWtuazVobmI4bkBnb29nbGUuY29tDQpBVFRFTkRFRTtDVVRZ
+UEU9SU5ESVZJRFVBTDtST0xFPVJFUS1QQVJUSUNJUEFOVDtQQVJUU1RBVD1BQ0NFUFRFRDtSU1ZQ
+PVRSVUUNCiA7Q049QXZpdiBFbGRhbjtYLU5VTS1HVUVTVFM9MDptYWlsdG86YXZpdi5lQGFydGxp
+c3QuaW8NCkFUVEVOREVFO0NVVFlQRT1JTkRJVklEVUFMO1JPTEU9UkVRLVBBUlRJQ0lQQU5UO1BB
+UlRTVEFUPU5FRURTLUFDVElPTjtSU1ZQPQ0KIFRSVUU7Q049Y29udGFjdEBoYXJkYmFucmVjb3Jk
+c2xhYi5vbmxpbmU7WC1OVU0tR1VFU1RTPTA6bWFpbHRvOmNvbnRhY3RAaGFyZA0KIGJhbnJlY29y
+ZHNsYWIub25saW5lDQpYLU1JQ1JPU09GVC1DRE8tT1dORVJBUFBUSUQ6LTE3NjM5OTA4NDkNCkNS
+RUFURUQ6MjAyNjA4MDNUMDgyNTE1Wg0KREVTQ1JJUFRJT046PHA+PGJyPuKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgDxicj48YnI+QXZpdiBFbGRhbiBpcyBpbnZpdGluZyB5b3UgdG8gYSBz
+Y2hlZHUNCiBsZWQgWm9vbSBtZWV0aW5nLjxicj5Kb2luIFpvb20gTWVldGluZzxicj5odHRwczov
+L2FydGxpc3QtaW8uem9vbS51cy9qLzgyMzENCiA4ODkwNjU3PGJyPjxicj5NZWV0aW5nIGFnZW5k
+YTxicj5odHRwczovL2RvY3Muem9vbS51cy9hZ2VuZGEvZG9jLzUxZWYwNTk4LTcNCiBkZTgtNDBi
+Yy1hNDBiLWU0YjVmMTBmNWUzYz9mcm9tPWNoZXh0PGJyPjxicj5NZWV0aW5nIGNoYXQgbGluazxi
+cj5odHRwczovL2ENCiBydGxpc3QtaW8uem9vbS51cy9sYXVuY2gvamMvODIzMTg4OTA2NTc8YnI+
+PGJyPk1lZXRpbmcgSUQ6IDgyMyAxODg5IDA2NTc8YnINCiA+PGJyPi0tLTxicj48YnI+T25lIHRh
+cCBtb2JpbGU8YnI+KzE2Njk5MDA2ODMzXCxcLDgyMzE4ODkwNjU3IyBVUyAoU2FuIEpvc2UNCiAp
+PGJyPisxNjg5Mjc4MTAwMFwsXCw4MjMxODg5MDY1NyMgVVM8YnI+PGJyPjxicj4tLS08YnI+PGJy
+PkpvaW4gYnkgU0lQPGJyPuKAog0KICA4MjMxODg5MDY1N0B6b29tY3JjLmNvbTxicj48YnI+Sm9p
+biBpbnN0cnVjdGlvbnM8YnI+aHR0cHM6Ly9hcnRsaXN0LWlvLnpvbw0KIG0udXMvbWVldGluZ3Mv
+ODIzMTg4OTA2NTcvaW52aXRhdGlvbnM/c2lnbmF0dXJlPTM4MThHekEtX1J5Qk9sY3NEUUhTcnVK
+cVVxUA0KIFlCU0J3OTNockwxaGVDR2s8YnI+PGJyPjxicj48YnI+4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSAPC9wPg0KTEFTVC1NT0RJRklFRDoyMDI2MDgwM1QwODI1MTVaDQpMT0NBVElP
+TjpodHRwczovL2FydGxpc3QtaW8uem9vbS51cy9qLzgyMzE4ODkwNjU3P2pzdD0zDQpTRVFVRU5D
+RTowDQpTVEFUVVM6Q09ORklSTUVEDQpTVU1NQVJZOkthbWlsIC8gQXZpdiAtLSBBcnRsaXN0IElu
+dHJvDQpUUkFOU1A6T1BBUVVFDQpCRUdJTjpWQUxBUk0NCkFDVElPTjpESVNQTEFZDQpERVNDUklQ
+VElPTjpUaGlzIGlzIGFuIGV2ZW50IHJlbWluZGVyDQpUUklHR0VSOi1QMERUMEgxME0wUw0KRU5E
+OlZBTEFSTQ0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg0K
+--000000000000d40a72065820477e--

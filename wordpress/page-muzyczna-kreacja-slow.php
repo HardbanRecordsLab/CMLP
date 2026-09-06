@@ -859,7 +859,7 @@ if ( ! empty( $orders ) ) {
             <div class="product-card"><div class="product-card-icon">📜</div><h3><?php esc_html_e( 'Przeniesienie Praw', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'W pakietach Premium i Firmowy prawa majątkowe przechodzą na klienta. Umowa pisemna w formie elektronicznej.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">🔒</div><h3><?php esc_html_e( 'Poufność', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Wszystkie informacje z briefu są poufne. Nie publikujemy utworów bez zgody klienta.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">✍️</div><h3><?php esc_html_e( 'Rejestr Utworów', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Każdy utwór rejestrowany w wewnętrznym rejestrze HRL. W razie potrzeby wystawiamy oświadczenie o autorstwie.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><div class="product-card-icon">📋</div><h3><?php esc_html_e( 'Licencjonowanie', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory MKS są w 100% autorskie, nie podlegają OZZ. Możesz je odtwarzać publicznie bez dodatkowych opłat.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><div class="product-card-icon">📋</div><h3><?php esc_html_e( 'Licencjonowanie', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory MKS powstają na zamówienie, a zakres praw określa umowa. Otrzymujesz jasno opisane warunki wykorzystania gotowego utworu.', 'hrl-theme' ); ?></p></div>
         </div>
     </div>
 </section>
@@ -871,7 +871,7 @@ if ( ! empty( $orders ) ) {
         <h2 class="section-title"><?php esc_html_e( 'Integracje i Platformy', 'hrl-theme' ); ?></h2>
         <p class="section-desc">            <?php esc_html_e( 'Muzyczna Kreacja Słów współpracuje z platformami dystrybucyjnymi i streamingowymi.', 'hrl-theme' ); ?></p>
         <div class="product-grid">
-            <div class="product-card"><div class="product-card-icon">🎵</div><h3><?php esc_html_e( 'Dystrybucja Streamingowa', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Publikujemy utwór na Spotify, Apple Music, Tidal przez dystrybutora. Klient zachowuje 100% tantiem.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><div class="product-card-icon">🎵</div><h3><?php esc_html_e( 'Dystrybucja Streamingowa', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Na życzenie klienta możemy przygotować utwór do dystrybucji cyfrowej. Zakres praw i sposób wykorzystania ustalamy indywidualnie w umowie.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">📺</div><h3><?php esc_html_e( 'Reklama i Synchronizacja', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory Firmowe mogą być użyte w reklamie TV, radio, social media. Wystawiamy licencję synch.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">📱</div><h3><?php esc_html_e( 'Social Media', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Utwory Muzyczna Kreacja Słów sprawdzają się jako muzyka do rolek, stories, filmów na Instagramie, TikToku i YouTube bez blokad.', 'hrl-theme' ); ?></p></div>
             <div class="product-card"><div class="product-card-icon">📻</div><h3><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></h3><p><?php esc_html_e( 'Wybrane utwory (za zgodą klienta) emitowane w Radiu HRL Live jako przykład możliwości twórczych.', 'hrl-theme' ); ?></p></div>

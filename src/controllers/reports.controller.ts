@@ -122,8 +122,8 @@ export async function getCompliance(req: any, res: Response) {
       unsignedContracts: totalContractsCount - signedCount,
       signingRatio,
       jurisdictionAudit: [
-        { name: 'Poland (ZAiKS)', value: allLicenses.length || 3 },
-        { name: 'EU Exemption', value: 1 }
+        { name: 'Poland (PL)', value: allLicenses.length || 3 },
+        { name: 'European Union', value: 1 }
       ]
     });
   } catch (e) {

@@ -113,6 +113,81 @@ function hrl_child_enqueue_faq() {
 add_action( 'wp_enqueue_scripts', 'hrl_child_enqueue_faq' );
 
 /**
+ * Szablony objęte szatą graficzną CMLP (Navy / Teal / Amber).
+ *
+ * Wyłącznie strona produktowa CMLP oraz dokumenty licencji B2B. Reszta
+ * witryny HRL (strona główna, BlogCast, Radio, MKS) zostaje w motywie
+ * AMOLED-gold — patrz docs/brand-legal/CMLP_Brand_Guidelines.pdf.
+ *
+ * @return string[]
+ */
+function hrl_child_cmlp_templates() {
+    return array(
+        'page-cmlp.php',
+        'page-terms.php',
+        'page-sale-terms.php',
+        'page-license-agreement.php',
+        'page-api-terms.php',
+    );
+}
+
+/**
+ * Slugi stron sekcji CMLP — fallback, gdy szablon jest dobrany przez
+ * konwencję nazwy pliku (page-{slug}.php), a nie wybrany jawnie w edytorze;
+ * wtedy is_page_template() zwraca false.
+ *
+ * @return string[]
+ */
+function hrl_child_cmlp_slugs() {
+    return array( 'cmlp', 'terms', 'sale-terms', 'license-agreement', 'api-terms' );
+}
+
+/**
+ * Czy bieżący widok należy do sekcji CMLP?
+ */
+function hrl_child_is_cmlp_section() {
+    if ( ! is_page() ) {
+        return false;
+    }
+    foreach ( hrl_child_cmlp_templates() as $tpl ) {
+        if ( is_page_template( $tpl ) ) {
+            return true;
+        }
+    }
+    return is_page( hrl_child_cmlp_slugs() );
+}
+
+/**
+ * Szata graficzna CMLP — arkusz ładowany tylko na szablonach sekcji CMLP.
+ * Scope w samym pliku ograniczony do `body.cmlp-brand`, więc nawet
+ * przypadkowe załadowanie gdzie indziej nie zmieni wyglądu.
+ */
+function hrl_child_enqueue_cmlp_brand() {
+    if ( ! hrl_child_is_cmlp_section() ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'hrl-cmlp-brand',
+        get_stylesheet_directory_uri() . '/assets/css/12-cmlp-brand.css',
+        array( 'hrl-child-style' ),
+        wp_get_theme()->get( 'Version' )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'hrl_child_enqueue_cmlp_brand', 20 );
+
+/**
+ * Klasa `cmlp-brand` na <body> dla szablonów sekcji CMLP.
+ */
+function hrl_child_cmlp_body_class( $classes ) {
+    if ( hrl_child_is_cmlp_section() ) {
+        $classes[] = 'cmlp-brand';
+    }
+    return $classes;
+}
+add_filter( 'body_class', 'hrl_child_cmlp_body_class' );
+
+/**
  * Czas czytania w minutach.
  *
  * Motyw nadrzedny liczyl slowa przez str_word_count(), ktory nie obsluguje
@@ -202,8 +277,67 @@ add_action( 'init', 'hrl_child_override_patterns', 20 );
  */
 function hrl_child_sticky_cta_default( $value, $setting ) {
     if ( '' === $value || false === $value ) {
-        return __( 'Gotowy na muzykę bez rachunków od pośredników? <strong>Kontakt →</strong>', 'hrl-theme' );
+        return __( 'Gotowy na autorską muzykę w swoim lokalu? <strong>Kontakt →</strong>', 'hrl-theme' );
     }
     return $value;
 }
 add_filter( 'theme_mod_hrl_sticky_cta_text', 'hrl_child_sticky_cta_default', 10, 2 );
+
+/**
+ * Favicon awaryjny CMLP.
+ *
+ * Jeśli w Ustawieniach → Ikona witryny (Customizer) NIC nie ustawiono,
+ * podajemy monogram CMLP. Gdy admin ustawi własną ikonę HRL — ma pierwszeństwo,
+ * ten kod się nie uruchamia.
+ */
+function hrl_child_cmlp_fallback_favicon() {
+    if ( get_option( 'site_icon' ) ) {
+        return; // Site Icon ustawiony w Customizerze — nie nadpisujemy.
+    }
+    $base = get_stylesheet_directory_uri() . '/images/cmlp';
+    printf(
+        '<link rel="icon" href="%1$s/favicon-32.png" sizes="32x32">' . "\n"
+        . '<link rel="icon" href="%1$s/favicon-512.png" sizes="512x512">' . "\n"
+        . '<link rel="apple-touch-icon" href="%1$s/favicon-180.png">' . "\n"
+        . '<link rel="shortcut icon" href="%1$s/favicon.ico">' . "\n",
+        esc_url( $base )
+    );
+}
+add_action( 'wp_head', 'hrl_child_cmlp_fallback_favicon', 2 );
+
+/**
+ * Meta description / OpenGraph awaryjne dla sekcji CMLP.
+ *
+ * Rank Math (jeśli aktywny) obsługuje meta per-strona i ma pierwszeństwo —
+ * wtedy ten kod nic nie robi. Bez Rank Math strony CMLP dostają sensowne
+ * meta zamiast globalnego opisu witryny.
+ */
+function hrl_child_cmlp_meta() {
+    if ( ! hrl_child_is_cmlp_section() ) {
+        return;
+    }
+    if ( defined( 'RANK_MATH_VERSION' ) || class_exists( 'WPSEO_Frontend' ) ) {
+        return; // wtyczka SEO zarządza meta.
+    }
+
+    // Uwaga: header.php wypisuje już <meta name="description"> z tagline witryny —
+    // nie dublujemy go; dokładamy tylko brakujące tagi OpenGraph / Twitter.
+    $title = wp_get_document_title();
+    $desc  = __( 'CMLP — Collective Music Licensing Project. Autorski katalog muzyki B2B: licencja bezpośrednio od twórcy, jedna umowa, Certyfikat Licencyjny. Muzyka do lokali, na eventy i do produkcji.', 'hrl-theme' );
+    $img   = get_stylesheet_directory_uri() . '/images/cmlp/01_hero_fullcolor_wordmark.png';
+    $url   = ( is_page() && get_queried_object_id() ) ? get_permalink( get_queried_object_id() ) : home_url( '/' );
+
+    printf(
+        '<meta property="og:type" content="website">' . "\n"
+        . '<meta property="og:title" content="%1$s">' . "\n"
+        . '<meta property="og:description" content="%2$s">' . "\n"
+        . '<meta property="og:image" content="%3$s">' . "\n"
+        . '<meta property="og:url" content="%4$s">' . "\n"
+        . '<meta name="twitter:card" content="summary_large_image">' . "\n",
+        esc_attr( $title ),
+        esc_attr( $desc ),
+        esc_url( $img ),
+        esc_url( $url )
+    );
+}
+add_action( 'wp_head', 'hrl_child_cmlp_meta', 1 );

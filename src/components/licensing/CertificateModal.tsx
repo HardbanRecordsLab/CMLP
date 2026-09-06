@@ -162,7 +162,7 @@ export default function CertificateModal({ isOpen, onClose, clientName, address,
       doc.setFontSize(9);
       doc.text(t('certificateModal.signedVerified'), 133, 256);
 
-      doc.save(`Exemption_Certificate_HRL_${certNumber}.pdf`);
+      doc.save(`License_Certificate_HRL_${certNumber}.pdf`);
     } catch (e: unknown) {
       toast.error(t('certificateModal.failedToGenerate'));
       console.error('Failed to generate PDF:', e);

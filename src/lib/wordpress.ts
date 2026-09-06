@@ -191,8 +191,8 @@ function isLocalNewer(localUpdatedAt: string | undefined | null, wpModified: str
 
 // Simulated sync items to provide high-fidelity sandbox experiences in Preview context
 const simulatedWPCmsPayloads = [
-  { id: 101, type: 'post', title: 'New Music Clearance Release Q2 2026', metadata: { artist: 'Hardban Lab', explicit: 'false' } },
-  { id: 102, type: 'page', title: 'ZAiKS/STOART Compliance Exemption Standards', metadata: { jurisdiction: 'PL' } },
+  { id: 101, type: 'post', title: 'New Music Clearance Release Q2 2026', metadata: { artist: 'CMLP / HRL', explicit: 'false' } },
+  { id: 102, type: 'page', title: 'Licensing & Certificate Standards', metadata: { jurisdiction: 'PL' } },
   { id: 103, type: 'custom_post_type', title: 'Electronic Lounge Vol 15 (Direct-Licensed)', metadata: { bpm: '110', genre: 'House' } },
   { id: 104, type: 'post', title: 'Boutique Lounge & Retail Ambiance Playlists', metadata: { mood: 'relaxing' } },
 ];

@@ -1,0 +1,312 @@
+Return-Path: <1axb40rc7uiwszii9rwai6c3uxlxjxnhf100n3@26117460m.email.stability.ai>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id KYuWObX2cGr4sQAA4AkaEw
+	(envelope-from <1axb40rc7uiwszii9rwai6c3uxlxjxnhf100n3@26117460m.email.stability.ai>)
+	for <contact@hardbanrecordslab.online>; Mon, 03 Aug 2026 22:14:45 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=26117460m.email.stability.ai 
+   (client-ip=108.179.144.17; helo=4f2nqb.26117460m.email.stability.ai; 
+   envelope-from=1axb40rc7uiwszii9rwai6c3uxlxjxnhf100n3@26117460m.email.sta
+   bility.ai; receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=none (p=none dis=none) header.from=26117460m.email.stability.ai
+Received: from 4f2nqb.26117460m.email.stability.ai (4f2nqb.26117460m.email.stability.ai [108.179.144.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id 1975B38E021E
+	for <contact@hardbanrecordslab.online>; Mon,  3 Aug 2026 22:14:45 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=26117460m.email.stability.ai header.i=@26117460m.email.stability.ai header.a=rsa-sha256 header.s=hs2 header.b=VsWyiMmo
+Received: by 172.16.113.25 with SMTP id a089896hoz7454wskqy70diptqecpye0jml8n899b4;
+        Mon, 3 Aug 2026 20:14:44 GMT
+DKIM-Signature: v=1; s=hs2; d=26117460m.email.stability.ai; 
+        i=@26117460m.email.stability.ai; 
+        h=sender:from:from:reply-to:to:to:cc:cc:subject:subject:list-unsubscribe:list-id:form-sub:feedback-id:list-unsubscribe-post; 
+        a=rsa-sha256; c=relaxed/relaxed; 
+        bh=MLZQBZDdgV2YdztIaEEH0Tym0A8SRAKLTcGMtG3cEwQ=; 
+        b=VsWyiMmoMwPJgyGZGH1N5YPu4/Njb/nR4B1wyxKKEwUJX91Cl23qlt8fITxlfh
+         5TeIquf86vTXugng7Fn+l/RgVHym1oEXqydY4bugTl0ZLKC4UnGhJEvPWA8GJ1F
+         d0xhIvwkUeRx27b8UnXp3CYvOHgqy54OnSQ5aQbZEeJaE5wdLqXUPJO72baPGYG
+         iSn6gChy/OP1iwgSjg0UulG7hNv6lGj1X0iUcm1ygCaYqqwtPrma5C1aKAFfsH3
+         r9C8wOwIWOb7kU3TTy9KpBompCwH29yeuEH7j8ggcRuAqNU1y3wdJbj/70SzOfL
+         kuiwKksXCNCCiwEIRbdwvCt5f0Vg==; q=dns/txt; t=1785788084; 
+        x=1786050884;
+X-HS-Cid: 1axfw2zerdkhrzdijwj2x22cj9s1ttusfk9swz
+Date: Mon, 3 Aug 2026 21:14:44 +0100
+From: "Joshua Lopez from stability.ai" <support+2D3=stability.ai.eu1.r.hs-inbox.com@26117460m.email.stability.ai>
+To: contact@hardbanrecordslab.online
+Message-ID: <1785788080439.64c48bf1-507a-4ce3-9322-8d0a84fcdce2@26117460m.email.stability.ai>
+Subject: =?utf-8?Q?CMLP_=E2=80=94_licensing_question:_sublic?=
+ =?utf-8?Q?ensing_&_public_performance_rights?=
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_281434_1368656920.1785788084565"
+X-HS-Fax-Cid: 1cngygk7ccx37atwfz7l2a9vcxuein38q4n2s95k1yubfwyfebp8k2n0eoowi92t7kvmopc35axcoljxzq7f8ugo80hx7k8ak4qnpni8c0bs7vr3kq8a6f4jxh5924cjxz6e36
+X-Report-Abuse-To: abuse@hubspot.com (see
+ https://policy.hubspot.com/abuse-complaints)
+Reply-To: "Joshua Lopez from stability.ai" <support-3@stability.ai.eu1.r.hs-inbox.com>
+Feedback-ID: aept2na:ai:aibcvg:HubSpot
+X-CLIENT-IP: 108.179.144.17
+X-CLIENT-HOSTNAME: 4f2nqb.26117460m.email.stability.ai
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTEHroRGFancY4X3Iu0Q65nhLdgFE9dTFkQQprh3K5/TfaRFrGIXdAq2CHxfuIr0n+68Hau4Oe7YN0+tx2hRuOH5ahz01zR9qjXoqrs0C6uHAAsm76gpARMEWQtMv/yKXd+FWwY/dx8umnHp37fJBrv0I2YYHRfJs3EDDHLmaEnCtwbSzPaumtT0yhXn9+YiLJVhxuoyqEacFV6PZes1yE+6iI3ymdzUPKVJO4eP4kXv6643jEN1h0C/O3mk2xBgfArYQKyQE5r6F1hw4hikCWH/RWvow99/eLOKDFLGon6FCFHrCjqnu74Whuxe8RfQoZ+rEfc1MsmkgZnpyiSjix5XiCCe64G2GhLm6IJhntJmbi3JkGRrxCeRvyzn1z2O+i7eJwdWoHb/emySoM6P53CmwETAhebJI3gx9LXowzTFqBB0u1Y8M3Cx/AYHXgOszHzEhedwrKyYzTQdIhSyRNy1ujXCWbwrSTI6KHKDpuLdtrufqwKYaAmmGzMtdITGSqMIfo3zuaWfFs9lzhmtnAUJLU6R+a0lqi/7GHI8RSrCzhmEExzm2dJRJCuMUV95i5bK3lc2AnYvJiKLN/sEkmhJZLGtdh32J8fUSCYmRuZcAEjhh5qOpmXrakLJjaP+sJ22P2c1kfNEsn041IMOIp6nKYSAogN3KIL5P5ZYDGMHeA
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+------=_Part_281434_1368656920.1785788084565
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kamil,
+=09
+Thank you for reaching out!=20
+=09
+We're excited to hear about your project and your interest in seeing how St=
+able Audio could be a great fit! Please find some feedback on your question=
+s below:=20
+=09
+1. This is dependent on how you choose to use/implement Stable Audio. We cu=
+rrently offer 3 options:=20
+2. Stable Audio via our Platform API. Our API allows you to access our Stab=
+le Audio model suite at a per-audio-generation rate. This option does not r=
+equire additional licensing, and you would be free to use your generations =
+for any purpose and own full rights to your creations forever.=20
+3. Stable Audio via stableaudio.com. This option provides you with a web UI=
+ featuring our Stable Audio models. Since your use case would be considered=
+ Enterprise, we would work together on an Enterprise agreement, which may a=
+llow custom options for pricing and licensing.=20
+4. Stable Audio via self-hosting our models. This option allows you to run =
+our Stable Audio models on your own infrastructure, which provides the free=
+dom to use our model to any capacity. This would also require an Enterprise=
+ agreement.=20
+5. =09
+6. If you decide to use Stable Audio via our Platform API, yes, you may use=
+ your outputs as a catalogue, as you have full ownership of your creations.=
+ Otherwise, if you decide to use stableaudio.com or self-host the model, an=
+ Enterprise Agreement must be in place to use your creations as part of a c=
+atalogue.=20
+7. The same terms would apply based on how you intend to use Stable Audio.
+1. Stable Audio via our Platform API. Our API allows you to access our Stab=
+le Audio model suite at a per-audio-generation rate. This option does not r=
+equire additional licensing, and you would be free to use your generations =
+for any purpose and own full rights to your creations forever.=20
+2. Stable Audio via stableaudio.com. This option provides you with a web UI=
+ featuring our Stable Audio models. Since your use case would be considered=
+ Enterprise, we would work together on an Enterprise agreement, which may a=
+llow custom options for pricing and licensing.=20
+3. Stable Audio via self-hosting our models. This option allows you to run =
+our Stable Audio models on your own infrastructure, which provides the free=
+dom to use our model to any capacity. This would also require an Enterprise=
+ agreement.=20
+4. =09
+Please let us know if you have any questions or if you'd like me to connect=
+ you to our Sales/Solutions team to provide more information on an Enterpri=
+se Agreement.=20
+=09
+Thank you!
+
+On Sun, Aug 2, 2026 at 6:36 PM, contact@hardbanrecordslab.online wrote:
+>Email: contact@hardbanrecordslab.online
+>Ticket name: CMLP =E2=80=94 licensing question: sublicensing & public perf=
+ormance rights
+>Product Support: Stable Audio
+>Issue Type: Legal or Data Inquiry
+>Ticket description: Hello,
+>
+>I'm Kamil Skomra, founder of HardbanRecordsLab in Poland. I'm building the=
+ Commercial
+>Music Licensing Platform (CMLP) =E2=80=94 a B2B background music service f=
+or businesses
+>in hospitality, retail, offices, wellness and healthcare. The platform is
+>currently in development.
+>
+>The catalogue is our own =E2=80=94 we produce it ourselves, and we are eva=
+luating AI music
+>tools for part of that production. We are not looking to resell anyone els=
+e's
+>repertoire. Three things about stableaudio.com licence decide whether it f=
+its:
+>
+>1. Ownership =E2=80=94 do we hold the rights in what we generate on your p=
+latform,
+>exclusively, worldwide and perpetually, including after a subscription end=
+s?
+>
+>2. Use as a catalogue =E2=80=94 may we include generated tracks in our own=
+ commercial
+>music library and license them onward to our business customers? Many term=
+s permit
+>commercial use but separately restrict redistribution as stock or library =
+music,
+>so a pointer to the relevant clause is exactly what I need.
+>
+>3. Public performance =E2=80=94 does the licence cover playback in commerc=
+ial premises,
+>and would any collecting society royalties (ZAiKS, GEMA, PRS, ASCAP) still=
+ be
+>payable by us or by our customers?
+>
+>To be clear: CMLP is at the evaluation stage, so this is not an offer and =
+commits
+>neither side to anything. If your licence does not allow library use, plea=
+se just
+>tell me =E2=80=94 it saves us both time. I'm happy to sign a mutual NDA be=
+fore you share
+>anything.
+>
+>If a short call is easier than a written reply, I'm glad to arrange one.
+>
+>Best regards,
+>
+>Kamil Skomra
+>Founder =E2=80=94 HardbanRecordsLab
+>Commercial Music Licensing Platform (CMLP)
+>contact@hardbanrecordslab.online
+>www.hardbanrecordslab.online
+
+------=_Part_281434_1368656920.1785788084565
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html><head></head><body><div class=3D"hs_reply_wrap">
+ <div style=3D"font-family: sans-serif;color: #444444;" dir=3D"auto" data-t=
+op-level=3D"true">
+  <p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Hi Kamil,</span><=
+/p>
+  <p style=3D"margin:0;"><br class=3D"hs-trailingbreak"></p>
+  <p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Thank you for rea=
+ching out! </span></p>
+  <p style=3D"margin:0;"><br class=3D"hs-trailingbreak"></p>
+  <p style=3D"margin:0;"><span style=3D"font-size: 10pt;">We're excited to =
+hear about your project and your interest in seeing how Stable Audio could =
+be a great fit! Please find some feedback on your questions below: </span><=
+/p>
+  <p style=3D"margin:0;"><br class=3D"hs-trailingbreak"></p>
+  <ol>
+   <li><p style=3D"margin:0;"><span style=3D"font-size: 10pt;">This is depe=
+ndent on how you choose to use/implement Stable Audio. We currently offer 3=
+ options: </span></p>
+    <ol>
+     <li><p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Stable Aud=
+io via our Platform API. Our API allows you to access our Stable Audio mode=
+l suite at a per-audio-generation rate. This option does </span><strong><sp=
+an style=3D"font-size: 10pt;">not</span></strong><span style=3D"font-size: =
+10pt;"> require additional licensing, and you would be free to use your gen=
+erations for any purpose and own full rights to your creations forever. </s=
+pan></p></li>
+     <li><p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Stable Aud=
+io via stableaudio.com. This option provides you with a web UI featuring ou=
+r Stable Audio models. Since your use case would be considered Enterprise, =
+we would work together on an Enterprise agreement, which may allow custom o=
+ptions for pricing and licensing. </span></p></li>
+     <li><p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Stable Aud=
+io via self-hosting our models. This option allows you to run our Stable Au=
+dio models on your own infrastructure, which provides the freedom to use ou=
+r model to any capacity. This would also require an Enterprise agreement. <=
+/span></p><p style=3D"margin:0;"><br class=3D"hs-trailingbreak"></p></li>
+    </ol></li>
+   <li style=3D"font-size: 10pt;"><p style=3D"margin:0;"><span style=3D"fon=
+t-size: 10pt;">If you decide to use Stable Audio via our Platform API, yes,=
+ you may use your outputs as a catalogue, as you have full ownership of you=
+r creations. Otherwise, if you decide to use stableaudio.com or self-host t=
+he model, an Enterprise Agreement must be in place to use your creations as=
+ part of a catalogue. </span></p></li>
+   <li style=3D"font-size: 10pt;"><p style=3D"margin:0;"><span style=3D"fon=
+t-size: 10pt;">The same terms would apply based on how you intend to use St=
+able Audio.</span></p></li>
+  </ol>
+  <p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Please let us kno=
+w if you have any questions or if you'd like me to connect you to our Sales=
+/Solutions team to provide more information on an Enterprise Agreement. </s=
+pan></p>
+  <p style=3D"margin:0;"><br class=3D"hs-trailingbreak"></p>
+  <p style=3D"margin:0;"><span style=3D"font-size: 10pt;">Thank you!</span>=
+</p>
+ </div>
+ <div class=3D"hs_reply">
+  <br>
+  <div>
+   On Sun, Aug 2, 2026 at 6:36 PM,=20
+   <span dir=3D"ltr">&lt;<a href=3D"mailto:contact@hardbanrecordslab.online=
+" target=3D"_blank">contact@hardbanrecordslab.online</a>&gt;</span> wrote:
+   <br>
+   <blockquote class=3D"hs_reply_quote" style=3D"margin:0 0 0 .8ex;border-l=
+eft:1px #ccc solid;padding-left:1ex">
+    <div>
+     Email: contact@hardbanrecordslab.online
+    </div>
+    <div>
+     Ticket name: CMLP =E2=80=94 licensing question: sublicensing &amp; pub=
+lic performance rights
+    </div>
+    <div>
+     Product Support: Stable Audio
+    </div>
+    <div>
+     Issue Type: Legal or Data Inquiry
+    </div>
+    <div>
+     Ticket description: Hello,=20
+     <br>=20
+     <br> I'm Kamil Skomra, founder of HardbanRecordsLab in Poland. I'm bui=
+lding the Commercial=20
+     <br> Music Licensing Platform (CMLP) =E2=80=94 a B2B background music =
+service for businesses=20
+     <br> in hospitality, retail, offices, wellness and healthcare. The pla=
+tform is=20
+     <br> currently in development.=20
+     <br>=20
+     <br> The catalogue is our own =E2=80=94 we produce it ourselves, and w=
+e are evaluating AI music=20
+     <br> tools for part of that production. We are not looking to resell a=
+nyone else's=20
+     <br> repertoire. Three things about stableaudio.com licence decide whe=
+ther it fits:=20
+     <br>=20
+     <br> 1. Ownership =E2=80=94 do we hold the rights in what we generate =
+on your platform,=20
+     <br> exclusively, worldwide and perpetually, including after a subscri=
+ption ends?=20
+     <br>=20
+     <br> 2. Use as a catalogue =E2=80=94 may we include generated tracks i=
+n our own commercial=20
+     <br> music library and license them onward to our business customers? =
+Many terms permit=20
+     <br> commercial use but separately restrict redistribution as stock or=
+ library music,=20
+     <br> so a pointer to the relevant clause is exactly what I need.=20
+     <br>=20
+     <br> 3. Public performance =E2=80=94 does the licence cover playback i=
+n commercial premises,=20
+     <br> and would any collecting society royalties (ZAiKS, GEMA, PRS, ASC=
+AP) still be=20
+     <br> payable by us or by our customers?=20
+     <br>=20
+     <br> To be clear: CMLP is at the evaluation stage, so this is not an o=
+ffer and commits=20
+     <br> neither side to anything. If your licence does not allow library =
+use, please just=20
+     <br> tell me =E2=80=94 it saves us both time. I'm happy to sign a mutu=
+al NDA before you share=20
+     <br> anything.=20
+     <br>=20
+     <br> If a short call is easier than a written reply, I'm glad to arran=
+ge one.=20
+     <br>=20
+     <br> Best regards,=20
+     <br>=20
+     <br> Kamil Skomra=20
+     <br> Founder =E2=80=94 HardbanRecordsLab=20
+     <br> Commercial Music Licensing Platform (CMLP)=20
+     <br> contact@hardbanrecordslab.online=20
+     <br> www.hardbanrecordslab.online
+    </div>
+   </blockquote>
+  </div>
+ </div>
+</div><img width=3D"1" height=3D"1" style=3D"display:none" alt=3D"" src=3D"=
+https://d33TCH04.eu1.hs-service-engage.com/Cto/UC+23284/d33TCH04/R5R8b47CgN=
+6Q50R52fDC_W1-ZLjS3H4MgfW24VJFJ1X1QxJW1Gd2YZ24QZL5W1X0cM43JJMq9W23fQWF1Z0Nv=
+Ln1YZ1c44W1"></body></html>
+------=_Part_281434_1368656920.1785788084565--
+

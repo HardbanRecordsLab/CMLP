@@ -1,16 +1,30 @@
 <?php
 /**
  * Template Name: Radio HRL
- * Pełnoekranowa strona radia z odtwarzaczem AzuraCast.
- * Rozbudowana o 16 sekcji eksperckich.
+ * Radio HRL Live — pelnoekranowa strona stacji (wersja bezpieczna 2026)
  *
- * @package HRL_Theme
- * @version 4.0.0
+ * WAZNE — zakres komunikatu:
+ * Wersja swiadomie NIE zawiera deklaracji o braku podleglosci organizacjom
+ * zbiorowego zarzadzania ani o braku tantiem. Usunieto rowniez odwolania do
+ * "Certyfikatu Zwolnienia z OZZ" i "Certyfikatu Wolnosci QR".
+ *
+ * Poprawki wzgledem motywu nadrzednego:
+ *  - usunieta sprzecznosc: sekcja "Zastosowania" polecala radio do lokali
+ *    uslugowych, podczas gdy FAQ mowilo, ze sluzy do uzytku prywatnego,
+ *  - naprawiona numeracja FAQ (brakowalo pozycji 8, skok z 7 na 9),
+ *  - dostepny akordeon FAQ zamiast inline onclick,
+ *  - usuniety przycisk "Sluchaj Radia HRL" linkujacy do tej samej strony,
+ *  - usuniete niezweryfikowane dane liczbowe o rynku radiowym,
+ *  - dwie osobne sekcje CTA na koncu polaczone w jedna.
+ *
+ * @package HRL_Theme_Child
+ * @version 5.0.0
  */
 
 get_header();
 ?>
 
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 <section class="hero" style="min-height:80vh;">
     <div class="hero-content">
         <p class="hero-eyebrow"><?php esc_html_e( 'Non-Stop Stream', 'hrl-theme' ); ?></p>
@@ -19,7 +33,7 @@ get_header();
             <span class="gold-text"><?php esc_html_e( 'HRL Live', 'hrl-theme' ); ?></span>
         </h1>
         <p class="hero-desc">
-            <?php esc_html_e( 'Całodobowy strumień autorskiej muzyki komercyjnej. Słuchaj za darmo. Bez reklam. Bez ZAiKS. 100% Direct Licensing.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Całodobowy strumień z całym katalogiem HardbanRecords Lab. Za darmo, bez reklam, bez rejestracji.', 'hrl-theme' ); ?>
         </p>
 
         <div class="radio-section">
@@ -30,477 +44,424 @@ get_header();
                 <span class="bar"></span><span class="bar"></span><span class="bar"></span>
             </div>
             <div class="radio-player-controls">
-                <button id="radioPlayBtn" class="radio-play-btn" aria-label="Play Radio">▶</button>
+                <button id="radioPlayBtn" class="radio-play-btn" aria-label="<?php esc_attr_e( 'Odtwórz radio', 'hrl-theme' ); ?>">▶</button>
                 <div class="radio-info">
                     <span class="radio-title">Radio HRL</span>
-                    <span id="radioStatus" class="radio-status">Gotowy do odtwarzania</span>
+                    <span id="radioStatus" class="radio-status"><?php esc_html_e( 'Gotowy do odtwarzania', 'hrl-theme' ); ?></span>
                 </div>
                 <div class="radio-volume">
                     <span class="vol-icon">🔊</span>
-                    <input type="range" id="radioVolume" min="0" max="100" value="80" class="vol-slider">
+                    <input type="range" id="radioVolume" min="0" max="100" value="80" class="vol-slider" aria-label="<?php esc_attr_e( 'Głośność', 'hrl-theme' ); ?>">
                 </div>
             </div>
             <audio id="radioAudio" preload="none">
                 <source src="https://radio.hardbanrecordslab.online/radio/8000/radio.mp3" type="audio/mpeg">
             </audio>
             <p class="text-tertiary text-center text-xs">
-                Stream 128kbps MP3 · AzuraCast · 24/7
+                <?php esc_html_e( 'Stream 128 kbps MP3 · AzuraCast · 24/7', 'hrl-theme' ); ?>
             </p>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 1: WPROWADZENIE ════════════════════════ -->
+<!-- ════════════════════ SEKCJA 1: WPROWADZENIE ════════════════════ -->
 <section class="section section-dark" id="wprowadzenie">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Radio HRL Live', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Wprowadzenie do Radia HRL Live', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Wprowadzenie', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live to całodobowy, darmowy strumień autorskiej muzyki komercyjnej nadawany przez HardbanRecords Lab. Działa na silniku AzuraCast — profesjonalnej platformie streamingowej open-source, która zapewnia niezawodność na poziomie 99,9% dostępności i obsługę do 1000 równoczesnych słuchaczy na strumień.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Radio HRL Live to całodobowy, darmowy strumień autorskiej muzyki nadawany przez HardbanRecords Lab. Działa na silniku AzuraCast — profesjonalnej platformie streamingowej open-source używanej przez tysiące stacji internetowych na świecie.', 'hrl-theme' ); ?>
         </p>
         <p class="section-desc">
-            <?php esc_html_e( 'W przeciwieństwie do komercyjnych stacji radiowych (RMF, Zet, Eska), Radio HRL Live nie emituje reklam, nie podlega organizacjom zbiorowego zarządzania (ZAiKS, STOART, ZPAV, SAWP) i nie wymaga żadnych opłat licencyjnych od słuchaczy. Każdy utwór w naszym streamie pochodzi z w pełni autorskiego katalogu HRL — co oznacza, że słuchasz legalnie i bez tantiem. To nie jest kolejne radio internetowe — to manifest niezależności muzycznej.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'W odróżnieniu od komercyjnych stacji radiowych nie emitujemy reklam i nie ograniczamy repertuaru do wąskiego zestawu przebojów. Każdy utwór w strumieniu pochodzi z katalogu HRL — skomponowany, nagrany i zmasterowany u nas. To nie jest kolejne radio internetowe, tylko projekt, w którym słychać wyłącznie naszą muzykę.', 'hrl-theme' ); ?>
         </p>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 2: CZYM JEST RADIO ════════════════════════ -->
+<!-- ════════════════════ SEKCJA 2: CZYM JEST ════════════════════ -->
 <section class="section" id="czym-jest">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Definicja', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Czym Jest Radio HRL Live?', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Czym jest Radio HRL Live?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live to autorska stacja radiowa online, która emituje wyłącznie utwory stworzone od podstaw przez zespół kompozytorów HardbanRecords Lab. Stacja działa w trybie 24/7/365 bez przerw technicznych. Stream dostępny jest przez protokół HTTPS w formacie MP3 128kbps, co zapewnia kompatybilność ze wszystkimi nowoczesnymi urządzeniami i przeglądarkami.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'To autorska stacja online emitująca wyłącznie utwory stworzone przez zespół HardbanRecords Lab. Nadaje w trybie ciągłym, bez przerw programowych. Strumień dostępny jest przez HTTPS w formacie MP3 128 kbps, co zapewnia zgodność ze wszystkimi nowoczesnymi urządzeniami i przeglądarkami.', 'hrl-theme' ); ?>
         </p>
         <p class="section-desc">
-            <?php esc_html_e( 'Radio wykorzystuje silnik AzuraCast z wbudowanym auto-DJ-em, który automatycznie dobiera utwory z katalogu, tworząc płynne przejścia między utworami. Stacja nie nadaje programów na żywo, wiadomości ani reklam — to czysty, nieprzerwany strumień muzyki, idealny jako tło dźwiękowe w pracy, domu czy lokalu usługowym. Dla klientów biznesowych CMLP Radio HRL Live stanowi uzupełnienie licencji komercyjnej.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Radio korzysta z silnika AzuraCast z wbudowanym auto-DJ-em, który dobiera utwory z katalogu i tworzy płynne przejścia. Nie nadajemy programów na żywo, wiadomości ani reklam — to czysty, nieprzerwany strumień muzyki, dobry jako tło przy pracy albo w domu.', 'hrl-theme' ); ?>
         </p>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 3: DLACZEGO POTRZEBNE ════════════════════════ -->
+<!-- ════════════════════ SEKCJA 3: DLACZEGO POWSTAŁO ════════════════════ -->
 <section class="section section-dark" id="dlaczego">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Problem Rynku Radiowego', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Dlaczego Powstało Radio HRL?', 'hrl-theme' ); ?></h2>
+        <p class="section-label"><?php esc_html_e( 'Geneza', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Dlaczego powstało Radio HRL?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Tradycyjne radio komercyjne w Polsce jest głęboko uwikłane w system organizacji zbiorowego zarządzania. Każda stacja radiowa musi płacić ZAiKS, STOART, ZPAV i SAWP — łącznie nawet 15-20% przychodów z reklam odpływa na tantiemy. Co więcej, słuchacz radia komercyjnego nie ma pewności, czy utwory są legalnie licencjonowane. W przypadku Radia HRL Live ta niepewność znika.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Tworzymy muzykę, ale przez lata nie mieliśmy miejsca, w którym można jej po prostu posłuchać w całości. Katalogu nie publikujemy w serwisach streamingowych, więc radio stało się naturalnym rozwiązaniem — jedno miejsce, gdzie leci wszystko, co nagraliśmy.', 'hrl-theme' ); ?>
         </p>
         <p class="section-desc">
-            <?php esc_html_e( 'Dodatkowo, tradycyjne radio bombarduje słuchaczy reklamami (średnio 12-15 minut na godzinę), ogranicza wybór muzyki do wąskiego kanonu "radiowych hitów" i nie oferuje możliwości personalizacji. Radio HRL Live eliminuje te problemy: zero reklam, pełen katalog autorskiej muzyki we wszystkich gatunkach, dostęp 24/7 z dowolnego miejsca na świecie. To radio stworzone dla ludzi, którzy mają dość komercyjnego szumu.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Drugi powód jest prostszy: komercyjne radio przerywa muzykę reklamami i wraca do tych samych kilkudziesięciu utworów. Chcieliśmy stacji, która gra bez przerwy i bez powtarzania w kółko tego samego — otwartej dla każdego, bez opłat i bez zakładania konta.', 'hrl-theme' ); ?>
         </p>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 4: JAK DZIAŁA ════════════════════════ -->
+<!-- ════════════════════ SEKCJA 4: JAK DZIAŁA ════════════════════ -->
 <section class="section" id="jak-dziala">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Mechanizm Działania', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Jak Działa Radio HRL Live?', 'hrl-theme' ); ?></h2>
+        <p class="section-label"><?php esc_html_e( 'Mechanizm działania', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Jak działa Radio HRL Live?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live opiera się na architekturze klient-serwer z wykorzystaniem protokołu HTTP Live Streaming (HLS). Serwerem źródłowym jest AzuraCast — wiodąca platforma open-source do zarządzania stacjami radiowymi online.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Radio opiera się na architekturze klient–serwer. Serwerem źródłowym jest AzuraCast, platforma open-source do zarządzania stacjami radiowymi online.', 'hrl-theme' ); ?>
         </p>
-        <p class="section-desc" style="margin-top:-32px;">
-            <?php esc_html_e( 'Proces techniczny: (1) Katalog audio HRL jest zsynchronizowany z biblioteką AzuraCast. (2) Auto-DJ odtwarza utwory w losowej lub zaplanowanej kolejności, zapewniając płynne przejścia dzięki crossfadowi. (3) Sygnał audio jest kodowany w locie do formatu MP3 128kbps przez FFmpeg. (4) Strumień jest przesyłany przez serwer Icecast2 do odtwarzacza słuchacza. (5) Słuchacz łączy się przez HTTPS z poziomu przeglądarki, aplikacji PWA lub dowolnego klienta obsługującego MP3 stream. Cały proces od wyboru utworu do usłyszenia go przez słuchacza zajmuje mniej niż 2 sekundy.', 'hrl-theme' ); ?>
-        </p>
+        <ol class="hrl-radio-steps">
+            <li><?php esc_html_e( 'Katalog audio HRL jest zsynchronizowany z biblioteką AzuraCast.', 'hrl-theme' ); ?></li>
+            <li><?php esc_html_e( 'Auto-DJ odtwarza utwory w losowej lub zaplanowanej kolejności, zapewniając płynne przejścia dzięki crossfadowi.', 'hrl-theme' ); ?></li>
+            <li><?php esc_html_e( 'Sygnał audio jest kodowany w locie do formatu MP3 128 kbps przez FFmpeg.', 'hrl-theme' ); ?></li>
+            <li><?php esc_html_e( 'Strumień trafia przez serwer Icecast2 do odtwarzacza słuchacza.', 'hrl-theme' ); ?></li>
+            <li><?php esc_html_e( 'Słuchacz łączy się przez HTTPS z przeglądarki, aplikacji PWA lub dowolnego klienta obsługującego strumień MP3.', 'hrl-theme' ); ?></li>
+        </ol>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 5: KLUCZOWE FUNKCJE ════════════════════════ -->
-<section class="section" id="funkcje" style="background:rgba(18,15,12,0.15);">
+<!-- ════════════════════ SEKCJA 5: KLUCZOWE FUNKCJE ════════════════════ -->
+<section class="section section-dark" id="funkcje">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Funkcjonalności', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Kluczowe Funkcje Radia HRL Live', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live oferuje funkcjonalności niedostępne w tradycyjnych stacjach radiowych, łącząc prostotę odbioru z zaawansowaną technologią.', 'hrl-theme' ); ?>
-        </p>
+        <h2 class="section-title"><?php esc_html_e( 'Kluczowe funkcje', 'hrl-theme' ); ?></h2>
         <div class="product-grid">
             <div class="product-card">
                 <div class="product-card-icon">🎵</div>
-                <h3><?php esc_html_e( 'Autorskie Utwory', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( '100% własnego katalogu. Kompozycje, nagrania i mastering wykonane w całości przez HardbanRecords Lab.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Autorski katalog', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Kompozycje, nagrania i mastering wykonane w całości przez HardbanRecords Lab.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">🚫</div>
-                <h3><?php esc_html_e( 'Zero OZZ', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Żaden utwór nie podlega organizacjom zbiorowego zarządzania. Słuchasz legalnie i bez tantiem.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Zero reklam', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Żadnych bloków reklamowych, dżingli sponsorskich ani przerw handlowych. Sama muzyka.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">📡</div>
-                <h3><?php esc_html_e( 'AzuraCast Engine', 'hrl-theme' ); ?></h3>
+                <h3><?php esc_html_e( 'Silnik AzuraCast', 'hrl-theme' ); ?></h3>
                 <p><?php esc_html_e( 'Profesjonalna platforma streamingowa z auto-DJ-em, harmonogramem i statystykami słuchalności.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">🌐</div>
-                <h3><?php esc_html_e( 'Dostęp Globalny', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Strumień dostępny na całym świecie przez HTTPS. Kompatybilny z każdą przeglądarką i urządzeniem mobilnym.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Dostęp globalny', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Strumień dostępny przez HTTPS z każdego miejsca, w każdej przeglądarce i na urządzeniach mobilnych.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">📱</div>
                 <h3><?php esc_html_e( 'Tryb PWA', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Aplikację radiową możesz dodać do ekranu głównego smartfona jak natywną apkę. Działa offline dla buforowanego streamu.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">🔊</div>
-                <h3><?php esc_html_e( 'Jakość 128kbps', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Stream MP3 128kbps zoptymalizowany pod kątem stabilności i kompatybilności. Pasmo przenoszenia 20Hz-16kHz, dynamika 80dB.', 'hrl-theme' ); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════ SEKCJA 6: TECHNOLOGIE ════════════════════════ -->
-<section class="section" id="technologie">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Stack Technologiczny', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Technologie Pod Radiem HRL', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live wykorzystuje sprawdzone technologie streamingowe, które gwarantują stabilność, jakość i bezpieczeństwo nadawania.', 'hrl-theme' ); ?>
-        </p>
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-card-icon">🎛️</div>
-                <h3><?php esc_html_e( 'Silnik: AzuraCast', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Wiodąca platforma open-source do zarządzania stacjami radiowymi. Oparty na Laravel, z wbudowanym auto-DJ-em (Liquidsoap), panelem administracyjnym, statystykami w czasie rzeczywistym i obsługą wielu strumieni równocześnie.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">📡</div>
-                <h3><?php esc_html_e( 'Serwer: Icecast2', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Serwer streamingowy Icecast2 (v2.4) obsługuje do 1000 równoczesnych połączeń na strumień. Protokół HTTPS z TLS 1.3. Niskie opóźnienie (bufory 5-10s). Wsparcie dla montażu/listenerów.', 'hrl-theme' ); ?></p>
+                <p><?php esc_html_e( 'Stronę radia dodasz do ekranu głównego na iOS i Androidzie — działa wtedy jak zwykła aplikacja.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">🎚️</div>
-                <h3><?php esc_html_e( 'Audio: FFmpeg + Liquidsoap', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'FFmpeg transkoduje źródłowe pliki FLAC 24-bit do MP3 128kbps w locie. Liquidsoap zarządza kolejkowaniem utworów, crossfadem i normalizacją głośności (EBU R128).', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">☁️</div>
-                <h3><?php esc_html_e( 'Infrastruktura', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Serwer VPS w Hetzner (Finlandia) na wydzielonej maszynie z 8 vCPU, 16 GB RAM, NVMe SSD. System: Ubuntu 22.04 LTS. Monitoring 24/7 przez Uptime Kuma z alertami na Discord.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Wyrównana głośność', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Normalizacja poziomu między utworami — kolejny kawałek nie wchodzi dwa razy głośniej od poprzedniego.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 7: KORZYŚCI ════════════════════════ -->
-<section class="section" id="korzysci" style="background:rgba(18,15,12,0.15);">
+<!-- ════════════════════ SEKCJA 6: STACK TECHNOLOGICZNY ════════════════════ -->
+<section class="section" id="technologie">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Dlaczego Radio HRL', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Korzyści Słuchania Radia HRL Live', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live to nie tylko muzyka — to całościowe doświadczenie wolne od komercji, reklam i ograniczeń licencyjnych.', 'hrl-theme' ); ?>
-        </p>
+        <p class="section-label"><?php esc_html_e( 'Stack technologiczny', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Technologie pod Radiem HRL', 'hrl-theme' ); ?></h2>
         <div class="product-grid">
             <div class="product-card">
-                <h3><?php esc_html_e( 'Całkowicie Darmowe', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Zero subskrypcji, zero opłat, zero reklam. Radio jest finansowane przez HRL jako demonstracja technologii Direct Licensing i narzędzie promocji katalogu B2B.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Silnik: AzuraCast', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Platforma open-source do zarządzania stacją: biblioteka, playlisty, harmonogramy i statystyki w jednym panelu.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
-                <h3><?php esc_html_e( 'Legalność bez Kompromisów', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Wszystkie utwory w streamie są w 100% autorskie. Możesz słuchać w miejscu publicznym bez obaw o kontrole OZZ. Certyfikat Direct Licensing obejmuje stream radiowy.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Serwer: Icecast2', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Sprawdzony serwer streamingowy obsługujący HTTP i HTTPS, odpowiedzialny za dystrybucję strumienia do słuchaczy.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
-                <h3><?php esc_html_e( 'Różnorodność Gatunkowa', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Ambient, jazz, bossa nova, pop, rock, EDM, muzyka klasyczna, world music. Auto-DJ miksuje gatunki w sposób organiczny, tworząc nieprzewidywalny, ale spójny strumień.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Audio: FFmpeg + Liquidsoap', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'FFmpeg koduje sygnał w locie, Liquidsoap odpowiada za kolejkowanie utworów, crossfade i normalizację.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
-                <h3><?php esc_html_e( 'Dostępność 24/7/365', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Radio nadaje non-stop bez przerw technicznych. W przypadku awarii serwera, automatyczny failover przełącza na backup w ciągu 30 sekund. 99,9% SLA.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Infrastruktura', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Własny serwer VPS z certyfikatem SSL i monitoringiem dostępności strumienia.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 8: ZASTOSOWANIA ════════════════════════ -->
-<section class="section" id="zastosowania">
+<!-- ════════════════════ SEKCJA 7: DLA KOGO ════════════════════ -->
+<section class="section section-dark" id="zastosowania">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Zastosowania', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Zastosowania Radia HRL Live', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Do czego nadaje się Radio HRL Live', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live znajduje zastosowanie w wielu kontekstach — od prywatnego słuchania po komercyjne wykorzystanie w lokalu.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Radio jest przeznaczone do słuchania prywatnego. Odtwarzanie muzyki w lokalu, na evencie lub w innym miejscu publicznym to osobna sytuacja — obsługuje ją licencja CMLP.', 'hrl-theme' ); ?>
         </p>
         <div class="product-grid">
             <div class="product-card">
+                <div class="product-card-icon">🎧</div>
+                <h3><?php esc_html_e( 'Praca i skupienie', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Tło dźwiękowe bez tekstów przebojów wpadających w ucho i bez reklam przerywających w połowie zdania.', 'hrl-theme' ); ?></p>
+            </div>
+            <div class="product-card">
                 <div class="product-card-icon">🏠</div>
-                <h3><?php esc_html_e( 'Słuchanie Prywatne', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Idealne jako muzyka tła do pracy, nauki, czytania lub relaksu. Bez reklam, bez gadanych programów, bez przerw — tylko czysty strumień muzyki.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Słuchanie w domu', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Włączasz i zostawiasz. Bez kolejkowania playlist i bez algorytmu podsuwającego ciągle to samo.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
-                <div class="product-card-icon">☕</div>
-                <h3><?php esc_html_e( 'Małe Lokale Usługowe', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Kawiarnie, małe sklepy, salony fryzjerskie, gabinety — Radio HRL Live to darmowa alternatywa dla płatnych licencji. Uwaga: sprawdź warunki licencji CMLP dla komercyjnego wykorzystania.', 'hrl-theme' ); ?></p>
+                <div class="product-card-icon">🔍</div>
+                <h3><?php esc_html_e( 'Poznanie katalogu HRL', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Ponieważ nie publikujemy muzyki w serwisach streamingowych, radio jest najprostszym sposobem, żeby usłyszeć, jak brzmi nasz materiał.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
-                <div class="product-card-icon">🎪</div>
-                <h3><?php esc_html_e( 'Eventy i Spotkania', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Tło dźwiękowe na przyjęciach, spotkaniach firmowych, konferencjach. Stream można łatwo podłączyć do dowolnego systemu nagłośnienia.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">📻</div>
-                <h3><?php esc_html_e( 'Inspiracja dla Klientów CMLP', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Radio demonstruje potencjał katalogu HRL. Klienci CMLP mogą przesłuchać stream, aby poznać stylistykę utworów przed zakupem licencji.', 'hrl-theme' ); ?></p>
+                <div class="product-card-icon">🏪</div>
+                <h3><?php esc_html_e( 'Lokal lub event?', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Do odtwarzania publicznego potrzebna jest licencja komercyjna — tym zajmuje się platforma CMLP, gdzie dostajesz też kontrolę nad playlistą.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 9: PROCES ════════════════════════ -->
-<section class="section" id="proces" style="background:rgba(18,15,12,0.15);">
+<!-- ════════════════════ SEKCJA 8: JAK SŁUCHAĆ ════════════════════ -->
+<section class="section" id="jak-sluchac">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Jak Zacząć Słuchać', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Jak Słuchać Radia HRL Live w 3 Krokach', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Rozpoczęcie słuchania Radia HRL Live jest natychmiastowe i nie wymaga rejestracji, logowania ani podawania danych osobowych.', 'hrl-theme' ); ?>
-        </p>
-        <div class="product-grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
-            <div class="product-card" style="text-align:center;">
-                <div style="font-family:var(--font-headings);font-size:2.5rem;color:var(--gold);font-weight:700;margin-bottom:8px;">01</div>
-                <h3><?php esc_html_e( 'Wejdź na Stronę', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Otwórz stronę /radio/ w dowolnej przeglądarce na komputerze, tablecie lub smartfonie. Nie potrzebujesz aplikacji ani logowania.', 'hrl-theme' ); ?></p>
+        <p class="section-label"><?php esc_html_e( 'Jak zacząć', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Trzy kroki do włączenia radia', 'hrl-theme' ); ?></h2>
+        <div class="hrl-steps">
+            <div class="hrl-step">
+                <span class="hrl-step-num">1</span>
+                <h4><?php esc_html_e( 'Wejdź na stronę', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Odtwarzacz jest na górze tej strony. Nie potrzebujesz konta ani żadnej aplikacji.', 'hrl-theme' ); ?></p>
             </div>
-            <div class="product-card" style="text-align:center;">
-                <div style="font-family:var(--font-headings);font-size:2.5rem;color:var(--gold);font-weight:700;margin-bottom:8px;">02</div>
-                <h3><?php esc_html_e( 'Kliknij Play', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Naciśnij przycisk odtwarzania na stronie. Stream uruchomi się automatycznie w kilka sekund. Dostosuj głośność do swoich preferencji.', 'hrl-theme' ); ?></p>
+            <div class="hrl-step">
+                <span class="hrl-step-num">2</span>
+                <h4><?php esc_html_e( 'Kliknij play', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Strumień startuje w kilka sekund. Głośność ustawisz suwakiem obok przycisku.', 'hrl-theme' ); ?></p>
             </div>
-            <div class="product-card" style="text-align:center;">
-                <div style="font-family:var(--font-headings);font-size:2.5rem;color:var(--gold);font-weight:700;margin-bottom:8px;">03</div>
-                <h3><?php esc_html_e( 'Słuchaj i Ciesz Się', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Muzyka gra 24/7 bez przerw. Możesz dodać stronę do ekranu głównego jako PWA, aby mieć szybki dostęp w przyszłości.', 'hrl-theme' ); ?></p>
+            <div class="hrl-step">
+                <span class="hrl-step-num">3</span>
+                <h4><?php esc_html_e( 'Zostaw i słuchaj', 'hrl-theme' ); ?></h4>
+                <p><?php esc_html_e( 'Radio gra bez końca. Możesz dodać stronę do ekranu głównego telefonu i wracać jednym kliknięciem.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 10: BEZPIECZEŃSTWO ════════════════════════ -->
-<section class="section" id="bezpieczenstwo">
+<!-- ════════════════════ SEKCJA 9: TECHNIKA I BEZPIECZEŃSTWO ════════════════════ -->
+<section class="section section-dark" id="bezpieczenstwo">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Ochrona i Zgodność', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Bezpieczeństwo i Zgodność Radia HRL', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live zostało zaprojektowane z myślą o najwyższych standardach bezpieczeństwa — zarówno dla słuchaczy, jak i dla ochrony własności intelektualnej utworów.', 'hrl-theme' ); ?>
-        </p>
+        <p class="section-label"><?php esc_html_e( 'Infrastruktura', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Stabilność i bezpieczeństwo', 'hrl-theme' ); ?></h2>
         <div class="product-grid">
             <div class="product-card">
                 <div class="product-card-icon">🔐</div>
-                <h3><?php esc_html_e( 'Szyfrowanie TLS 1.3', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Cały strumień audio jest przesyłany przez HTTPS z certyfikatem Let\'s Encrypt. Żaden pośrednik nie może podsłuchać ani zmodyfikować przesyłanego sygnału.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">📜</div>
-                <h3><?php esc_html_e( 'Ochrona Praw Autorskich', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Utwory w streamie są chronione prawem autorskim. Każdy utwór ma przypisane metadane ID3 z informacją o licencji Direct Licensing HRL.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Połączenie szyfrowane', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Strumień i strona działają po HTTPS, więc odtwarzanie nie jest blokowane przez przeglądarki ani sieci firmowe.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">🛡️</div>
-                <h3><?php esc_html_e( 'Ochrona przed DDoS', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Serwer streamingu jest chroniony przez reguły fail2ban i rate limiting na poziomie Nginx. W przypadku ataku DDoS, automatycznie włączana jest ochrona Cloudflare.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">📋</div>
-                <h3><?php esc_html_e( 'Zgodność z Prawem', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Radio HRL Live działa w pełnej zgodności z polskim prawem autorskim. Stream nie narusza praw osób trzecich, ponieważ wszystkie utwory są własnością HRL.', 'hrl-theme' ); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════ SEKCJA 11: INTEGRACJE ════════════════════════ -->
-<section class="section" id="integracje" style="background:rgba(18,15,12,0.15);">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'API i Łączność', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Integracje z Radiem HRL', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live oferuje kilka sposobów integracji z Twoimi urządzeniami i platformami.', 'hrl-theme' ); ?>
-        </p>
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-card-icon">🔗</div>
-                <h3><?php esc_html_e( 'Embed Player', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Możesz osadzić odtwarzacz Radia HRL na własnej stronie internetowej za pomocą iframe. Kod embed jest dostępny na życzenie. Idealne dla firm, które chcą udostępnić muzykę gościom.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">📱</div>
-                <h3><?php esc_html_e( 'Aplikacje PWA', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Strona radia jest w pełni responsywna i działa jako Progressive Web App. Dodaj do ekranu głównego na iOS/Android — działa jak natywna aplikacja z własną ikoną.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">🔊</div>
-                <h3><?php esc_html_e( 'Systemy Audio', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Stream można podłączyć do systemów nagłośnienia Denon Professional, Bose, JBL przez Bluetooth 5.0 lub WiFi. URL streamu: radio.hardbanrecordslab.online.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">📡</div>
-                <h3><?php esc_html_e( 'API Statusu', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'AzuraCast udostępnia publiczne API z informacjami o aktualnie granym utworze, liczbie słuchaczy i statusie serwera. Endpoint: /api/nowplaying.', 'hrl-theme' ); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════ SEKCJA 12: AUTOMATYZACJA ════════════════════════ -->
-<section class="section" id="automatyzacja">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Automatyczne Procesy', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Automatyzacja w Radiu HRL', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live działa w dużej mierze automatycznie, co pozwala utrzymać non-stop nadawanie bez wymogu stałej interwencji człowieka.', 'hrl-theme' ); ?>
-        </p>
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-card-icon">🤖</div>
-                <h3><?php esc_html_e( 'Auto-DJ Liquidsoap', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Automatyczny didżej wybiera utwory z katalogu według algorytmu rotacji. Uwzględnia: ostatnią datę odtworzenia, gatunek, nastrój unikając powtórzeń w krótkich odstępach czasu.', 'hrl-theme' ); ?></p>
-            </div>
-            <div class="product-card">
-                <div class="product-card-icon">🎚️</div>
-                <h3><?php esc_html_e( 'Normalizacja Głośności', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Liquidsoap automatycznie normalizuje głośność wszystkich utworów do standardu EBU R128 (-23 LUFS). Eliminuje skoki głośności między utworami.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Ochrona przed przeciążeniem', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Serwer stoi za warstwą filtrującą ruch, co utrzymuje ciągłość nadawania także przy nagłych skokach liczby słuchaczy.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">🔁</div>
-                <h3><?php esc_html_e( 'Auto-Crossfade', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Płynne przejścia między utworami dzięki automatycznemu crossfadowi (3-5 sekund). Brak ciszy między utworami, co zapewnia profesjonalne brzmienie.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Automatyczne wznawianie', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Po chwilowej utracie łącza odtwarzacz sam wraca do strumienia — nie musisz odświeżać strony.', 'hrl-theme' ); ?></p>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">📊</div>
-                <h3><?php esc_html_e( 'Auto-Raportowanie', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'System generuje automatyczne raporty słuchalności co godzinę. Statystyki dostępne w panelu AzuraCast: liczba słuchaczy, top utwory, czas słuchania, geolokalizacja.', 'hrl-theme' ); ?></p>
+                <h3><?php esc_html_e( 'Monitoring dostępności', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Stan strumienia jest monitorowany w sposób ciągły, żeby przerwy techniczne wykrywać zanim zauważą je słuchacze.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 13: FAQ ════════════════════════ -->
-<section class="section" id="faq" style="background:rgba(18,15,12,0.15);">
+<!-- ════════════════════ SEKCJA 10: INTEGRACJE ════════════════════ -->
+<section class="section" id="integracje">
     <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Pytania i Odpowiedzi', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'FAQ — Pytania o Radio HRL Live', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Odpowiedzi na najczęściej zadawane pytania dotyczące Radia HRL Live, streamingu i kwestii licencyjnych.', 'hrl-theme' ); ?>
-        </p>
-        <div class="faq-list" style="max-width:900px;margin:0 auto;">
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '1. Czy Radio HRL Live jest darmowe?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Radio HRL Live jest całkowicie darmowe dla słuchaczy. Nie wymaga rejestracji, logowania ani subskrypcji. Stream jest finansowany przez HRL jako narzędzie promocyjne i demonstracja technologii.', 'hrl-theme' ); ?></div>
+        <p class="section-label"><?php esc_html_e( 'API i łączność', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Integracje z Radiem HRL', 'hrl-theme' ); ?></h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-card-icon">🔗</div>
+                <h3><?php esc_html_e( 'Odtwarzacz do osadzenia', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Radio możesz osadzić na własnej stronie prostym kodem iframe. Napisz do nas po kod.', 'hrl-theme' ); ?></p>
             </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '2. Czy mogę używać Radia HRL w moim lokalu komercyjnym?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Radio HRL Live jest przeznaczone głównie do użytku prywatnego. Do komercyjnego wykorzystania w lokalu (restauracja, sklep, hotel) zalecamy licencję CMLP, która zapewnia Certyfikat Zwolnienia z OZZ i pełną ochronę prawną.', 'hrl-theme' ); ?></div>
+            <div class="product-card">
+                <div class="product-card-icon">📱</div>
+                <h3><?php esc_html_e( 'Aplikacja PWA', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Strona instaluje się na telefonie jako aplikacja, z własną ikoną i sterowaniem z ekranu blokady.', 'hrl-theme' ); ?></p>
             </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '3. Jakiej jakości jest stream?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Stream nadajemy w MP3 128kbps. To optymalny balans między jakością a stabilnością odtwarzania na różnych łączach internetowych. Dla klientów Premium/Enterprise CMLP dostępny jest FLAC 24-bit.', 'hrl-theme' ); ?></div>
+            <div class="product-card">
+                <div class="product-card-icon">🔊</div>
+                <h3><?php esc_html_e( 'Odtwarzacze i systemy audio', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Adres strumienia otworzysz w VLC, foobarze i w większości odtwarzaczy sieciowych obsługujących MP3.', 'hrl-theme' ); ?></p>
             </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '4. Czy mogę wybrać co leci w radiu?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Nie. Radio HRL Live działa jako nieprzerwany strumień z automatycznym doborem utworów przez auto-DJ. Jeśli potrzebujesz kontroli nad playlistą, wybierz licencję CMLP z dostępem do Panelu B2B.', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '5. Czy stream można pauzować?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Odtwarzacz przeglądarkowy umożliwia pauzę. Po wznowieniu stream kontynuuje od momentu przerwania (dzięki buforowaniu). W przypadku rozłączenia, stream wznawia się automatycznie od bieżącego utworu.', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '6. Czy Radio HRL jest dostępne w aplikacjach mobilnych?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Strona radia działa jako PWA (Progressive Web App). Możesz dodać ją do ekranu głównego na iOS i Android. Działa również w TuneIn Radio i innych agregatorach streamów na życzenie.', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '7. Ile utworów liczy playlista radia?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Playlista Radia HRL zawiera wszystkie utwory z katalogu HRL (kilkaset kompozycji). Nowe utwory są dodawane automatycznie po publikacji w katalogu głównym.', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '9. Czy mogę osadzić radio na swojej stronie?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Tak. Oferujemy embed player do osadzenia na dowolnej stronie www. Wystarczy skopiować kod iframe. Kontakt w celu uzyskania kodu: contact@hardbanrecordslab.online.', 'hrl-theme' ); ?></div>
-            </div>
-            <div class="faq-item" style="border-bottom:1px solid var(--border-color);padding:16px 0;">
-                <button class="faq-question" style="width:100%;text-align:left;background:none;border:none;padding:8px 16px;font-size:1.05rem;font-weight:600;cursor:pointer;color:var(--text-primary);display:flex;justify-content:space-between;align-items:center;" onclick="this.classList.toggle('open');var a=this.nextElementSibling;if(a.style.display==='block'){a.style.display='none'}else{a.style.display='block'}"><?php esc_html_e( '10. Czym różni się Radio HRL od streamu CMLP?', 'hrl-theme' ); ?><span style="color:var(--gold);font-size:1.5rem;">+</span></button>
-                <div class="faq-answer" style="display:none;padding:0 16px 16px;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;"><?php esc_html_e( 'Radio HRL to darmowy stream publiczny z automatyczną playlistą. CMLP to płatna platforma B2B z pełną kontrolą nad playlistą, Certyfikatem Wolności QR i White-Label Playerem.', 'hrl-theme' ); ?></div>
+            <div class="product-card">
+                <div class="product-card-icon">📡</div>
+                <h3><?php esc_html_e( 'API statusu', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'AzuraCast udostępnia endpoint z informacją o aktualnie granym utworze — przydatny przy własnych integracjach.', 'hrl-theme' ); ?></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 14: SŁOWNIK ════════════════════════ -->
-<section class="section" id="slownik">
+<!-- ════════════════════ SEKCJA 11: AUTOMATYZACJA ════════════════════ -->
+<section class="section section-dark" id="automatyzacja">
+    <div class="container">
+        <p class="section-label"><?php esc_html_e( 'Procesy automatyczne', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'Co dzieje się bez udziału człowieka', 'hrl-theme' ); ?></h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <h3><?php esc_html_e( 'Auto-DJ', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Liquidsoap dobiera kolejne utwory z katalogu i utrzymuje ciągłość nadawania przez całą dobę.', 'hrl-theme' ); ?></p>
+            </div>
+            <div class="product-card">
+                <h3><?php esc_html_e( 'Normalizacja głośności', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Poziom jest wyrównywany między utworami, żeby nie trzeba było poprawiać głośności co kilka minut.', 'hrl-theme' ); ?></p>
+            </div>
+            <div class="product-card">
+                <h3><?php esc_html_e( 'Crossfade', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Końcówka jednego utworu nakłada się na początek następnego, więc między nimi nie ma ciszy.', 'hrl-theme' ); ?></p>
+            </div>
+            <div class="product-card">
+                <h3><?php esc_html_e( 'Nowe utwory w rotacji', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Materiał dodany do katalogu trafia do rotacji radiowej bez ręcznego układania playlisty.', 'hrl-theme' ); ?></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ SEKCJA 12: FAQ ════════════════════ -->
+<section class="section" id="faq">
+    <div class="container" style="max-width:900px;">
+        <p class="section-label"><?php esc_html_e( 'Pytania i odpowiedzi', 'hrl-theme' ); ?></p>
+        <h2 class="section-title"><?php esc_html_e( 'FAQ — Radio HRL Live', 'hrl-theme' ); ?></h2>
+
+        <?php
+        $radio_faq = array(
+            array(
+                __( 'Czy Radio HRL Live jest darmowe?', 'hrl-theme' ),
+                __( 'Tak, całkowicie. Nie wymaga rejestracji, logowania ani subskrypcji. Stację finansujemy sami — traktujemy ją jako sposób na udostępnienie naszego katalogu.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Czy mogę puszczać radio w swoim lokalu?', 'hrl-theme' ),
+                __( 'Radio jest przeznaczone do słuchania prywatnego. Odtwarzanie muzyki w lokalu, sklepie czy na evencie to odtwarzanie publiczne i wymaga osobnej licencji komercyjnej — tym zajmuje się platforma CMLP, która daje też kontrolę nad playlistą i harmonogramem.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Jakiej jakości jest strumień?', 'hrl-theme' ),
+                __( 'Nadajemy w MP3 128 kbps — to rozsądny kompromis między jakością a stabilnością odtwarzania na słabszych łączach. Klienci CMLP w wyższych pakietach mają dostęp do katalogu w formacie FLAC.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Czy mogę wybrać, co leci?', 'hrl-theme' ),
+                __( 'Nie. Radio działa jako nieprzerwany strumień z automatycznym doborem utworów. Jeśli potrzebujesz kontroli nad playlistą, daje ją panel B2B na platformie CMLP.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Czy strumień można zatrzymać?', 'hrl-theme' ),
+                __( 'Tak, odtwarzacz ma pauzę. Po wznowieniu wracasz do bieżącego momentu transmisji — radio gra dalej niezależnie od tego, czy słuchasz.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Czy działa na telefonie?', 'hrl-theme' ),
+                __( 'Tak. Strona działa jako PWA, więc możesz dodać ją do ekranu głównego na iOS i Androidzie i uruchamiać jak zwykłą aplikację.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Ile utworów jest w rotacji?', 'hrl-theme' ),
+                __( 'Radio gra cały nasz katalog — nie ma osobnej, węższej playlisty radiowej. Nowe utwory trafiają do rotacji zaraz po dodaniu do katalogu.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Dlaczego nie znajdę tej muzyki na Spotify?', 'hrl-theme' ),
+                __( 'Katalogu nie publikujemy w serwisach streamingowych. Radio HRL Live oraz biblioteka na platformie CMLP to jedyne miejsca, gdzie można go posłuchać.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Czy mogę osadzić radio na swojej stronie?', 'hrl-theme' ),
+                __( 'Tak, udostępniamy odtwarzacz do osadzenia kodem iframe. Napisz na contact@hardbanrecordslab.online, a odeślemy kod.', 'hrl-theme' ),
+            ),
+            array(
+                __( 'Czym Radio HRL różni się od CMLP?', 'hrl-theme' ),
+                __( 'Radio to darmowy strumień publiczny z automatyczną rotacją, do słuchania prywatnego. CMLP to płatna platforma dla firm: licencja na odtwarzanie w lokalu, własne playlisty, harmonogramy i zarządzanie wieloma lokalizacjami.', 'hrl-theme' ),
+            ),
+        );
+        ?>
+
+        <div class="hrl-faq-group">
+            <?php foreach ( $radio_faq as $i => $q ) :
+                $n        = $i + 1;
+                $btn_id   = 'hrl-radio-faq-q-' . $n;
+                $panel_id = 'hrl-radio-faq-a-' . $n;
+            ?>
+            <div class="hrl-faq-item">
+                <h3 class="hrl-faq-heading">
+                    <button type="button"
+                            class="hrl-faq-question"
+                            id="<?php echo esc_attr( $btn_id ); ?>"
+                            aria-expanded="false"
+                            aria-controls="<?php echo esc_attr( $panel_id ); ?>">
+                        <span><?php echo esc_html( $n . '. ' . $q[0] ); ?></span>
+                        <span class="hrl-faq-icon" aria-hidden="true">+</span>
+                    </button>
+                </h3>
+                <div class="hrl-faq-answer"
+                     id="<?php echo esc_attr( $panel_id ); ?>"
+                     role="region"
+                     aria-labelledby="<?php echo esc_attr( $btn_id ); ?>"
+                     hidden>
+                    <p><?php echo esc_html( $q[1] ); ?></p>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ SEKCJA 13: SŁOWNIK ════════════════════ -->
+<section class="section section-dark" id="slownik">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Definicje', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Słownik Pojęć Radiowych', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Słownik pojęć', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Kluczowe terminy używane w kontekście streamingu radiowego i cyfrowej dystrybucji audio.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Terminy, które pojawiają się na tej stronie — na wypadek, gdyby któryś był nieoczywisty.', 'hrl-theme' ); ?>
         </p>
         <div class="product-grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
-            <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'AzuraCast', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Platforma open-source do zarządzania stacjami radiowymi online. Oparta na Laravel, z wbudowanym auto-DJ-em (Liquidsoap) i panelem administracyjnym.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'Icecast2', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Serwer streamingowy audio/video. Obsługuje protokoły HTTP/HTTPS, może serwować do 1000+ równoczesnych połączeń na strumień.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'Liquidsoap', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Język skryptowy i silnik do automatyzacji playlisy radiowej. Umożliwia crossfade, normalizację głośności i zaawansowane reguły kolejkowania utworów.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'PWA (Progressive Web App)', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Technologia umożliwiająca działanie strony internetowej jako aplikacji zainstalowanej na urządzeniu. Działa offline, ma własną ikonę i dostęp do niektórych funkcji systemowych.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'Crossfade', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Technika płynnego przejścia między dwoma utworami poprzez nałożenie końcówki jednego na początek drugiego. Eliminuje ciszę między utworami.', 'hrl-theme' ); ?></p></div>
-            <div class="product-card"><h3 style="font-size:1.1rem;"><?php esc_html_e( 'EBU R128', 'hrl-theme' ); ?></h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Standard normalizacji głośności audio zalecany przez European Broadcasting Union. Określa docelowy poziom głośności na -23 LUFS dla programów radiowych i telewizyjnych.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><h3 style="font-size:1.1rem;">AzuraCast</h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Platforma open-source do zarządzania stacjami radiowymi online, z wbudowanym auto-DJ-em i panelem administracyjnym.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><h3 style="font-size:1.1rem;">Icecast2</h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Serwer streamingowy audio obsługujący protokoły HTTP i HTTPS, odpowiedzialny za dostarczanie strumienia do słuchaczy.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><h3 style="font-size:1.1rem;">Liquidsoap</h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Silnik automatyzujący playlistę radiową — odpowiada za crossfade, normalizację głośności i reguły kolejkowania utworów.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><h3 style="font-size:1.1rem;">PWA</h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Progressive Web App — technologia pozwalająca stronie działać jak aplikacja zainstalowana na urządzeniu, z własną ikoną.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><h3 style="font-size:1.1rem;">Crossfade</h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Płynne przejście między utworami przez nałożenie końcówki jednego na początek drugiego. Eliminuje ciszę.', 'hrl-theme' ); ?></p></div>
+            <div class="product-card"><h3 style="font-size:1.1rem;">EBU R128</h3><p style="font-size:0.9rem;"><?php esc_html_e( 'Standard normalizacji głośności zalecany przez European Broadcasting Union, stosowany w radiu i telewizji.', 'hrl-theme' ); ?></p></div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════ SEKCJA 15: POWIĄZANE USŁUGI ════════════════════════ -->
-<section class="section" id="uslugi" style="background:rgba(18,15,12,0.15);">
+<!-- ════════════════════ SEKCJA 14: EKOSYSTEM + CTA ════════════════════ -->
+<section class="section" id="uslugi">
     <div class="container">
         <p class="section-label"><?php esc_html_e( 'Ekosystem HRL', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'Powiązane Usługi Radia HRL', 'hrl-theme' ); ?></h2>
+        <h2 class="section-title"><?php esc_html_e( 'Potrzebujesz czegoś więcej niż radia?', 'hrl-theme' ); ?></h2>
         <p class="section-desc">
-            <?php esc_html_e( 'Radio HRL Live uzupełnia ekosystem usług HardbanRecords Lab. Oto jak łączy się z innymi produktami.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Radio zostaje darmowe i otwarte dla każdego. Jeśli jednak muzyka ma grać w lokalu, na evencie albo pod Twoją marką — to zadania dla pozostałych usług HRL.', 'hrl-theme' ); ?>
         </p>
         <div class="product-grid">
             <div class="product-card">
                 <div class="product-card-icon">🎵</div>
                 <h3><?php esc_html_e( 'Platforma CMLP', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Pełna platforma licencjonowania B2B z kontrolą nad playlistami, Certyfikatem Wolności QR i White-Label Playerem. Dla klientów potrzebujących więcej niż radia.', 'hrl-theme' ); ?></p>
-                <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Sprawdź →', 'hrl-theme' ); ?></a>
+                <p><?php esc_html_e( 'Licencja na odtwarzanie w lokalu, własne playlisty, harmonogramy i zarządzanie wieloma lokalizacjami z jednego panelu.', 'hrl-theme' ); ?></p>
+                <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Poznaj CMLP →', 'hrl-theme' ); ?></a>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">✍️</div>
                 <h3><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Personalizowane utwory na zamówienie. Jeśli szukasz konkretnego utworu dla swojej marki, stworzymy go od podstaw.', 'hrl-theme' ); ?></p>
+                <p><?php esc_html_e( 'Utwór pisany na zamówienie — hymn wydarzenia, motyw marki albo piosenka na jubileusz. Powstaje od podstaw pod Twoją historię.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Zamów →', 'hrl-theme' ); ?></a>
             </div>
             <div class="product-card">
                 <div class="product-card-icon">📻</div>
-                <h3><?php esc_html_e( 'White-Label Streaming', 'hrl-theme' ); ?></h3>
-                <p><?php esc_html_e( 'Dedykowana stacja radiowa dla Twojej sieci lokali. Własny branding, własne playlisty, własna subdomena. Tylko w pakiecie Enterprise CMLP.', 'hrl-theme' ); ?></p>
-                <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-outline"><?php esc_html_e( 'Dowiedz się →', 'hrl-theme' ); ?></a>
+                <h3><?php esc_html_e( 'Stacja pod Twoją marką', 'hrl-theme' ); ?></h3>
+                <p><?php esc_html_e( 'Dedykowany stream dla sieci lokali: własny branding, własne playlisty i własna subdomena. Wycena indywidualna.', 'hrl-theme' ); ?></p>
+                <a href="<?php echo esc_url( home_url( '/contact/?temat=white-label' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Zapytaj →', 'hrl-theme' ); ?></a>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- ════════════════════════ SEKCJA 16: PODSUMOWANIE + CTA ════════════════════════ -->
-<section class="section" id="podsumowanie" style="text-align:center;background:var(--bg-main);border-top:1px solid var(--border-color);">
-    <div class="container">
-        <p class="section-label"><?php esc_html_e( 'Słuchaj Teraz', 'hrl-theme' ); ?></p>
-        <h2 class="section-title" style="margin-bottom:24px;"><?php esc_html_e( 'Radio HRL Live — Muzyka bez Granic', 'hrl-theme' ); ?></h2>
-        <div style="max-width:800px;margin:0 auto 40px;text-align:left;">
-            <p style="color:var(--text-secondary);font-size:1.05rem;line-height:1.8;margin-bottom:20px;">
-                <?php esc_html_e( 'Radio HRL Live to dowód na to, że muzyka komercyjna może być dostępna za darmo, legalnie i bez reklam. Każdy utwór w naszym streamie powstał w naszym studiu, od pierwszej nuty po finalny mastering. Żaden nie podlega organizacjom zbiorowego zarządzania.', 'hrl-theme' ); ?>
-            </p>
-            <p style="color:var(--text-secondary);font-size:1.05rem;line-height:1.8;margin-bottom:20px;">
-                <?php esc_html_e( 'Niezależnie od tego, czy szukasz muzyki do pracy, relaksu, czy chcesz poznać nasz katalog przed zakupem licencji CMLP — Radio HRL Live jest otwarte dla Ciebie 24 godziny na dobę, 7 dni w tygodniu, przez 365 dni w roku.', 'hrl-theme' ); ?>
-            </p>
-            <p style="color:var(--text-secondary);font-size:1.05rem;line-height:1.8;">
-                <?php esc_html_e( 'A jeśli potrzebujesz więcej — pełnej kontroli nad playlistą, Certyfikatu Wolności QR, White-Label Playera z Twoim logo — czeka na Ciebie platforma CMLP. Rozpocznij od Radia HRL, a potem przejdź na wyższy poziom.', 'hrl-theme' ); ?>
-            </p>
-        </div>
-        <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
-            <a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Słuchaj Radia HRL →', 'hrl-theme' ); ?></a>
-            <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>" class="btn btn-outline"><?php esc_html_e( 'Poznaj CMLP', 'hrl-theme' ); ?></a>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container" style="text-align:center;">
-        <p class="section-label"><?php esc_html_e( 'Chcesz własny stream?', 'hrl-theme' ); ?></p>
-        <h2 class="section-title"><?php esc_html_e( 'White-Label Radio dla Twojego Biznesu', 'hrl-theme' ); ?></h2>
-        <p class="section-desc">
-            <?php esc_html_e( 'Oferujemy dedykowane stacje streamingowe dla sieci handlowych, hoteli i korporacji. Twoje logo, Twoja playlista, Twój branding — zero ZAiKS.', 'hrl-theme' ); ?>
-        </p>
-        <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary"><?php esc_html_e( 'Zapytaj →', 'hrl-theme' ); ?></a>
     </div>
 </section>
 

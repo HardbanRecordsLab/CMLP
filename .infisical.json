@@ -1,0 +1,9 @@
+{
+  "//": "Projekt Infisical dla tego repo = 'cmlp-app' (org HardbanRecordsLab, self-hosted: vault.hardbanrecordslab.online). Wpisz workspaceId z panelu (Project Settings → Project ID).",
+  "workspaceId": "REPLACE_WITH_cmlp-app_PROJECT_ID",
+  "defaultEnvironment": "prod",
+  "gitBranchToEnvironmentMapping": {
+    "main": "prod",
+    "staging": "staging"
+  }
+}

@@ -164,7 +164,7 @@ export default function AdminDashboard() {
             { id: 'apiKeys', icon: Key, label: 'API Keys' },
             { id: 'notifications', icon: Bell, label: t('admin.notifications_alerts') },
             { id: 'security', icon: Shield, label: t('admin.security_lockdown') },
-            { id: 'compliance', icon: Scale, label: 'Compliance OZZ' },
+            { id: 'compliance', icon: Scale, label: 'Licensing Compliance' },
             { id: 'audit', icon: FileSearch, label: 'Audit Trail' },
             { id: 'strategic', icon: Cpu, label: t('admin.strategic_console') },
           ].map(item => (

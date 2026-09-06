@@ -246,8 +246,8 @@ export default function B2BPlayer() {
       doc.setTextColor(100, 116, 139); // slate-500
       
       const headerTitle = isPl 
-        ? "KOMERCYJNA PLATFORMA LICENCJONOWANIA MUZYKI (CMLP)"
-        : "COMMERCIAL MUSIC LICENSING PLATFORM (CMLP)";
+        ? "COLLECTIVE MUSIC LICENSING PROJECT (CMLP)"
+        : "COLLECTIVE MUSIC LICENSING PROJECT (CMLP)";
       const headerDiv = isPl
         ? "DZIAŁ ZGODNOŚCI TECHNICZNEJ I PRAWNEJ"
         : "TECHNICAL & LEGAL COMPLIANCE DIVISION";
@@ -266,8 +266,8 @@ export default function B2BPlayer() {
       doc.setFontSize(18);
       
       const certTitle = isPl
-        ? "CERTYFIKAT ZWOLNIENIA Z OPŁAT EMISYJNYCH"
-        : "CERTIFICATE OF ROYALTY EXEMPTION";
+        ? "CERTYFIKAT LICENCYJNY"
+        : "MUSIC LICENSING CERTIFICATE";
       
       doc.text(certTitle, 105, 62, { align: "center" });
 
@@ -318,8 +318,8 @@ export default function B2BPlayer() {
       doc.setFontSize(11);
       doc.setTextColor(51, 65, 85);
 
-      const plPlBody2 = "otrzymuje pełne, niczym nieograniczone zwolnienie prawne z opłat za publiczne odtwarzanie utworów oraz opłat licencyjnych na rzecz dowolnych regionalnych Organizacji Zbiorowego Zarządzania (OZZ / PRO), w tym m.in. ZAiKS, STOART, ZPAV oraz SAWP.";
-      const enUsBody2 = "Is hereby granted a full, unrestricted legal exemption from the payment of public performance royalties and licensing fees to any regional Collective Rights Management Organizations (OZZ / PROs), including but not limited to regional administrative societies such as ZAiKS, STOART, ZPAV, and SAWP.";
+      const plPlBody2 = "otrzymuje bezpośrednią licencję na korzystanie z autorskiego katalogu Creative Music Licensing Partners (CMLP) w zakresie i okresie określonym w niniejszym dokumencie.";
+      const enUsBody2 = "receives a direct, non-exclusive licence to use the proprietary catalogue of Creative Music Licensing Partners (CMLP), within the scope and term set out in this document.";
 
       const bodyText2 = doc.splitTextToSize(
         isPl ? plPlBody2 : enUsBody2,
@@ -327,8 +327,8 @@ export default function B2BPlayer() {
       );
       doc.text(bodyText2, 20, 132);
 
-      const plPlBody3 = "Zwolnienie to opiera się na art. 107 polskiej Ustawy o prawie autorskim i prawach pokrewnych, jako że muzyka odtwarzana w granicach komercyjnych działalności Licencjobiorcy pochodzi wyłącznie z katalogu Komercyjnej Platformy Licencjonowania Muzyki (CMLP). Wszystkie nagrania dźwiękowe, teksty i aranżacje muzyczne w tym katalogu są w pełni, bezpośrednio licencjonowane od niezależnych artystów, którzy wyraźnie zachowali swoje osobiste i majątkowe prawa autorskie oraz nie są zrzeszeni ani reprezentowani przez żadną regionalną organizację zbiorowego zarządzania.";
-      const enUsBody3 = "This exemption is validated under Article 107 of the Polish Act on Copyright and Related Rights (Ustawa o prawie autorskim i prawach pokrewnych), as the media broadcasted within the Licensee's customer-facing business boundaries originates exclusively from the Custom Music Licensing Platform (CMLP) catalog. All sound recordings, lyrics, and musical arrangements in this catalog are fully, directly-licensed from independent artists who have explicitly retained their individual economic copyrights and are not associated with or represented by any regional collective collection society.";
+      const plPlBody3 = "Licencjodawca udziela licencji bezpośrednio, na podstawie posiadanych praw do utworów w katalogu. Wszystkie nagrania, teksty i aranżacje pochodzą z katalogu CMLP i są licencjonowane bezpośrednio od ich twórców.";
+      const enUsBody3 = "The licensor grants the licence directly, on the basis of the rights it holds in the works. All recordings, lyrics and arrangements originate from the CMLP catalogue and are licensed directly from their creators.";
 
       const bodyText3 = doc.splitTextToSize(
         isPl ? plPlBody3 : enUsBody3,
@@ -336,8 +336,8 @@ export default function B2BPlayer() {
       );
       doc.text(bodyText3, 20, 150);
 
-      const plPlBody4 = "Ponadto niniejszy certyfikat gwarantuje, że odtwarzanie muzyki w tle w powyższej lokalizacji jest w pełni zgodne z obowiązującym prawem własności intelektualnej i nie stanowi naruszenia praw autorskich.";
-      const enUsBody4 = "Furthermore, this certificate guarantees that any background audio playback inside the location above is compliant with current intellectual property laws and does not constitute copyright infringement.";
+      const plPlBody4 = "Niniejszy certyfikat potwierdza fakt i zakres licencji. Nie przesądza o roszczeniach osób trzecich i nie zastępuje oceny prawnej.";
+      const enUsBody4 = "This certificate confirms the fact and scope of the licence. It does not determine third-party claims and does not replace legal advice.";
 
       const bodyText4 = doc.splitTextToSize(
         isPl ? plPlBody4 : enUsBody4,
@@ -393,7 +393,7 @@ export default function B2BPlayer() {
       
       const legalDeptLabel = isPl ? "Dział Prawny i Zgodności Compliance" : "Legal and Compliance Department";
       doc.text(legalDeptLabel, 20, 259);
-      doc.text("KRS: 0000123456 | NIP: 1234567890", 20, 264);
+      doc.text("Creative Music Licensing Partners (CMLP)", 20, 264);
 
       doc.line(130, 260, 185, 260);
       doc.setFontSize(8);
@@ -408,8 +408,8 @@ export default function B2BPlayer() {
       doc.text(verifiedTag, 133, 256);
 
       // Generowanie pliku pobierania
-      doc.save(`Exemption_Certificate_HRL_${certificateNumber}.pdf`);
-      setLogs(prev => [...prev, `[SYSTEM] Successfully generated and downloaded PDF Certificate: Exemption_Certificate_HRL_${certificateNumber}.pdf`]);
+      doc.save(`License_Certificate_HRL_${certificateNumber}.pdf`);
+      setLogs(prev => [...prev, `[SYSTEM] Successfully generated and downloaded PDF Certificate: License_Certificate_HRL_${certificateNumber}.pdf`]);
     } catch (e: unknown) {
       setLogs(prev => [...prev, `[ERROR] Failed to generate PDF: ${e instanceof Error ? e.message : String(e)}`]);
     }

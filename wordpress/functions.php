@@ -312,102 +312,68 @@ function hrl_body_classes( $classes ) {
 add_filter( 'body_class', 'hrl_body_classes' );
 
 // ═══════════════════════════════════════════════════════
-// STRUCTURED DATA (JSON-LD Schema.org)
+// CMLP BRAND SECTION (szata graficzna Navy / Teal / Amber)
 // ═══════════════════════════════════════════════════════
-function hrl_add_structured_data() {
-    if ( is_front_page() ) {
-        $schema = array(
-            '@context' => 'https://schema.org',
-            '@type' => 'Organization',
-            'name' => get_bloginfo( 'name' ),
-            'url' => home_url(),
-            'logo' => get_template_directory_uri() . '/images/logo.png',
-            'description' => get_bloginfo( 'description' ),
-            'contactPoint' => array(
-                '@type' => 'ContactPoint',
-                'telephone' => '+48-726-651-384',
-                'contactType' => 'customer service',
-                'email' => 'contact@hardbanrecordslab.online',
-                'availableLanguage' => array( 'Polish', 'English' )
-            ),
-            'sameAs' => array(
-                get_theme_mod( 'hrl_social_facebook', '' ),
-                get_theme_mod( 'hrl_social_twitter', '' ),
-                get_theme_mod( 'hrl_social_instagram', '' ),
-                get_theme_mod( 'hrl_social_linkedin', '' )
-            )
-        );
-        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
-    }
-    
-    if ( is_single() ) {
-        global $post;
-        $schema = array(
-            '@context' => 'https://schema.org',
-            '@type' => 'Article',
-            'headline' => get_the_title(),
-            'datePublished' => get_the_date( 'c' ),
-            'dateModified' => get_the_modified_date( 'c' ),
-            'author' => array(
-                '@type' => 'Person',
-                'name' => get_the_author()
-            ),
-            'publisher' => array(
-                '@type' => 'Organization',
-                'name' => get_bloginfo( 'name' ),
-                'logo' => array(
-                    '@type' => 'ImageObject',
-                    'url' => get_template_directory_uri() . '/images/logo.png'
-                )
-            ),
-            'description' => wp_trim_words( get_the_excerpt(), 30 )
-        );
-        
-        if ( has_post_thumbnail() ) {
-            $schema['image'] = get_the_post_thumbnail_url( $post, 'large' );
-        }
-        
-        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
-    }
-    
-    if ( is_page( 'faq' ) ) {
-        $schema = array(
-            '@context' => 'https://schema.org',
-            '@type' => 'FAQPage',
-            'mainEntity' => array()
-        );
-        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
-    }
+// Zakres: wyłącznie strona produktowa CMLP + dokumenty licencji B2B.
+// Reszta witryny HRL pozostaje w motywie AMOLED-gold.
+// Źródło: docs/brand-legal/CMLP_Brand_Guidelines.pdf (v1.0).
+
+function hrl_cmlp_templates() {
+    return array(
+        'page-cmlp.php',
+        'page-terms.php',
+        'page-sale-terms.php',
+        'page-license-agreement.php',
+        'page-api-terms.php',
+    );
 }
-add_action( 'wp_head', 'hrl_add_structured_data' );
+
+function hrl_cmlp_slugs() {
+    return array( 'cmlp', 'terms', 'sale-terms', 'license-agreement', 'api-terms' );
+}
+
+function hrl_is_cmlp_section() {
+    if ( ! is_page() ) {
+        return false;
+    }
+    foreach ( hrl_cmlp_templates() as $tpl ) {
+        if ( is_page_template( $tpl ) ) {
+            return true;
+        }
+    }
+    return is_page( hrl_cmlp_slugs() );
+}
+
+function hrl_enqueue_cmlp_brand() {
+    if ( ! hrl_is_cmlp_section() ) {
+        return;
+    }
+    wp_enqueue_style(
+        'hrl-cmlp-brand',
+        get_template_directory_uri() . '/assets/css/12-cmlp-brand.css',
+        array( 'hrl-theme-style' ),
+        wp_get_theme()->get( 'Version' )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'hrl_enqueue_cmlp_brand', 20 );
+
+function hrl_cmlp_body_class( $classes ) {
+    if ( hrl_is_cmlp_section() ) {
+        $classes[] = 'cmlp-brand';
+    }
+    return $classes;
+}
+add_filter( 'body_class', 'hrl_cmlp_body_class' );
 
 // ═══════════════════════════════════════════════════════
-// OPENGRAPH & TWITTER CARDS
+// STRUCTURED DATA / OPENGRAPH / TWITTER CARDS
 // ═══════════════════════════════════════════════════════
-function hrl_add_opengraph_tags() {
-    if ( is_single() || is_page() ) {
-        global $post;
-        $title = get_the_title();
-        $description = wp_trim_words( get_the_excerpt(), 30 );
-        $url = get_permalink();
-        $image = has_post_thumbnail() ? get_the_post_thumbnail_url( $post, 'large' ) : get_template_directory_uri() . '/images/logo.png';
-    } else {
-        $title = get_bloginfo( 'name' );
-        $description = get_bloginfo( 'description' );
-        $url = home_url();
-        $image = get_template_directory_uri() . '/images/logo.png';
-    }
-    
-    echo '<meta property="og:title" content="' . esc_attr( $title ) . '">' . "\n";
-    echo '<meta property="og:description" content="' . esc_attr( $description ) . '">' . "\n";
-    echo '<meta property="og:url" content="' . esc_url( $url ) . '">' . "\n";
-    echo '<meta property="og:image" content="' . esc_url( $image ) . '">' . "\n";
-    echo '<meta property="og:type" content="' . ( is_single() ? 'article' : 'website' ) . '">' . "\n";
-    echo '<meta property="og:site_name" content="' . esc_attr( get_bloginfo( 'name' ) ) . '">' . "\n";
-    
-    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
-    echo '<meta name="twitter:title" content="' . esc_attr( $title ) . '">' . "\n";
-    echo '<meta name="twitter:description" content="' . esc_attr( $description ) . '">' . "\n";
-    echo '<meta name="twitter:image" content="' . esc_url( $image ) . '">' . "\n";
-}
-add_action( 'wp_head', 'hrl_add_opengraph_tags', 1 );
+// Intentionally NOT theme-owned: Rank Math (active, seo-by-rank-math) already
+// emits Organization/WebSite/WebPage/Article JSON-LD and OG/Twitter meta for
+// every page. A parallel theme-level copy used to run at wp_head priority 1
+// (printing first) with stale/placeholder data (e.g. og:description literally
+// "[front-page placeholder]", four empty sameAs URLs, an empty FAQPage with no
+// questions) alongside Rank Math's own tags for the same properties — every
+// page shipped duplicate/conflicting og:title, og:description, og:image, etc.
+// The FAQ page's schema is now generated directly in page-faq.php from its
+// actual rendered questions/answers instead of a hand-maintained duplicate.

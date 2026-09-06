@@ -1,0 +1,107 @@
+Return-Path: <hi@endel.io>
+Delivered-To: contact@hardbanrecordslab.online
+Received: from v185.home.net.pl
+	by v185.home.net.pl with LMTP
+	id nQ7QHoUxa2q8SwAA4AkaEw
+	(envelope-from <hi@endel.io>)
+	for <contact@hardbanrecordslab.online>; Thu, 30 Jul 2026 13:12:05 +0200
+Authentication-Results: v185.home.net.pl; spf=pass (sender SPF 
+   authorized) smtp.mailfrom=endel.io (client-ip=209.85.210.174; 
+   helo=mail-pf1-f174.google.com; envelope-from=hi@endel.io; 
+   receiver=<UNKNOWN>)
+Authentication-Results: v185.home.net.pl; dmarc=pass (p=none dis=none) header.from=endel.io
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver3173569-3173632.home.pl (Postfix) with ESMTPS id CC2C338E0262
+	for <contact@hardbanrecordslab.online>; Thu, 30 Jul 2026 13:12:04 +0200 (CEST)
+Authentication-Results: v185.home.net.pl;
+	dkim=pass (2048-bit key; unprotected) header.d=endel-io.20251104.gappssmtp.com header.i=@endel-io.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=Ywo0+EnN
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8485b358552so2287470b3a.2
+        for <contact@hardbanrecordslab.online>; Thu, 30 Jul 2026 04:12:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785409923; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OB/HrQcDaRt088CP1z4DhPrRNn2gejIqTW+pUyw3Z8yTtYldGb7avx6co++BpHv/gV
+         Zxk3QfF7NDM+b8Vxt069XYeyyHl7RqwqYd2ip04crIMneR3WQlV9pxUfyf2YMPisMrYg
+         Nkhvi+bWKEgmFeJxME6cNmyY8vOAo9coBxr2azOisolCwGBHFBTNJbOdghvNOgmk/y5b
+         0Ep1d38vcjTfT9vLen1tTz6sQaRVCpE+WTgYZoRo4OuqXL050jDFn00OGgSx8JNtlmNQ
+         Ox69+P6zaasGm7U53RQo5z4RdfGVWorttvZ0sGChYI/obLMRSnsvUFScbWJH5J8dUDJS
+         YdDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=auto-submitted:precedence:content-disposition
+         :content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:date:from:to:dkim-signature;
+        bh=fRFYtu+S1BO1qYI4FoSVjFPc1nBgg7s6nNDuuVqA9wA=;
+        fh=bbPbC2PCUQV2sTStd7LGGKrcNB3UrxQx05D8Mon4dbk=;
+        b=FkFNpLddCgX57UixAgJ6vZN4uuMc3kPZ3QrPvvIROKvB4Ph6/dPMwzdr3IUHr9GigL
+         XzFr7DebSqQTU2I0IGFCMVyqRoBFveweu/36J7Gb7oBAYkrWwLL13HxdqAir3yEJCPDH
+         fRTxL4oCQYlGx9jF7quTctqxs/daG1PuMkTYoOzMzGijTOk7CSA/cf9Z5FFSUMliDc3v
+         IeprFiPGmv/31OyAs4Erq6MgGRXCBNt1otuVTDtYuxCfRBymV0uCpw/IBMIaJb1RCjCm
+         TLlzgL9e+4wfhA55FK0wxK7ECmQW6uNx/GT/dWXEV7Li7oEw1TICCzuxLeBYIpuqqKi2
+         xRlw==;
+        darn=hardbanrecordslab.online
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endel-io.20251104.gappssmtp.com; s=20251104; t=1785409923; x=1786014723; darn=hardbanrecordslab.online;
+        h=auto-submitted:precedence:content-disposition
+         :content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:date:from:to:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fRFYtu+S1BO1qYI4FoSVjFPc1nBgg7s6nNDuuVqA9wA=;
+        b=Ywo0+EnNG1h90r9z9efVvemDaozXSDdeBgDTBCGtSnVdHxVh/9gEIVb37dlp8mDJx0
+         a4Eu8xDcY4pL2Y5LZdnwksZjIMj0+ziWlXQJdJbVNt9Be8koKMOPz6CBlge6B878BYpQ
+         H9c2X/qKT1gxuVMwYeEpltqIz2d3iXy5PwhNbOXCDRQAdEr1ghWZymOFHq38jJX34fNN
+         4O1xb7dMFIDxe6MPI1vCaULso2sNbpfz5NaJQqy77eGVO37YTNEzHo+xkuHctIRlbVdw
+         EEU8gDBX3jIQdv3xKIueQOzPJxJFuWRYgupJRSIpSUeziy0+xnAy+PCpdPLDgaANwW+/
+         tujw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785409923; x=1786014723;
+        h=auto-submitted:precedence:content-disposition
+         :content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:date:from:to:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fRFYtu+S1BO1qYI4FoSVjFPc1nBgg7s6nNDuuVqA9wA=;
+        b=l0gZTLiK8dElEkBTfGHHZc+GA0u1aQWG628+RviwMurGFr9FnzZPrleGOjM47nRgaE
+         xmuDHXd8GSysO72LY+Lo2oD/6j/38Ptbg93OYX2fDR16bSoQN6agIwQkqPVHsoSujQI0
+         0YU+OVnEsoG1m+QfdFRjdHTJkkuLDL54QcfOJ7xHj9mxQIiIkDB0StHm6X0Fa2iM53Tb
+         ASQCV2srd2ZNfiiVDLi/XL7Eiv34q75Vvbr9RfKmMNZAK5w10k1xuNL1KDnBntmtO0uu
+         n20NvXVCkYueTsu3F9FILJ+Lye7oi47v88zosc1FQ7CCAALfBVbPep6cfwErE3KzJwq7
+         Zv8w==
+X-Gm-Message-State: AOJu0YzwHBRXq2cZ2ZnkhKwG3zVkL+StimJbmB6e8J7niYEAxHexkvpG
+	TwzmEWhdhQFzPuIcYn4W31FdEjnxnDWph9UEwnIeFYua9XrKUmrSpKwMINq7YT93/vmWExFONqM
+	PrbVilSDaX8QQTDuZY44FdDtaQ15pQZ8CY/pxvZUA+IGVDoi/ExVS0bz7uZeWVvB+eqvdLoeD3E
+	UXEFG7/N9oqFLFFuJQ7q3PS3dxPmxZyUU=
+X-Gm-Gg: AR+sD12iJvB8sw7W5P27z2CkY3XUj0kPGrtv6iam6PIFMUOwhRjG7UIFLI50wn7qst3
+	+NTwLiw46vyCLAlc2znjHcR/2GdCGxfqhPaTOW7zaCLQ39RWzjeipqvlXKwga4Fg7VnVdrr3dI3
+	j6yZkwvK4Li7Jgfc9wNQnEYyDXM7epLjdR5kZyeDf77noyLrnuKbOjGa1KsItDHu0v5oP4exi4i
+	epttT9IJKHH4p7xKsMjk6WOwMAEIjG2TyfPebc1ue/anPmvTT8Dt9BHWj4Ifd77ABkAGYK8OhsJ
+	jCTvrbmoYZgsNTaAA9RzV5mZglw=
+X-Received: by 2002:a05:6a00:1c94:b0:84e:2722:5d9e with SMTP id d2e1a72fcca58-84ebc1fd59cmr2112104b3a.1.1785409922949;
+        Thu, 30 Jul 2026 04:12:02 -0700 (PDT)
+To: contact@hardbanrecordslab.online
+From: "=?UTF-8?Q?Endel_=E2=80=8B?=" <hi@endel.io>
+Date: Thu, 30 Jul 2026 04:12:02 -0700
+Message-ID: <CAG43aUP9xwosX=2U8CDFdd1uYwZBmL5Xy=s-_1A59_s8H9QHcQ@mail.gmail.com>
+In-Reply-To: <225727257.2015057.1785409919802@poczta.home.pl>
+References: <225727257.2015057.1785409919802@poczta.home.pl>
+Subject: =?UTF-8?Q?Re:_CMLP_=E2=80=94_licensing_question:_subl?= =?UTF-8?Q?icensing_&_public_performance_rights?=
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Precedence: bulk
+X-Autoreply: yes
+Auto-Submitted: auto-replied
+X-CLIENT-IP: 209.85.210.174
+X-CLIENT-HOSTNAME: mail-pf1-f174.google.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: dmFkZTGroJuA0CwQm1rWgpQW5O4a794sKgs7lI6wxavbyYvDg0n97JSN1EQ4bQTlBAI8BLOze8bYfcWKXUT24BdX3z9wIss5y/STgVLlOZFXsg/3QZWocvnmx/+MIpyXbW0jSEz5Y/tS2Z79pWiRx15Y7HlsGM3RJdY5rH5NX3e5X/kAsgVuG5aUP+yuEc2ZFdGWUBS22Mlo8xeRGlmF1mL5DSAqqiKBMRMDzmQGy1ctPLJCDB2HLnW1aMTwCRcFKzxESPNv1+oC7ZbvDN3I+kfKfq+VZ5OzA+ia567o9GmLkkDwBr/Prnjoc4oOSepnUl6RRCG3QOJB2gUY+G4t49Tcdl+uUajR3Xr+DD/dz3sgrPM1RpeCMH0g6eC3ywRYqFYFC5hcWH4oyfL2FqHbIzgZQSiber6wyjAzBDE1Uhy8peRRphNsZ311EJStfM7gKwiFi8JSJ0jsUg+VNzQB8NqR42SiGY+xrTzYZdoHf/qmw38C1ox5X+MV8fIwZTrw/RgozqAjSNyacPTSXR+GA8AyhGfTZE3Ub1B4EnT05Rv+hTzWwBPykWkcFofJc+YzlvGBkLB+ZJX0beWUyNS1jmBQ3EGVRVaC7cStENavUa57+AgCcOohFcxBkOTA9frYAcaQ08XtdnG+uQKNvvK7GB3E7PI/DiN0HeERJTXlEwd8aiQFRg
+X-DCC--Metrics: v185.home.net.pl 1024; Body=1 Fuz1=1 Fuz2=1
+
+<div dir="ltr"><p>Hey,</p>
+<p>Thanks for reaching out. We&#39;ve received your email and we&#39;ll get back to you as soon as we can.</p>
+<p>For support or questions about the app, you can check out our <a href="https://endel.zendesk.com/hc/en-us/sections/360001187800-FAQ" target="_blank">FAQ page</a>, or drop our support team a message at <a href="mailto:ask@endel.io" target="_blank">ask@endel.io</a>.</p>
+<p>Best wishes,</p>
+<p>The Endel team</p><br></div>

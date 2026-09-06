@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CMLP Licensing
- * Description: Integrates the CMLP (Content Monetization & Licensing Platform) with WordPress, providing white-label player embedding, track catalog display, license management, and bidirectional sync with the CMLP Express backend.
+ * Description: Integrates CMLP (Collective Music Licensing Project) with WordPress, providing white-label player embedding, track catalog display, license management, and bidirectional sync with the CMLP Express backend.
  * Version: 1.0.0
  * Author: CMLP
  * Text Domain: cmlp-licensing

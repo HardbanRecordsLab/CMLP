@@ -543,7 +543,7 @@ export default function ReportingStudio() {
                       data={[
                         { name: 'Active Certificate', value: (complianceData.statusBreakdown as Record<string, unknown>).active as number },
                         { name: 'Expired Certificate', value: (complianceData.statusBreakdown as Record<string, unknown>).expired as number },
-                        { name: 'Cancelled Exemption', value: (complianceData.statusBreakdown as Record<string, unknown>).cancelled as number }
+                        { name: 'Cancelled', value: (complianceData.statusBreakdown as Record<string, unknown>).cancelled as number }
                       ]}
                       cx="50%"
                       cy="50%"

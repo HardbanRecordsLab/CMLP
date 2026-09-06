@@ -19,7 +19,7 @@ get_header();
                 <?php esc_html_e( 'Profesjonalne rozwiązania muzyczne dla biznesu i klientów indywidualnych', 'hrl-theme' ); ?>
             </h1>
             <p class="hero-desc">
-                <?php esc_html_e( 'Pomagamy firmom legalnie korzystać z autorskiej muzyki komercyjnej oraz tworzymy spersonalizowane utwory na zamówienie. Bez pośredników. Bez OZZ. Z pełnią praw autorskich.', 'hrl-theme' ); ?>
+                <?php esc_html_e( 'Pomagamy firmom legalnie korzystać z autorskiej muzyki komercyjnej oraz tworzymy spersonalizowane utwory na zamówienie. Własny katalog, pełnia praw autorskich, jedna umowa.', 'hrl-theme' ); ?>
             </p>
             <div class="hero-actions">
                 <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Poznaj CMLP', 'hrl-theme' ); ?></a>
@@ -30,7 +30,7 @@ get_header();
             <div class="hero-ecosystem">
                 <div class="eco-visual-card eco-cmlp">
                     <span class="eco-visual-label"><?php esc_html_e( 'B2B', 'hrl-theme' ); ?></span>
-                    <span class="eco-visual-title"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></span>
+                    <span class="eco-visual-title"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></span>
                 </div>
                 <div class="eco-visual-card eco-mks">
                     <span class="eco-visual-label"><?php esc_html_e( 'B2C & B2B', 'hrl-theme' ); ?></span>
@@ -50,7 +50,7 @@ get_header();
                     <div class="product-showcase-icon">
                         <img src="<?php echo get_template_directory_uri(); ?>/images/cmlp-logo.png" alt="CMLP" class="product-logo" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=font-size:2.5rem;font-weight:800;color:var(--gold);>CMLP</span>'">
                     </div>
-                    <p class="product-showcase-tag"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></p>
+                    <p class="product-showcase-tag"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></p>
                     <h2 class="product-showcase-title"><?php esc_html_e( 'Muzyka komercyjna dla nowoczesnego biznesu', 'hrl-theme' ); ?></h2>
                     <p class="product-showcase-desc">
                         <?php esc_html_e( 'Platforma stworzona dla firm, które chcą profesjonalnie zarządzać muzyką w swoich lokalach. Łączy autorską bibliotekę muzyczną, wygodne zarządzanie odtwarzaniem oraz narzędzia wspierające codzienną pracę przedsiębiorców.', 'hrl-theme' ); ?>
@@ -58,11 +58,11 @@ get_header();
                     <ul class="product-showcase-benefits">
                         <li><?php esc_html_e( 'Autorska biblioteka muzyczna', 'hrl-theme' ); ?></li>
                         <li><?php esc_html_e( 'Streaming Premium Audio', 'hrl-theme' ); ?></li>
-                        <li><?php esc_html_e( 'Direct Licensing — bez OZZ', 'hrl-theme' ); ?></li>
+                        <li><?php esc_html_e( 'Licencja bezpośrednio od twórcy', 'hrl-theme' ); ?></li>
                         <li><?php esc_html_e( 'Zarządzanie wieloma lokalizacjami', 'hrl-theme' ); ?></li>
                         <li><?php esc_html_e( 'White Label Player', 'hrl-theme' ); ?></li>
                     </ul>
-                    <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Poznaj Commercial Music Licensing Platform', 'hrl-theme' ); ?></a>
+                    <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Poznaj Collective Music Licensing Project', 'hrl-theme' ); ?></a>
                 </div>
             </div>
             <div class="product-showcase-visual">
@@ -149,7 +149,7 @@ get_header();
         <p class="section-label"><?php esc_html_e( 'Non-Stop Stream', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></h2>
         <p style="color:var(--text-secondary);line-height:1.7;margin-bottom:2rem;">
-            <?php esc_html_e( 'Całodobowy strumień autorskiej muzyki tworzonej w ramach HardbanRecords Lab. Bez reklam. Bez ZAiKS. Dostępny za darmo.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Całodobowy strumień autorskiej muzyki tworzonej w ramach HardbanRecords Lab. Bez reklam. Dostępny za darmo.', 'hrl-theme' ); ?>
         </p>
         <div class="radio-player">
             <div class="radio-visualizer" id="radioVisualizer">
@@ -232,7 +232,7 @@ get_header();
         <p class="section-label"><?php esc_html_e( 'Kontakt', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Porozmawiajmy o Twoim projekcie', 'hrl-theme' ); ?></h2>
         <p style="color:var(--text-secondary);line-height:1.7;margin-bottom:2rem;">
-            <?php esc_html_e( 'Masz pytania dotyczące Commercial Music Licensing Platform, Muzycznej Kreacji Słów lub innych usług HardbanRecords Lab? Skontaktuj się z nami — odpowiemy w ciągu 24 godzin.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Masz pytania dotyczące Collective Music Licensing Project, Muzycznej Kreacji Słów lub innych usług HardbanRecords Lab? Skontaktuj się z nami — odpowiemy w ciągu 24 godzin.', 'hrl-theme' ); ?>
         </p>
         <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
             <a href="tel:+48726651384" class="btn btn-outline"><?php esc_html_e( '+48 726 651 384', 'hrl-theme' ); ?></a>
@@ -257,7 +257,7 @@ get_header();
             <div class="footer-col">
                 <h4 class="footer-title"><?php esc_html_e( 'Produkty', 'hrl-theme' ); ?></h4>
                 <ul class="footer-links">
-                    <li><a href="https://cmlp.hardbanrecordslab.online"><?php esc_html_e( 'Commercial Music Licensing Platform', 'hrl-theme' ); ?></a></li>
+                    <li><a href="https://cmlp.hardbanrecordslab.online"><?php esc_html_e( 'Collective Music Licensing Project', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></a></li>
                     <li><a href="<?php echo esc_url( home_url( '/blogcast/' ) ); ?>"><?php esc_html_e( 'HRL BlogCast', 'hrl-theme' ); ?></a></li>
