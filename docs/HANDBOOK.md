@@ -203,6 +203,11 @@ marketingowe** (patrz §2).
   zakres, okres, kod QR → strona weryfikacji). Certyfikat potwierdza fakt
   posiadania aktywnej licencji; nie przesądza o roszczeniach osób trzecich
   i nie zastępuje oceny prawnej.
+- **Zakaz framingu „zwolnienia z OZZ".** Ani na stronie, ani w aplikacji, ani
+  w generowanych dokumentach PDF nie występuje określenie „Certyfikat
+  Zwolnienia z OZZ / ZAiKS", „zwolnienie z opłat", „do okazania podczas
+  kontroli inspektorów" itp. Certyfikat nazywa się wyłącznie **Certyfikat
+  Licencyjny / Music Licensing Certificate** (plik `CMLP_LICENSE_CERTIFICATE_*.pdf`).
 
 ### 4.5 Ryzyka prawne
 

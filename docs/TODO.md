@@ -18,6 +18,9 @@ Aktualizacja: 2026-09-06.
 - ✅ Cennik: Starter 39 zł/mies. (strona + Warunki Sprzedaży).
 - ✅ Usunięto WSZYSTKIE publiczne deklaracje „bez ZAiKS / zero OZZ" z treści
   (motyw nadrzędny + potomny + wzorce bloków + provisioner kategorii).
+- ✅ Usunięto framing „zwolnienie z OZZ" z APLIKACJI: certyfikat →
+  „Certyfikat Licencyjny", PDF/umowa/maile/i18n (en+pl)/dashboard; usunięto
+  zmyślone „KRS 0000123456 / NIP 1234567890" z certyfikatu B2BPlayer.
 - ✅ `PUBLIC_ACCESS_ENABLED=true` w 3 wzorach `.env`.
 - ✅ Porządki w repo: usunięte rozbieżne raporty, osierocone pliki motywu,
   artefakty ZIP; `mails/` → `docs/brand-legal/korespondencja/`.
@@ -28,10 +31,12 @@ Aktualizacja: 2026-09-06.
 
 ## 1. 🔴 Blokery live — decyzje / dane właściciela
 
-- [ ] 🔴 **Ceny w Stripe = ceny na stronie.** Zweryfikować produkty/ceny
-  w Stripe Dashboard i w bazie: Starter 39 / Business 159 / Premium 499 /
-  Event 600 zł. Jeśli backend liczy 69 zł — klient dostanie inną kwotę na
-  płatności. *(§5, §11 Handbooka)*
+- [ ] 🔴 **Ceny w Stripe/bazie = ceny na stronie.** Trzy różne wartości
+  Startera w historii: strona 39 zł, dawniej 69 zł, a test
+  `reports.test.ts` zakłada `billingByTier.starter = 4900` (49 zł).
+  Ujednolicić: Stripe (produkty/ceny), logika `reports`/`payments`,
+  fixture'y testów, strona. Źródło prawdy = strona `/cmlp/` (§5).
+  Bez tego klient płaci inną kwotę niż widzi. *(§5, §11)*
 - [ ] 🔴 **Rejestracja działalności gospodarczej.** Warunek wystawiania faktur
   i zawierania umów B2B. *(§4.1)*
 - [ ] 🔴 **Pełne dane podmiotu do regulaminów.** „Creative Music Licensing
@@ -124,6 +129,11 @@ Aktualizacja: 2026-09-06.
 - [ ] 🟡 Redukcja `any`, dead code, uzupełnienie typów.
 - [ ] 🟡 Cache waveformów (Redis) + CDN dla statycznych plików audio.
 - [ ] 🟡 CI: branch protection na `main`, wymagane lint+type-check+test.
+- [ ] 🟠 **Pełny suite testów na właściwym środowisku** (test DB + Redis).
+  Lokalnie: `tsc --noEmit` OK, `licenses.test.ts` 6/6, ale pełny `npm test`
+  ma ~53 timeouty (per-test 5000 ms za mało — pojedynczy plik ~100 s;
+  testy integracyjne wymagają DB/Redis). Podnieść `testTimeout` w
+  `config/vite.config.ts` i uruchomić w CI z usługami.
 
 ## 7. 🟡 Monitoring i utrzymanie
 
