@@ -19,7 +19,7 @@ get_header();
                 <?php esc_html_e( 'Profesjonalne rozwiązania muzyczne dla biznesu i klientów indywidualnych', 'hrl-theme' ); ?>
             </h1>
             <p class="hero-desc">
-                <?php esc_html_e( 'Pomagamy firmom legalnie korzystać z autorskiej muzyki komercyjnej oraz tworzymy spersonalizowane utwory na zamówienie. Bez pośredników. Bez OZZ. Z pełnią praw autorskich.', 'hrl-theme' ); ?>
+                <?php esc_html_e( 'Pomagamy firmom legalnie korzystać z autorskiej muzyki komercyjnej oraz tworzymy spersonalizowane utwory na zamówienie. Własny katalog, pełnia praw autorskich, jedna umowa.', 'hrl-theme' ); ?>
             </p>
             <div class="hero-actions">
                 <a href="https://cmlp.hardbanrecordslab.online" class="btn btn-primary"><?php esc_html_e( 'Poznaj CMLP', 'hrl-theme' ); ?></a>
@@ -58,7 +58,7 @@ get_header();
                     <ul class="product-showcase-benefits">
                         <li><?php esc_html_e( 'Autorska biblioteka muzyczna', 'hrl-theme' ); ?></li>
                         <li><?php esc_html_e( 'Streaming Premium Audio', 'hrl-theme' ); ?></li>
-                        <li><?php esc_html_e( 'Direct Licensing — bez OZZ', 'hrl-theme' ); ?></li>
+                        <li><?php esc_html_e( 'Licencja bezpośrednio od twórcy', 'hrl-theme' ); ?></li>
                         <li><?php esc_html_e( 'Zarządzanie wieloma lokalizacjami', 'hrl-theme' ); ?></li>
                         <li><?php esc_html_e( 'White Label Player', 'hrl-theme' ); ?></li>
                     </ul>
@@ -149,7 +149,7 @@ get_header();
         <p class="section-label"><?php esc_html_e( 'Non-Stop Stream', 'hrl-theme' ); ?></p>
         <h2 class="section-title"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></h2>
         <p style="color:var(--text-secondary);line-height:1.7;margin-bottom:2rem;">
-            <?php esc_html_e( 'Całodobowy strumień autorskiej muzyki tworzonej w ramach HardbanRecords Lab. Bez reklam. Bez ZAiKS. Dostępny za darmo.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Całodobowy strumień autorskiej muzyki tworzonej w ramach HardbanRecords Lab. Bez reklam. Dostępny za darmo.', 'hrl-theme' ); ?>
         </p>
         <div class="radio-player">
             <div class="radio-visualizer" id="radioVisualizer">

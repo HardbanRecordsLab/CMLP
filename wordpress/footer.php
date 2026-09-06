@@ -51,7 +51,7 @@ $newsletter_bar = get_theme_mod( 'hrl_newsletter_bar_toggle', false );
             <div class="footer-col">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo">HARDBANRECORDS LAB</a>
                 <p class="footer-description">
-                    <?php esc_html_e( 'Suwerenny ekosystem B2B Audio. Muzyka komercyjna bez opłat ZAiKS, OZZ i pośredników.', 'hrl-theme' ); ?>
+                    <?php esc_html_e( 'Autorska muzyka dla biznesu. Katalog na wyłączność, licencje bezpośrednio od twórcy.', 'hrl-theme' ); ?>
                 </p>
             </div>
 
@@ -67,7 +67,7 @@ $newsletter_bar = get_theme_mod( 'hrl_newsletter_bar_toggle', false );
                 } else {
                 ?>
                     <ul>
-                        <li><a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>"><?php esc_html_e( 'CMLP — Muzyka bez ZAiKS', 'hrl-theme' ); ?></a></li>
+                        <li><a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>"><?php esc_html_e( 'CMLP — Muzyka do lokalu', 'hrl-theme' ); ?></a></li>
                         <li><a href="<?php echo esc_url( home_url( '/muzyczna-kreacja-slow/' ) ); ?>"><?php esc_html_e( 'Muzyczna Kreacja Słów', 'hrl-theme' ); ?></a></li>
                         <li><a href="<?php echo esc_url( home_url( '/blogcast/' ) ); ?>"><?php esc_html_e( 'BlogCast', 'hrl-theme' ); ?></a></li>
                         <li><a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>"><?php esc_html_e( 'Radio HRL', 'hrl-theme' ); ?></a></li>

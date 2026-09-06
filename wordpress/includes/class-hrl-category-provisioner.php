@@ -94,7 +94,7 @@ class HRL_Category_Provisioner {
                 'Licencjonowanie bezpośrednie',
                 'Branding dźwiękowy marek',
                 'Niezależna dystrybucja cyfrowa',
-                'Zwolnienia z opłat OZZ',
+                'Prawa autorskie w muzyce B2B',
                 'Audyt muzyczny w lokalach',
                 'Dobór playlist pod branże',
                 'Weryfikacja certyfikatów QR',

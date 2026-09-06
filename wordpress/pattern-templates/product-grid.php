@@ -49,7 +49,7 @@ return array(
                 <h3 style="font-family:var(--font-headings);font-size:1.4rem;margin-bottom:12px;color:#FFFFFF;">Funkcja 2</h3>
                 <!-- /wp:heading -->
                 <!-- wp:paragraph -->
-                <p style="color:var(--text-secondary);font-size:0.95rem;line-height:1.65;margin-bottom:20px;">Opis drugiej funkcji — certyfikat wolności od OZZ.</p>
+                <p style="color:var(--text-secondary);font-size:0.95rem;line-height:1.65;margin-bottom:20px;">Do każdej licencji generujemy Certyfikat Licencyjny z kodem QR do weryfikacji.</p>
                 <!-- /wp:paragraph -->
                 <!-- wp:buttons -->
                 <div class="wp-block-buttons"><div class="wp-block-button is-style-outline"><a class="wp-block-button__link" style="border:1px solid var(--gold);color:var(--gold);padding:10px 20px;font-size:0.8rem;border-radius:4px;text-decoration:none;">Sprawdź →</a></div></div>

@@ -18,10 +18,10 @@ return array(
     <p class="hero-eyebrow" style="font-family:var(--font-accents);font-size:0.85rem;text-transform:uppercase;letter-spacing:4px;color:var(--gold);text-align:center;margin-bottom:20px;">HardbanRecords Lab 2.0</p>
     <!-- /wp:paragraph -->
     <!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"clamp(2.5rem,6vw,4.5rem)"}}} -->
-    <h2 class="has-text-align-center" style="font-size:clamp(2.5rem,6vw,4.5rem);text-align:center;font-family:var(--font-headings);color:#FFFFFF;line-height:1.15;margin-bottom:24px;">Muzyka <span style="background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">bez ZAiKS</span><br>w Twoim Biznesie</h2>
+    <h2 class="has-text-align-center" style="font-size:clamp(2.5rem,6vw,4.5rem);text-align:center;font-family:var(--font-headings);color:#FFFFFF;line-height:1.15;margin-bottom:24px;">Autorska muzyka <span style="background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">na wyłączność</span><br>w Twoim Biznesie</h2>
     <!-- /wp:heading -->
     <!-- wp:paragraph {"align":"center"} -->
-    <p class="has-text-align-center" style="text-align:center;color:var(--text-secondary);font-size:1.15rem;max-width:650px;margin:0 auto 36px;line-height:1.7;">Pierwsza w Polsce platforma B2B oferująca w pełni autorską, licencjonowaną muzykę tła dla gastronomii, retailu, wellness i korporacji — z całkowitym wyłączeniem opłat OZZ.</p>
+    <p class="has-text-align-center" style="text-align:center;color:var(--text-secondary);font-size:1.15rem;max-width:650px;margin:0 auto 36px;line-height:1.7;">Platforma B2B z w pełni autorską muzyką tła dla gastronomii, retailu, wellness i biur — katalog na wyłączność, licencje bezpośrednio od twórcy.</p>
     <!-- /wp:paragraph -->
     <!-- wp:buttons {"align":"center"} -->
     <div class="wp-block-buttons aligncenter" style="justify-content:center;display:flex;gap:16px;flex-wrap:wrap;">

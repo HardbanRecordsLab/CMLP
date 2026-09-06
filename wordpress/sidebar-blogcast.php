@@ -125,7 +125,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
         <li style="margin-bottom:8px;">
             <a href="<?php echo esc_url( home_url( '/cmlp/' ) ); ?>"
                style="font-size:0.82rem;color:var(--text-secondary);text-decoration:none;display:flex;align-items:center;gap:8px;">
-                🎵 <?php esc_html_e( 'CMLP — Muzyka bez ZAiKS', 'hrl-theme' ); ?>
+                🎵 <?php esc_html_e( 'CMLP — Muzyka do lokalu', 'hrl-theme' ); ?>
             </a>
         </li>
         <li style="margin-bottom:8px;">

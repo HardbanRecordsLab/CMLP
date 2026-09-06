@@ -277,7 +277,7 @@ add_action( 'init', 'hrl_child_override_patterns', 20 );
  */
 function hrl_child_sticky_cta_default( $value, $setting ) {
     if ( '' === $value || false === $value ) {
-        return __( 'Gotowy na muzykę bez rachunków od pośredników? <strong>Kontakt →</strong>', 'hrl-theme' );
+        return __( 'Gotowy na autorską muzykę w swoim lokalu? <strong>Kontakt →</strong>', 'hrl-theme' );
     }
     return $value;
 }
