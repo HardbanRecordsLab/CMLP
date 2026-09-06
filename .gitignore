@@ -164,3 +164,6 @@ test-upload.mp3
 # WordPress backups
 wordpress-backup-*/
 
+
+# Prywatne dane VPS (backupy DB, sekrety, klucze) — NIGDY w repo
+HBRL-VPS/
