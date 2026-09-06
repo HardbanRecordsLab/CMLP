@@ -22,7 +22,7 @@ export async function exportPDF(req: any, res: Response) {
     const accentColor = '#3b82f6';
 
     doc.fontSize(22).font('Helvetica-Bold').fillColor(brandColor).text('Hardban Records Lab', { align: 'center' });
-    doc.fontSize(10).font('Helvetica').fillColor('#666').text('Commercial Music Licensing Platform — Analytics Report', { align: 'center' });
+    doc.fontSize(10).font('Helvetica').fillColor('#666').text('Collective Music Licensing Project — Analytics Report', { align: 'center' });
     doc.moveDown(0.5);
     doc.fontSize(8).fillColor('#999').text(`Generated: ${new Date().toLocaleString('pl-PL')}`, { align: 'center' });
     doc.moveDown(1.5);

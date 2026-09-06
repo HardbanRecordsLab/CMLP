@@ -379,7 +379,7 @@ export default function LicensingManager() {
                   </div>
                   <div className="flex justify-between flex-wrap gap-1">
                     <span className="text-slate-500">{t('licensingManager.regionLabel')}:</span>
-                    <span className="font-semibold text-white">{selectedLicense.jurisdiction === 'PL' ? 'Poland (ZAiKS)' : selectedLicense.jurisdiction}</span>
+                    <span className="font-semibold text-white">{selectedLicense.jurisdiction === 'PL' ? 'Poland (PL)' : selectedLicense.jurisdiction}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('licensingManager.issuedLabel')}:</span>

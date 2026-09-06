@@ -75,7 +75,7 @@ export async function getAuditLogs(req: any, res: Response) {
     if (result.pagination.total === 0 && !params.search && !action && !resource) {
       const dummyLogs = [
         { id: 100, userId: 'admin', action: 'user_login', resource: 'users', details: 'Admin console interactive session authenticated', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 5 * 60 * 1000) },
-        { id: 99, userId: 'admin', action: 'broadcast_alert', resource: 'notifications', details: 'Alert broadcast triggered: ZAiKS Exemption Policy updates dispatched', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 22 * 60 * 1000) },
+        { id: 99, userId: 'admin', action: 'broadcast_alert', resource: 'notifications', details: 'Alert broadcast triggered: licensing policy update dispatched', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 22 * 60 * 1000) },
         { id: 98, userId: 'admin', action: 'track_upload', resource: 'tracks', details: 'Parsed and metadata-verified media upload: Morning Jazz Brew', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 65 * 60 * 1000) },
         { id: 97, userId: 'b2b_aroma', action: 'contract_signature', resource: 'licenses', details: 'Digital signing audit seal captured for certificate HRL-LIC-AROMA99', ipAddress: '83.11.214.33', createdAt: new Date(Date.now() - 3 * 3600 * 1000) },
         { id: 96, userId: 'admin', action: 'sync_wordpress', resource: 'wordpress', details: 'Processed WordPress bidirectional webhook stream node update', ipAddress: '192.168.1.102', createdAt: new Date(Date.now() - 4 * 3600 * 1000) },

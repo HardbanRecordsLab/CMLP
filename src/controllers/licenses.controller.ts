@@ -48,7 +48,7 @@ export async function create(req: any, res: Response) {
       jurisdiction,
     }).returning()) as unknown as any[];
 
-    const contractText = `LICENSE AGREEMENT & EXEMPTION CERTIFICATE
+    const contractText = `LICENSE AGREEMENT & MUSIC LICENSING CERTIFICATE
 Certificate Number: ${certificateNumber}
 Issued To (Licensee): ${companyName}
 License Tier: ${licenseType.toUpperCase()}
@@ -56,14 +56,14 @@ Jurisdiction: ${jurisdiction || 'EU'}
 Valid From: ${new Date().toLocaleDateString()}
 Valid Until: ${expiresAt.toLocaleDateString()}
 
-LEGAL EXEMPTION STATEMENT:
-Pursuant to international copyright laws and modern direct-licensing framework directives, the licensor Hardban Records Lab (HRL) hereby certifies that the compositions and sound recordings provided under this service are strictly directly-licensed or royalty-free in scope.
+LICENSING STATEMENT:
+The licensor, Hardban Records Lab / Creative Music Licensing Partners (CMLP), grants the Licensee a direct, non-exclusive licence to use the CMLP catalogue within the scope set out herein, on the basis of the rights the licensor holds in the works.
 
-The Licensee is fully exempt from paying public performance royalties to collective management organizations (including but not limited to ZAiKS, STOART, ZPAV, and other regional CMOs/PROs) for background music played within their official outlets, provided they maintain an active subscription and comply with terms herein.
+This document confirms the fact, scope and term of the licence. It does not determine third-party claims and does not replace legal advice.
 
 LICENSE RIGHTS:
 1. Non-exclusive right to broadcast public playlist streams inside customer-facing business boundaries.
-2. Direct-Licensing representation in case of local copyright inspections.
+2. A verifiable Licensing Certificate documenting the fact, scope and term of the licence.
 3. Access to dynamic compliance reports.
 
 Signed dynamically on behalf of Hardban Records Lab.`;
@@ -127,14 +127,14 @@ export async function getPdf(req: any, res: Response) {
     const [contract] = await db.select().from(contracts).where(eq(contracts.licenseId, licenseId));
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="CMLP_ZAIKS_EXEMPTION_${license.certificateNumber}.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="CMLP_LICENSE_CERTIFICATE_${license.certificateNumber}.pdf"`);
 
     const doc = new PDFDocument({ margin: 50 });
     doc.pipe(res);
 
-    doc.fontSize(24).fillColor('#1e40af').text('CERTYFIKAT ZWOLNIENIA Z OPŁAT', { align: 'center' });
+    doc.fontSize(24).fillColor('#1e40af').text('CERTYFIKAT LICENCYJNY', { align: 'center' });
     doc.moveDown();
-    doc.fontSize(14).fillColor('#475569').text('ZAiKS / STOART / ZPAV EXEMPTION CERTIFICATE', { align: 'center' });
+    doc.fontSize(14).fillColor('#475569').text('MUSIC LICENSING CERTIFICATE / CREATIVE MUSIC LICENSING PARTNERS', { align: 'center' });
     doc.moveDown(2);
 
     doc.fontSize(12).fillColor('#0f172a');
@@ -150,8 +150,8 @@ export async function getPdf(req: any, res: Response) {
 
     doc.fontSize(10).fillColor('#334155');
     doc.text(
-      `Zgodnie z zawartą umową oraz regulaminem świadczenia usług platformy Commercial Music Licensing Platform (CMLP) / Hardban Records Lab, właściciel niniejszego certyfikatu posiada pełne prawo do komercyjnego publicznego odtwarzania utworów muzycznych z autorskiego katalogu (Direct Licensing).\n\n` +
-      `Niniejszy katalog jest wolny od roszczeń jakichkolwiek Organizacji Zbiorowego Zarządzania (OZZ), w tym m.in. ZAiKS, STOART, ZPAV, SAWP. Dokument stanowi poświadczenie legalnego źródła odtwarzanej muzyki do okazania podczas kontroli inspektorów.`
+      `Niniejszy dokument potwierdza, że podmiot wskazany powyżej posiada aktywną licencję na korzystanie z autorskiego katalogu Creative Music Licensing Partners (CMLP) w zakresie i okresie określonym w tym certyfikacie. Licencjodawca udziela licencji bezpośrednio, na podstawie posiadanych praw do utworów.\n\n` +
+      `Certyfikat potwierdza fakt i zakres licencji. Nie przesądza o roszczeniach osób trzecich i nie zastępuje oceny prawnej.`
     );
     doc.moveDown(2);
 

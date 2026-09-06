@@ -127,7 +127,7 @@ export default function ComplianceOZZ() {
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 h-72">
             <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">{t('complianceOzz.jurisdictionDistribution')}</h3>
             <ResponsiveContainer width="100%" height="85%">
-              <BarChart data={compliance?.jurisdictionAudit as Record<string, unknown>[] || [{ name: 'Poland (ZAiKS)', value: activeLics.length || 1 }, { name: 'EU Exemption', value: 1 }]}>
+              <BarChart data={compliance?.jurisdictionAudit as Record<string, unknown>[] || [{ name: 'Poland (PL)', value: activeLics.length || 1 }, { name: 'European Union', value: 1 }]}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#101726" />
                 <XAxis dataKey="name" stroke="#475569" fontSize={10} />
                 <YAxis stroke="#475569" fontSize={10} />
@@ -184,9 +184,9 @@ export default function ComplianceOZZ() {
             <h3 className="text-white font-medium mb-4">{t('complianceOzz.jurisdictionCoverage')}</h3>
             <div className="space-y-4">
               {[
-                { code: 'PL', name: 'Poland', society: 'ZAiKS / STOART', certs: activeLics.filter(l => l.jurisdiction === 'PL' || !l.jurisdiction).length, exempt: true },
-                { code: 'EU', name: 'European Union', society: 'EU Cross-Border', certs: activeLics.filter(l => l.jurisdiction === 'EU').length, exempt: true },
-                { code: 'US', name: 'United States', society: 'ASCAP / BMI', certs: activeLics.filter(l => l.jurisdiction === 'US').length, exempt: false },
+                { code: 'PL', name: 'Poland', society: 'Direct licence', certs: activeLics.filter(l => l.jurisdiction === 'PL' || !l.jurisdiction).length, exempt: true },
+                { code: 'EU', name: 'European Union', society: 'Direct licence', certs: activeLics.filter(l => l.jurisdiction === 'EU').length, exempt: true },
+                { code: 'US', name: 'United States', society: 'Direct licence', certs: activeLics.filter(l => l.jurisdiction === 'US').length, exempt: false },
               ].map(j => (
                 <div key={j.code} className="bg-slate-950 border border-slate-800 rounded-lg p-4">
                   <div className="flex justify-between items-start">
@@ -203,7 +203,7 @@ export default function ComplianceOZZ() {
                       <p className="text-[10px] text-slate-500">{t('complianceOzz.certificates')}</p>
                     </div>
                   </div>
-                  {j.exempt && <div className="mt-2 text-[10px] text-emerald-400 flex items-center gap-1"><ShieldCheck className="w-3 h-3" /> {t('complianceOzz.exemptionActive')}</div>}
+                  {j.exempt && <div className="mt-2 text-[10px] text-emerald-400 flex items-center gap-1"><ShieldCheck className="w-3 h-3" /> {t('complianceOzz.licenceActive')}</div>}
                 </div>
               ))}
             </div>
@@ -213,11 +213,11 @@ export default function ComplianceOZZ() {
             <h3 className="text-white font-medium mb-4">{t('complianceOzz.complianceRequirements')}</h3>
             <div className="space-y-3 text-xs text-slate-400">
               <div className="flex justify-between items-center p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <span>{t('complianceOzz.zaiksExemption')}</span>
+                <span>{t('complianceOzz.originalWorks')}</span>
                 <CheckCircle className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="flex justify-between items-center p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <span>{t('complianceOzz.stoartClearance')}</span>
+                <span>{t('complianceOzz.directLicensing')}</span>
                 <CheckCircle className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="flex justify-between items-center p-3 bg-slate-950 rounded-lg border border-slate-800">

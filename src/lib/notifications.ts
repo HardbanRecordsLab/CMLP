@@ -58,10 +58,10 @@ export async function getNotificationSettings(): Promise<NotificationSettings> {
         fromName: 'Hardban Records Lab',
         templateWelcomeSubject: 'Welcome to Hardban Records Lab!',
         templateWelcomeBody: 'Hello {{name}}, welcome to Hardban Records Lab! Your B2B music licensing clearance account ({{email}}) is now active. Log in at any time to configure your background music outlets.',
-        templateExpirySubject: 'URGENT: Your License Exemption Certificate is expiring soon',
-        templateExpiryBody: 'Dear Client of {{companyName}}, our compliance systems indicate that your ZAiKS/STOART Exemption Certificate {{certificateNumber}} is expiring soon (expires on: {{expiresAt}}). Please renew your subscription to prevent disruption of background music compliance.',
+        templateExpirySubject: 'Your CMLP licence is expiring soon',
+        templateExpiryBody: 'Dear Client of {{companyName}}, your CMLP catalogue licence {{certificateNumber}} is expiring soon (expires on: {{expiresAt}}). Please renew your subscription to keep uninterrupted access to the catalogue.',
         templatePaymentSubject: 'Subscription Payment Receipt - Hardban Record Lab',
-        templatePaymentBody: 'Thank you for your business! Your payment of {{amount}} {{currency}} via {{gateway}} has been processed successfully. Your licensing exemption certificate check check has been completed.'
+        templatePaymentBody: 'Thank you for your business! Your payment of {{amount}} {{currency}} via {{gateway}} has been processed successfully. Your Licensing Certificate has been issued.'
       };
       const inserted = await db.insert(notification_settings).values(defaultSettings).returning();
       return inserted[0];
@@ -80,7 +80,7 @@ export async function getNotificationSettings(): Promise<NotificationSettings> {
       fromName: 'Hardban Records Lab',
       templateWelcomeSubject: 'Welcome to Hardban Records Lab!',
       templateWelcomeBody: 'Hello {{name}}, welcome to Hardban Records Lab! Your B2B music licensing clearance account ({{email}}) is now active.',
-      templateExpirySubject: 'URGENT: Your License Exemption Certificate is expiring soon',
+      templateExpirySubject: 'Your CMLP licence is expiring soon',
       templateExpiryBody: 'Dear Client, your certificate {{certificateNumber}} is expiring soon.',
       templatePaymentSubject: 'Subscription Payment Receipt - Hardban Record Lab',
       templatePaymentBody: 'Thank you! Your payment of {{amount}} {{currency}} is processed.'
