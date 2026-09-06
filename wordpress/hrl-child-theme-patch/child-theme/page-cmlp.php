@@ -140,7 +140,7 @@ get_header();
                 <span class="hrl-price-badge"><?php esc_html_e( 'NAJCZĘŚCIEJ WYBIERANY', 'hrl-theme' ); ?></span>
                 <h3><?php esc_html_e( 'Business', 'hrl-theme' ); ?></h3>
                 <p class="hrl-price-for"><?php esc_html_e( 'Kilka punktów', 'hrl-theme' ); ?></p>
-                <div class="hrl-price-value">159 zł<span>/mies.</span></div>
+                <div class="hrl-price-value">99 zł<span>/mies.</span></div>
                 <ul class="hrl-price-list">
                     <li><?php esc_html_e( 'Do 5 lokalizacji', 'hrl-theme' ); ?></li>
                     <li><?php esc_html_e( 'Rozszerzona biblioteka', 'hrl-theme' ); ?></li>
@@ -148,14 +148,14 @@ get_header();
                     <li><?php esc_html_e( 'Konta pracowników', 'hrl-theme' ); ?></li>
                     <li><?php esc_html_e( 'Priorytetowe wsparcie', 'hrl-theme' ); ?></li>
                 </ul>
-                <p class="hrl-price-note"><?php esc_html_e( 'Małe sieci i franczyzy — ok. 32 zł za lokal.', 'hrl-theme' ); ?></p>
+                <p class="hrl-price-note"><?php esc_html_e( 'Małe sieci i franczyzy — ok. 20 zł za lokal.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( 'https://cmlp.hardbanrecordslab.online/cmlp/b2b?pakiet=business' ); ?>" class="btn btn-primary hrl-price-btn"><?php esc_html_e( 'Zamów Business', 'hrl-theme' ); ?></a>
             </div>
 
             <div class="hrl-price-card reveal-up">
                 <h3><?php esc_html_e( 'Premium', 'hrl-theme' ); ?></h3>
                 <p class="hrl-price-for"><?php esc_html_e( 'Większe sieci', 'hrl-theme' ); ?></p>
-                <div class="hrl-price-value">499 zł<span>/mies.</span></div>
+                <div class="hrl-price-value">299 zł<span>/mies.</span></div>
                 <ul class="hrl-price-list">
                     <li><?php esc_html_e( 'Do 15 lokalizacji', 'hrl-theme' ); ?></li>
                     <li><?php esc_html_e( 'Pełna biblioteka FLAC', 'hrl-theme' ); ?></li>
@@ -163,7 +163,7 @@ get_header();
                     <li><?php esc_html_e( 'Rozbudowane raportowanie', 'hrl-theme' ); ?></li>
                     <li><?php esc_html_e( 'Zaawansowane zarządzanie', 'hrl-theme' ); ?></li>
                 </ul>
-                <p class="hrl-price-note"><?php esc_html_e( 'Hotele, sieci handlowe — ok. 33 zł za lokal.', 'hrl-theme' ); ?></p>
+                <p class="hrl-price-note"><?php esc_html_e( 'Hotele, sieci handlowe — ok. 20 zł za lokal.', 'hrl-theme' ); ?></p>
                 <a href="<?php echo esc_url( 'https://cmlp.hardbanrecordslab.online/cmlp/b2b?pakiet=premium' ); ?>" class="btn btn-outline hrl-price-btn"><?php esc_html_e( 'Zamów Premium', 'hrl-theme' ); ?></a>
             </div>
 
@@ -281,7 +281,7 @@ get_header();
                 ),
                 array(
                     __( 'Mam kilka punktów — jak to policzyć?', 'hrl-theme' ),
-                    __( 'Pakiety wielolokalizacyjne rozkładają koszt: Business obejmuje do pięciu punktów, co daje około 32 zł na lokal miesięcznie, a Premium do piętnastu — około 33 zł na lokal. Wszystko rozliczane jedną fakturą.', 'hrl-theme' ),
+                    __( 'Pakiety wielolokalizacyjne rozkładają koszt: Business obejmuje do pięciu punktów, co daje około 20 zł na lokal miesięcznie, a Premium do piętnastu — również około 20 zł na lokal. Wszystko rozliczane jedną fakturą.', 'hrl-theme' ),
                 ),
                 array(
                     __( 'Ile trwa wdrożenie?', 'hrl-theme' ),

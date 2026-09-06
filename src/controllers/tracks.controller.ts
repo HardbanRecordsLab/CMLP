@@ -77,9 +77,9 @@ export async function create(req: any, res: Response) {
     let { title, artist, isrc, bpm, genre, mood } = req.body;
 
     title = title || metadata.common.title || 'Unknown Title';
-    // Katalog CMLP: autorem/wykonawcą jest kolektyw. Domyślnie 'CMLP / HRL';
-    // admin może nadpisać w formularzu. Nie dziedziczymy nazwy z metadanych pliku.
-    artist = artist || 'CMLP / HRL';
+    // artist/band: z formularza, w drugiej kolejności z tagów pliku, inaczej puste
+    // (do uzupełnienia). Marka/autor katalogu = grupa CMLP / HRL (§2 Handbooka).
+    artist = artist || metadata.common.artist || '';
     const durationMs = Math.round((metadata.format.duration || 0) * 1000);
     bpm = bpm ? parseInt(bpm, 10) : (metadata.common.bpm || null);
     if (typeof genre === 'string') genre = genre.split(',').map((g: string) => g.trim());

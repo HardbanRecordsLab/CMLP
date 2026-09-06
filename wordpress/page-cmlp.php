@@ -225,7 +225,7 @@ get_header();
             <div class="pricing-card reveal-up" style="background:rgba(18,15,12,0.7);border:1px solid rgba(200,169,110,0.12);border-radius:10px;padding:2rem 1.5rem;display:flex;flex-direction:column;">
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Business', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Dla rozwijających się firm', 'hrl-theme' ); ?></p>
-                <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:1.2rem;">159 zł<span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">/mies.</span></div>
+                <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:1.2rem;">99 zł<span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">/mies.</span></div>
                 <ul style="list-style:none;padding:0;margin:0 0 1.5rem;flex:1;">
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'Do 5 lokalizacji', 'hrl-theme' ); ?></li>
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'Rozszerzona biblioteka', 'hrl-theme' ); ?></li>
@@ -240,7 +240,7 @@ get_header();
                 <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;padding:3px 16px;border-radius:12px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;"><?php esc_html_e( 'POLECANY', 'hrl-theme' ); ?></div>
                 <h3 style="font-size:1.1rem;margin-bottom:0.3rem;"><?php esc_html_e( 'Premium', 'hrl-theme' ); ?></h3>
                 <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1.2rem;"><?php esc_html_e( 'Dla dużych przedsiębiorstw', 'hrl-theme' ); ?></p>
-                <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:1.2rem;">499 zł<span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">/mies.</span></div>
+                <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:1.2rem;">299 zł<span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">/mies.</span></div>
                 <ul style="list-style:none;padding:0;margin:0 0 1.5rem;flex:1;">
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'Do 15 lokalizacji', 'hrl-theme' ); ?></li>
                     <li style="padding:0.4rem 0;font-size:0.88rem;color:var(--text-secondary);">✓ <?php esc_html_e( 'White Label Player', 'hrl-theme' ); ?></li>

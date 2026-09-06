@@ -478,7 +478,7 @@ Ceny i pakiety spójne wszędzie: źródłem prawdy jest strona CMLP.
 - znaczniki PHP zbilansowane we wszystkich plikach (pliki zwracające array
   celowo bez zamykającego `?>`),
 - zero deklaracji o OZZ w treści widocznej dla użytkownika,
-- ceny i pakiety spójne: Starter 39 / Business 159 / Premium 499 / Event 600 zł,
+- ceny i pakiety spójne: Starter 39 / Business 99 / Premium 299 / Event 600 zł,
   źródło prawdy = strona CMLP,
 - bilans nawiasów CSS = 0.
 

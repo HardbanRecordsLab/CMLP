@@ -296,7 +296,7 @@
     "heading": "Upload New Track",
     "audioFileLabel": "Audio File (MP3, WAV, FLAC)",
     "titleLabel": "Track Title (Optional, parsed from file)",
-    "artistLabel": "Artist (defaults to CMLP / HRL)",
+    "artistLabel": "Artist / band (from file tags if left empty)",
     "isrcLabel": "ISRC Code",
     "isrcPlaceholder": "PLHRL26...",
     "bpmLabel": "BPM (Optional)",

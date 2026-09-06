@@ -296,7 +296,7 @@
     "heading": "Prześlij Nowy Utwór",
     "audioFileLabel": "Plik Audio (MP3, WAV, FLAC)",
     "titleLabel": "Tytuł Utworu (Opcjonalnie, parsowany z pliku)",
-    "artistLabel": "Wykonawca (domyślnie CMLP / HRL)",
+    "artistLabel": "Wykonawca / zespół (z tagów pliku, jeśli puste)",
     "isrcLabel": "Kod ISRC",
     "isrcPlaceholder": "PLHRL26...",
     "bpmLabel": "BPM (Opcjonalnie)",
