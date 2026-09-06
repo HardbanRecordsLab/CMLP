@@ -84,8 +84,9 @@ wątpliwości — sam skrót **CMLP**.
 
 **Model marki: kolektyw.** Autorem i wykonawcą wskazywanym dla **wszystkich**
 utworów w katalogu jest **grupa CMLP / HRL**. Nazwiska ani pseudonimy
-indywidualnych twórców nie występują nigdzie na zewnątrz — pole `artist`
-każdego utworu w katalogu to `CMLP / HRL`. To świadoma, spójna decyzja: prawa
+indywidualnych twórców nie występują nigdzie na zewnątrz. Pole `artist`/`band`
+utworu wypełniane jest per-utwór (ręcznie albo z tagów pliku); tam gdzie jest
+puste, publicznie wyświetla się `CMLP / HRL`. To świadoma, spójna decyzja: prawa
 majątkowe i pokrewne należą do podmiotu prowadzącego (HRL), więc utwory są
 publikowane i licencjonowane pod jedną tożsamością zbiorową. Rozwiązuje to
 kwestię autorstwa: nie „ukryty producent", nie „AI" — autorem jest kolektyw
@@ -166,15 +167,16 @@ po zbudowaniu pierwszych referencji.
 
 ## 4. Model prawny
 
-> Wzory dokumentów: [`brand-legal/CMLP_WZORY_DOKUMENTOW.md`](./brand-legal/CMLP_WZORY_DOKUMENTOW.md)
-> (+ wersje PDF). Wszystkie wymagają weryfikacji przez radcę prawnego przed
-> podpisaniem z realnymi stronami.
+> Wzory dokumentów: PDF-y w [`brand-legal/`](./brand-legal/)
+> (`CMLP_Umowy_i_Formularze.pdf`, `CMLP_Contracts_and_Forms_EN.pdf`) —
+> **wersje po przeglądzie prawnym, gotowe do użycia**.
+> `CMLP_WZORY_DOKUMENTOW.md` to robocza kopia tekstowa (do wglądu/edycji).
 
 ### 4.1 Status podmiotu
 
 | Element | Stan | Działanie |
 |---|---|---|
-| Działalność gospodarcza | brak zarejestrowanej | **zarejestrować przed pierwszymi realnymi umowami cesji/licencji** — bez podmiotu trudno wystawiać faktury i zawierać umowy B2B |
+| Działalność gospodarcza | brak zarejestrowanej | rejestracja **na sam koniec / po pierwszych klientach** (decyzja właściciela) — dopiero wtedy potrzebna do faktur i sformalizowanych umów B2B |
 | Znak towarowy „CMLP" | brak rejestracji | zgłoszenie w UPRP (~890 zł/klasa, możliwy zwrot do 75% przez SME Fund) po ustabilizowaniu nazewnictwa i przed szerszą promocją |
 
 ### 4.2 Zasada nadrzędna
@@ -256,15 +258,19 @@ wielkości miejscowości.
 | Pakiet | Cena | Zakres |
 |---|---|---|
 | **Starter** | **39 zł / mies.** | 1 lokalizacja, autorska biblioteka, panel zarządzania, umowa licencyjna, podstawowe raporty. Kawiarnie, salony, małe restauracje. |
-| **Business** | **159 zł / mies.** | do 5 lokalizacji, rozszerzona biblioteka, harmonogramy playlist, konta pracowników, priorytetowe wsparcie (~32 zł/lokal). Małe sieci i franczyzy. |
-| **Premium** | **499 zł / mies.** | do 15 lokalizacji, pełna biblioteka FLAC, odtwarzacz w barwach marki (white-label), rozbudowane raportowanie (~33 zł/lokal). Hotele, sieci handlowe. |
+| **Business** | **99 zł / mies.** | do 5 lokalizacji, rozszerzona biblioteka, harmonogramy playlist, konta pracowników, priorytetowe wsparcie (~20 zł/lokal). Małe sieci i franczyzy. |
+| **Premium** | **299 zł / mies.** | do 15 lokalizacji, pełna biblioteka FLAC, odtwarzacz w barwach marki (white-label), rozbudowane raportowanie (~20 zł/lokal). Hotele, sieci handlowe. |
 | **Event** | **600 zł / event** | pełna biblioteka na 24 h, jedna opłata z góry, repertuar pod charakter imprezy, dokumenty przed wydarzeniem. |
 | **Custom** | wycena indywidualna | nielimitowane lokalizacje, integracje API, pełna personalizacja, dedykowany opiekun, harmonogram wdrożenia, SLA. Sieci handlowe i korporacje. |
 
+Logika ladderu: od 5 lokalizacji koszt spada do ~20 zł za lokal (zamiast 39).
+Starter 39 i Event 600 są stałe.
+
 **Źródło prawdy dla cen = strona `/cmlp/`.** Regulaminy (`page-terms.php`,
-`page-sale-terms.php`, `page-license-agreement.php`) muszą pozostać spójne z tą
-tabelą. Ceny rozliczeniowe w Stripe/bazie danych są konfigurowane osobno —
-**muszą zgadzać się z tabelą powyżej** (patrz [`TODO.md`](./TODO.md)).
+`page-sale-terms.php`, `page-license-agreement.php`) są z nią zsynchronizowane.
+Ceny rozliczeniowe w Stripe/bazie danych są konfigurowane **na sam koniec,
+przed startem sprzedaży** i muszą zgadzać się z tą tabelą (patrz
+[`TODO.md`](./TODO.md) §1).
 
 Cennik „muzyka do produkcji" (subskrypcja katalogowa / per-utwór dla
 agencji i twórców) — **do ustalenia** (§3.5).
@@ -691,9 +697,12 @@ z wordmarkiem). `JetBrains Mono` do elementów technicznych.
 
 ### 13.4 Favicon
 
-Site Icon WordPress: monogram CMLP. Uwaga: `03_icon_monogram_badge.png` ma
-262×269 px — WP wymaga ≥ 512×512, potrzebny większy wariant (patrz `TODO.md`).
-Zmiana Site Icon jest globalna (cała witryna hardbanrecordslab.online).
+Wygenerowane z monogramu: `images/cmlp/favicon-512.png` (Site Icon WP),
+`favicon-180.png` (apple-touch), `favicon-32.png`, `favicon.ico`.
+Motyw potomny podaje je automatycznie w `<head>` **jeśli w Customizerze nie
+ustawiono własnej Ikony witryny** (`hrl_child_cmlp_fallback_favicon()`).
+Ustawienie Site Icon w Customizerze (globalne dla całej witryny) ma pierwszeństwo
+i jest opcjonalne.
 
 ---
 
@@ -762,9 +771,29 @@ pm2 logs hrl-licensing-platform
 
 ## 15. Konfiguracja (zmienne środowiskowe)
 
-Wzory: `infrastructure/environment/.env.example`, `.env.vps.example`,
-`infrastructure/deploy/.env.production.example`. Lokalny start:
-`infrastructure/environment/.env.development`.
+**Produkcja: sekrety w Infisical, nie w plikach `.env`.** Plik `.env` nie
+występuje w repo ani na serwerze w runtime.
+
+- `.infisical.json` (repo root) — `workspaceId` (project ID) + mapowanie
+  gałąź → środowisko (`main` → `prod`, `staging` → `staging`),
+- **na VPS**: `infisical` CLI + **machine identity** (universal-auth).
+  Token w `/etc/cmlp.infisical.env` jako `INFISICAL_TOKEN=st.…` (plik
+  `chmod 600`, poza repo),
+- **deploy** (`vps-deploy/deploy-cmlp.sh`): instaluje CLI jeśli brak,
+  `infisical export --env=prod` materializuje sekrety tylko na czas
+  builda/migracji (`.env.deploy`, kasowany po deployu), a PM2 startuje pod
+  `infisical run --env=prod -- pm2 start …` (env wstrzykiwany do procesu,
+  bez pliku na dysku),
+- **reboot**: jednostka systemd `vps-deploy/cmlp-pm2.service`
+  (`infisical run … -- pm2 resurrect`) — `cp` do `/etc/systemd/system/`,
+  `systemctl enable --now cmlp-pm2`,
+- **lokalnie**: `infisical run --env=dev -- npm run dev` lub klasyczny
+  `.env` z `infrastructure/environment/.env.development`.
+- rotacja sekretu = zmiana w Infisical + `systemctl reload cmlp-pm2`
+  (lub ponowny deploy). Historia i audyt dostępu — w panelu Infisical.
+
+Wzory (dokumentacja nazw zmiennych): `infrastructure/environment/.env.example`,
+`.env.vps.example`, `infrastructure/deploy/.env.production.example`.
 
 | Zmienna | Rola |
 |---|---|
@@ -900,7 +929,7 @@ rejestracji + waitlist.
 |---|---|---|
 | TD-001 | Architektura | `server.ts` monolit (~1666 linii) → dokończyć wydzielenie do `src/routes` + `src/controllers` + `src/services` |
 | TD-002 | Bezpieczeństwo | mock/placeholder tokeny — usunąć z ścieżek produkcyjnych |
-| P0-1 | Bezpieczeństwo | `.env.production` był śledzony w gicie — potwierdzić usunięcie z historii + rotacja wszystkich sekretów; wdrożyć Vault / git-crypt |
+| ~~P0-1~~ ✅ | Bezpieczeństwo | `.env.production` **nie występuje w historii gita** (zweryfikowano). Sekrety produkcyjne przeniesione do **Infisical** — patrz §15 |
 | P0-2 | Bezpieczeństwo | brak rotacji refresh tokenów (token family + licznik w Redis; przy reuse — unieważnij rodzinę) |
 | — | Jakość | rozproszone `any`, dead code, częściowe pokrycie typami |
 | — | Skalowalność | cache waveformów (Redis), CDN dla statycznych audio |
