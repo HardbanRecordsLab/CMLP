@@ -1,89 +1,58 @@
 #!/bin/bash
 # =========================================================
-# CMLP Backend Deploy to VPS
-# Run from repo root on dev machine.
-# Sekrety środowiskowe: Infisical (nie plik .env w repo ani na serwerze).
-#   VPS: zainstalowany infisical CLI + machine identity (INFISICAL_TOKEN
-#   w /etc/cmlp.infisical.env lub systemd). Patrz HANDBOOK §15.
+# CMLP — deploy nowej wersji na VPS 84.247.162.167
+# /opt/cmlp = checkout gita HardbanRecordsLab/CMLP, PM2 cluster
+# "hrl-licensing-platform" (×4) na :3000, baza `cmlp` w hbrl-postgres.
+#
+# Sekrety: obecnie /opt/cmlp/.env (Infisical cutover — osobno, na serwerze:
+#   /root/vps-scripts/infisical-golive.sh cmlp).
+#
+# Uruchom z maszyny dev:  VPS_HOST=root@84.247.162.167 BRANCH=main ./vps-deploy/deploy-cmlp.sh
 # =========================================================
 set -euo pipefail
 
 VPS_HOST="${VPS_HOST:-root@84.247.162.167}"
-REMOTE_DIR="/opt/cmlp"
-LOCAL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/vps_key}"
+BRANCH="${BRANCH:-main}"
 
-echo "=== CMLP Deploy → $VPS_HOST:$REMOTE_DIR ==="
+echo "=== CMLP deploy → $VPS_HOST  (/opt/cmlp, branch $BRANCH) ==="
 
-# Sync source (exclude heavy dirs). .env* nigdy nie jest wysyłany.
-rsync -avz --delete \
-  --exclude node_modules \
-  --exclude dist \
-  --exclude .git \
-  --exclude 'media_files/hls' \
-  --exclude '.env' \
-  --exclude '.env.*' \
-  --exclude '*.zip' \
-  "$LOCAL_DIR/" "$VPS_HOST:$REMOTE_DIR/"
-
-echo "=== Remote build & restart ==="
-ssh "$VPS_HOST" bash -s <<'REMOTE'
+ssh -i "$SSH_KEY" "$VPS_HOST" BRANCH="$BRANCH" 'bash -s' <<'REMOTE'
 set -euo pipefail
 cd /opt/cmlp
 
-# Install FFmpeg if missing
-if ! command -v ffmpeg &>/dev/null; then
-  echo "Installing FFmpeg..."
-  apt-get update -qq && apt-get install -y -qq ffmpeg
-fi
+echo "→ backup .env + bieżący commit"
+cp -a .env "/root/decommissioned/cmlp.env.$(date +%F-%H%M)" 2>/dev/null || true
+git rev-parse --short HEAD > /root/decommissioned/cmlp.commit.prev 2>/dev/null || true
 
-# Install Infisical CLI if missing
-if ! command -v infisical &>/dev/null; then
-  echo "Installing Infisical CLI..."
-  curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash
-  apt-get install -y -qq infisical
-fi
+echo "→ git fetch + checkout $BRANCH"
+git fetch --all --prune
+git checkout "$BRANCH"
+git pull --ff-only origin "$BRANCH"
 
-# Machine-identity token for Infisical (uzupełnij /etc/cmlp.infisical.env:
-#   INFISICAL_TOKEN=st.xxxxx   — token z machine identity, universal-auth)
-[ -f /etc/cmlp.infisical.env ] && set -a && . /etc/cmlp.infisical.env && set +a
-: "${INFISICAL_TOKEN:?INFISICAL_TOKEN nie ustawiony — patrz HANDBOOK §15}"
+echo "→ upewnij się, że rejestracja B2B jest otwarta"
+grep -q '^PUBLIC_ACCESS_ENABLED=' .env \
+  && sed -i 's/^PUBLIC_ACCESS_ENABLED=.*/PUBLIC_ACCESS_ENABLED=true/' .env \
+  || echo 'PUBLIC_ACCESS_ENABLED=true' >> .env
 
-# Materializuj sekrety do .env tylko na czas builda/migracji (usuwane po deployu).
-# Aplikacja w runtime czyta env przez `infisical run` (patrz pm2 niżej).
-infisical export --env=prod --format=dotenv > /opt/cmlp/.env.deploy
-export $(grep -v '^#' /opt/cmlp/.env.deploy | grep -v '^\s*$' | xargs -d '\n')
-
-# Create required directories
-mkdir -p media_files/hls media_files/certificates logs dist
-
-# Install dependencies
-echo "Installing dependencies..."
+echo "→ deps + build"
 npm ci --omit=dev 2>/dev/null || npm install --omit=dev
+npm run build
 
-# Build
-echo "Building..."
-npm run build 2>/dev/null || {
-  echo "Alternative build..."
-  npx esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs
-}
+echo "→ migracje bazy"
+npm run db:migrate || { echo '!! migracja nie przeszła — przerwij i sprawdź'; exit 1; }
 
-# Run migrations
-echo "Running DB migrations..."
-npm run db:migrate 2>/dev/null || echo "Migration skipped (check manually)"
-
-rm -f /opt/cmlp/.env.deploy
-
-# Restart PM2 — env wstrzykiwany przez `infisical run` (brak .env na dysku w runtime)
-echo "Restarting PM2..."
-pm2 delete hrl-licensing-platform 2>/dev/null || true
-infisical run --env=prod -- pm2 start /opt/cmlp/config/ecosystem.config.cjs --update-env
+echo "→ reload PM2 (zero-downtime)"
+pm2 reload hrl-licensing-platform --update-env
 pm2 save
 
-# Health check
-sleep 3
-echo "=== Health check ==="
-curl -sf http://127.0.0.1:3000/api/health || echo "Health check failed (port 3000)"
+sleep 4
+echo "=== health ==="
+curl -sf -o /dev/null -w 'local  :3000/api/health → %{http_code}\n' http://127.0.0.1:3000/api/health || echo 'LOCAL HEALTH FAIL'
+curl -sf -o /dev/null -w 'public api.cmlp        → %{http_code}\n' https://api.cmlp.hardbanrecordslab.online/api/health || true
+curl -sf https://api.cmlp.hardbanrecordslab.online/api/auth/registration-status || true
+echo
 REMOTE
 
-echo "=== Deploy complete ==="
-echo "Verify at: https://cmlp.hrl.pl/api/health"
+echo
+echo "=== zrobione. Rollback: ssh $VPS_HOST 'cd /opt/cmlp && git checkout \$(cat /root/decommissioned/cmlp.commit.prev) && npm ci --omit=dev && npm run build && pm2 reload hrl-licensing-platform' ==="

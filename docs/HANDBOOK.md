@@ -708,89 +708,107 @@ i jest opcjonalne.
 
 ## 14. Infrastruktura i wdrożenie
 
+Serwer i jego pełna inwentaryzacja: prywatny folder `HBRL-VPS/`
+(`VPS-HANDBOOK.md`, `scripts/`, `hrl` CLI) — poza repo.
+
 ### 14.1 Topologia
 
-- **VPS** (Contabo / `84.247.162.167`, nazwa `cmlp.hrl.pl`), Ubuntu,
-- **Docker Compose** (`infrastructure/docker/docker-compose.yml`): aplikacja +
-  PostgreSQL + Redis,
-- **Nginx** — reverse proxy + TLS (**Let's Encrypt**),
-- **PM2** — proces `hrl-licensing-platform` (`config/ecosystem.config.cjs`),
-- **AzuraCast** — `radio.hardbanrecordslab.online` (Icecast/Liquidsoap),
-- subdomeny: `cmlp.` (panel/aplikacja), `api.cmlp.` (API), `radio.`.
+- **VPS** Contabo `84.247.162.167` (`vmi3061455`), Ubuntu. Dostęp:
+  `ssh -i ~/.ssh/vps_key root@84.247.162.167`. Panel: `hrl` / `hrl status`.
+- **CMLP API** — `/opt/cmlp` (checkout gita `HardbanRecordsLab/CMLP`),
+  **PM2 cluster `hrl-licensing-platform` ×4** na `:3000`, unit `pm2-root`
+  (resurrect z `/root/.pm2`). Publicznie: `api.cmlp.hardbanrecordslab.online`.
+- **CMLP frontend** — `cmlp.hardbanrecordslab.online` (statyczny / Vercel,
+  `VITE_API_URL` → api.cmlp).
+- **Baza** — jeden kontener `hbrl-postgres` (`postgres:16`, `127.0.0.1:5432`),
+  baza `cmlp`, rola `hbrl_admin`. Reguła: jedna instancja PG, apka = nowa baza
+  (patrz `HBRL-VPS/DB-POLICY.md`).
+- **Redis** — host `127.0.0.1:6379` (`/0`), cache CMLP.
+- **WordPress** — kontener `main-website-wordpress-1` (`wordpress:latest`,
+  `:3006`), baza MariaDB `main-website-db-1`, compose `/srv/hbrl/Main-Website`.
+  Object-cache: `cmlp_service_redis` (nie ruszać).
+- **Infisical** (sekrety) — `vault.hardbanrecordslab.online` → kontener
+  `hrl-infisical` `127.0.0.1:8202`, `/root/infisical/`.
+- **Nginx** — reverse proxy + TLS (Let's Encrypt, certbot timer).
+- **AzuraCast** — `radio.hardbanrecordslab.online`.
+- **Metadata Engine** — kontener `metadata-backend` (SQLite), `metadata.`.
+- Backup baz: cron `/root/vps-scripts/db-backup-all.sh` (03:15, retencja 14 dni).
 
 ### 14.2 CI/CD
 
-- `.github/workflows/ci.yml` — lint + type-check + test,
-- `.github/workflows/deploy.yml` — build i deploy,
-- `npm run build` = `tsc` + `vite build` (frontend) + `esbuild` (`dist/server.cjs`).
+`.github/workflows/ci.yml` (lint + type-check + test), `deploy.yml`.
+`npm run build` = `tsc` + `vite build` (frontend) + `esbuild` (`dist/server.cjs`).
 
-### 14.3 Deploy — backend
+### 14.3 Deploy — backend CMLP
 
-`vps-deploy/deploy-cmlp.sh` (uruchamiać z katalogu repo na maszynie dev):
+Z maszyny dev, po zmergowaniu PR do `main`:
 
 ```bash
-VPS_HOST=root@84.247.162.167 ./vps-deploy/deploy-cmlp.sh
+VPS_HOST=root@84.247.162.167 BRANCH=main ./vps-deploy/deploy-cmlp.sh
 ```
 
-Skrypt: rsync źródeł (bez `node_modules`/`dist`/`.git`/HLS/`*.md`/`*.zip`) →
-`npm ci --omit=dev` → `npm run build` (fallback esbuild) → `npm run db:migrate`
-→ restart PM2 z `config/ecosystem.config.cjs` → health check
-`http://127.0.0.1:3000/api/health`.
+Skrypt (na serwerze, `/opt/cmlp`): backup `.env` + commitu → `git fetch` +
+`checkout` + `pull --ff-only` → ustawia `PUBLIC_ACCESS_ENABLED=true` w `.env` →
+`npm ci --omit=dev` → `npm run build` → `npm run db:migrate` →
+`pm2 reload hrl-licensing-platform --update-env` → `pm2 save` → health
+(`:3000/api/health`, `api.cmlp/api/health`, `/api/auth/registration-status`).
 
-Alternatywa (Docker): `docker compose -f infrastructure/docker/docker-compose.yml up -d --build`
-+ `docker compose … run --rm cmlp-migrate`.
+Rollback: `git checkout` na commit z `/root/decommissioned/cmlp.commit.prev`
++ rebuild + `pm2 reload`.
 
 ### 14.4 Deploy — motyw WordPress
 
-`vps-deploy/deploy-theme.sh` — rozpakowuje `/tmp/wordpress-deploy.zip` do
-kontenera `main-website-wordpress-1`
-(`/var/www/html/wp-content/themes/hrl-theme/`), ustawia właściciela
-`www-data`, restartuje kontener.
-
-Paczka motywu potomnego CMLP budowana lokalnie:
-`hrl-premium-theme-child-cmlp-<data>.zip` (z katalogu `child-theme/`).
-
-### 14.5 Zero-downtime upgrade
-
 ```bash
-pm2 status
-git pull origin main
-npm install && npm run build
-pm2 reload hrl-licensing-platform --update-env
-pm2 logs hrl-licensing-platform
+VPS_HOST=root@84.247.162.167 ./vps-deploy/deploy-theme.sh
 ```
 
-### 14.6 Backup
+Wykrywa aktywny motyw (`wp theme list --status=active`), robi backup do
+`/root/decommissioned/themes-*.tgz`, `docker cp` parent `hrl-theme` + child
+do katalogu aktywnego motywu, `chown www-data`, `wp cache flush`,
+`docker restart main-website-wordpress-1`, health `/` i `/cmlp/`.
 
-- baza: `pg_dump` (procedura w `scripts/`); restore ćwiczyć na stagingu przed
-  produkcją,
-- media: `media_files/` poza obrazem kontenera (wolumen),
-- katalog backupów WP ignorowany w repo (`wordpress-backup-*/`).
+Po deployu: WP → Wygląd → Dostosuj → **Ikona witryny** = `favicon-512.png`
+(opcjonalnie — motyw ma fallback), Rank Math meta dla `/cmlp/` (opcjonalnie).
+
+### 14.5 Backup / rollback
+
+- Bazy: `hrl backup now` lub `/root/vps-scripts/db-backup-all.sh` →
+  `/root/backups/db/`. Restore ćwiczyć przed produkcją.
+- Każda zmiana pliku na serwerze: backup do `/root/decommissioned/` PRZED.
+- Pełny rollback wszystkiego: snapshot Contabo.
+
 
 ---
 
 ## 15. Konfiguracja (zmienne środowiskowe)
 
-**Produkcja: sekrety w Infisical, nie w plikach `.env`.** Plik `.env` nie
-występuje w repo ani na serwerze w runtime.
+**Sekrety produkcyjne: Infisical** (self-hosted `vault.hardbanrecordslab.online`,
+kontener `hrl-infisical` `127.0.0.1:8202`). Org „HardbanRecordsLab", projekt
+**`cmlp-app`**, env `dev/staging/prod`. Stan (wg `HBRL-VPS/scripts/PROGRESS.md`):
 
-- `.infisical.json` (repo root) — `workspaceId` (project ID) + mapowanie
-  gałąź → środowisko (`main` → `prod`, `staging` → `staging`),
-- **na VPS**: `infisical` CLI + **machine identity** (universal-auth).
-  Token w `/etc/cmlp.infisical.env` jako `INFISICAL_TOKEN=st.…` (plik
-  `chmod 600`, poza repo),
-- **deploy** (`vps-deploy/deploy-cmlp.sh`): instaluje CLI jeśli brak,
-  `infisical export --env=prod` materializuje sekrety tylko na czas
-  builda/migracji (`.env.deploy`, kasowany po deployu), a PM2 startuje pod
-  `infisical run --env=prod -- pm2 start …` (env wstrzykiwany do procesu,
-  bez pliku na dysku),
-- **reboot**: jednostka systemd `vps-deploy/cmlp-pm2.service`
-  (`infisical run … -- pm2 resurrect`) — `cp` do `/etc/systemd/system/`,
-  `systemctl enable --now cmlp-pm2`,
-- **lokalnie**: `infisical run --env=dev -- npm run dev` lub klasyczny
-  `.env` z `infrastructure/environment/.env.development`.
-- rotacja sekretu = zmiana w Infisical + `systemctl reload cmlp-pm2`
-  (lub ponowny deploy). Historia i audyt dostępu — w panelu Infisical.
+- **30 sekretów CMLP zaimportowanych do `cmlp-app / prod`** (zweryfikowane
+  byte-identyczne z `/opt/cmlp/.env`) + współdzielone w projekcie `infra`,
+- machine identity `vps-automation` (import/automatyzacja) + runtime
+  `cmlp-runtime` (viewer, scoped) — creds w `/root/infisical/creds/cmlp.env`,
+- **runtime CMLP używa obecnie `/opt/cmlp/.env`** (plik na serwerze). Cutover
+  na live-pull z Infisical jest przygotowany i przetestowany, ale
+  **niewłączony** — czeka na uruchomienie:
+
+  ```sh
+  ssh -i ~/.ssh/vps_key root@84.247.162.167     'bash /root/vps-scripts/infisical-golive.sh cmlp'
+  ```
+
+  Cutover: PM2 cluster ×4 nie działa pod `infisical run`, więc używa
+  `infisical-bootstrap.cjs` (`infisical export` → `process.env` →
+  `require(server.cjs)`); `staging/cmlp.ecosystem.config.js`. Auto-rollback
+  przy błędzie health. Fallback break-glass: `/opt/cmlp/.env.break-glass`.
+- **`.infisical.json`** (repo) — do lokalnego `infisical run --env=dev …`;
+  wpisz `workspaceId` projektu `cmlp-app`.
+- rotacja sekretu: edycja w `vault.hardbanrecordslab.online` → `pm2 reload
+  hrl-licensing-platform --update-env` (po cutoverze) lub ręczna zmiana
+  `/opt/cmlp/.env` + reload (przed cutoverem).
+- **`PUBLIC_ACCESS_ENABLED=true`** — ustawić w `cmlp-app / prod` ORAZ (do
+  cutoveru) w `/opt/cmlp/.env`. `deploy-cmlp.sh` robi to w `.env` automatycznie.
 
 Wzory (dokumentacja nazw zmiennych): `infrastructure/environment/.env.example`,
 `.env.vps.example`, `infrastructure/deploy/.env.production.example`.

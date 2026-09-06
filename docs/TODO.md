@@ -30,8 +30,10 @@ Infisical na VPS, deploy, Stripe na sam koniec, sprawy właściciela (§5).
 - ✅ **Wzory umów** — wersje po przeglądzie prawnym gotowe
   (`brand-legal/*.pdf`).
 - ✅ `PUBLIC_ACCESS_ENABLED=true` w wzorach `.env`; kod domyślnie otwarty.
-- ✅ **Infisical** — `.infisical.json`, `deploy-cmlp.sh` (export/run),
-  `cmlp-pm2.service` (systemd), dokumentacja §15.
+- ✅ **Infisical** na VPS — org, projekt `cmlp-app`, 30 sekretów w `prod`,
+  machine identities, cutover przygotowany (`infisical-golive.sh cmlp`).
+  Repo: `.infisical.json` + `deploy-cmlp.sh`/`deploy-theme.sh` dopasowane
+  do realnego serwera (`/opt/cmlp` git, PM2 `hrl-licensing-platform`).
 - ✅ Meta OpenGraph/Twitter fallback dla `/cmlp/` (gdy brak Rank Math).
 - ✅ `testTimeout` 30 s w `config/vite.config.ts` (koniec fałszywych timeoutów).
 - ✅ `.env.production` — **nie ma go w historii gita** (zweryfikowano).
@@ -40,27 +42,28 @@ Infisical na VPS, deploy, Stripe na sam koniec, sprawy właściciela (§5).
 
 ---
 
-## 1. 🔴 Start — bootstrap na VPS (technika)
+## 1. 🔴 Start — deploy na VPS
 
-- [ ] 🔴 **Infisical — projekt + sekrety.** Utworzyć projekt, wpisać `prod`
-  (wszystkie zmienne z §15 Handbooka), podmienić `workspaceId` w
-  `.infisical.json`. Na VPS: `infisical login` / machine identity → token do
-  `/etc/cmlp.infisical.env` (`chmod 600`).
-- [ ] 🔴 **Deploy backendu:** `VPS_HOST=… ./vps-deploy/deploy-cmlp.sh`
-  (instaluje Infisical CLI, build, migracje, PM2 pod `infisical run`).
-  Health check: `https://cmlp.hrl.pl/api/health`.
-- [ ] 🔴 **systemd:** `cp vps-deploy/cmlp-pm2.service /etc/systemd/system/`,
-  `systemctl daemon-reload && systemctl enable --now cmlp-pm2` (odporność
-  na reboot).
-- [ ] 🔴 **Migracje bazy** na produkcji (robi deploy-cmlp.sh; zweryfikować
-  tabelę `waitlist_signups` i pozostałe).
-- [ ] 🔴 **Rejestracja B2B otwarta:** upewnić się, że w Infisical `prod` NIE
-  ma `PUBLIC_ACCESS_ENABLED=false` (lub jest `=true`). Sprawdzić
-  `GET /api/auth/registration-status` → `{"registrationOpen": true}` i że
-  „Załóż konto B2B" na `/cmlp/` prowadzi do rejestracji, nie waitlisty.
+> VPS `84.247.162.167`, `/opt/cmlp` (git), PM2 `hrl-licensing-platform` ×4,
+> Infisical (`cmlp-app`) już postawiony — patrz `HBRL-VPS/` + Handbook §14–15.
+> Komendy: sekcja „Runbook startu" na końcu tego pliku.
+
 - [ ] 🔴 **Merge PR** `feat/cmlp-rebrand-visual` → `main`.
-- [ ] 🔴 **Deploy motywu WordPress** (parent + child) — `vps-deploy/deploy-theme.sh`
-  lub ręcznie; purge cache + OPcache; hard refresh CSS.
+- [ ] 🔴 **Deploy backendu:** `VPS_HOST=root@84.247.162.167 BRANCH=main
+  ./vps-deploy/deploy-cmlp.sh` — `git pull` w `/opt/cmlp`, ustawia
+  `PUBLIC_ACCESS_ENABLED=true` w `.env`, `npm ci` + build + `db:migrate` +
+  `pm2 reload`. Health: `:3000/api/health`, `api.cmlp/api/health`,
+  `/api/auth/registration-status` → `{"registrationOpen": true}`.
+- [ ] 🔴 **Deploy motywu WordPress:** `VPS_HOST=root@84.247.162.167
+  ./vps-deploy/deploy-theme.sh` — wykrywa aktywny motyw, backup, `docker cp`
+  parent + child, `wp cache flush`, restart `main-website-wordpress-1`.
+- [ ] 🔴 **`PUBLIC_ACCESS_ENABLED=true` w Infisical** `cmlp-app / prod`
+  (na cutover): panel `vault.hardbanrecordslab.online` lub
+  `infisical secrets set` z creds `/root/infisical/creds/cmlp.env`.
+- [ ] 🟠 **(opcjonalnie, po weryfikacji) cutover sekretów na Infisical:**
+  `ssh … 'bash /root/vps-scripts/infisical-golive.sh cmlp'` — przenosi CMLP
+  z `/opt/cmlp/.env` na live-pull (bootstrap.cjs), auto-rollback przy błędzie.
+  Do zrobienia dopiero gdy deploy kodu jest zdrowy.
 
 ## 2. 🟠 Start — konfiguracja i weryfikacja
 
@@ -130,10 +133,37 @@ Infisical na VPS, deploy, Stripe na sam koniec, sprawy właściciela (§5).
 
 ---
 
-## Kolejność startu
+## Runbook startu (copy-paste)
 
-1. §1 — Infisical + deploy backend + systemd + migracje + `PUBLIC_ACCESS_ENABLED`.
-2. Merge PR → deploy motywu WP → purge cache.
-3. §2 — test na stagingu + scenariuszowy.
-4. §3 — Stripe (dopiero teraz) → pierwsza realna płatność.
-5. Start sprzedaży. §4–7 iteracyjnie.
+Wymaga klucza `~/.ssh/vps_key`. Uruchamiać z katalogu repo.
+
+```bash
+# 0. merge PR do main (GitHub UI lub:)
+gh pr merge 1 --squash --delete-branch=false
+
+# 1. backend CMLP  (git pull /opt/cmlp, build, migracje, PUBLIC_ACCESS_ENABLED=true, pm2 reload)
+VPS_HOST=root@84.247.162.167 BRANCH=main ./vps-deploy/deploy-cmlp.sh
+
+# 2. motyw WordPress  (backup + docker cp parent+child, wp cache flush, restart)
+VPS_HOST=root@84.247.162.167 ./vps-deploy/deploy-theme.sh
+
+# 3. weryfikacja
+ssh -i ~/.ssh/vps_key root@84.247.162.167 'hrl status'
+curl -s https://api.cmlp.hardbanrecordslab.online/api/auth/registration-status   # {"registrationOpen":true}
+# otwórz: https://hardbanrecordslab.online/cmlp/   (Navy/Teal/Amber, logo, cennik 39/99/299/600)
+
+# 4. Infisical: ustaw PUBLIC_ACCESS_ENABLED=true w cmlp-app/prod (panel vault.hardbanrecordslab.online)
+
+# 5. (opcjonalnie, gdy 1-4 OK) cutover sekretów na Infisical live-pull
+ssh -i ~/.ssh/vps_key root@84.247.162.167 'bash /root/vps-scripts/infisical-golive.sh cmlp'
+```
+
+Rollback backendu: `ssh … 'cd /opt/cmlp && git checkout $(cat /root/decommissioned/cmlp.commit.prev) && npm ci --omit=dev && npm run build && pm2 reload hrl-licensing-platform'`
+Rollback motywu: `ssh … 'docker exec main-website-wordpress-1 sh -lc "cd /var/www/html/wp-content/themes && tar xzf -" < /root/decommissioned/themes-*.tgz && docker restart main-website-wordpress-1'`
+
+## Dalsza kolejność
+
+1. §1 Runbook wyżej → platforma live.
+2. §2 — test na stagingu / scenariuszowy end-to-end.
+3. §3 — Stripe (dopiero teraz) → pierwsza realna płatność.
+4. Start sprzedaży. §4–7 iteracyjnie.
