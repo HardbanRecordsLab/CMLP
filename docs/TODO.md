@@ -22,10 +22,15 @@ Aktualizacja: 2026-09-06.
   „Certyfikat Licencyjny", PDF/umowa/maile/i18n (en+pl)/dashboard; usunięto
   zmyślone „KRS 0000123456 / NIP 1234567890" z certyfikatu B2BPlayer.
 - ✅ `PUBLIC_ACCESS_ENABLED=true` w 3 wzorach `.env`.
+- ✅ **AI nie jest źródłem katalogu** — Handbook/TODO/regulamin; „narzędzia
+  sztucznej inteligencji" usunięte z listy usług w `page-terms.php`.
+- ✅ **Autor/wykonawca katalogu = grupa CMLP / HRL** — `tracks.artist`
+  domyślnie „CMLP / HRL", silnik tagujący nie zmienia autora, i18n en+pl.
 - ✅ Porządki w repo: usunięte rozbieżne raporty, osierocone pliki motywu,
   artefakty ZIP; `mails/` → `docs/brand-legal/korespondencja/`.
 - ✅ Handbook jako jedyne źródło dokumentacji; pozostałe docs usunięte.
-- ✅ `npm run lint` (tsc) przechodzi; testy 99/99.
+- ✅ `npm run lint` (tsc --noEmit) przechodzi. Pełny `npm test` — patrz §6
+  (timeouty środowiskowe, nie regresja).
 
 ---
 
@@ -94,8 +99,9 @@ Aktualizacja: 2026-09-06.
   poprawny, testowa płatność przechodzi end-to-end.
 - [ ] 🟠 **SSO WordPress ↔ panel** — `JWT_SECRET` identyczny po obu stronach,
   cookie `hrl_cmlp_jwt`, logowanie w panelu tworzy sesję WP.
-- [ ] 🟠 **`page-faq.php`** (obie wersje) — mają niezacommitowane zmiany
-  spoza rebrandu; zdecydować co z nimi przed deployem.
+- [ ] 🟡 **`page-faq.php`** (obie wersje) — zassane do commita `51c0e4b`
+  (schemat FAQPage JSON-LD generowany z treści; robota sprzed sesji). Kod OK;
+  sprawdzić przy review PR, ewentualnie wydzielić do osobnego commita.
 - [ ] 🟠 **`wordpress/446bfe…html`** — plik weryfikacji Google Search Console;
   potwierdzić czy weryfikacja domeny działa (jeśli tak — zostawić na web-root,
   nie w repo).
