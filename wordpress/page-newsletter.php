@@ -1,4 +1,5 @@
 <?php
+/* child override: usunieto "bez ZAiKS" z opisu newslettera */
 get_header();
 ?>
 <section class="hero" style="min-height:40vh;">
@@ -6,7 +7,7 @@ get_header();
         <p class="hero-eyebrow"><?php esc_html_e( 'Ekskluzywne Analizy', 'hrl-theme' ); ?></p>
         <h1><?php esc_html_e( 'HRL Intel', 'hrl-theme' ); ?><br><span class="gold-text" style="font-size:0.6em;"><?php esc_html_e( 'Newsletter', 'hrl-theme' ); ?></span></h1>
         <p class="hero-desc">
-            <?php esc_html_e( 'Codzienna dawka analiz rynkowych, raportów AI i ekskluzywnych transkrypcji branżowych. Bezpłatnie, bez spamu, bez ZAiKS.', 'hrl-theme' ); ?>
+            <?php esc_html_e( 'Analizy rynkowe, raporty i transkrypcje branżowe prosto na Twoją skrzynkę. Bezpłatnie i bez spamu.', 'hrl-theme' ); ?>
         </p>
     </div>
 </section>

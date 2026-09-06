@@ -1,5 +1,12 @@
 <?php
 /**
+ * HRL BlogCast Sidebar (child override)
+ * Zmiana: etykieta linku "CMLP — Muzyka bez ZAiKS" -> "CMLP — Muzyka do lokalu".
+ *
+ * @package HRL_Theme_Child
+ */
+
+/**
  * HRL BlogCast — Sidebar Widgets
  * Widgets: Radio Live, Newsletter, Baza Wiedzy, Najnowsze posty
  *

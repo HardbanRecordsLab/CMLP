@@ -306,7 +306,7 @@ get_header();
                 array( __( 'Czy mogę zaplanować harmonogram odtwarzania?', 'hrl-theme' ), __( 'Tak. System umożliwia definiowanie harmonogramów dziennych — inne playlisty na poranek, popołudnie i wieczór, automatycznie przełączane.', 'hrl-theme' ) ),
             ),
             __( 'Licencjonowanie', 'hrl-theme' ) => array(
-                array( __( 'Jak działa model Direct Licensing?', 'hrl-theme' ), __( 'Direct Licensing to model oparty na bezpośredniej umowie między twórcą (HardbanRecords Lab) a przedsiębiorcą. Ponieważ posiadamy 100% praw do wszystkich utworów, nie ma potrzeby angażowania organizacji zbiorowego zarządzania.', 'hrl-theme' ) ),
+                array( __( 'Jak działa model Direct Licensing?', 'hrl-theme' ), __( 'Model oparty na bezpośredniej umowie między twórcą (HardbanRecords Lab) a przedsiębiorcą. Ponieważ posiadamy pełnię praw do wszystkich utworów w katalogu, licencji udzielamy bezpośrednio — jedną umową o jasno określonym zakresie korzystania.', 'hrl-theme' ) ),
             ),
             __( 'Wdrożenie i wsparcie', 'hrl-theme' ) => array(
                 array( __( 'Ile trwa wdrożenie?', 'hrl-theme' ), __( 'Standardowe wdrożenie trwa od 1 do 3 dni roboczych, w zależności od liczby lokalizacji i stopnia konfiguracji. Pakiet Custom obejmuje indywidualny harmonogram wdrożenia.', 'hrl-theme' ) ),
