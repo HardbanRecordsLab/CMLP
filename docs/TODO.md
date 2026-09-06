@@ -146,6 +146,9 @@ Aktualizacja: 2026-09-06.
 
 ## 8. 🟡 Content / katalog
 
+- [ ] 🟠 **`UPDATE tracks SET artist = 'CMLP / HRL'`** dla wszystkich utworów
+  w bazie (autor katalogu = grupa CMLP / HRL — §2 Handbooka). Kod nowych
+  uploadów już domyślnie ustawia tę wartość i silnik tagujący jej nie zmienia.
 - [ ] 🟡 Uporządkować istniejące ~36 h materiału HRL pod nowe nazewnictwo
   i model praw; uzupełnić `rights_owner_id`, `license_scope`, ISRC, tagi.
 - [ ] 🟡 Treść stron „O nas" i „Licencjonowanie" pod nowe pozycjonowanie

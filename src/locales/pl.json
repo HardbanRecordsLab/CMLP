@@ -83,7 +83,7 @@
     "clear_logs": "Wyczyść Wszystkie Logi",
     "close_center": "Zamknij Centrum",
     "not_selected": "Nie wybrano utworu",
-    "collective_representative": "Kolektyw Studyjny HRL",
+    "collective_representative": "CMLP / HRL",
     "metadata_isrc": "ISRC",
     "license_status": "Aktywna Licencja • PMPro Lvl 2",
     "local_time": "Czas Lokalny",
@@ -224,7 +224,7 @@
     "stream_description": "Słuchasz oficjalnego radia sieci {{brandName}}. Wyselekcjonowane brzmienia premium dla naszych gości.",
     "now_playing": "Teraz odtwarzane",
     "waiting_track": "Oczekiwanie na utwór...",
-    "unknown_artist": "Nieznany artysta",
+    "unknown_artist": "CMLP / HRL",
     "offline_error": "Brak połączenia z internetem. Połącz się i spróbuj ponownie."
   },
   "paymentPortal": {
@@ -296,7 +296,7 @@
     "heading": "Prześlij Nowy Utwór",
     "audioFileLabel": "Plik Audio (MP3, WAV, FLAC)",
     "titleLabel": "Tytuł Utworu (Opcjonalnie, parsowany z pliku)",
-    "artistLabel": "Wykonawca (Opcjonalnie, parsowany z pliku)",
+    "artistLabel": "Wykonawca (domyślnie CMLP / HRL)",
     "isrcLabel": "Kod ISRC",
     "isrcPlaceholder": "PLHRL26...",
     "bpmLabel": "BPM (Opcjonalnie)",

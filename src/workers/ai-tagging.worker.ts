@@ -55,7 +55,7 @@ export async function processTrackTagging(trackId: number, filePath: string): Pr
     }
     if (!trackRow.mood) updates.mood = result.mood;
     if (trackRow.title === 'Unknown Title' && result.title) updates.title = result.title;
-    if (trackRow.artist === 'Unknown Artist' && result.artist) updates.artist = result.artist;
+    // Autor katalogu = kolektyw CMLP / HRL — silnik tagujący nie zmienia pola artist.
 
     const existingMeta = (trackRow.metadata as Record<string, unknown>) || {};
     updates.metadata = {

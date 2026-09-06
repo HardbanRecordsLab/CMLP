@@ -83,7 +83,7 @@
     "clear_logs": "Clear All Logs",
     "close_center": "Close Center",
     "not_selected": "No track selected",
-    "collective_representative": "HRL Studio Collective",
+    "collective_representative": "CMLP / HRL",
     "metadata_isrc": "ISRC",
     "license_status": "Active License • PMPro Lvl 2",
     "local_time": "Local Time",
@@ -224,7 +224,7 @@
     "stream_description": "You are listening to the official radio network of {{brandName}}. Curated premium sounds for our guests.",
     "now_playing": "Now Playing",
     "waiting_track": "Waiting for Track...",
-    "unknown_artist": "Unknown Artist",
+    "unknown_artist": "CMLP / HRL",
     "offline_error": "No internet connection. Please connect and try again."
   },
   "paymentPortal": {
@@ -296,7 +296,7 @@
     "heading": "Upload New Track",
     "audioFileLabel": "Audio File (MP3, WAV, FLAC)",
     "titleLabel": "Track Title (Optional, parsed from file)",
-    "artistLabel": "Artist (Optional, parsed from file)",
+    "artistLabel": "Artist (defaults to CMLP / HRL)",
     "isrcLabel": "ISRC Code",
     "isrcPlaceholder": "PLHRL26...",
     "bpmLabel": "BPM (Optional)",

@@ -82,9 +82,14 @@ Zasada wyboru: tekst o katalogu/muzyce/marce dla odbiorcy zewnętrznego →
 regulaminu/stopki prawnej → *Creative Music Licensing Partners*. W razie
 wątpliwości — sam skrót **CMLP**.
 
-**Model marki: kolektyw anonimowy.** Na zewnątrz widoczna jest wyłącznie
-marka CMLP. Tożsamość konkretnych producentów nie jest ujawniana — to
-świadoma, spójna decyzja utrzymywana we wszystkich materiałach.
+**Model marki: kolektyw.** Autorem i wykonawcą wskazywanym dla **wszystkich**
+utworów w katalogu jest **grupa CMLP / HRL**. Nazwiska ani pseudonimy
+indywidualnych twórców nie występują nigdzie na zewnątrz — pole `artist`
+każdego utworu w katalogu to `CMLP / HRL`. To świadoma, spójna decyzja: prawa
+majątkowe i pokrewne należą do podmiotu prowadzącego (HRL), więc utwory są
+publikowane i licencjonowane pod jedną tożsamością zbiorową. Rozwiązuje to
+kwestię autorstwa: nie „ukryty producent", nie „AI" — autorem jest kolektyw
+CMLP / HRL.
 
 **Czego nie komunikujemy publicznie:** żadnych deklaracji typu „bez ZAiKS",
 „zero OZZ", „zwolnienie z opłat OZZ", „certyfikat wolności od OZZ". Argumentacja
@@ -270,7 +275,8 @@ agencji i twórców) — **do ustalenia** (§3.5).
 
 ### 6.1 Katalog i biblioteka
 
-- utwory z metadanymi: tytuł, wykonawca (marka), album, rok, BPM, gatunek,
+- utwory z metadanymi: tytuł, wykonawca (`artist` = `CMLP / HRL` dla całego
+  katalogu — patrz §2), album, rok, BPM, gatunek,
   nastrój (`mood`), pora dnia (`time_of_day`), ISRC, czas trwania, format,
   hash pliku, `rights_owner_id`, `license_scope`, status,
 - rozszerzone tagi (`track_tags`): BPM, tonacja, energia, taneczność, `valence`,
@@ -447,7 +453,7 @@ PostgreSQL, schemat w `src/db/schema.ts`. Tabele (skrót):
 | `users` | konta (klienci, admini, lokale) + branding white-label | `role` (`subscriber`/`client`/`admin`…), `pin`, MFA, `email_verified` |
 | `companies` | firmy klientów | `subscription_plan`, `license_scope` (jsonb), `owner_id` |
 | `locations` | lokalizacje firmy | → `companies` CASCADE |
-| `tracks` | utwory w katalogu | `mood`/`time_of_day`/`metadata` (jsonb), `rights_owner_id`, `file_hash` |
+| `tracks` | utwory w katalogu | `artist` domyślnie `CMLP / HRL` (autor = kolektyw); `mood`/`time_of_day`/`metadata` (jsonb), `rights_owner_id`, `file_hash` |
 | `track_tags` | rozszerzone tagi audio | → `tracks` CASCADE |
 | `playlists`, `playlist_tracks` | playlisty i ich zawartość | → `companies`, `tracks` |
 | `licenses` | licencje B2B | → `companies` CASCADE, `certificate_number` unikalny, → `contracts` |
@@ -922,7 +928,7 @@ CMLP jest jednym z produktów Hardban Records Lab na `hardbanrecordslab.online`:
 |---|---|
 | **Cesja praw** | pełne przeniesienie majątkowych praw autorskich i praw pokrewnych na CMLP (nie licencja od twórcy) |
 | **Certyfikat Licencyjny** | dokument PDF z kodem QR potwierdzający aktywną licencję B2B, jej zakres i okres; weryfikowalny na `/verify` |
-| **Kolektyw anonimowy** | model marki — na zewnątrz widoczna wyłącznie nazwa CMLP, tożsamość producentów ukryta |
+| **Grupa CMLP / HRL** | autor i wykonawca wskazywany dla wszystkich utworów w katalogu; jedna tożsamość zbiorowa zamiast nazwisk indywidualnych twórców |
 | **Weryfikacja źródła** | sprawdzenie pochodzenia i czystości praw każdego utworu przed włączeniem do katalogu (produkcja własna / cesja) |
 | **OZZ** | organizacja zbiorowego zarządzania (ZAiKS, STOART, ZPAV, SAWP). Utwory CMLP nie są w nich zgłoszone — fakt operacyjny, nie hasło marketingowe |
 | **White-label / Odtwarzacz w barwach marki** | odtwarzacz w kolorystyce i z logo klienta, logowanie kodem PIN |
