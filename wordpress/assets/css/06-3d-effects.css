@@ -1,8 +1,0 @@
-/* ═══════════════════════════════════════════════════════
-   06-3D-EFFECTS.CSS — REMOVED
-   3D tilt effects removed for performance optimization.
-   Particles and 3D transforms caused significant CPU/GPU load.
-   ═══════════════════════════════════════════════════════ */
-
-/* This file intentionally left minimal. */
-/* 3D effects have been removed to improve Core Web Vitals. */
