@@ -43,9 +43,23 @@ export function verifyRefreshToken(token: string): JwtPayload | null {
   }
 }
 
-export function refreshAccessToken(refreshToken: string): { accessToken: string; refreshToken: string } | null {
-  const decoded = verifyRefreshToken(refreshToken);
+const REFRESH_TTL_SECONDS = 7 * 24 * 60 * 60;
+
+export async function refreshAccessToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string } | null> {
+  const decoded = verifyRefreshToken(refreshToken) as (JwtPayload & { iat?: number }) | null;
   if (!decoded) return null;
+
+  if (await isRefreshFamilyRevoked(decoded.uid, decoded.iat)) return null;
+
+  const tokenHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
+  const reused = await wasRefreshTokenAlreadyUsed(tokenHash);
+  if (reused) {
+    // The same refresh token was redeemed twice — a strong signal it was
+    // stolen and both the attacker and the legitimate client raced to
+    // rotate it. Kill every token issued so far for this user.
+    await revokeAllRefreshTokens(decoded.uid);
+    return null;
+  }
 
   const payload: JwtPayload = {
     uid: decoded.uid,
@@ -57,7 +71,7 @@ export function refreshAccessToken(refreshToken: string): { accessToken: string;
   const newAccessToken = signToken(payload);
   const newRefreshToken = signRefreshToken(payload);
 
-  invalidateRefreshTokenInRedis(decoded.uid, refreshToken).catch(() => {});
+  await markRefreshTokenUsed(tokenHash);
 
   return {
     accessToken: newAccessToken,
@@ -65,21 +79,39 @@ export function refreshAccessToken(refreshToken: string): { accessToken: string;
   };
 }
 
-async function invalidateRefreshTokenInRedis(uid: string, token: string): Promise<void> {
+async function wasRefreshTokenAlreadyUsed(tokenHash: string): Promise<boolean> {
   try {
-    const familyKey = `rt_family:${uid}`;
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    const existing = await redisClient.get(familyKey);
-    if (existing) {
-      const family = JSON.parse(existing);
-      if (family.includes(tokenHash)) {
-        await redisClient.del(familyKey);
-        return;
-      }
-    }
-    await redisClient.setex(familyKey, 7 * 24 * 60 * 60, JSON.stringify([tokenHash]));
+    return !!(await redisClient.get(`rt_used:${tokenHash}`));
   } catch {
-    // Redis unavailable — skip rotation
+    // Redis unavailable — fail open on reuse detection; expiry/signature
+    // checks above still enforce basic token validity.
+    return false;
+  }
+}
+
+async function markRefreshTokenUsed(tokenHash: string): Promise<void> {
+  try {
+    await redisClient.setex(`rt_used:${tokenHash}`, REFRESH_TTL_SECONDS, '1');
+  } catch {
+    // Redis unavailable — rotation tracking skipped for this request
+  }
+}
+
+async function isRefreshFamilyRevoked(uid: string, tokenIat?: number): Promise<boolean> {
+  if (!tokenIat) return false;
+  try {
+    const revokedSince = await redisClient.get(`rt_revoked_since:${uid}`);
+    return !!revokedSince && tokenIat * 1000 < Number(revokedSince);
+  } catch {
+    return false;
+  }
+}
+
+async function revokeAllRefreshTokens(uid: string): Promise<void> {
+  try {
+    await redisClient.setex(`rt_revoked_since:${uid}`, REFRESH_TTL_SECONDS, Date.now().toString());
+  } catch {
+    // Redis unavailable — revocation skipped
   }
 }
 

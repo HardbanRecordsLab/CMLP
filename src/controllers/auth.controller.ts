@@ -209,7 +209,7 @@ export async function refresh(req: Request, res: Response) {
     return res.status(400).json({ error: 'Refresh token required' });
   }
 
-  const tokens = refreshAccessToken(refreshToken);
+  const tokens = await refreshAccessToken(refreshToken);
   if (!tokens) {
     return res.status(401).json({ error: 'Invalid or expired refresh token' });
   }
