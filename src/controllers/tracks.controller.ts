@@ -47,20 +47,46 @@ export async function create(req: any, res: Response) {
     const fileBuffer = fs.readFileSync(filePath);
 
     const MAGIC_BYTES: Record<string, [number, number[]][]> = {
-      'audio/mpeg': [[0, [0xFF, 0xFB]], [0, [0xFF, 0xF3]], [0, [0xFF, 0xF2]]],
       'audio/wav': [[0, [0x52, 0x49, 0x46, 0x46]]],
       'audio/flac': [[0, [0x66, 0x4C, 0x61, 0x43]]],
       'audio/x-flac': [[0, [0x66, 0x4C, 0x61, 0x43]]],
     };
-    const patterns = MAGIC_BYTES[req.file.mimetype];
-    if (patterns) {
-      const matches = patterns.some(([offset, bytes]) =>
-        bytes.every((b, i) => fileBuffer[offset + i] === b)
-      );
+    if (req.file.mimetype === 'audio/mpeg') {
+      // Real-world MP3s almost always carry a leading ID3v2 tag (any DAW,
+      // Audacity, iTunes, ffmpeg-with-metadata all write one), so the frame
+      // sync bytes don't sit at offset 0 — skip past the tag first, or this
+      // rejects nearly every legitimate MP3 upload.
+      let offset = 0;
+      if (
+        fileBuffer.length >= 10 &&
+        fileBuffer[0] === 0x49 && fileBuffer[1] === 0x44 && fileBuffer[2] === 0x33 // "ID3"
+      ) {
+        const tagSize =
+          ((fileBuffer[6] & 0x7f) << 21) |
+          ((fileBuffer[7] & 0x7f) << 14) |
+          ((fileBuffer[8] & 0x7f) << 7) |
+          (fileBuffer[9] & 0x7f);
+        offset = 10 + tagSize;
+      }
+      const b0 = fileBuffer[offset];
+      const b1 = fileBuffer[offset + 1];
+      const matches = b0 === 0xff && (b1 === 0xfb || b1 === 0xf3 || b1 === 0xf2);
       if (!matches) {
         fs.unlinkSync(filePath);
         res.status(400).json({ error: 'File signature mismatch' });
         return;
+      }
+    } else {
+      const patterns = MAGIC_BYTES[req.file.mimetype];
+      if (patterns) {
+        const matches = patterns.some(([offset, bytes]) =>
+          bytes.every((b, i) => fileBuffer[offset + i] === b)
+        );
+        if (!matches) {
+          fs.unlinkSync(filePath);
+          res.status(400).json({ error: 'File signature mismatch' });
+          return;
+        }
       }
     }
 
