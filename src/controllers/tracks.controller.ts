@@ -119,14 +119,13 @@ export async function create(req: any, res: Response) {
     // below still needs a local path for ffmpeg. See storage.service.ts.
     const ext = path.extname(req.file.filename);
     const storageKey = `${fileHash}${ext}`;
-    let storagePath: string | null = null;
+    let objectKey: string | null = null;
     try {
       await objectStore.putFile(storageKey, filePath, req.file.mimetype);
-      storagePath = storageKey;
+      objectKey = storageKey;
       // putFile doesn't consume the source in this app (transcoding still
-      // needs it), so re-stage a copy for the transcode worker below —
-      // fPutObject reads the file, doesn't move/delete it, so filePath is
-      // still intact here.
+      // needs it) — fPutObject reads the file, doesn't move/delete it, so
+      // filePath is still intact here for the transcode worker below.
     } catch (storageErr) {
       console.error('[Storage] MinIO upload failed, track will stay local-only:', storageErr);
     }
@@ -138,7 +137,7 @@ export async function create(req: any, res: Response) {
       isrc: isrc || 'N/A',
       catalogNumber: catalogNumber || null,
       filename: req.file.filename,
-      storagePath,
+      objectKey,
       fileHash,
       bpm,
       genre: genre.join(','),

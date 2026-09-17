@@ -77,6 +77,13 @@ export const tracks = pgTable('tracks', {
   coverUrl: text('cover_url'),
   filename: text('filename').notNull(),
   storagePath: text('storage_path'),
+  // Shared MinIO object key (sha256(content)+ext) — deliberately a separate
+  // column from storage_path, which pre-existing code already uses for the
+  // local HLS transcode output path (/var/www/.../hls/{id}/...). Reusing
+  // storage_path for this was a real bug caught during rollout: existing
+  // tracks already had it populated with an HLS path, so treating it as a
+  // MinIO key broke playback (404) until this column was split out.
+  objectKey: text('object_key'),
   fileSize: integer('file_size'),
   fileHash: text('file_hash'),
   format: text('format'),

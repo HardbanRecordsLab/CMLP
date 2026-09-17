@@ -27,8 +27,8 @@ const APPLY = process.argv.includes('--apply');
 const mediaBasePath = process.env.MEDIA_PATH || path.join(process.cwd(), 'media_files');
 
 async function main() {
-  const rows = await db.select().from(tracks).where(isNull(tracks.storagePath));
-  console.log(`${rows.length} track(s) without storage_path.`);
+  const rows = await db.select().from(tracks).where(isNull(tracks.objectKey));
+  console.log(`${rows.length} track(s) without object_key.`);
 
   let migrated = 0, missing = 0, deduped = 0, failed = 0;
 
@@ -60,7 +60,7 @@ async function main() {
         console.error(`[UNEXPECTED] ${filePath} vanished after putFile — check storage.service.ts`);
       }
 
-      await db.update(tracks).set({ storagePath: key, fileHash: hash }).where(eq(tracks.id, t.id));
+      await db.update(tracks).set({ objectKey: key, fileHash: hash }).where(eq(tracks.id, t.id));
       if (wasAlreadyThere) deduped++;
       migrated++;
       console.log(`[OK] track #${t.id} "${t.title}" → ${key}${wasAlreadyThere ? ' (already in bucket, deduped)' : ''}`);

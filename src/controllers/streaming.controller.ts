@@ -116,13 +116,15 @@ export async function streamFile(req: Request, res: Response) {
   if (ext === '.m4a') contentType = 'audio/mp4';
 
   // Shared MinIO storage (see storage.service.ts) is now the primary source —
-  // resolve the track row to find its storage_path. Falls back to the old
-  // local-disk + nginx X-Accel-Redirect path for any track not yet migrated.
-  const [track] = await db.select({ storagePath: tracks.storagePath })
+  // resolve the track row to find its object_key (NOT storage_path, which
+  // pre-existing code already uses for the local HLS transcode output path).
+  // Falls back to the old local-disk + nginx X-Accel-Redirect path for any
+  // track not yet migrated (object_key still null).
+  const [track] = await db.select({ objectKey: tracks.objectKey })
     .from(tracks).where(eq(tracks.filename, safeFilename)).limit(1);
 
-  if (track?.storagePath) {
-    const meta = await objectStore.head(track.storagePath);
+  if (track?.objectKey) {
+    const meta = await objectStore.head(track.objectKey);
     if (!meta) {
       res.status(404).send('File missing from storage');
       return;
@@ -146,14 +148,14 @@ export async function streamFile(req: Request, res: Response) {
         'Content-Length': end - start + 1,
         'Content-Type': contentType,
       });
-      const partial = await objectStore.getStream(track.storagePath, { start, end });
+      const partial = await objectStore.getStream(track.objectKey, { start, end });
       partial.on('error', () => res.destroy());
       partial.pipe(res);
       return;
     }
 
     res.writeHead(200, { 'Content-Length': size, 'Content-Type': contentType });
-    const full = await objectStore.getStream(track.storagePath);
+    const full = await objectStore.getStream(track.objectKey);
     full.on('error', () => res.destroy());
     full.pipe(res);
     return;
