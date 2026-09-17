@@ -239,3 +239,36 @@ export async function analyzeTrack(filePath: string, trackId?: number): Promise<
 
   return result;
 }
+
+/**
+ * Embeds metadata as real ID3v2 (mp3/wav) or Vorbis (flac) tags directly in
+ * the audio file, via Metadata Engine's tagger — distinct from analyzeTrack()
+ * above, which only fills our own DB columns. `/api/tag/file` currently has
+ * no auth gate (unlike /api/analysis/*), so no token is sent here; if that
+ * changes, this needs a bearer token from getToken() too.
+ * Returns the tagged file's bytes, or null if the request failed — never
+ * throws, so callers can fall back to "leave the file untouched".
+ */
+export async function tagAudioFile(filePath: string, meta: Record<string, unknown>): Promise<Buffer | null> {
+  try {
+    const fileBuffer = await fs.readFile(filePath);
+    const filename = path.basename(filePath);
+    const formData = new FormData();
+    formData.append('file', new Blob([fileBuffer]), filename);
+    formData.append('metadata', JSON.stringify(meta));
+
+    const res = await fetch(`${getBaseUrl()}/api/tag/file`, {
+      method: 'POST',
+      body: formData,
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!res.ok) {
+      console.warn(`[Metadata Engine] Tag request failed: HTTP ${res.status}`);
+      return null;
+    }
+    return Buffer.from(await res.arrayBuffer());
+  } catch (err) {
+    console.warn('[Metadata Engine] Tag request failed:', err instanceof Error ? err.message : err);
+    return null;
+  }
+}

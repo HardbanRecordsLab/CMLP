@@ -289,7 +289,10 @@
     "noMatches": "No tracks match your filters.",
     "emptyLibrary": "No tracks in library yet.",
     "trackCount": "{{filtered}} of {{total}} tracks",
-    "deleteConfirm": "Delete \"{{title}}\" by {{artist}}?"
+    "deleteConfirm": "Delete \"{{title}}\" by {{artist}}?",
+    "tagViaMetadataEngine": "Tag via Metadata Engine",
+    "tagSuccess": "Track tagged via Metadata Engine.",
+    "tagError": "Tagging failed: {{error}}"
   },
   "uploadTrack": {
     "ariaLabel": "Upload Track",
@@ -299,6 +302,8 @@
     "artistLabel": "Artist / band (from file tags if left empty)",
     "isrcLabel": "ISRC Code",
     "isrcPlaceholder": "PLHRL26...",
+    "catalogNumberLabel": "Catalog Number",
+    "catalogNumberPlaceholder": "CMLP-0001",
     "bpmLabel": "BPM (Optional)",
     "genreLabel": "Genre",
     "moodLabel": "Mood (Comma sep)",

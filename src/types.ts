@@ -11,6 +11,7 @@ export interface Track {
   explicit?: boolean;
   timeOfDay?: string[];
   isrc?: string;
+  catalogNumber?: string;
   coverUrl?: string;
   filename: string;
 }

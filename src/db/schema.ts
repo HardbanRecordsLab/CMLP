@@ -73,6 +73,7 @@ export const tracks = pgTable('tracks', {
   explicit: boolean('explicit').default(false),
   timeOfDay: jsonb('time_of_day'),
   isrc: text('isrc'),
+  catalogNumber: text('catalog_number'),
   coverUrl: text('cover_url'),
   filename: text('filename').notNull(),
   storagePath: text('storage_path'),

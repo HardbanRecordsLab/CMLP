@@ -16,6 +16,7 @@ export default function UploadTrackModal({ isOpen, onClose, onSuccess }: UploadT
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
   const [isrc, setIsrc] = useState('');
+  const [catalogNumber, setCatalogNumber] = useState('');
   const [bpm, setBpm] = useState('');
   const [genre, setGenre] = useState('');
   const [mood, setMood] = useState('');
@@ -34,6 +35,7 @@ export default function UploadTrackModal({ isOpen, onClose, onSuccess }: UploadT
       if (title) formData.append('title', title);
       if (artist) formData.append('artist', artist);
       if (isrc) formData.append('isrc', isrc);
+      if (catalogNumber) formData.append('catalogNumber', catalogNumber);
       if (bpm) formData.append('bpm', bpm);
       if (genre) formData.append('genre', genre);
       if (mood) formData.append('mood', mood);
@@ -82,6 +84,10 @@ export default function UploadTrackModal({ isOpen, onClose, onSuccess }: UploadT
               <div>
                 <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-1">{t('uploadTrack.isrcLabel')}</label>
                 <input value={isrc} onChange={e => setIsrc(e.target.value)} placeholder={t('uploadTrack.isrcPlaceholder')} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-1">{t('uploadTrack.catalogNumberLabel')}</label>
+                <input value={catalogNumber} onChange={e => setCatalogNumber(e.target.value)} placeholder={t('uploadTrack.catalogNumberPlaceholder')} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-blue-500" />
               </div>
               <div>
                 <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-1">{t('uploadTrack.bpmLabel')}</label>

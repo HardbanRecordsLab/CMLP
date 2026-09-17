@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Music, Play, Pause, Upload, Filter, X, Trash2 } from 'lucide-react';
+import { Search, Music, Play, Pause, Upload, Filter, X, Trash2, Tag, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import { Track } from '@/types.ts';
@@ -25,6 +26,7 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
   const [totalPages, setTotalPages] = useState(1);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [showUpload, setShowUpload] = useState(false);
+  const [taggingId, setTaggingId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { fetchWithAuth, loading, error } = useApi();
 
@@ -58,6 +60,21 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
       const res = await fetchWithAuth(getApiUrl(`/api/tracks/${track.id}`), { method: 'DELETE' });
       if (res.ok) loadTracks();
     } catch {}
+  };
+
+  const tagViaMetadataEngine = async (track: Track) => {
+    setTaggingId(track.id);
+    try {
+      const res = await fetchWithAuth(getApiUrl(`/api/tracks/${track.id}/tag-via-metadata-engine`), { method: 'POST' });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      toast.success(t('trackLibrary.tagSuccess'));
+      loadTracks();
+    } catch (e: any) {
+      toast.error(t('trackLibrary.tagError', { error: e.message }));
+    } finally {
+      setTaggingId(null);
+    }
   };
 
   const togglePlay = async (track: Track) => {
@@ -170,7 +187,8 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
                         {track.durationMs ? formatTime(track.durationMs) : '--:--'}
                       </td>
                       <td className="px-6 py-4 font-mono text-[11px] text-slate-400 hidden md:table-cell">
-                        {track.isrc || '—'}
+                        <p>{track.isrc || '—'}</p>
+                        {track.catalogNumber && <p className="text-slate-600">{track.catalogNumber}</p>}
                       </td>
                       <td className="px-6 py-4 hidden lg:table-cell">
                         {track.bpm && (
@@ -184,7 +202,18 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
                           </span>
                         ))}
                       </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-6 py-4 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => tagViaMetadataEngine(track)}
+                          disabled={taggingId === track.id}
+                          className="p-1.5 text-slate-600 hover:text-amber-400 hover:bg-amber-500/10 rounded transition disabled:opacity-50"
+                          title={t('trackLibrary.tagViaMetadataEngine')}
+                        >
+                          {taggingId === track.id
+                            ? <Loader2 className="w-4 h-4 animate-spin" />
+                            : <Tag className="w-4 h-4" />
+                          }
+                        </button>
                         <button
                           onClick={() => deleteTrack(track)}
                           className="p-1.5 text-slate-600 hover:text-red-400 hover:bg-red-500/10 rounded transition"

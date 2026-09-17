@@ -289,7 +289,10 @@
     "noMatches": "Brak utworów pasujących do filtrów.",
     "emptyLibrary": "Brak utworów w bibliotece.",
     "trackCount": "{{filtered}} z {{total}} utworów",
-    "deleteConfirm": "Usunąć \"{{title}}\" autorstwa {{artist}}?"
+    "deleteConfirm": "Usunąć \"{{title}}\" autorstwa {{artist}}?",
+    "tagViaMetadataEngine": "Otaguj przez Metadata Engine",
+    "tagSuccess": "Utwór otagowany przez Metadata Engine.",
+    "tagError": "Tagowanie nie powiodło się: {{error}}"
   },
   "uploadTrack": {
     "ariaLabel": "Prześlij Utwór",
@@ -299,6 +302,8 @@
     "artistLabel": "Wykonawca / zespół (z tagów pliku, jeśli puste)",
     "isrcLabel": "Kod ISRC",
     "isrcPlaceholder": "PLHRL26...",
+    "catalogNumberLabel": "Numer katalogowy",
+    "catalogNumberPlaceholder": "CMLP-0001",
     "bpmLabel": "BPM (Opcjonalnie)",
     "genreLabel": "Gatunek",
     "moodLabel": "Nastrój (rozdziel przecinkami)",
