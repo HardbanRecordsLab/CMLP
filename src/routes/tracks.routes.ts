@@ -40,6 +40,7 @@ router.post('/', requireAuth, requireRole('admin'), upload.single('audio_file'),
 router.get('/:id/tags', requireAuth, tracksController.getTrackTags);
 router.put('/:id/tags', requireAuth, requireRole('admin'), tracksController.setTrackTags);
 router.post('/:id/tags/generate', requireAuth, requireRole('admin'), tracksController.generateTrackTags);
+router.post('/:id/tag-via-metadata-engine', requireAuth, requireRole('admin'), tracksController.tagViaMetadataEngine);
 router.delete('/:id', requireAuth, requireRole('admin'), tracksController.remove);
 
 export default router;

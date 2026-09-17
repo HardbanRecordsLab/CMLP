@@ -2,8 +2,9 @@ import { Request, Response } from 'express';
 import crypto from 'crypto';
 import path from 'path';
 import { db } from '../db/index.ts';
-import { usage_logs, licenses, companies } from '../db/schema.ts';
+import { usage_logs, licenses, companies, tracks } from '../db/schema.ts';
 import { eq, and, gte, sql } from 'drizzle-orm';
+import * as objectStore from '../services/storage.service.ts';
 
 export async function getToken(req: any, res: Response) {
   try {
@@ -106,25 +107,70 @@ export async function streamFile(req: Request, res: Response) {
     }
   }
 
+  const ext = path.extname(safeFilename).toLowerCase();
+  let contentType = 'audio/mpeg';
+  if (ext === '.wav') contentType = 'audio/wav';
+  if (ext === '.flac') contentType = 'audio/flac';
+  if (ext === '.ogg') contentType = 'audio/ogg';
+  if (ext === '.aac') contentType = 'audio/aac';
+  if (ext === '.m4a') contentType = 'audio/mp4';
+
+  // Shared MinIO storage (see storage.service.ts) is now the primary source —
+  // resolve the track row to find its storage_path. Falls back to the old
+  // local-disk + nginx X-Accel-Redirect path for any track not yet migrated.
+  const [track] = await db.select({ storagePath: tracks.storagePath })
+    .from(tracks).where(eq(tracks.filename, safeFilename)).limit(1);
+
+  if (track?.storagePath) {
+    const meta = await objectStore.head(track.storagePath);
+    if (!meta) {
+      res.status(404).send('File missing from storage');
+      return;
+    }
+    const size = meta.size;
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'private, no-store');
+
+    const rangeMatch = req.headers.range && /^bytes=(\d*)-(\d*)$/.exec(req.headers.range);
+    if (rangeMatch) {
+      let start = rangeMatch[1] ? parseInt(rangeMatch[1], 10) : 0;
+      let end = rangeMatch[2] ? parseInt(rangeMatch[2], 10) : size - 1;
+      if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= size) {
+        res.setHeader('Content-Range', `bytes */${size}`);
+        res.status(416).end();
+        return;
+      }
+      end = Math.min(end, size - 1);
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${size}`,
+        'Content-Length': end - start + 1,
+        'Content-Type': contentType,
+      });
+      const partial = await objectStore.getStream(track.storagePath, { start, end });
+      partial.on('error', () => res.destroy());
+      partial.pipe(res);
+      return;
+    }
+
+    res.writeHead(200, { 'Content-Length': size, 'Content-Type': contentType });
+    const full = await objectStore.getStream(track.storagePath);
+    full.on('error', () => res.destroy());
+    full.pipe(res);
+    return;
+  }
+
+  // Legacy path — track predates the MinIO migration.
   const mediaBasePath = process.env.MEDIA_PATH || '/opt/cmlp/media_files';
   const filePath = path.join(mediaBasePath, safeFilename);
 
   if (process.env.NODE_ENV !== "production") {
-    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Content-Type', contentType);
     res.sendFile(filePath, (err) => {
       if (err) {
         res.status(404).send("File not found");
       }
     });
   } else {
-    const ext = path.extname(safeFilename).toLowerCase();
-    let contentType = 'audio/mpeg';
-    if (ext === '.wav') contentType = 'audio/wav';
-    if (ext === '.flac') contentType = 'audio/flac';
-    if (ext === '.ogg') contentType = 'audio/ogg';
-    if (ext === '.aac') contentType = 'audio/aac';
-    if (ext === '.m4a') contentType = 'audio/mp4';
-
     res.setHeader('Content-Type', contentType);
     res.setHeader('X-Accel-Redirect', `/protected_media/${safeFilename}`);
     res.end();
