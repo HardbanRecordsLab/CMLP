@@ -7,6 +7,7 @@ import Navigation from '@/components/common/Navigation.tsx';
 import { jsPDF } from 'jspdf';
 import { useTranslation } from 'react-i18next';
 import { formatLocaleDate } from '@/i18n.ts';
+import { WaveformSeekbar } from './WaveformSeekbar.tsx';
 
 export default function B2BPlayer() {
   const { t, i18n } = useTranslation();
@@ -20,6 +21,7 @@ export default function B2BPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<{ type: string; subject: string; body: string; alertType?: string; timestamp?: string }[]>([]);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
   const [activeToast, setActiveToast] = useState<{ type: string; subject: string; body: string; alertType?: string; timestamp?: string } | null>(null);
@@ -178,7 +180,9 @@ export default function B2BPlayer() {
       .then(data => {
         if (cancelled) return;
         if (data.token && audioRef.current) {
-          audioRef.current.src = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${data.uid}&hrl_token=${data.token}`);
+          const src = getApiUrl(`/api/audio/${currentTrack.filename}?uid=${data.uid}&hrl_token=${data.token}`);
+          audioRef.current.src = src;
+          setAudioSrc(src);
         }
       })
       .catch(err => setLogs(prev => [...prev, `[ERROR] Failed to get audio token: ${err.message}`]));
@@ -199,6 +203,13 @@ export default function B2BPlayer() {
 
   const handleAudioEnded = () => {
     handleNext();
+  };
+
+  const handleSeek = (time: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setProgress(time);
+    }
   };
 
   const formatTime = (secs: number) => {
@@ -580,10 +591,14 @@ export default function B2BPlayer() {
           <div className="w-full max-w-2xl px-8">
             <div className="flex items-center gap-4 mb-6">
               <span className="text-[11px] text-slate-500 font-mono w-10 text-right">{formatTime(progress)}</span>
-              <div className="h-1 flex-1 bg-slate-800 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-blue-500 rounded-full transition-all duration-100" 
-                  style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }} 
+              <div className="flex-1">
+                <WaveformSeekbar
+                  audioUrl={audioSrc}
+                  currentTime={progress}
+                  duration={duration}
+                  onSeek={handleSeek}
+                  accentClassName="bg-blue-500"
+                  height={40}
                 />
               </div>
               <span className="text-[11px] text-slate-500 font-mono w-10">{formatTime(duration)}</span>
