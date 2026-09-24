@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getApiUrl } from '../../utils';
+import { getCsrfToken } from '../../hooks/useApi';
 
 interface User {
   uid: string;
@@ -44,9 +45,14 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
       const apiUrl = getApiUrl(endpoint);
+      const csrf = getCsrfToken();
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrf ? { 'X-CSRF-Token': csrf } : {}),
+        },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
 
@@ -74,9 +80,14 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
     setLoading(true);
 
     try {
+      const waitlistCsrf = getCsrfToken();
       const response = await fetch(getApiUrl('/api/auth/waitlist'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(waitlistCsrf ? { 'X-CSRF-Token': waitlistCsrf } : {}),
+        },
+        credentials: 'include',
         body: JSON.stringify({ email, companyName: waitlistCompany }),
       });
       const data = await response.json();

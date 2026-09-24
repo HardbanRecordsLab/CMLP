@@ -2,6 +2,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { getApiUrl } from '../../utils';
+import { getCsrfToken } from '../../hooks/useApi';
 
 export default function ForgotPassword({ onBack }: { onBack: () => void }) {
   const { t } = useTranslation();
@@ -13,9 +14,14 @@ export default function ForgotPassword({ onBack }: { onBack: () => void }) {
     e.preventDefault();
     setLoading(true);
     try {
+      const csrf = getCsrfToken();
       const res = await fetch(getApiUrl('/api/auth/forgot-password'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrf ? { 'X-CSRF-Token': csrf } : {}),
+        },
+        credentials: 'include',
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
