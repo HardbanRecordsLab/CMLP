@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 function getCsrfToken(): string | undefined {
-  const match = document.cookie.match(/(?:^|;\s*)hrl_csrf=([^;]*)/);
+  const match = document.cookie.match(/(?:^|;\s*)hrl_csrf2=([^;]*)/);
   return match ? decodeURIComponent(match[1]) : undefined;
 }
 

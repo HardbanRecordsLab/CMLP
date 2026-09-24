@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import crypto from 'node:crypto';
 
 const SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS'];
-const CSRF_COOKIE = 'hrl_csrf';
+// v2: renamed from 'hrl_csrf' so browsers holding a pre-fix, host-only
+// cookie (issued before the `domain` attribute below existed) get a fresh,
+// correctly-scoped cookie immediately instead of being stuck until the old
+// one expires (the reissue check below only fires when no cookie exists).
+const CSRF_COOKIE = 'hrl_csrf2';
 const CSRF_HEADER = 'x-csrf-token';
 
 // Server-to-server callbacks (Stripe/PayU payment webhooks) can never carry
