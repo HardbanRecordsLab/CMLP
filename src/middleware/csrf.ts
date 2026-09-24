@@ -27,10 +27,16 @@ export function csrfProtection(req: Request, res: Response, next: NextFunction) 
     // single GET, invalidating whatever token a client just read.
     if (!getCookie(req, CSRF_COOKIE)) {
       const token = crypto.randomBytes(32).toString('hex');
+      const isProduction = process.env.NODE_ENV === 'production';
       res.cookie(CSRF_COOKIE, token, {
         httpOnly: false,
-        secure: process.env.NODE_ENV === 'production',
+        secure: isProduction,
         sameSite: 'strict',
+        // Without this, the cookie is host-only to api.cmlp.* and invisible
+        // to document.cookie on the cmlp.* frontend (different host), so the
+        // client can never echo it back and every POST 403s. Matches the
+        // domain scoping already used for the JWT cookies in auth.controller.ts.
+        ...(isProduction ? { domain: '.hardbanrecordslab.online' } : {}),
         maxAge: 24 * 60 * 60 * 1000,
       });
     }
