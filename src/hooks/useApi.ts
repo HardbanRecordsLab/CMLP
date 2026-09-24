@@ -29,9 +29,13 @@ export function useApi() {
 
       if (response.status === 401) {
         try {
+          const refreshCsrf = getCsrfToken();
           const refreshRes = await fetch('/api/auth/refresh', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              ...(refreshCsrf ? { 'X-CSRF-Token': refreshCsrf } : {}),
+            },
             credentials: 'include',
           });
           if (refreshRes.ok) {
@@ -40,6 +44,15 @@ export function useApi() {
         } catch {
           // refresh failed
         }
+      }
+
+      if (response.status === 401) {
+        // Refresh didn't recover the session (expired refresh token, revoked,
+        // etc.) - bounce to login instead of leaving the caller to render a
+        // confusing "failed to load" / empty state that looks like data loss.
+        localStorage.removeItem('auth_user');
+        window.location.reload();
+        return new Promise<Response>(() => {}); // reload is navigating away
       }
 
       if (!response.ok) {
