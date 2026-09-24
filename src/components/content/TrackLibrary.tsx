@@ -17,6 +17,16 @@ function formatTime(ms: number): string {
   return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 }
 
+// AI-enriched tracks store mood as {tags, vibe, energyLevel} instead of the
+// older flat string[] shape; normalize both so rendering never crashes.
+function moodTags(mood: unknown): string[] {
+  if (Array.isArray(mood)) return mood;
+  if (mood && typeof mood === 'object' && Array.isArray((mood as { tags?: unknown }).tags)) {
+    return (mood as { tags: string[] }).tags;
+  }
+  return [];
+}
+
 export default function TrackLibrary({ embedded }: TrackLibraryProps) {
   const { t } = useTranslation();
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -50,7 +60,7 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
   useEffect(() => { loadTracks(); }, [page, search]);
 
   const genres = [...new Set(tracks.map(t => t.genre).filter(Boolean))] as string[];
-  const allMoods = [...new Set(tracks.flatMap(t => t.mood || []))];
+  const allMoods = [...new Set(tracks.flatMap(t => moodTags(t.mood)))];
 
   const filtered = genreFilter ? tracks.filter(t => t.genre === genreFilter) : tracks;
 
@@ -196,7 +206,7 @@ export default function TrackLibrary({ embedded }: TrackLibraryProps) {
                             {track.bpm} BPM
                           </span>
                         )}
-                        {(track.mood || []).slice(0, 3).map(m => (
+                        {moodTags(track.mood).slice(0, 3).map(m => (
                           <span key={m} className="inline-block px-2 py-1 bg-blue-900/40 text-blue-400 text-[10px] border border-blue-500/20 rounded mr-1 mb-1">
                             {m}
                           </span>
