@@ -25,7 +25,12 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
   const [waitlistMessage, setWaitlistMessage] = useState('');
 
   useEffect(() => {
-    fetch(getApiUrl('/api/auth/registration-status'))
+    // credentials: 'include' is required here even though this call needs no
+    // auth itself - it's the page's first cross-origin request to the API,
+    // and it's the one that receives the CSRF cookie. Without it the browser
+    // silently drops the Set-Cookie response header (cross-origin fetch),
+    // so getCsrfToken() finds nothing and the login POST below 403s.
+    fetch(getApiUrl('/api/auth/registration-status'), { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => setRegistrationOpen(data.registrationOpen !== false))
       .catch(() => {});
