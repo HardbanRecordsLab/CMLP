@@ -239,6 +239,15 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
             </div>
           </form>
         )}
+        {/* Wspólne dokumenty prawne HardbanRecords Lab (jedno źródło na hardbanrecordslab.online). */}
+        <p className="mt-6 text-[11px] leading-relaxed text-slate-500 text-center">
+          Korzystając z CMLP akceptujesz{' '}
+          <a href="https://hardbanrecordslab.online/terms/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">Regulamin</a>
+          {' '}i{' '}
+          <a href="https://hardbanrecordslab.online/license-agreement/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">Warunki licencji CMLP</a>.
+          {' '}Dane przetwarzamy zgodnie z{' '}
+          <a href="https://hardbanrecordslab.online/privacy/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">Polityką prywatności</a>.
+        </p>
       </div>
     </div>
   );
