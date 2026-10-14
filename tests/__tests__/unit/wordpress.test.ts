@@ -109,7 +109,7 @@ describe('Phase 7: WordPress Headless CMS Endpoint REST Integration Tests', () =
   });
 
   it('POST /api/wordpress/settings should secure and save changes', async () => {
-    const { agent, csrfToken } = await withCsrf(app, '/api/wordpress/settings');
+    const { agent, csrfToken } = await withCsrf(app);
     const res = await agent
       .post('/api/wordpress/settings')
       .set('x-csrf-token', csrfToken)
@@ -133,7 +133,7 @@ describe('Phase 7: WordPress Headless CMS Endpoint REST Integration Tests', () =
   });
 
   it('POST /api/wordpress/sync should trigger bidirect sync and output status', async () => {
-    const { agent, csrfToken } = await withCsrf(app, '/api/wordpress/settings');
+    const { agent, csrfToken } = await withCsrf(app);
     const res = await agent.post('/api/wordpress/sync').set('x-csrf-token', csrfToken);
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
@@ -141,7 +141,7 @@ describe('Phase 7: WordPress Headless CMS Endpoint REST Integration Tests', () =
   });
 
   it('POST /api/wordpress/webhook should register incoming WP event streams', async () => {
-    const { agent, csrfToken } = await withCsrf(app, '/api/wordpress/settings');
+    const { agent, csrfToken } = await withCsrf(app);
     const webhookPayload = {
       event: 'post_updated',
       id: 300,

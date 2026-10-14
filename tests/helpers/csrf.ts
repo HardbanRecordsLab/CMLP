@@ -17,14 +17,17 @@ import type { Express } from 'express';
  * don't cache the result across multiple test cases or intersperse other
  * GET calls on the same agent before using it.
  */
+const CSRF_COOKIE = 'hrl_csrf2';
+
 export async function withCsrf(app: Express, safeGetPath = '/api/health') {
   const agent = request.agent(app);
   const res = await agent.get(safeGetPath);
   const setCookie = res.headers['set-cookie'] as unknown as string[] | undefined;
-  const raw = setCookie?.find((c) => c.startsWith('hrl_csrf='));
+  // Must match CSRF_COOKIE in src/middleware/csrf.ts (renamed hrl_csrf -> hrl_csrf2).
+  const raw = setCookie?.find((c) => c.startsWith(`${CSRF_COOKIE}=`));
   if (!raw) {
     throw new Error(
-      `withCsrf: no hrl_csrf cookie was set by GET ${safeGetPath} - pick a safeGetPath that isn't itself mocked/blocked.`
+      `withCsrf: no ${CSRF_COOKIE} cookie was set by GET ${safeGetPath} - pick a safeGetPath that isn't itself mocked/blocked.`
     );
   }
   const csrfToken = decodeURIComponent(raw.split(';')[0].split('=')[1]);
