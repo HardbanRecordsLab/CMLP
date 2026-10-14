@@ -27,7 +27,12 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 3s --health-retries 10
     env:
+      # src/db/index.ts builds its pool from SQL_* (DATABASE_URL is only for drizzle-kit)
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres_test
+      SQL_HOST: 127.0.0.1
+      SQL_USER: postgres
+      SQL_PASSWORD: postgres
+      SQL_DB_NAME: postgres_test
       REDIS_HOST: 127.0.0.1
     steps:
       - uses: actions/checkout@v4
