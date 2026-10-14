@@ -154,7 +154,8 @@ describe('Phase 3: Audio Upload & Streaming Service', () => {
       const res = await request(app).get(`/api/audio/test_audio.wav?uid=mock_uid&hrl_token=${validToken}`);
 
       expect(res.status).toBe(200);
-      expect(res.header['content-type']).toBe('audio/mpeg');
+      // test_audio.wav - the controller maps the file extension to its MIME type.
+      expect(res.header['content-type']).toBe('audio/wav');
     });
   });
 });
