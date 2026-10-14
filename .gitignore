@@ -167,3 +167,7 @@ wordpress-backup-*/
 
 # Prywatne dane VPS (backupy DB, sekrety, klucze) — NIGDY w repo
 HBRL-VPS/
+
+# Local-only: private correspondence and an old doc that contains live keys (2026-10-14)
+mails/
+docs/CMLP_Bible_2026_old_v1.2.0.md
