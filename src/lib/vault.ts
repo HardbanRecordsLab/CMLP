@@ -25,11 +25,10 @@ export async function signWithVault(payload: string): Promise<string> {
   const base64Input = Buffer.from(payload).toString('base64');
   const token = vaultToken();
 
+  // No Vault configured (the production default since 15.10.2026: the dev-mode Vault kept its
+  // transit key in memory only and was retired) -> sign locally with HMAC-SHA256 keyed by HMAC_SECRET,
+  // which localFallbackSign requires in production.
   if (!token) {
-    if (isProduction()) {
-      throw new VaultUnavailableError('VAULT_TOKEN is not configured');
-    }
-    console.warn('[Vault] VAULT_TOKEN not set — using local HMAC fallback (dev only)');
     return localFallbackSign(payload);
   }
 
