@@ -104,6 +104,15 @@ export default function Navigation({ currentView }: NavigationProps) {
           <div className="flex items-center gap-3">
             <LanguageSelector />
 
+             <a
+               href="https://hardbanrecordslab.online/"
+               className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold text-xs rounded transition flex items-center gap-1.5"
+               title="hardbanrecordslab.online"
+             >
+               <Home className="w-3.5 h-3.5" />
+               <span className="hidden sm:inline">Strona główna</span>
+             </a>
+
              <a 
                href="/cmlp/"
                className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold text-xs rounded transition flex items-center gap-1.5"

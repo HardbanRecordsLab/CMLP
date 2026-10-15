@@ -239,6 +239,9 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
             </div>
           </form>
         )}
+        <p className="mt-4 text-center">
+          <a href="https://hardbanrecordslab.online/" className="text-xs text-slate-400 hover:text-blue-400 transition">← Strona główna hardbanrecordslab.online</a>
+        </p>
         {/* Wspólne dokumenty prawne HardbanRecords Lab (jedno źródło na hardbanrecordslab.online). */}
         <p className="mt-6 text-[11px] leading-relaxed text-slate-500 text-center">
           Korzystając z CMLP akceptujesz{' '}
