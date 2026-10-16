@@ -1,0 +1,4 @@
+# Panel for logged-in customers: pages carry noindex, the sales page lives on hardbanrecordslab.online/cmlp/
+User-agent: *
+Allow: /
+Disallow: /api/
