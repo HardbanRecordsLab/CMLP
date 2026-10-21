@@ -118,7 +118,7 @@
     "checkoutFail": "Nie udało się utworzyć sesji płatności. Spróbuj ponownie.",
     "paymentError": "Błąd płatności. Spróbuj ponownie.",
     "choosePlan": "Wybierz Swój Plan Licencyjny",
-    "planDesc": "Wszystkie plany obejmują pełny dostęp do katalogu, odtwarzacz white-label i certyfikat zgodności.",
+    "planDesc": "Każdy plan obejmuje odtwarzacz white-label i certyfikat zgodności. Liczba lokali i utworów zależy od wybranego planu.",
     "mostPopular": "Najpopularniejszy",
     "perMonth": "/m-c",
     "locationCount": "lokali",

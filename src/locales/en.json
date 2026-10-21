@@ -118,7 +118,7 @@
     "checkoutFail": "Failed to create checkout session. Please try again.",
     "paymentError": "Payment error. Please try again.",
     "choosePlan": "Choose Your License Plan",
-    "planDesc": "All plans include full catalog access, white-label player, and compliance certificate.",
+    "planDesc": "Every plan includes the white-label player and a compliance certificate. The number of venues and tracks depends on the plan you choose.",
     "mostPopular": "Most Popular",
     "perMonth": "/mo",
     "locationCount": "location(s)",
