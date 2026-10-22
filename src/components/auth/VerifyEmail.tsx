@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getApiUrl } from '../../utils';
-import { getCsrfToken } from '../../hooks/useApi';
+import { ensureCsrfToken } from '../../hooks/useApi';
 
 type State = 'loading' | 'ok' | 'error';
 
@@ -17,7 +17,7 @@ export default function VerifyEmail({ token, onDone }: { token: string; onDone: 
     started.current = true;
     (async () => {
       try {
-        const csrf = getCsrfToken();
+        const csrf = await ensureCsrfToken();
         const res = await fetch(getApiUrl('/api/auth/verify-email'), {
           method: 'POST',
           headers: {

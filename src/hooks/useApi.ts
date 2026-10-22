@@ -1,8 +1,24 @@
 import { useState, useCallback } from 'react';
+import { getApiUrl } from '../utils';
 
 export function getCsrfToken(): string | undefined {
   const match = document.cookie.match(/(?:^|;\s*)hrl_csrf2=([^;]*)/);
   return match ? decodeURIComponent(match[1]) : undefined;
+}
+
+/**
+ * Pages opened from an e-mail link (verify-email, reset-password) are the visitor's first request to the API,
+ * so the CSRF cookie does not exist yet. A GET makes the API issue it; only then can the POST carry the matching header.
+ */
+export async function ensureCsrfToken(): Promise<string | undefined> {
+  const existing = getCsrfToken();
+  if (existing) return existing;
+  try {
+    await fetch(getApiUrl('/api/auth/registration-status'), { credentials: 'include' });
+  } catch {
+    /* the POST below reports the failure */
+  }
+  return getCsrfToken();
 }
 
 export function useApi() {
