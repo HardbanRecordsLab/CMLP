@@ -10,6 +10,7 @@ import { emitWebhookEvent } from '../services/webhook-delivery.service.ts';
 import { generateLicenseCertificate, generateInvoice } from '../services/certificate.service.ts';
 import { triggerEmailNotification } from '../lib/notifications.ts';
 import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
+import { reqLang } from '../utils/requestLang.ts';
 
 async function handlePostPaymentActions(payment: typeof payments.$inferSelect, userEmail?: string) {
   if (!payment.licenseId) return;
@@ -115,6 +116,7 @@ export async function createCheckoutSession(req: any, res: Response) {
 
         const session = await stripe.checkout.sessions.create({
           payment_method_types: String(currency).toLowerCase() === 'pln' ? ['card', 'blik'] : ['card'], // BLIK works in PLN only
+          locale: reqLang(req), // Checkout page follows the site language toggle
           line_items: [
             {
               price_data: {
