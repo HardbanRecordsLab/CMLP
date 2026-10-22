@@ -227,5 +227,9 @@ export const PAIRS: Array<[string, string]> = [
 [
 "ID utworu",
 "Track ID"
+],
+[
+"Kliknij, aby przewinąć",
+"Click to seek"
 ]
 ];
