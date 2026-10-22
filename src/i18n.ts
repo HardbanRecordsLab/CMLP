@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import enTranslation from './locales/en.json';
 import plTranslation from './locales/pl.json';
 import { resolveInitialLang, writeLangCookie, isLang } from './langPref';
+import { setLang as setHrlLang } from './lib/hrl/hrl-i18n';
 
 // Initialize i18next
 i18n
@@ -43,7 +44,7 @@ updateHtmlAttributes(i18n.language);
 // Listen to language changes to synchronize DOM attributes for accessibility & screen readers
 i18n.on('languageChanged', (lng) => {
   try { localStorage.setItem('cmlp_lang', lng); } catch { /* ignore */ }
-  if (isLang(lng)) writeLangCookie(lng);
+  if (isLang(lng)) { writeLangCookie(lng); setHrlLang(lng); }
   updateHtmlAttributes(lng);
 });
 

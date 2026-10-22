@@ -117,7 +117,7 @@ export default function App() {
             {t('common.whitelabel_stream').toUpperCase()}
           </a>
           <a href="/cmlp/tracks" className="block w-full py-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800 text-slate-200 rounded-xl text-xs font-extrabold tracking-wide hover:border-slate-700 hover:text-white transition">
-            TRACK LIBRARY
+            {t('common.track_library')}
           </a>
           <a href="/cmlp/admin" className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold tracking-wide shadow-lg shadow-blue-500/20 transition">
             {t('common.admin_console').toUpperCase()}

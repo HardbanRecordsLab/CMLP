@@ -3,7 +3,7 @@ import { Globe, Check } from 'lucide-react';
 import { useState } from 'react';
 
 export default function LanguageSelector() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const languages = [
@@ -32,7 +32,7 @@ export default function LanguageSelector() {
         >
           <Globe className="w-3.5 h-3.5 text-slate-400" />
           <span className="uppercase font-mono">{currentLanguage.code}</span>
-          <span className="sr-only">Active language is {currentLanguage.label}</span>
+          <span className="sr-only">{t('common.active_language', { lang: currentLanguage.label })}</span>
         </button>
       </div>
 

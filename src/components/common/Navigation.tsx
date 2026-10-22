@@ -91,7 +91,7 @@ export default function Navigation({ currentView }: NavigationProps) {
               href="/cmlp/tracks" 
               className="px-3 py-1.5 rounded text-[10px] font-bold tracking-wide uppercase transition text-slate-400 hover:text-slate-200"
             >
-              TRACKS
+              {t('common.tracks_nav')}
             </a>
             <a 
               href="/cmlp/admin" 
@@ -134,7 +134,7 @@ export default function Navigation({ currentView }: NavigationProps) {
              <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1 px-2 border border-slate-800 bg-slate-900/40 rounded text-slate-400 hover:text-slate-200 lg:hidden transition"
-              aria-label="Toggle navigation menu"
+              aria-label={t('common.toggle_menu')}
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
@@ -166,7 +166,7 @@ export default function Navigation({ currentView }: NavigationProps) {
               href="/cmlp/tracks" 
               className="flex items-center justify-between p-3 rounded-xl border text-xs bg-slate-900/30 border-slate-800 text-slate-400 hover:text-white transition"
             >
-              <span className="font-bold flex items-center gap-2"><Music className="w-4 h-4" /> TRACK LIBRARY</span>
+              <span className="font-bold flex items-center gap-2"><Music className="w-4 h-4" /> {t('common.track_library')}</span>
               <ExternalLink className="w-3.5 h-3.5 opacity-60" />
             </a>
              <a 

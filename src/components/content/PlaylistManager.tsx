@@ -23,7 +23,7 @@ export default function PlaylistManager() {
   const loadPlaylists = () => {
     fetchWithAuth(getApiUrl('/api/playlists'))
       .then(res => res.json())
-      .then(data => setPlaylists(data))
+      .then(data => setPlaylists(Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [])) // the API paginates: { data, pagination }
       .catch(e => { toast.error('Failed to load playlists'); console.error(e); });
   };
 

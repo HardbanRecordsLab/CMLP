@@ -298,11 +298,11 @@ function BuyLicense() {
             <ul className="space-y-2 mb-6 flex-1">
               <li className="text-xs text-slate-400 flex items-center gap-2">
                 <span className="w-1 h-1 bg-emerald-400 rounded-full"></span>
-                {plan.locations} {typeof plan.locations === 'number' ? t('b2bDashboard.locationCount') : t('b2bDashboard.locations')}
+                {plan.locations === 'Unlimited' ? t('b2bDashboard.unlimited') : plan.locations} {typeof plan.locations === 'number' ? t('b2bDashboard.locationCount') : t('b2bDashboard.locations')}
               </li>
               <li className="text-xs text-slate-400 flex items-center gap-2">
                 <span className="w-1 h-1 bg-emerald-400 rounded-full"></span>
-                {plan.tracks} {t('b2bDashboard.tracks')}
+                {plan.tracks === 'Unlimited' ? t('b2bDashboard.unlimited') : plan.tracks} {t('b2bDashboard.tracks')}
               </li>
               {plan.trial > 0 && (
                 <li className="text-xs text-slate-400 flex items-center gap-2">
