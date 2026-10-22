@@ -154,7 +154,7 @@ export default function AdminCoupons() {
                     {c.discountPercent && <span className="flex items-center gap-1"><Percent size={12} />{c.discountPercent}{t('adminCoupons.percentOff')}</span>}
                     {c.discountAmount && <span className="flex items-center gap-1"><DollarSign size={12} />{(c.discountAmount / 100).toFixed(2)} {t('adminCoupons.plnOff')}</span>}
                     <span>{t('adminCoupons.used')} {c.usedCount}/{c.maxUses}</span>
-                    {c.minAmount > 0 && <span>{t('adminCoupons.min')} {(c.minAmount / 100).toFixed(2)} PLN</span>}
+                    {c.minAmount > 0 && <span>{t('adminCoupons.min')} {(c.minAmount / 100).toFixed(2)} USD</span>}
                     {c.expiresAt && <span>{t('adminCoupons.expires')} {new Date(c.expiresAt).toLocaleDateString()}</span>}
                   </div>
                 </div>

@@ -140,7 +140,7 @@ CREATE TABLE cmlp.payments (
   company_id UUID NOT NULL REFERENCES cmlp.companies(id) ON DELETE CASCADE,
   license_id UUID REFERENCES cmlp.licenses(id) ON DELETE SET NULL,
   amount DECIMAL(10,2) NOT NULL,
-  currency VARCHAR(3) DEFAULT 'PLN',
+  currency VARCHAR(3) DEFAULT 'USD',
   payment_method VARCHAR(50),
   transaction_id VARCHAR(255),
   status VARCHAR(20) DEFAULT 'pending',

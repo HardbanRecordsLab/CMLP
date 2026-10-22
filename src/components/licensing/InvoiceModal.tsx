@@ -22,7 +22,7 @@ export default function InvoiceModal({ isOpen, onClose, invoiceId, clientName, c
   const vatPercent = vatRate || 23;
   const vatAmount = amount ? ((amount * vatPercent / 10000).toFixed(2)) : '0.00';
   const grossAmount = amount ? ((amount * (1 + vatPercent / 100) / 100).toFixed(2)) : '0.00';
-  const cur = currency || 'PLN';
+  const cur = currency || 'USD';
 
   return (
     <div role="dialog" aria-modal="true" aria-label={t('invoiceModal.ariaLabel')} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">

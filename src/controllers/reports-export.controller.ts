@@ -40,7 +40,7 @@ export async function exportPDF(req: any, res: Response) {
       ['Total Tracks', String(allTracks.length)],
       ['Active Licenses', String(activeLicenses)],
       ['Total Payments', String(allPayments.length)],
-      ['Net Revenue (PLN)', (netRevenue / 100).toFixed(2)],
+      ['Net Revenue (USD)', (netRevenue / 100).toFixed(2)],
       ['Registered Users', String(allUsers.length)],
     ];
 

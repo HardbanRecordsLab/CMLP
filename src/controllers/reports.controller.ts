@@ -90,8 +90,8 @@ export async function getFinancials(req: any, res: Response) {
         { name: 'PayU', amount: Math.round((netProceeds || 29700) * 0.35) }
       ],
       recentPayments: allPayments.length > 0 ? allPayments.slice(-10) : [
-        { id: 1, userId: 1, amount: 9900, currency: 'PLN', gateway: 'stripe', transactionType: 'subscription', status: 'completed', gatewayTransactionId: 'STRIPE-TX-001', createdAt: new Date() },
-        { id: 2, userId: 2, amount: 19800, currency: 'PLN', gateway: 'payu', transactionType: 'subscription', status: 'completed', gatewayTransactionId: 'PAYU-TX-002', createdAt: new Date() }
+        { id: 1, userId: 1, amount: 9900, currency: 'USD', gateway: 'stripe', transactionType: 'subscription', status: 'completed', gatewayTransactionId: 'STRIPE-TX-001', createdAt: new Date() },
+        { id: 2, userId: 2, amount: 19800, currency: 'USD', gateway: 'payu', transactionType: 'subscription', status: 'completed', gatewayTransactionId: 'PAYU-TX-002', createdAt: new Date() }
       ]
     });
   } catch (e) {

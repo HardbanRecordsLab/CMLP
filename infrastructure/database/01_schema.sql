@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS payments (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     amount INTEGER NOT NULL,
-    currency TEXT DEFAULT 'PLN' NOT NULL,
+    currency TEXT DEFAULT 'USD' NOT NULL,
     gateway TEXT NOT NULL,
     transaction_type TEXT NOT NULL,
     status TEXT DEFAULT 'pending' NOT NULL,

@@ -380,7 +380,7 @@ export default function AdminDashboard() {
                       <tr key={i} className="hover:bg-slate-800/50">
                         <td className="px-6 py-4 font-mono text-[11px] text-slate-300">FV/2026/06/{i.toString().padStart(4, '0')}</td>
                         <td className="px-6 py-4 text-xs font-medium text-white">Kawiarnia Aroma - Branch {i}</td>
-                        <td className="px-6 py-4 text-xs text-slate-300">367.77 PLN</td>
+                        <td className="px-6 py-4 text-xs text-slate-300">94.31 USD</td>
                         <td className="px-6 py-4">
                           <span className="px-2 py-1 bg-emerald-900/40 text-emerald-400 text-[10px] border border-emerald-500/20 rounded">PAID</span>
                         </td>

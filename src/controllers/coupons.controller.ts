@@ -20,7 +20,7 @@ export async function validateCouponCode(code: string, amount: number): Promise<
   if (!coupon.isActive) return { valid: false, error: 'Coupon is inactive' };
   if (coupon.expiresAt && new Date(coupon.expiresAt) < new Date()) return { valid: false, error: 'Coupon has expired' };
   if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) return { valid: false, error: 'Coupon usage limit reached' };
-  if (coupon.minAmount && amount < coupon.minAmount) return { valid: false, error: `Minimum amount ${(coupon.minAmount / 100).toFixed(2)} PLN required` };
+  if (coupon.minAmount && amount < coupon.minAmount) return { valid: false, error: `Minimum amount ${(coupon.minAmount / 100).toFixed(2)} USD required` };
 
   let discountAmount = 0;
   if (coupon.discountPercent) discountAmount = Math.round(amount * coupon.discountPercent / 100);
@@ -72,7 +72,7 @@ export async function create(req: AuthRequest, res: Response) {
       userId: req.user?.uid || 'admin',
       action: 'coupon_create',
       resource: 'coupons',
-      details: `Created coupon ${coupon.code} (${discountPercent ? discountPercent + '%' : discountAmount + 'PLN'} off)`,
+      details: `Created coupon ${coupon.code} (${discountPercent ? discountPercent + '%' : discountAmount + 'USD'} off)`,
       ipAddress: req.ip,
     });
 

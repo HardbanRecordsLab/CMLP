@@ -165,7 +165,7 @@ export default function AdminCustomOrders() {
                     </div>
                     {o.description && <p className="text-xs text-slate-500 mt-1">{o.description}</p>}
                     <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-600">
-                      {o.budget != null && <span>{t('adminCustomOrders.budget')} {(o.budget / 100).toFixed(2)} PLN</span>}
+                      {o.budget != null && <span>{t('adminCustomOrders.budget')} {(o.budget / 100).toFixed(2)} USD</span>}
                       {o.deadline && <span>{t('adminCustomOrders.deadline')} {new Date(o.deadline).toLocaleDateString()}</span>}
                       <span>{t('adminCustomOrders.created')} {new Date(o.createdAt).toLocaleDateString()}</span>
                     </div>

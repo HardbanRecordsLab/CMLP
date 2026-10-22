@@ -22,7 +22,7 @@ let mockPayments = [
     id: 11,
     userId: 42,
     amount: 9900,
-    currency: 'PLN',
+    currency: 'USD',
     gateway: 'stripe',
     transactionType: 'subscription',
     status: 'pending',
@@ -93,7 +93,7 @@ describe('Phase 6: Payment Processing Integration', () => {
       .set('x-csrf-token', csrfToken)
       .send({
         amount: 9900,
-        currency: 'PLN',
+        currency: 'USD',
         gateway: 'stripe',
         transactionType: 'subscription',
         licenseId: 99,

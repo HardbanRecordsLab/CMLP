@@ -53,10 +53,10 @@ export default function PaymentPortal() {
   const handleCheckout = async (type: 'subscription' | 'one-time', overrideAmount?: number) => {
     setLoading(true);
     try {
-      let amount = 9900; // default 99 PLN
-      if (selectedTier === 'starter') amount = 4900;
-      if (selectedTier === 'enterprise') amount = 29900;
-      if (type === 'one-time') amount = 5900; // custom licensing fee
+      let amount = 2400; // default 24 USD
+      if (selectedTier === 'starter') amount = 900;
+      if (selectedTier === 'enterprise') amount = 7900;
+      if (type === 'one-time') amount = 1400; // custom licensing fee
       if (overrideAmount) amount = overrideAmount;
 
       const res = await fetchWithAuth(getApiUrl('/api/payments/checkout-session'), {
@@ -64,7 +64,7 @@ export default function PaymentPortal() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount,
-          currency: 'PLN',
+          currency: 'USD',
           gateway: selectedGateway,
           transactionType: type,
         })

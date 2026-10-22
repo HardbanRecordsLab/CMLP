@@ -23,7 +23,7 @@ async function handlePostPaymentActions(payment: typeof payments.$inferSelect, u
       generateInvoice({
         licenseId: payment.licenseId,
         amount: payment.amount,
-        currency: payment.currency || 'PLN',
+        currency: payment.currency || 'USD',
         vatRate: (payment as any).vatRate || 23,
       }).catch((e) => {
         console.error('[PostPayment] Invoice generation failed:', e.message);
@@ -34,7 +34,7 @@ async function handlePostPaymentActions(payment: typeof payments.$inferSelect, u
     if (userEmail) {
       triggerEmailNotification(userEmail, 'payment_confirmation', {
         amount: (payment.amount / 100).toFixed(2),
-        currency: payment.currency || 'PLN',
+        currency: payment.currency || 'USD',
         gateway: payment.gateway || 'stripe',
         certificateNumber: '',
         companyName: '',
@@ -114,11 +114,11 @@ export async function createCheckoutSession(req: any, res: Response) {
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-04-06' as any });
 
         const session = await stripe.checkout.sessions.create({
-          payment_method_types: ['card', 'blik'],
+          payment_method_types: String(currency).toLowerCase() === 'pln' ? ['card', 'blik'] : ['card'], // BLIK works in PLN only
           line_items: [
             {
               price_data: {
-                currency: currency || 'pln',
+                currency: currency || 'usd',
                 product_data: {
                   name: `HRL ${transactionType.toUpperCase()} - License ${licenseId || 'General'}`,
                 },

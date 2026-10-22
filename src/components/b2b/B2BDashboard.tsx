@@ -40,7 +40,7 @@ function B2BOverview() {
             <CreditCard className="w-4 h-4 text-blue-400" />
             <p className="text-[10px] text-slate-500 uppercase tracking-wider">{t('b2bDashboard.overviewTotalPaid')}</p>
           </div>
-          <p className="text-2xl font-light text-white">{(totalPaid / 100).toFixed(2)} PLN</p>
+          <p className="text-2xl font-light text-white">{(totalPaid / 100).toFixed(2)} USD</p>
         </div>
         <div className="bg-slate-900/50 p-5 border border-slate-800 rounded-xl">
           <div className="flex items-center gap-2 mb-2">
@@ -233,11 +233,11 @@ function B2BPayments() {
 }
 
 const LICENSE_PLANS = [
-  { id: 'starter', name: 'Starter', price: 55, locations: 1, tracks: 40, trial: 7, color: 'bg-slate-600', borderColor: 'border-slate-500' },
-  { id: 'business', name: 'Business', price: 145, locations: 3, tracks: 100, trial: 14, color: 'bg-blue-600', borderColor: 'border-blue-500', popular: true },
-  { id: 'premium', name: 'Premium', price: 495, locations: 10, tracks: 200, trial: 30, color: 'bg-purple-600', borderColor: 'border-purple-500' },
-  { id: 'enterprise', name: 'Enterprise', price: 1999, locations: 'Unlimited', tracks: 'Unlimited', trial: 30, color: 'bg-emerald-600', borderColor: 'border-emerald-500' },
-  { id: 'event', name: 'Event', price: 600, locations: 1, tracks: 'Unlimited', trial: 0, color: 'bg-amber-600', borderColor: 'border-amber-500', oneTime: true },
+  { id: 'starter', name: 'Starter', price: 14, locations: 1, tracks: 40, trial: 7, color: 'bg-slate-600', borderColor: 'border-slate-500' },
+  { id: 'business', name: 'Business', price: 39, locations: 3, tracks: 100, trial: 14, color: 'bg-blue-600', borderColor: 'border-blue-500', popular: true },
+  { id: 'premium', name: 'Premium', price: 129, locations: 10, tracks: 200, trial: 30, color: 'bg-purple-600', borderColor: 'border-purple-500' },
+  { id: 'enterprise', name: 'Enterprise', price: 499, locations: 'Unlimited', tracks: 'Unlimited', trial: 30, color: 'bg-emerald-600', borderColor: 'border-emerald-500' },
+  { id: 'event', name: 'Event', price: 149, locations: 1, tracks: 'Unlimited', trial: 0, color: 'bg-amber-600', borderColor: 'border-amber-500', oneTime: true },
 ];
 
 function BuyLicense() {
@@ -256,7 +256,7 @@ function BuyLicense() {
         body: JSON.stringify({
           licenseType: plan.name.toLowerCase(),
           amount: plan.price * 100,
-          currency: 'pln',
+          currency: 'usd',
           metadata: { plan: plan.name, locations: String(plan.locations) }
         })
       });
@@ -293,7 +293,7 @@ function BuyLicense() {
             <h3 className="text-white font-bold text-lg mb-1">{plan.name}</h3>
             <div className="mb-4">
               <span className="text-3xl font-light text-white">{plan.price}</span>
-              <span className="text-xs text-slate-400"> PLN{plan.oneTime ? '' : t('b2bDashboard.perMonth')}</span>
+              <span className="text-xs text-slate-400"> USD{plan.oneTime ? '' : t('b2bDashboard.perMonth')}</span>
             </div>
             <ul className="space-y-2 mb-6 flex-1">
               <li className="text-xs text-slate-400 flex items-center gap-2">

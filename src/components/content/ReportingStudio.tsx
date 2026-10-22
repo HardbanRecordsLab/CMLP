@@ -220,7 +220,7 @@ export default function ReportingStudio() {
             <div>
               <p className="text-xs font-semibold text-slate-500 uppercase">{t('reportingStudio.grossRevenue')}</p>
               <h3 className="text-2xl font-light text-white mt-2 font-mono">
-                {financialData ? ((financialData.totalRevenue as number / 100).toLocaleString('pl-PL', { minimumFractionDigits: 2 })) : '-'} <span className="text-xs text-slate-500">PLN</span>
+                {financialData ? ((financialData.totalRevenue as number / 100).toLocaleString('pl-PL', { minimumFractionDigits: 2 })) : '-'} <span className="text-xs text-slate-500">USD</span>
               </h3>
             </div>
             <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
@@ -381,7 +381,7 @@ export default function ReportingStudio() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#101726" />
                     <XAxis dataKey="name" stroke="#475569" fontSize={10} />
                     <YAxis stroke="#475569" fontSize={10} />
-                    <Tooltip formatter={(value) => `${value} PLN`} contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', fontSize: '11px' }} />
+                    <Tooltip formatter={(value) => `${value} USD`} contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', fontSize: '11px' }} />
                     <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]}>
                       <Cell fill="#3b82f6" />
                       <Cell fill="#10b981" />
@@ -477,7 +477,7 @@ export default function ReportingStudio() {
                     <tr key={pay.id as React.Key} className="hover:bg-slate-800/40">
                       <td className="px-6 py-3 font-mono text-white tracking-tight">{pay.gatewayTransactionId as string || `PAY-ID-${pay.id as string}`}</td>
                       <td className="px-6 py-3 font-semibold text-slate-300">Aroma Cafe Partner Group</td>
-                      <td className="px-6 py-3 text-white font-mono">{((pay.amount as number / 100).toFixed(2))} {pay.currency as string || 'PLN'}</td>
+                      <td className="px-6 py-3 text-white font-mono">{((pay.amount as number / 100).toFixed(2))} {pay.currency as string || 'USD'}</td>
                       <td className="px-6 py-3 font-mono text-blue-400 uppercase">{(pay.gateway as string || 'stripe')}</td>
                       <td className="px-6 py-3">
                         <span className="text-[10px] text-slate-400 capitalize">{(pay.transactionType as string || 'subscription')}</span>

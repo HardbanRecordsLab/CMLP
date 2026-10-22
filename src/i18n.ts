@@ -65,7 +65,7 @@ export function formatLocaleDate(date: Date | string | number, locale: string = 
 /**
  * Format currency dynamically based on locale
  */
-export function formatLocaleCurrency(amount: number, currency: string = 'PLN', locale: string = i18n.language): string {
+export function formatLocaleCurrency(amount: number, currency: string = 'USD', locale: string = i18n.language): string {
   return new Intl.NumberFormat(locale === 'pl' ? 'pl-PL' : 'en-US', {
     style: 'currency',
     currency: currency

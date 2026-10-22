@@ -41,7 +41,7 @@ const mockContractRecord = [
 ];
 
 const mockPaymentRecord = [
-  { id: 4001, userId: 1001, amount: 25000, currency: 'PLN', status: 'completed', transactionType: 'subscription' }
+  { id: 4001, userId: 1001, amount: 25000, currency: 'USD', status: 'completed', transactionType: 'subscription' }
 ];
 
 vi.mock('../../../src/db/index.ts', () => ({

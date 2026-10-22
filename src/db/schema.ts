@@ -177,7 +177,7 @@ export const payments = pgTable('payments', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').references(() => users.id, { onDelete: 'set null' }),
   amount: integer('amount').notNull(),
-  currency: text('currency').default('PLN').notNull(),
+  currency: text('currency').default('USD').notNull(),
   gateway: text('gateway').notNull(),
   transactionType: text('transaction_type').notNull(),
   status: text('status').default('pending').notNull(),
