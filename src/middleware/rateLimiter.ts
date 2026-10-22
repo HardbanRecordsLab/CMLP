@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { redisClient, blockIp as redisBlockIp, unblockIp, scanKeys } from '../lib/redis.ts';
+import { pick } from '../utils/requestLang.ts';
 
 export const blockedIps = new Set<string>();
 
@@ -91,13 +92,13 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
         } else {
           return res.status(403).json({
             error: 'Forbidden',
-            message: 'Twoje IP zostało tymczasowo zablokowane z powodu wykrycia anomalii lub naruszenia zasad bezpieczeństwa (OWASP Validation Blocklist).'
+            message: pick(req, 'Twoje IP zostało tymczasowo zablokowane z powodu wykrycia anomalii lub naruszenia zasad bezpieczeństwa (OWASP Validation Blocklist).', 'Your IP address has been temporarily blocked after an anomaly or a security-policy violation was detected (OWASP Validation Blocklist).')
           });
         }
       } catch {
         return res.status(403).json({
           error: 'Forbidden',
-          message: 'Twoje IP zostało tymczasowo zablokowane z powodu wykrycia anomalii lub naruszenia zasad bezpieczeństwa (OWASP Validation Blocklist).'
+          message: pick(req, 'Twoje IP zostało tymczasowo zablokowane z powodu wykrycia anomalii lub naruszenia zasad bezpieczeństwa (OWASP Validation Blocklist).', 'Your IP address has been temporarily blocked after an anomaly or a security-policy violation was detected (OWASP Validation Blocklist).')
         });
       }
     }
@@ -114,7 +115,7 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
           'brute_force_ban',
           'IP auto-banned for auth rate violation on route',
           429,
-          'Zbyt wiele prób uwierzytelnienia. Twoje IP zostało zablokowane na 10 minut.',
+          pick(req, 'Zbyt wiele prób uwierzytelnienia. Twoje IP zostało zablokowane na 10 minut.', 'Too many authentication attempts. Your IP address has been blocked for 10 minutes.'),
           10 * 60 * 1000
         );
       }
@@ -129,7 +130,7 @@ export const createRateLimiter = (logAuditEvent: AuditEventLogger) => {
         'dos_anomaly_ban',
         'IP auto-banned due to massive DoS request load',
         429,
-        'Anomalia natężenia ruchu zablokowana. Twoje IP zostało wstrzymane ze względów bezpieczeństwa.',
+        pick(req, 'Anomalia natężenia ruchu zablokowana. Twoje IP zostało wstrzymane ze względów bezpieczeństwa.', 'Abnormal traffic volume blocked. Your IP address has been suspended for security reasons.'),
         15 * 60 * 1000
       );
     }

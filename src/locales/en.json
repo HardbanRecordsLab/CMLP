@@ -22,7 +22,8 @@
     "confirm": "Confirm",
     "search": "Search",
     "filter": "Filter",
-    "no_data": "No data available"
+    "no_data": "No data available",
+    "home_page": "Home page"
   },
   "login": {
     "requires_mfa": "Provide Two-Step Verification Code",
@@ -47,7 +48,14 @@
     "waitlistIntro": "Registration is temporarily paused until the platform's full launch. Join the waitlist - you'll be first in line for a 14-day free trial once we launch.",
     "waitlistCompany": "Company name (optional)",
     "waitlistSubmit": "JOIN THE WAITLIST",
-    "waitlistSuccess": "Thanks! We've added you to the waitlist."
+    "waitlistSuccess": "Thanks! We've added you to the waitlist.",
+    "back_to_site": "← HardbanRecords Lab home page",
+    "legal_prefix": "By using CMLP you accept the",
+    "legal_terms": "Terms",
+    "legal_and": "and",
+    "legal_licence": "CMLP Licence Terms",
+    "legal_data": "We process personal data in accordance with the",
+    "legal_privacy": "Privacy Policy"
   },
   "forgotPassword": {
     "heading": "Forgot Password",
@@ -379,7 +387,7 @@
     "setSchedule": "SET SCHEDULE",
     "venue": "venue",
     "assignedPlaylist": "Assigned Playlist",
-    "noPlaylist": "\u2014 No playlist \u2014",
+    "noPlaylist": "— No playlist —",
     "schedule": "Schedule",
     "volume": "Volume ({{value}}%)",
     "save": "SAVE"
@@ -437,8 +445,8 @@
     "directionHeader": "Direction",
     "statusHeader": "Status",
     "syncTimeHeader": "Synchronized Time",
-    "directionWpToLocal": "WP \u2192 Local",
-    "directionLocalToWp": "Local \u2192 WP",
+    "directionWpToLocal": "WP → Local",
+    "directionLocalToWp": "Local → WP",
     "badgeSynced": "SYNCED",
     "badgeFailed": "FAILED",
     "na": "N/A",
@@ -473,7 +481,7 @@
     "smtpUserLabel": "SMTP User Credentials",
     "smtpUserPlaceholder": "username",
     "smtpPassLabel": "SMTP Secret Password",
-    "smtpPassPlaceholder": "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+    "smtpPassPlaceholder": "••••••••••••",
     "sendgridApiKeyLabel": "SendGrid Secret API Key",
     "sendgridApiKeyPlaceholder": "SG.xxxxxxxxxxxxxxxxx",
     "sendgridApiKeyHint": "API request will be executed to sendgrid endpoints via Bearer token authorization header.",

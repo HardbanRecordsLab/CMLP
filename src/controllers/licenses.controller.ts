@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { reqLang } from '../utils/requestLang.ts';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.ts';
 import { licenses, contracts, users } from '../db/schema.ts';
@@ -132,33 +133,38 @@ export async function getPdf(req: any, res: Response) {
     const doc = new PDFDocument({ margin: 50 });
     doc.pipe(res);
 
-    doc.fontSize(24).fillColor('#1e40af').text('CERTYFIKAT LICENCYJNY', { align: 'center' });
+    const pl = reqLang(req) === 'pl';
+    doc.fontSize(24).fillColor('#1e40af').text(pl ? 'CERTYFIKAT LICENCYJNY' : 'LICENCE CERTIFICATE', { align: 'center' });
     doc.moveDown();
     doc.fontSize(14).fillColor('#475569').text('MUSIC LICENSING CERTIFICATE / CREATIVE MUSIC LICENSING PARTNERS', { align: 'center' });
     doc.moveDown(2);
 
     doc.fontSize(12).fillColor('#0f172a');
-    doc.text(`Numer Certyfikatu (Certificate No): `, { continued: true }).font('Helvetica-Bold').text(`${license.certificateNumber}`).font('Helvetica');
-    doc.text(`Typ Licencji (License Type): ${license.licenseType.toUpperCase()}`);
-    doc.text(`Wydano dla (Issued to): ${license.companyName}`);
-    doc.text(`Jurysdykcja (Jurisdiction): ${license.jurisdiction}`);
+    doc.text(pl ? `Numer Certyfikatu (Certificate No): ` : `Certificate No: `, { continued: true }).font('Helvetica-Bold').text(`${license.certificateNumber}`).font('Helvetica');
+    doc.text(`${pl ? 'Typ Licencji (License Type)' : 'Licence type'}: ${license.licenseType.toUpperCase()}`);
+    doc.text(`${pl ? 'Wydano dla (Issued to)' : 'Issued to'}: ${license.companyName}`);
+    doc.text(`${pl ? 'Jurysdykcja (Jurisdiction)' : 'Jurisdiction'}: ${license.jurisdiction}`);
     doc.moveDown();
-    doc.text(`Data wydania (Issue Date): ${new Date(license.issuedAt).toISOString().split('T')[0]}`);
-    doc.text(`Ważne do (Valid Until): ${new Date(license.expiresAt).toISOString().split('T')[0]}`);
+    doc.text(`${pl ? 'Data wydania (Issue Date)' : 'Issue date'}: ${new Date(license.issuedAt).toISOString().split('T')[0]}`);
+    doc.text(`${pl ? 'Ważne do (Valid Until)' : 'Valid until'}: ${new Date(license.expiresAt).toISOString().split('T')[0]}`);
     doc.text(`Status: `, { continued: true }).fillColor(license.status === 'active' ? '#16a34a' : '#dc2626').text(`${license.status.toUpperCase()}`).fillColor('#0f172a');
     doc.moveDown(2);
 
     doc.fontSize(10).fillColor('#334155');
-    doc.text(
-      `Niniejszy dokument potwierdza, że podmiot wskazany powyżej posiada aktywną licencję na korzystanie z autorskiego katalogu Creative Music Licensing Partners (CMLP) w zakresie i okresie określonym w tym certyfikacie. Licencjodawca udziela licencji bezpośrednio, na podstawie posiadanych praw do utworów.\n\n` +
-      `Certyfikat potwierdza fakt i zakres licencji. Nie przesądza o roszczeniach osób trzecich i nie zastępuje oceny prawnej.`
+    doc.text(pl
+      ? `Niniejszy dokument potwierdza, że podmiot wskazany powyżej posiada aktywną licencję na korzystanie z autorskiego katalogu Creative Music Licensing Partners (CMLP) w zakresie i okresie określonym w tym certyfikacie. Licencjodawca udziela licencji bezpośrednio, na podstawie posiadanych praw do utworów.\n\n` +
+        `Certyfikat potwierdza fakt i zakres licencji. Nie przesądza o roszczeniach osób trzecich i nie zastępuje oceny prawnej.`
+      : `This document confirms that the entity named above holds an active licence to use the original catalogue of Creative Music Licensing Partners (CMLP) within the scope and period stated in this certificate. The Licensor grants the licence directly, on the basis of the rights it holds in the tracks.\n\n` +
+        `The certificate confirms the fact and scope of the licence. It does not prejudge third-party claims and is not a substitute for legal advice.`
     );
     doc.moveDown(2);
 
     const isSigned = contract && contract.signed;
-    doc.fontSize(11).text('Status Podpisu i Walidacji (HashiCorp Vault): ');
+    doc.fontSize(11).text(pl ? 'Status Podpisu i Walidacji (HashiCorp Vault): ' : 'Signature and validation status (HashiCorp Vault): ');
     doc.fontSize(11).fillColor(isSigned ? '#16a34a' : '#eab308')
-       .text(isSigned ? 'ZATWIERDZONO I PODPISANO CYFROWO (SIGNED VERIFIED)' : 'OCZEKUJE NA PODPIS KLIENTA (PENDING CLIENT SIGNATURE)');
+       .text(isSigned
+         ? (pl ? 'ZATWIERDZONO I PODPISANO CYFROWO (SIGNED VERIFIED)' : 'APPROVED AND DIGITALLY SIGNED (SIGNED VERIFIED)')
+         : (pl ? 'OCZEKUJE NA PODPIS KLIENTA (PENDING CLIENT SIGNATURE)' : 'AWAITING CLIENT SIGNATURE (PENDING CLIENT SIGNATURE)'));
 
     doc.end();
   } catch (e) {

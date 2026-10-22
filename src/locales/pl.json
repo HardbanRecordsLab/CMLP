@@ -22,7 +22,8 @@
     "confirm": "Potwierdź",
     "search": "Szukaj",
     "filter": "Filtruj",
-    "no_data": "Brak dostępnych danych"
+    "no_data": "Brak dostępnych danych",
+    "home_page": "Strona główna"
   },
   "login": {
     "requires_mfa": "Podaj Kod Dwustopniowy",
@@ -47,7 +48,14 @@
     "waitlistIntro": "Rejestracja jest tymczasowo wstrzymana do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących - jako pierwsi otrzymacie 14-dniowy darmowy okres próbny po starcie.",
     "waitlistCompany": "Nazwa firmy (opcjonalnie)",
     "waitlistSubmit": "ZAPISZ SIĘ NA LISTĘ",
-    "waitlistSuccess": "Dziękujemy! Dodaliśmy Cię do listy oczekujących."
+    "waitlistSuccess": "Dziękujemy! Dodaliśmy Cię do listy oczekujących.",
+    "back_to_site": "← Strona główna hardbanrecordslab.online",
+    "legal_prefix": "Korzystając z CMLP akceptujesz",
+    "legal_terms": "Regulamin",
+    "legal_and": "i",
+    "legal_licence": "Warunki licencji CMLP",
+    "legal_data": "Dane przetwarzamy zgodnie z",
+    "legal_privacy": "Polityką prywatności"
   },
   "forgotPassword": {
     "heading": "Zapomniałeś Hasła",
@@ -379,7 +387,7 @@
     "setSchedule": "USTAW GRAFIK",
     "venue": "miejsce",
     "assignedPlaylist": "Przypisana Playlista",
-    "noPlaylist": "\u2014 Brak playlisty \u2014",
+    "noPlaylist": "— Brak playlisty —",
     "schedule": "Grafik",
     "volume": "Głośność ({{value}}%)",
     "save": "ZAPISZ"
@@ -473,7 +481,7 @@
     "smtpUserLabel": "Dane Użytkownika SMTP",
     "smtpUserPlaceholder": "nazwa użytkownika",
     "smtpPassLabel": "Hasło Sekretne SMTP",
-    "smtpPassPlaceholder": "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+    "smtpPassPlaceholder": "••••••••••••",
     "sendgridApiKeyLabel": "Sekretny Klucz API SendGrid",
     "sendgridApiKeyPlaceholder": "SG.xxxxxxxxxxxxxxxxx",
     "sendgridApiKeyHint": "Żądanie API zostanie wykonane do endpointów sendgrid przez autoryzację Bearer token.",

@@ -7,8 +7,8 @@ export default function LanguageSelector() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const languages = [
-    { code: 'pl', label: 'Polski', flag: 'PL' },
-    { code: 'en', label: 'English', flag: 'EN' }
+    { code: 'en', label: 'English', flag: 'EN' },
+    { code: 'pl', label: 'Polski', flag: 'PL' }
   ];
 
   const currentLanguage = languages.find(l => l.code === i18n.language) || languages[0];

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Home, ArrowLeft, ShieldAlert, Radio, User, Laptop, Menu, X, ExternalLink, Music, LogOut } from 'lucide-react';
 import logoSrc from '@/assets/images/cmlp_logo_1781419639544.jpg';
 import LanguageSelector from './LanguageSelector.tsx';
+import { wpUrl } from '@/langPref';
 import { useTranslation } from 'react-i18next';
 import { useLogout } from '@/components/auth/AuthContext.tsx';
 
@@ -11,7 +12,7 @@ interface NavigationProps {
 
 export default function Navigation({ currentView }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const onLogout = useLogout();
 
   const viewLabels = {
@@ -105,12 +106,12 @@ export default function Navigation({ currentView }: NavigationProps) {
             <LanguageSelector />
 
              <a
-               href="https://hardbanrecordslab.online/"
+               href={wpUrl('/', i18n.language)}
                className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold text-xs rounded transition flex items-center gap-1.5"
                title="hardbanrecordslab.online"
              >
                <Home className="w-3.5 h-3.5" />
-               <span className="hidden sm:inline">Strona główna</span>
+               <span className="hidden sm:inline">{t('common.home_page')}</span>
              </a>
 
              <a 

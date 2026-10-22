@@ -239,8 +239,13 @@ export async function triggerEmailNotification(
       rawSubject = '{{subject}}';
       rawBody = 'Hello {{name}},\n\n{{body}}\n\nBest regards,\nHardban Records Lab Billing Team';
     } else if (type === 'waitlist_confirmation') {
+      if (variables.lang !== 'pl') {
+        rawSubject = 'You are on the CMLP waitlist';
+        rawBody = 'Thank you for your interest in the CMLP platform!\n\nRegistration is temporarily paused until the service fully launches. Your address ({{email}}) is already on the waitlist.\n\nOnce the platform is fully launched we will write to you first - with a 14-day free trial.\n\nBest regards,\nHardbanRecords Lab Team';
+      } else {
       rawSubject = 'Jesteś na liście oczekujących - CMLP';
       rawBody = 'Dziękujemy za zainteresowanie platformą CMLP!\n\nRejestracja jest obecnie tymczasowo wstrzymana do czasu pełnego uruchomienia usługi. Twój adres ({{email}}) jest już na liście oczekujących.\n\nGdy platforma zostanie w pełni uruchomiona, napiszemy do Ciebie jako pierwszego - z 14-dniowym darmowym okresem próbnym.\n\nBest regards,\nHardbanRecords Lab Team';
+      }
     } else {
       throw new Error(`Invalid email trigger type: ${type}`);
     }

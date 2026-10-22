@@ -7,6 +7,7 @@ import { users, companies, waitlist_signups } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { logAuditEvent } from '../services/logging.service.ts';
 import { triggerEmailNotification } from '../lib/notifications.ts';
+import { pick, reqLang } from '../utils/requestLang.ts';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -64,7 +65,7 @@ export async function login(req: Request, res: Response) {
     if (!isPublicAccessEnabled() && user.role !== 'admin') {
       return res.status(403).json({
         error: 'ACCESS_PAUSED',
-        message: 'Logowanie jest tymczasowo wstrzymane do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących.',
+        message: pick(req, 'Logowanie jest tymczasowo wstrzymane do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących.', 'Sign-in is temporarily paused until the platform fully launches. Please join the waitlist.'),
       });
     }
 
@@ -105,7 +106,7 @@ export async function register(req: Request, res: Response) {
   if (!isPublicAccessEnabled()) {
     return res.status(403).json({
       error: 'REGISTRATION_CLOSED',
-      message: 'Rejestracja jest tymczasowo zamknięta do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących, aby otrzymać 14-dniowy darmowy okres próbny po starcie.',
+      message: pick(req, 'Rejestracja jest tymczasowo zamknięta do czasu pełnego uruchomienia platformy. Zapisz się na listę oczekujących, aby otrzymać 14-dniowy darmowy okres próbny po starcie.', 'Registration is temporarily closed until the platform fully launches. Join the waitlist to get a 14-day free trial at launch.'),
     });
   }
 
@@ -287,7 +288,7 @@ export async function joinWaitlist(req: Request, res: Response) {
   try {
     const existing = await db.select().from(waitlist_signups).where(eq(waitlist_signups.email, email));
     if (existing.length > 0) {
-      return res.json({ message: 'Ten adres e-mail jest już na liście oczekujących.' });
+      return res.json({ message: pick(req, 'Ten adres e-mail jest już na liście oczekujących.', 'This email address is already on the waitlist.') });
     }
 
     await db.insert(waitlist_signups).values({
@@ -298,12 +299,13 @@ export async function joinWaitlist(req: Request, res: Response) {
 
     triggerEmailNotification(email, 'waitlist_confirmation', {
       email,
+      lang: reqLang(req),
     }).catch((e) => console.error('[Waitlist] Confirmation email failed:', e.message));
 
-    res.status(201).json({ message: 'Dziękujemy! Dodaliśmy Cię do listy oczekujących.' });
+    res.status(201).json({ message: pick(req, 'Dziękujemy! Dodaliśmy Cię do listy oczekujących.', 'Thank you! We have added you to the waitlist.') });
   } catch (error: unknown) {
     if ((error as { code?: string })?.code === '23505') {
-      return res.json({ message: 'Ten adres e-mail jest już na liście oczekujących.' });
+      return res.json({ message: pick(req, 'Ten adres e-mail jest już na liście oczekujących.', 'This email address is already on the waitlist.') });
     }
     console.error('Waitlist signup error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -329,7 +331,7 @@ export async function mfaValidate(req: Request, res: Response) {
   try {
     const { email, code } = req.body;
     if (!email || !code) {
-      res.status(400).json({ error: 'Email i kod weryfikacyjny są wymagane.' }); return;
+      res.status(400).json({ error: pick(req, 'Email i kod weryfikacyjny są wymagane.', 'Email and verification code are required.') }); return;
     }
 
     const matched = await db.select().from(users).where(eq(users.email, String(email)));
@@ -347,7 +349,7 @@ export async function mfaValidate(req: Request, res: Response) {
         details: `Weryfikacja kodu MFA nie powiodła się dla konta: ${email}`,
         ipAddress: req.ip,
       });
-      res.status(401).json({ error: 'Kod MFA jest niepoprawny lub wygasał. Spróbuj ponownie.' }); return;
+      res.status(401).json({ error: pick(req, 'Kod MFA jest niepoprawny lub wygasał. Spróbuj ponownie.', 'The MFA code is incorrect or has expired. Please try again.') }); return;
     }
 
     await logAuditEvent({
@@ -359,7 +361,7 @@ export async function mfaValidate(req: Request, res: Response) {
     });
     res.json({ success: true, verified: true });
   } catch (e) {
-    res.status(500).json({ error: 'Błąd podczas walidacji MFA.' });
+    res.status(500).json({ error: pick(req, 'Błąd podczas walidacji MFA.', 'Error while validating the MFA code.') });
   }
 }
 
@@ -383,12 +385,12 @@ export async function mfaConfirm(req: any, res: Response) {
   try {
     const { code, secret } = req.body;
     if (!code || !secret) {
-      res.status(400).json({ error: 'Kod oraz sekret TOTP są wymagane.' }); return;
+      res.status(400).json({ error: pick(req, 'Kod oraz sekret TOTP są wymagane.', 'The code and the TOTP secret are required.') }); return;
     }
     const { verifyTOTP } = await import('../utils/security.ts');
     const verified = verifyTOTP(secret, code);
     if (!verified) {
-      res.status(400).json({ error: 'Błędny kod weryfikacyjny. MFA nie zostało aktywowane.' }); return;
+      res.status(400).json({ error: pick(req, 'Błędny kod weryfikacyjny. MFA nie zostało aktywowane.', 'Incorrect verification code. MFA was not activated.') }); return;
     }
 
     await db.update(users)
@@ -402,7 +404,7 @@ export async function mfaConfirm(req: any, res: Response) {
       details: 'Multi-factor authentication (MFA) enabled successfully',
       ipAddress: req.ip,
     });
-    res.json({ success: true, message: 'Dwustopniowa autoryzacja (MFA) została pomyślnie włączona!' });
+    res.json({ success: true, message: pick(req, 'Dwustopniowa autoryzacja (MFA) została pomyślnie włączona!', 'Two-step authentication (MFA) has been enabled.') });
   } catch (e) {
     res.status(500).json({ error: 'Activation failure.' });
   }
@@ -587,7 +589,7 @@ export async function mfaDisable(req: any, res: Response) {
       details: 'Multi-factor authentication (MFA) deactivated by user',
       ipAddress: req.ip,
     });
-    res.json({ success: true, message: 'Dwustopniowa autoryzacja (MFA) została pomyślnie wyłączona.' });
+    res.json({ success: true, message: pick(req, 'Dwustopniowa autoryzacja (MFA) została pomyślnie wyłączona.', 'Two-step authentication (MFA) has been disabled.') });
   } catch (e) {
     res.status(500).json({ error: 'Disabling failure.' });
   }

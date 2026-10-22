@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import enTranslation from './locales/en.json';
 import plTranslation from './locales/pl.json';
+import { resolveInitialLang, writeLangCookie, isLang } from './langPref';
 
 // Initialize i18next
 i18n
@@ -15,10 +16,9 @@ i18n
         translation: plTranslation
       }
     },
-    // Polish is the default language as the system predominantly was designed in Poland initially,
-    // fallback is set to Polish then English.
-    lng: localStorage.getItem('cmlp_lng') || 'pl',
-    fallbackLng: 'pl',
+    // English is the main language; Polish is available through the switcher (and ?lang=pl / the shared hrl_lang cookie).
+    lng: resolveInitialLang('cmlp_lang'),
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false // react already safe from xss
     },
@@ -42,7 +42,8 @@ updateHtmlAttributes(i18n.language);
 
 // Listen to language changes to synchronize DOM attributes for accessibility & screen readers
 i18n.on('languageChanged', (lng) => {
-  localStorage.setItem('cmlp_lng', lng);
+  try { localStorage.setItem('cmlp_lang', lng); } catch { /* ignore */ }
+  if (isLang(lng)) writeLangCookie(lng);
   updateHtmlAttributes(lng);
 });
 

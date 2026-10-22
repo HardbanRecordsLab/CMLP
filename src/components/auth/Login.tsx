@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getApiUrl } from '../../utils';
 import { getCsrfToken } from '../../hooks/useApi';
+import { wpUrl } from '../../langPref';
 
 interface User {
   uid: string;
@@ -10,7 +11,7 @@ interface User {
 }
 
 export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => void; onForgot?: () => void }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -240,16 +241,16 @@ export default function Login({ onLogin, onForgot }: { onLogin: (user: User) => 
           </form>
         )}
         <p className="mt-4 text-center">
-          <a href="https://hardbanrecordslab.online/" className="text-xs text-slate-400 hover:text-blue-400 transition">← Strona główna hardbanrecordslab.online</a>
+          <a href={wpUrl('/', i18n.language)} className="text-xs text-slate-400 hover:text-blue-400 transition">{t('login.back_to_site')}</a>
         </p>
         {/* Wspólne dokumenty prawne HardbanRecords Lab (jedno źródło na hardbanrecordslab.online). */}
         <p className="mt-6 text-[11px] leading-relaxed text-slate-500 text-center">
-          Korzystając z CMLP akceptujesz{' '}
-          <a href="https://hardbanrecordslab.online/terms/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">Regulamin</a>
-          {' '}i{' '}
-          <a href="https://hardbanrecordslab.online/license-agreement/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">Warunki licencji CMLP</a>.
-          {' '}Dane przetwarzamy zgodnie z{' '}
-          <a href="https://hardbanrecordslab.online/privacy/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">Polityką prywatności</a>.
+          {t('login.legal_prefix')}{' '}
+          <a href={wpUrl('/terms/', i18n.language)} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">{t('login.legal_terms')}</a>
+          {' '}{t('login.legal_and')}{' '}
+          <a href={wpUrl('/license-agreement/', i18n.language)} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">{t('login.legal_licence')}</a>.
+          {' '}{t('login.legal_data')}{' '}
+          <a href={wpUrl('/privacy/', i18n.language)} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">{t('login.legal_privacy')}</a>.
         </p>
       </div>
     </div>
