@@ -176,7 +176,7 @@ describe('Phase 10: Security Hardening & GDPR Compliance Tests', () => {
         .set('x-csrf-token', csrfToken)
         .send({ secret: 'f87a8b9c235de6fd', code: '000000' });
       expect(res.status).toBe(400);
-      expect(res.body.error).toContain('Błędny kod weryfikacyjny');
+      expect(res.body.error).toContain('Incorrect verification code'); // English is the default language (the Polish text is returned with hrl_lang=pl)
     });
 
     it('should handle MFA disable endpoint correctly', async () => {
