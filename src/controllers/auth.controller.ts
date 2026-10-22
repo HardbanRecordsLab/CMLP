@@ -440,6 +440,7 @@ export async function forgotPassword(req: Request, res: Response) {
       name: user.name || email.split('@')[0],
       email,
       resetUrl: `${APP_URL}/reset-password?token=${resetToken}`,
+      lang: reqLang(req),
     });
 
     await logAuditEvent({
