@@ -11,6 +11,7 @@ const AdminDashboard = React.lazy(() => import('@/components/admin/AdminDashboar
 const TrackLibrary = React.lazy(() => import('@/components/content/TrackLibrary.tsx'));
 const AuthWrapper = React.lazy(() => import('@/components/auth/AuthWrapper.tsx'));
 const ResetPassword = React.lazy(() => import('@/components/auth/ResetPassword.tsx'));
+const VerifyEmail = React.lazy(() => import('@/components/auth/VerifyEmail.tsx'));
 const VerifyCertificate = React.lazy(() => import('@/components/verify/VerifyCertificate.tsx'));
 
 export default function App() {
@@ -43,6 +44,10 @@ export default function App() {
     }
     if (route.startsWith('/b2b')) {
       return <AuthWrapper><B2BDashboard /></AuthWrapper>;
+    }
+    if (route.startsWith('/verify-email')) {
+      const params = new URLSearchParams(window.location.search);
+      return <VerifyEmail token={params.get('token') || ''} onDone={() => window.location.href = '/cmlp'} />;
     }
     if (route.startsWith('/reset-password')) {
       const params = new URLSearchParams(window.location.search);

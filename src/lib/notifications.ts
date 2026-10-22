@@ -229,6 +229,12 @@ export async function triggerEmailNotification(
     } else if (type === 'payment_confirmation') {
       rawSubject = settings.templatePaymentSubject;
       rawBody = settings.templatePaymentBody;
+    } else if (type === 'password_reset' && variables.lang === 'pl') {
+      rawSubject = 'Reset hasła - HardbanRecords Lab';
+      rawBody = 'Cześć {{name}},\n\nOtrzymaliśmy prośbę o reset hasła. Kliknij link poniżej, aby ustawić nowe hasło:\n\n{{resetUrl}}\n\nLink wygasa po 1 godzinie.\n\nJeśli to nie Ty, zignoruj tę wiadomość.\n\nPozdrawiamy,\nZespół HardbanRecords Lab';
+    } else if (type === 'email_verification' && variables.lang === 'pl') {
+      rawSubject = 'Potwierdź adres e-mail - HardbanRecords Lab';
+      rawBody = 'Cześć {{name}},\n\nDziękujemy za rejestrację. Potwierdź adres e-mail, klikając link poniżej:\n\n{{verificationUrl}}\n\nLink wygasa po 24 godzinach.\n\nPozdrawiamy,\nZespół HardbanRecords Lab';
     } else if (type === 'password_reset') {
       rawSubject = 'Password Reset Request - Hardban Records Lab';
       rawBody = 'Hello {{name}},\n\nYou requested a password reset. Click the link below to reset your password:\n\n{{resetUrl}}\n\nThis link expires in 1 hour.\n\nIf you did not request this, please ignore this email.\n\nBest regards,\nHardban Records Lab Team';

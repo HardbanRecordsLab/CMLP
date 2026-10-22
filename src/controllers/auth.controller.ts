@@ -10,6 +10,8 @@ import { triggerEmailNotification } from '../lib/notifications.ts';
 import { pick, reqLang } from '../utils/requestLang.ts';
 
 const isProduction = process.env.NODE_ENV === 'production';
+// Links in e-mails (verification, password reset) lead to the CMLP app itself.
+const APP_URL = process.env.FRONTEND_URL || 'https://cmlp.hardbanrecordslab.online';
 
 // Kill switch while CMLP's "no OZZ" licensing claim is under review: new
 // customer signups/logins pause (admin is exempt), visitors get a waitlist
@@ -157,7 +159,8 @@ export async function register(req: Request, res: Response) {
     triggerEmailNotification(email, 'email_verification', {
       name: email.split('@')[0],
       email,
-      verificationUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/verify-email?token=${verificationToken}`,
+      verificationUrl: `${APP_URL}/verify-email?token=${verificationToken}`,
+      lang: reqLang(req),
     }).catch((e) => console.error('[Auth] Verification email failed:', e.message));
 
     const accessToken = signToken({
@@ -436,7 +439,7 @@ export async function forgotPassword(req: Request, res: Response) {
     await triggerEmailNotification(email, 'password_reset', {
       name: user.name || email.split('@')[0],
       email,
-      resetUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/reset-password?token=${resetToken}`,
+      resetUrl: `${APP_URL}/reset-password?token=${resetToken}`,
     });
 
     await logAuditEvent({
@@ -566,7 +569,8 @@ export async function resendVerificationEmail(req: Request, res: Response) {
     await triggerEmailNotification(email, 'email_verification', {
       name: userRecords[0].name || email.split('@')[0],
       email,
-      verificationUrl: `${process.env.FRONTEND_URL || 'https://hardbanrecordslab.online'}/verify-email?token=${verificationToken}`,
+      verificationUrl: `${APP_URL}/verify-email?token=${verificationToken}`,
+      lang: reqLang(req),
     });
 
     res.json({ message: 'If that email exists, a verification link has been sent.' });

@@ -745,5 +745,14 @@
     "owaspMetricTimestamp": "Znaczniki czasu weryfikacji",
     "owaspCompliant": "100% COMPLIANT",
     "owaspReportHeading": "Struktura Raportu OWASP Top 10 Hardening Proofs"
+  },
+  "verifyEmail": {
+    "verifying": "Potwierdzamy Twój adres e-mail…",
+    "doneHeading": "Adres e-mail potwierdzony",
+    "doneDesc": "Konto jest aktywne. Możesz się zalogować.",
+    "errorHeading": "Nie udało się potwierdzić adresu",
+    "missingToken": "Link weryfikacyjny jest niekompletny.",
+    "failed": "Weryfikacja nie powiodła się.",
+    "backToLogin": "Przejdź do logowania"
   }
 }

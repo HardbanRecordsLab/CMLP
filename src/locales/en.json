@@ -745,5 +745,14 @@
     "owaspMetricTimestamp": "Verification Timestamps",
     "owaspCompliant": "100% COMPLIANT",
     "owaspReportHeading": "OWASP Top 10 Hardening Proofs Report Structure"
+  },
+  "verifyEmail": {
+    "verifying": "Verifying your e-mail address…",
+    "doneHeading": "E-mail address confirmed",
+    "doneDesc": "Your account is active. You can now sign in.",
+    "errorHeading": "We could not confirm your address",
+    "missingToken": "The verification link is incomplete.",
+    "failed": "Verification failed.",
+    "backToLogin": "Go to sign in"
   }
 }
