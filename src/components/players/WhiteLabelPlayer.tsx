@@ -277,7 +277,6 @@ export default function WhiteLabelPlayer() {
             >
               {loading ? t('whitelabel.verifying') : t('whitelabel.access_stream_btn')}
             </button>
-            <p className="mt-4 text-[10px] text-slate-500">{t('whitelabel.pin_hint')}</p>
           </div>
         </div>
       </div>
