@@ -27,7 +27,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.cmlp.hardbanrecordslab.online wss:; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
+          "value": "default-src 'self'; script-src 'self' https://hardbanrecordslab.online https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.cmlp.hardbanrecordslab.online wss: https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
         },
         {
           "key": "X-Frame-Options",
