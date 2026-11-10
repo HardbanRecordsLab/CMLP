@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useApi } from '@/hooks/useApi.ts';
 import { getApiUrl } from '@/utils.ts';
 import Pagination from '@/components/common/Pagination.tsx';
+import { CMLP_PLANS, CMLP_QUOTE_EMAIL, type CmlpPlan, type CmlpPlanId } from '@/lib/plans.ts';
 
 function B2BOverview() {
   const { t } = useTranslation();
@@ -232,13 +233,13 @@ function B2BPayments() {
   );
 }
 
-const LICENSE_PLANS = [
-  { id: 'starter', name: 'Starter', price: 14, locations: 1, tracks: 40, trial: 7, color: 'bg-slate-600', borderColor: 'border-slate-500' },
-  { id: 'business', name: 'Business', price: 39, locations: 3, tracks: 100, trial: 14, color: 'bg-blue-600', borderColor: 'border-blue-500', popular: true },
-  { id: 'premium', name: 'Premium', price: 129, locations: 10, tracks: 200, trial: 30, color: 'bg-purple-600', borderColor: 'border-purple-500' },
-  { id: 'enterprise', name: 'Enterprise', price: 499, locations: 'Unlimited', tracks: 'Unlimited', trial: 30, color: 'bg-emerald-600', borderColor: 'border-emerald-500' },
-  { id: 'event', name: 'Event', price: 149, locations: 1, tracks: 'Unlimited', trial: 0, color: 'bg-amber-600', borderColor: 'border-amber-500', oneTime: true },
-];
+// Prices, limits and scope come from the shared plan list (src/lib/plans.ts), which mirrors the public price list.
+const PLAN_BORDER: Record<CmlpPlanId, string> = {
+  starter: 'border-slate-500',
+  business: 'border-blue-500',
+  premium: 'border-purple-500',
+  event: 'border-amber-500',
+};
 
 function BuyLicense() {
   const { t } = useTranslation();
@@ -246,19 +247,15 @@ function BuyLicense() {
   const [buying, setBuying] = useState<string | null>(null);
   const [error, setError] = useState('');
 
-  const handleBuy = async (plan: typeof LICENSE_PLANS[0]) => {
+  const handleBuy = async (plan: CmlpPlan) => {
     setBuying(plan.id);
     setError('');
     try {
+      // Only the plan id is sent: the server looks up the price, currency and billing mode itself.
       const res = await fetchWithAuth(getApiUrl('/api/payments/checkout-session'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          licenseType: plan.name.toLowerCase(),
-          amount: plan.price * 100,
-          currency: 'usd',
-          metadata: { plan: plan.name, locations: String(plan.locations) }
-        })
+        body: JSON.stringify({ planId: plan.id, gateway: 'stripe' })
       });
       const data = await res.json();
       if (data.sessionUrl) {
@@ -284,32 +281,26 @@ function BuyLicense() {
         <div className="bg-red-900/20 border border-red-500/20 rounded-lg p-3 text-red-400 text-xs text-center">{error}</div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {LICENSE_PLANS.map(plan => (
-          <div key={plan.id} className={`bg-slate-900 border ${plan.borderColor} rounded-xl p-5 flex flex-col ${plan.popular ? 'ring-1 ring-blue-500/50 shadow-lg shadow-blue-500/10' : ''}`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        {CMLP_PLANS.map(plan => (
+          <div key={plan.id} className={`bg-slate-900 border ${PLAN_BORDER[plan.id]} rounded-xl p-5 flex flex-col ${plan.popular ? 'ring-1 ring-blue-500/50 shadow-lg shadow-blue-500/10' : ''}`}>
             {plan.popular && (
               <span className="text-[9px] font-bold uppercase tracking-widest text-blue-400 mb-3 text-center">{t('b2bDashboard.mostPopular')}</span>
             )}
             <h3 className="text-white font-bold text-lg mb-1">{plan.name}</h3>
             <div className="mb-4">
-              <span className="text-3xl font-light text-white">{plan.price}</span>
+              <span className="text-3xl font-light text-white">{plan.priceUsd}</span>
               <span className="text-xs text-slate-400"> USD{plan.oneTime ? '' : t('b2bDashboard.perMonth')}</span>
             </div>
             <ul className="space-y-2 mb-6 flex-1">
               <li className="text-xs text-slate-400 flex items-center gap-2">
                 <span className="w-1 h-1 bg-emerald-400 rounded-full"></span>
-                {plan.locations === 'Unlimited' ? t('b2bDashboard.unlimited') : plan.locations} {typeof plan.locations === 'number' ? t('b2bDashboard.locationCount') : t('b2bDashboard.locations')}
+                {plan.locations > 1 ? `${t('b2bDashboard.upTo')} ` : ''}{plan.locations} {plan.locations === 1 ? t('b2bDashboard.locationSingular') : t('b2bDashboard.locations')}
               </li>
               <li className="text-xs text-slate-400 flex items-center gap-2">
                 <span className="w-1 h-1 bg-emerald-400 rounded-full"></span>
-                {plan.tracks === 'Unlimited' ? t('b2bDashboard.unlimited') : plan.tracks} {t('b2bDashboard.tracks')}
+                {t(plan.oneTime ? 'b2bDashboard.libraryEvent' : `b2bDashboard.library_${plan.library}`)}
               </li>
-              {plan.trial > 0 && (
-                <li className="text-xs text-slate-400 flex items-center gap-2">
-                  <span className="w-1 h-1 bg-emerald-400 rounded-full"></span>
-                  {plan.trial}{t('b2bDashboard.dayFreeTrial')}
-                </li>
-              )}
               {plan.oneTime && (
                 <li className="text-xs text-amber-400 flex items-center gap-2 font-medium">
                   <span className="w-1 h-1 bg-amber-400 rounded-full"></span>
@@ -330,6 +321,27 @@ function BuyLicense() {
             </button>
           </div>
         ))}
+        {/* Larger deployments are quoted individually, as on the public price list: no price, no checkout. */}
+        <div className="bg-slate-900 border border-emerald-500 rounded-xl p-5 flex flex-col">
+          <h3 className="text-white font-bold text-lg mb-1">{t('b2bDashboard.customName')}</h3>
+          <div className="mb-4">
+            <span className="text-lg font-light text-white">{t('b2bDashboard.customPrice')}</span>
+          </div>
+          <ul className="space-y-2 mb-6 flex-1">
+            {['customFeature1', 'customFeature2', 'customFeature3'].map(k => (
+              <li key={k} className="text-xs text-slate-400 flex items-center gap-2">
+                <span className="w-1 h-1 bg-emerald-400 rounded-full"></span>
+                {t(`b2bDashboard.${k}`)}
+              </li>
+            ))}
+          </ul>
+          <a
+            href={`mailto:${CMLP_QUOTE_EMAIL}?subject=CMLP%20custom%20deployment`}
+            className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold tracking-wide uppercase transition text-center"
+          >
+            {t('b2bDashboard.requestQuote')}
+          </a>
+        </div>
       </div>
     </div>
   );

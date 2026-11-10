@@ -3,6 +3,7 @@ import { CreditCard, CheckCircle, RefreshCw, AlertTriangle, ShieldCheck, Check, 
 import Pagination from '@/components/common/Pagination.tsx';
 import { useTranslation } from 'react-i18next';
 import { useApi } from '@/hooks/useApi.ts';
+import { getPlan, planAmountCents } from '@/lib/plans.ts';
 import { getApiUrl } from '@/utils.ts';
 import toast from 'react-hot-toast';
 
@@ -24,7 +25,7 @@ export default function PaymentPortal() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState<'stripe' | 'payu'>('stripe');
-  const [selectedTier, setSelectedTier] = useState<'starter' | 'premium' | 'enterprise'>('premium');
+  const [selectedTier, setSelectedTier] = useState<'starter' | 'business' | 'premium'>('business');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -53,9 +54,8 @@ export default function PaymentPortal() {
   const handleCheckout = async (type: 'subscription' | 'one-time', overrideAmount?: number) => {
     setLoading(true);
     try {
-      let amount = 2400; // default 24 USD
-      if (selectedTier === 'starter') amount = 900;
-      if (selectedTier === 'enterprise') amount = 7900;
+      // Plan prices come from the shared price list; a free-form amount is accepted by the server only for admins.
+      let amount = planAmountCents(getPlan(selectedTier)!);
       if (type === 'one-time') amount = 1400; // custom licensing fee
       if (overrideAmount) amount = overrideAmount;
 
@@ -166,36 +166,36 @@ export default function PaymentPortal() {
 
             {/* Premium Plan */}
             <div 
-              onClick={() => setSelectedTier('premium')}
-              className={`p-5 rounded-xl border cursor-pointer transition flex flex-col justify-between space-y-4 relative ${selectedTier === 'premium' ? 'bg-slate-800 border-indigo-500' : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/20'}`}
+              onClick={() => setSelectedTier('business')}
+              className={`p-5 rounded-xl border cursor-pointer transition flex flex-col justify-between space-y-4 relative ${selectedTier === 'business' ? 'bg-slate-800 border-indigo-500' : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/20'}`}
             >
               <span className="absolute -top-2.5 right-4 px-2 py-0.5 text-[8px] font-extrabold tracking-widest text-indigo-400 border border-indigo-500/30 bg-indigo-500/20 rounded uppercase">{t('paymentPortal.popularBadge')}</span>
+              <div>
+                <h4 className="font-bold text-slate-200 text-sm">{t('paymentPortal.businessName')}</h4>
+                <p className="text-[11px] text-slate-400 mt-1">{t('paymentPortal.businessDesc')}</p>
+                <div className="text-xl text-white font-bold mt-4">{t('paymentPortal.businessPrice')} <span className="text-xs text-slate-500 font-normal">{t('paymentPortal.perMonth')}</span></div>
+              </div>
+              <ul className="text-[10px] text-slate-400 space-y-1.5 pt-3 border-t border-slate-800/60">
+                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-indigo-400 shrink-0" /> {t('paymentPortal.businessFeature1')}</li>
+                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-indigo-400 shrink-0" /> {t('paymentPortal.businessFeature2')}</li>
+                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-indigo-400 shrink-0" /> {t('paymentPortal.businessFeature3')}</li>
+              </ul>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div 
+              onClick={() => setSelectedTier('premium')}
+              className={`p-5 rounded-xl border cursor-pointer transition flex flex-col justify-between space-y-4 ${selectedTier === 'premium' ? 'bg-slate-800 border-purple-500' : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/20'}`}
+            >
               <div>
                 <h4 className="font-bold text-slate-200 text-sm">{t('paymentPortal.premiumName')}</h4>
                 <p className="text-[11px] text-slate-400 mt-1">{t('paymentPortal.premiumDesc')}</p>
                 <div className="text-xl text-white font-bold mt-4">{t('paymentPortal.premiumPrice')} <span className="text-xs text-slate-500 font-normal">{t('paymentPortal.perMonth')}</span></div>
               </div>
               <ul className="text-[10px] text-slate-400 space-y-1.5 pt-3 border-t border-slate-800/60">
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-indigo-400 shrink-0" /> {t('paymentPortal.premiumFeature1')}</li>
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-indigo-400 shrink-0" /> {t('paymentPortal.premiumFeature2')}</li>
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-indigo-400 shrink-0" /> {t('paymentPortal.premiumFeature3')}</li>
-              </ul>
-            </div>
-
-            {/* Enterprise Plan */}
-            <div 
-              onClick={() => setSelectedTier('enterprise')}
-              className={`p-5 rounded-xl border cursor-pointer transition flex flex-col justify-between space-y-4 ${selectedTier === 'enterprise' ? 'bg-slate-800 border-purple-500' : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/20'}`}
-            >
-              <div>
-                <h4 className="font-bold text-slate-200 text-sm">{t('paymentPortal.enterpriseName')}</h4>
-                <p className="text-[11px] text-slate-400 mt-1">{t('paymentPortal.enterpriseDesc')}</p>
-                <div className="text-xl text-white font-bold mt-4">{t('paymentPortal.enterprisePrice')} <span className="text-xs text-slate-500 font-normal">{t('paymentPortal.perMonth')}</span></div>
-              </div>
-              <ul className="text-[10px] text-slate-400 space-y-1.5 pt-3 border-t border-slate-800/60">
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-purple-400 shrink-0" /> {t('paymentPortal.enterpriseFeature1')}</li>
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-purple-400 shrink-0" /> {t('paymentPortal.enterpriseFeature2')}</li>
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-purple-400 shrink-0" /> {t('paymentPortal.enterpriseFeature3')}</li>
+                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-purple-400 shrink-0" /> {t('paymentPortal.premiumFeature1')}</li>
+                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-purple-400 shrink-0" /> {t('paymentPortal.premiumFeature2')}</li>
+                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-purple-400 shrink-0" /> {t('paymentPortal.premiumFeature3')}</li>
               </ul>
             </div>
           </div>

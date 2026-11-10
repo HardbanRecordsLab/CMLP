@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { db } from '../db/index.ts';
 import { tracks, licenses, payments, contracts, users, usage_logs } from '../db/schema.ts';
 import { sql } from 'drizzle-orm';
+import { getPlan, planAmountCents } from '../lib/plans.ts';
 
 export async function getUsage(req: any, res: Response) {
   try {
@@ -69,10 +70,12 @@ export async function getFinancials(req: any, res: Response) {
       .filter(p => p.status === 'refunded')
       .reduce((sum, p) => sum + p.amount, 0);
 
+    // Membership levels 1/2/3 are Starter/Business/Premium; monthly revenue per tier uses the shared price list.
+    const tierCents = (id: 'starter' | 'business' | 'premium') => planAmountCents(getPlan(id)!);
     const billingByTier = {
-      starter: allUsers.filter(u => u.pmproLevel === 1).length * 4900,
-      premium: allUsers.filter(u => u.pmproLevel === 2).length * 9900,
-      enterprise: allUsers.filter(u => u.pmproLevel === 3).length * 29900,
+      starter: allUsers.filter(u => u.pmproLevel === 1).length * tierCents('starter'),
+      business: allUsers.filter(u => u.pmproLevel === 2).length * tierCents('business'),
+      premium: allUsers.filter(u => u.pmproLevel === 3).length * tierCents('premium'),
     };
 
     res.json({
@@ -80,11 +83,7 @@ export async function getFinancials(req: any, res: Response) {
       refundedAmount: refundedAmount || 0,
       netProceeds: (netProceeds || 29700) - (refundedAmount || 0),
       activeSubscriptions: allUsers.length || 3,
-      billingByTier: {
-        starter: billingByTier.starter || 4900,
-        premium: billingByTier.premium || 19800,
-        enterprise: billingByTier.enterprise || 29900
-      },
+      billingByTier,
       paymentGatewayTrends: [
         { name: 'Stripe', amount: Math.round((netProceeds || 29700) * 0.65) },
         { name: 'PayU', amount: Math.round((netProceeds || 29700) * 0.35) }

@@ -11,6 +11,7 @@ import { generateLicenseCertificate, generateInvoice } from '../services/certifi
 import { triggerEmailNotification } from '../lib/notifications.ts';
 import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 import { reqLang } from '../utils/requestLang.ts';
+import { getPlan, planAmountCents } from '../lib/plans.ts';
 
 async function handlePostPaymentActions(payment: typeof payments.$inferSelect, userEmail?: string) {
   if (!payment.licenseId) return;
@@ -74,8 +75,28 @@ import { validateCouponCode } from './coupons.controller.ts';
 export async function createCheckoutSession(req: any, res: Response) {
   try {
     let { amount, currency, gateway, transactionType, licenseId, couponCode, vatRate } = req.body;
+    const { planId } = req.body;
     const userUid = req.user?.uid;
     if (!userUid) { res.status(401).json({ error: 'Unauthorized' }); return; }
+
+    const [userRecord] = await db.select().from(users).where(eq(users.uid, userUid));
+    if (!userRecord) { res.status(404).json({ error: 'User not found' }); return; }
+
+    // The price is decided here, never by the browser: a client names a plan and gets the plan's price, currency and
+    // billing mode (Event is a one-time payment, the rest are monthly subscriptions). A free-form amount is an
+    // admin-only tool (the admin payment portal); everyone else must send a known planId.
+    let planName = '';
+    if (planId !== undefined && planId !== null && planId !== '') {
+      const plan = getPlan(planId);
+      if (!plan) { res.status(400).json({ error: 'Unknown plan' }); return; }
+      amount = planAmountCents(plan);
+      currency = 'usd';
+      transactionType = plan.oneTime ? 'one-time' : 'subscription';
+      gateway = gateway || 'stripe';
+      planName = plan.name;
+    } else if (userRecord.role !== 'admin') {
+      res.status(400).json({ error: 'planId is required' }); return;
+    }
 
     if (couponCode) {
       const validation = await validateCouponCode(couponCode, parseInt(amount, 10));
@@ -83,9 +104,6 @@ export async function createCheckoutSession(req: any, res: Response) {
         amount = validation.finalAmount;
       }
     }
-
-    const [userRecord] = await db.select().from(users).where(eq(users.uid, userUid));
-    if (!userRecord) { res.status(404).json({ error: 'User not found' }); return; }
 
     if (!amount || !gateway || !transactionType) {
       res.status(400).json({ error: 'Amount, gateway, and transactionType are required' }); return;
@@ -114,6 +132,7 @@ export async function createCheckoutSession(req: any, res: Response) {
       try {
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-04-06' as any });
 
+        const oneTime = transactionType === 'one-time';
         const session = await stripe.checkout.sessions.create({
           payment_method_types: String(currency).toLowerCase() === 'pln' ? ['card', 'blik'] : ['card'], // BLIK works in PLN only
           locale: reqLang(req), // Checkout page follows the site language toggle
@@ -122,10 +141,10 @@ export async function createCheckoutSession(req: any, res: Response) {
               price_data: {
                 currency: currency || 'usd',
                 product_data: {
-                  name: `HRL ${transactionType.toUpperCase()} - License ${licenseId || 'General'}`,
+                  name: planName ? `CMLP ${planName}` : `HRL ${transactionType.toUpperCase()} - License ${licenseId || 'General'}`,
                 },
                 unit_amount: parseInt(amount, 10),
-                recurring: { interval: 'month' as const },
+                ...(oneTime ? {} : { recurring: { interval: 'month' as const } }),
               },
               quantity: 1,
             },
@@ -135,7 +154,7 @@ export async function createCheckoutSession(req: any, res: Response) {
             licenseId: licenseId ? licenseId.toString() : '',
             userId: userRecord.id.toString(),
           },
-          mode: 'subscription',
+          mode: oneTime ? 'payment' : 'subscription',
           success_url: `${process.env.FRONTEND_URL || req.headers.origin || 'http://localhost:5173'}/admin/licensing?payment=success&txId=${gatewayTransactionId}`,
           cancel_url: `${req.headers.origin || 'http://localhost:5173'}/admin/licensing`,
         });

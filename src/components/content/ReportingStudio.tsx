@@ -375,8 +375,8 @@ export default function ReportingStudio() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={[
                     { name: 'Starter', amount: ((financialData.billingByTier as Record<string, unknown>).starter as number / 100) },
-                    { name: 'Premium / PRO', amount: ((financialData.billingByTier as Record<string, unknown>).premium as number / 100) },
-                    { name: 'Enterprise VIP', amount: ((financialData.billingByTier as Record<string, unknown>).enterprise as number / 100) }
+                    { name: 'Business', amount: ((financialData.billingByTier as Record<string, unknown>).business as number / 100) },
+                    { name: 'Premium', amount: ((financialData.billingByTier as Record<string, unknown>).premium as number / 100) }
                   ]}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#101726" />
                     <XAxis dataKey="name" stroke="#475569" fontSize={10} />

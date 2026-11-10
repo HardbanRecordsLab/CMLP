@@ -104,6 +104,56 @@ describe('Phase 6: Payment Processing Integration', () => {
     expect(res.body.gatewayTransactionId).toBeTruthy();
   });
 
+  it('POST /api/payments/checkout-session prices a plan on the server and ignores the amount sent by the browser', async () => {
+    const { agent, csrfToken } = await withCsrf(app);
+    const res = await agent
+      .post('/api/payments/checkout-session')
+      .set('x-csrf-token', csrfToken)
+      .send({ planId: 'business', amount: 1, currency: 'PLN', gateway: 'stripe' });
+
+    expect(res.status).toBe(201);
+    expect(res.body.payment.amount).toBe(2400);
+    expect(res.body.payment.currency).toBe('usd');
+    expect(res.body.payment.transactionType).toBe('subscription');
+  });
+
+  it('POST /api/payments/checkout-session treats the Event plan as a one-time $149 payment', async () => {
+    const { agent, csrfToken } = await withCsrf(app);
+    const res = await agent
+      .post('/api/payments/checkout-session')
+      .set('x-csrf-token', csrfToken)
+      .send({ planId: 'event', gateway: 'stripe' });
+
+    expect(res.status).toBe(201);
+    expect(res.body.payment.amount).toBe(14900);
+    expect(res.body.payment.transactionType).toBe('one-time');
+  });
+
+  it.each(['enterprise', 'custom'])('POST /api/payments/checkout-session rejects the plan %s (no price on the list)', async (planId) => {
+    const { agent, csrfToken } = await withCsrf(app);
+    const res = await agent
+      .post('/api/payments/checkout-session')
+      .set('x-csrf-token', csrfToken)
+      .send({ planId, gateway: 'stripe' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Unknown plan');
+  });
+
+  it('POST /api/payments/checkout-session refuses a free-form amount from a non-admin user', async () => {
+    const { agent, csrfToken } = await withCsrf(app);
+    mockUsers[0].role = 'user';
+    try {
+      const res = await agent
+        .post('/api/payments/checkout-session')
+        .set('x-csrf-token', csrfToken)
+        .send({ amount: 100, currency: 'USD', gateway: 'stripe', transactionType: 'subscription' });
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('planId is required');
+    } finally {
+      mockUsers[0].role = 'admin';
+    }
+  });
+
   it('GET /api/payments/simulate-success should resolve status to completed', async () => {
     const res = await request(app).get('/api/payments/simulate-success?txId=STRIPE-TX-UNIT-TEST');
     expect(res.status).toBe(200);

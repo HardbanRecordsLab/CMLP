@@ -100,7 +100,9 @@ describe('Phase 9: Admin Dashboard & Reporting APIs', () => {
     expect(res.status).toBe(200);
     expect(res.body.totalRevenue).toBeGreaterThan(0);
     expect(res.body.netProceeds).toBeDefined();
-    expect(res.body.billingByTier.starter).toBe(4900);
+    expect(res.body.billingByTier.starter).toBe(900); // one level-1 user x the $9 Starter price
+    expect(res.body.billingByTier.business).toBe(2400); // one level-2 user x the $24 Business price
+    expect(res.body.billingByTier.premium).toBe(0);
   });
 
   it('GET /api/reports/compliance should map exemption and signed contracts ratios', async () => {
