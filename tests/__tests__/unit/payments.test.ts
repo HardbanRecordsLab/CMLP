@@ -2,7 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import Stripe from 'stripe';
 import { app } from '../../../server.ts';
-import { users, payments, licenses, coupons } from '../../../src/db/schema.ts';
+import { users, payments, licenses, coupons, companies } from '../../../src/db/schema.ts';
+import { extendLicenceFromInvoice } from '../../../src/controllers/payments.controller.ts';
 import { withCsrf } from '../../helpers/csrf.ts';
 
 vi.mock('../../../src/middleware/auth.ts', () => ({
@@ -32,7 +33,9 @@ let mockPayments = [
   },
 ];
 
-let mockLicenses = [{ id: 99, status: 'active', expiresAt: new Date() }];
+let mockLicenses: any[] = [{ id: 99, status: 'active', expiresAt: new Date() }];
+
+const mockCompanies = [{ id: 7, name: 'Cafe Test', ownerId: 'mock_payment_uid' }];
 
 function makeChain(resolvedValue: unknown) {
   const chain: any = {
@@ -49,6 +52,7 @@ function rowsForTable(table: unknown) {
   if (table === users) return mockUsers;
   if (table === licenses) return mockLicenses;
   if (table === coupons) return [];
+  if (table === companies) return mockCompanies;
   return mockPayments;
 }
 
@@ -115,6 +119,8 @@ describe('Phase 6: Payment Processing Integration', () => {
     expect(res.body.payment.amount).toBe(2400);
     expect(res.body.payment.currency).toBe('usd');
     expect(res.body.payment.transactionType).toBe('subscription');
+    // the plan's licence is created up front and linked to the payment (the mocked insert returns id 12)
+    expect(res.body.payment.licenseId).toBe(12);
   });
 
   it('POST /api/payments/checkout-session treats the Event plan as a one-time $149 payment', async () => {
@@ -205,6 +211,36 @@ describe('Phase 6: Payment Processing Integration', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.received).toBe(true);
+  });
+
+  it('POST /api/payments/webhook/stripe accepts a signed invoice.paid event (subscription renewal)', async () => {
+    const payloadObj = {
+      id: 'evt_test_inv',
+      type: 'invoice.paid',
+      data: { object: { id: 'in_test_1', period_end: 1767225600, parent: { subscription_details: { metadata: { licenseId: '99' } } }, lines: { data: [{ period: { end: 1767225600 } }] } } },
+    };
+    const payload = JSON.stringify(payloadObj);
+    const header = Stripe.webhooks.generateTestHeaderString({ payload, secret: process.env.STRIPE_WEBHOOK_SECRET! });
+    const res = await request(app)
+      .post('/api/payments/webhook/stripe')
+      .set('Content-Type', 'application/json')
+      .set('stripe-signature', header)
+      .send(payload);
+    expect(res.status).toBe(200);
+    expect(res.body.received).toBe(true);
+  });
+
+  it('extendLicenceFromInvoice keeps the licence active until the paid period ends plus 3 days', async () => {
+    const periodEnd = Math.floor(Date.UTC(2027, 0, 1) / 1000);
+    mockLicenses = [{ id: 99, status: 'pending', expiresAt: new Date(Date.UTC(2026, 11, 1)) }];
+    const ok = await extendLicenceFromInvoice({ id: 'in_x', parent: { subscription_details: { metadata: { licenseId: '99' } } }, lines: { data: [{ period: { end: periodEnd } }] } });
+    expect(ok).toBe(true);
+    // no licence id in the metadata: nothing to extend
+    expect(await extendLicenceFromInvoice({ id: 'in_y', lines: { data: [{ period: { end: periodEnd } }] } })).toBe(false);
+    // a refunded (cancelled) licence is not revived by a renewal
+    mockLicenses = [{ id: 99, status: 'cancelled', expiresAt: new Date() }];
+    expect(await extendLicenceFromInvoice({ id: 'in_z', subscription_details: { metadata: { licenseId: '99' } }, period_end: periodEnd })).toBe(false);
+    mockLicenses = [{ id: 99, status: 'active', expiresAt: new Date() }];
   });
 
   it('POST /api/payments/webhook/payu should handle Completed order notifications', async () => {

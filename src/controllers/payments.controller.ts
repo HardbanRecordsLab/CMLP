@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import crypto from 'node:crypto';
 import { eq, sql } from 'drizzle-orm';
 import { db } from '../db/index.ts';
-import { payments, licenses, users, coupons } from '../db/schema.ts';
+import { payments, licenses, users, coupons, companies } from '../db/schema.ts';
 import { verifyStripeWebhook } from '../lib/stripe.ts';
 import Stripe from 'stripe';
 import { logAuditEvent } from '../services/logging.service.ts';
@@ -12,6 +12,11 @@ import { triggerEmailNotification } from '../lib/notifications.ts';
 import { parsePagination, buildSearchCondition, paginateQuery } from '../utils/pagination.ts';
 import { reqLang } from '../utils/requestLang.ts';
 import { getPlan, planAmountCents } from '../lib/plans.ts';
+
+/** Days a paid month stays valid after its period ends (late renewals, bank delays). */
+const LICENCE_GRACE_DAYS = 3;
+/** An Event licence covers one event (24 h); the record stays open this long so the agreed event date fits. */
+const EVENT_LICENCE_WINDOW_DAYS = 90;
 
 async function handlePostPaymentActions(payment: typeof payments.$inferSelect, userEmail?: string) {
   if (!payment.licenseId) return;
@@ -98,6 +103,27 @@ export async function createCheckoutSession(req: any, res: Response) {
       res.status(400).json({ error: 'planId is required' }); return;
     }
 
+    // A plan purchase gets its licence up front (status "pending"); the Stripe webhook activates it and issues the
+    // certificate once the payment is completed, and every paid renewal invoice extends it.
+    if (planName && !licenseId) {
+      const plan = getPlan(planId)!;
+      const [company] = await db.select().from(companies).where(eq(companies.ownerId, userRecord.uid));
+      if (!company) { res.status(400).json({ error: 'This account has no company profile yet' }); return; }
+      const days = plan.oneTime ? EVENT_LICENCE_WINDOW_DAYS : 31 + LICENCE_GRACE_DAYS;
+      const [lic] = (await db.insert(licenses).values({
+        companyId: company.id,
+        companyName: company.name,
+        licenseType: plan.id,
+        status: 'pending',
+        certificateNumber: `HRL-LIC-${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
+        expiresAt: new Date(Date.now() + days * 86400000),
+        authorUid: userRecord.uid,
+        maxLocations: plan.locations,
+        usageScope: { plan: plan.id, library: plan.library, billing: plan.oneTime ? 'one-time (one event, 24 h)' : 'monthly' },
+      }).returning()) as unknown as any[];
+      licenseId = lic.id;
+    }
+
     if (couponCode) {
       const validation = await validateCouponCode(couponCode, parseInt(amount, 10));
       if (validation.valid) {
@@ -154,9 +180,11 @@ export async function createCheckoutSession(req: any, res: Response) {
             licenseId: licenseId ? licenseId.toString() : '',
             userId: userRecord.id.toString(),
           },
+          // renewals (invoice.paid) find the licence through the subscription metadata
+          ...(oneTime ? {} : { subscription_data: { metadata: { licenseId: licenseId ? licenseId.toString() : '', paymentId: newPayment.id.toString() } } }),
           mode: oneTime ? 'payment' : 'subscription',
-          success_url: `${process.env.FRONTEND_URL || req.headers.origin || 'http://localhost:5173'}/admin/licensing?payment=success&txId=${gatewayTransactionId}`,
-          cancel_url: `${req.headers.origin || 'http://localhost:5173'}/admin/licensing`,
+          success_url: `${process.env.FRONTEND_URL || req.headers.origin || 'http://localhost:5173'}${planName ? '/cmlp/b2b' : '/admin/licensing'}?payment=success&txId=${gatewayTransactionId}`,
+          cancel_url: `${req.headers.origin || 'http://localhost:5173'}${planName ? '/cmlp/b2b' : '/admin/licensing'}`,
         });
 
         await db.update(payments).set({
@@ -333,6 +361,10 @@ async function processWebhook(gateway: string, rawPayload: string, signature: st
       return { txId: '', status: '', error: 'Invalid Stripe webhook signature' };
     }
 
+    if (event?.type === 'invoice.paid') {
+      // Subscription renewals are handled separately (they extend the licence; there is no payments row per renewal).
+      return { txId: '', status: 'renewal', error: null, stripeEvent: event };
+    }
     const normalized = normalizeStripeStatus(event?.type, event?.data?.object);
     txId = normalized.txId;
     status = normalized.status;
@@ -346,6 +378,33 @@ async function processWebhook(gateway: string, rawPayload: string, signature: st
   }
 
   return { txId, status, error: null, paymentIntentId };
+}
+
+/**
+ * A paid subscription invoice (first payment or renewal) keeps the plan's licence active until the end of the paid
+ * period plus a short grace period. The licence id travels in the subscription metadata set at checkout.
+ */
+export async function extendLicenceFromInvoice(invoice: any, ip?: string) {
+  const meta = invoice?.parent?.subscription_details?.metadata || invoice?.subscription_details?.metadata || {};
+  const licenseId = parseInt(String(meta.licenseId || ''), 10);
+  if (!licenseId) return false;
+  const lineEnds = (invoice?.lines?.data || []).map((l: any) => Number(l?.period?.end) || 0);
+  const periodEnd = Math.max(0, Number(invoice?.period_end) || 0, ...lineEnds);
+  if (!periodEnd) return false;
+  const [lic] = await db.select().from(licenses).where(eq(licenses.id, licenseId));
+  if (!lic || lic.status === 'cancelled') return false;
+  const until = new Date((periodEnd + LICENCE_GRACE_DAYS * 86400) * 1000);
+  const expiresAt = lic.expiresAt && new Date(lic.expiresAt) > until ? new Date(lic.expiresAt) : until;
+  await db.update(licenses).set({ status: 'active', expiresAt, renewalDate: new Date(periodEnd * 1000), updatedAt: new Date() })
+    .where(eq(licenses.id, licenseId));
+  await logAuditEvent({
+    userId: 'stripe_webhook',
+    action: 'licence_renewed',
+    resource: 'licenses',
+    details: `Licence ${licenseId} active until ${expiresAt.toISOString()} (invoice ${invoice?.id || '?'})`,
+    ipAddress: ip,
+  });
+  return true;
 }
 
 async function processWithRetry(fn: () => Promise<any>, maxRetries = 3): Promise<any> {
@@ -385,6 +444,11 @@ export async function webhook(req: any, res: Response) {
     }
 
     const { txId, status, paymentIntentId } = parsed as any;
+
+    if ((parsed as any).stripeEvent?.type === 'invoice.paid') {
+      await extendLicenceFromInvoice((parsed as any).stripeEvent.data?.object, req.ip);
+      res.status(200).json({ received: true }); return;
+    }
 
     if (txId) {
       let existing = await db.select().from(payments).where(eq(payments.gatewayTransactionId, txId)).then(r => r[0]);
